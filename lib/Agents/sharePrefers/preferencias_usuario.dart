@@ -54,6 +54,16 @@ class PreferenciasUsuario {
     _prefs.setString('passwordUsuario', value);
   }
 
+  // GET y SET company Id
+      // GET y SET del nombreUsuario
+  get companyId {
+    return _prefs.getString('companyId') ?? '';
+  }
+
+  set companyId( String value ) {
+    _prefs.setString('companyId', value);
+  }
+
   
   // GET y SET de Token Android
   get tokenAndroid {

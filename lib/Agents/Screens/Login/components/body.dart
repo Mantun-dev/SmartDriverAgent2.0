@@ -66,6 +66,7 @@ class _BodyState extends State<Body> {
         final si = DataAgent.fromJson(json.decode(responses.body));
         prefs.nombreUsuarioFull = si.agentFullname; 
         prefs.emailUsuario = si.agentEmail;
+        prefs.companyId = si.companyId.toString();
         print(PushNotificationServices.token);
         Map data2 = {
           'agentId' : '${si.agentId}',

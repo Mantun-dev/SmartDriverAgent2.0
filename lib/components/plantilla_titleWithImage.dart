@@ -12,7 +12,7 @@ class PlantillaTitleWithImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
       child: Column(
@@ -25,28 +25,27 @@ class PlantillaTitleWithImage extends StatelessWidget {
                 .headline4
                 .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 0),
+          SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              RichText(
-                text: TextSpan(
-                  children: [
-                    //aquí le mandamos el hola en la página después de tocar la imagen
-                    TextSpan(text: ""),
-                    TextSpan(
-                      //y el nombre
-                      text: "${plantilla.name}",
-                      style: Theme.of(context).textTheme.headline4.copyWith(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
+            children: <Widget>[              
+              // Container( 
+              //   width: 200,
+              //   height: 162,
+                              
+              //   child: Column(                                 
+              //     children: [
+              //       Text("Nota",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: kCardColor2,)),
+              //       Text('Si tiene algún inconveniente con su programación, puede escribir al número: ',style: TextStyle(color: kgray)),                         
+              //       TextButton(onPressed: () => launch('tel://3317-4537'),
+              //       child: Text('3317-4537',style: TextStyle(color: Colors.blue[500],fontSize: 15))),
+              //     ],
+              //   ),
+              // ),
               //SizedBox(width: 150),
               Container(                
-                width: 150,
-                height: 150,
+                width: 125,
+                height: 150,                
                 child: Column(
                   children: [
                     Hero(

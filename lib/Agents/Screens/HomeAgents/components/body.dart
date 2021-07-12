@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
@@ -39,19 +41,32 @@ class _BodyState extends State<Body> {
   super.initState();
     _value = 0;
     //realización callback para mostrar cuentas en agentes
+
     SchedulerBinding.instance.addPostFrameCallback((_){
+    if (mounted) {
+      
       setState(() {        
        this._showErrorAlert();
       });
     }
+    }
     ); 
 
-    SchedulerBinding.instance.addPostFrameCallback((_){
-      setState(() {        
-       this._showAlert();
-      });
+    // Timer.periodic(
+    // Duration(minutes: 1), 
+    // (Timer t) => {
+    // });
+   SchedulerBinding.instance.addPostFrameCallback((_){
+     if (mounted) {
+     setState(() {        
+      this._showAlert();
+     });
+      
+     }
     }
-    );    
+     );    
+      //callback
+
     item = fetchRefres();
   }
 
@@ -98,32 +113,7 @@ class _BodyState extends State<Body> {
                 child: Text('Smart Driver',style: Theme.of(context).textTheme.headline4.copyWith(fontWeight: FontWeight.bold),),                   
               ),
               SizedBox(height: 15), 
-              //future builder para hacer la validación y mostrar mensaje correspondiente
-              FutureBuilder<DataAgent>(
-                //variable
-                future: item,
-                builder: (BuildContext context, abc) {
-                  if (abc.connectionState == ConnectionState.done) {                
-                    if (abc.data.agentStatus == false) {  
-                      return 	Container(padding: EdgeInsets.all(15.0),width: 350,height: 120,
-                        decoration: BoxDecoration(color: Colors.orange[50],borderRadius: BorderRadius.circular(10)),
-                        child: Column(
-                          children: [
-                            Text("¡Usuario no agendado!",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: kCardColor2,)),
-                            SizedBox(height: 5),
-                            Text('Este usuario no está siendo agendado para el servicio de transporte, sin embargo, puede solicitar el uso de transporte mediante un ticket.',style: TextStyle(color: kgray)),
-                          
-                          ]
-                        ),
-                      );
-                    }else if(abc.data.agentStatus == true){
-                      return Text('');
-                    }
-                  }
-                  return CircularProgressIndicator();
-                },
-              ), 
-              SizedBox(height: 10,), 
+
               //future builder para hacer la validación que aparezcan 3 o las 4 cards
               // las que necesarias a mostrar
               FutureBuilder<DataAgent>(
@@ -277,7 +267,7 @@ void _showAlert()async{
     http.Response responses = await http.get(Uri.encodeFull('$ip/api/refreshingAgentData/${prefs.nombreUsuario}'));
     final si = DataAgent.fromJson(json.decode(responses.body));
 
-    if (si.companyId == 1) {
+    if (si.agentStatus == false) {
       showAlertDialogMessage();
     }
 }
@@ -292,17 +282,15 @@ void _showAlert()async{
           child: Opacity(opacity: a1.value,
             child: AlertDialog(
               shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
-              title: Center(child: Text("Plazos de confirmación",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: kCardColor2,)),), 
+              title: Center(child: Text("🔺¡Usuario no agendado!🔺",style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: kCardColor2,)),), 
               content: StatefulBuilder(
               builder: (BuildContext context, StateSetter setState){
-                return Container(height: 136,
+                return Container(height: 120,
                   child: SingleChildScrollView(
                     child: Column(
-                      children: [                          
+                      children: [                                                 
                           SizedBox(height: 5),
-                          Text('Horario de 5:00 am a 12:00 pm hora máxima de confirmación 8:30 pm',style: TextStyle(color: kgray)),
-                          SizedBox(height: 15),
-                          Text('Horario de 2:00 pm a 5:00 pm hora máxima de confirmación 10:00 am',style: TextStyle(color: kgray)),                          
+                          Text('Este usuario no está siendo agendado para el servicio de transporte, sin embargo, puede solicitar el uso de transporte mediante un ticket.',style: TextStyle(color: kgray)),                        
                       ]
                     ),
                   ),

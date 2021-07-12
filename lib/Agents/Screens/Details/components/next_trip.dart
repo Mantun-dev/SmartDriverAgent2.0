@@ -63,17 +63,14 @@ class _NextTripScreenState extends State<NextTripScreen> {
 
     //función callback para mostrar automáticamente el mensaje de alerta de rating
     SchedulerBinding.instance.addPostFrameCallback((_){
+      if (mounted) {
+        
       setState(() {        
        this._showRatingAlert();
       });
+      }
     });
-
-    SchedulerBinding.instance.addPostFrameCallback((_){
-      setState(() {        
-       this._showAlert();
-      });
-    }
-    );  
+  
 
     message = new TextEditingController();
 
@@ -710,63 +707,7 @@ class _NextTripScreenState extends State<NextTripScreen> {
       return null;});      
   }
 
-void _showAlert()async{
-    http.Response responses = await http.get(Uri.encodeFull('$ip/api/refreshingAgentData/${prefs.nombreUsuario}'));
-    final si = DataAgent.fromJson(json.decode(responses.body));
 
-    if (si.companyId == 1) {
-      showAlertDialogMessage();
-    }
-}
-    showAlertDialogMessage(){
-    //apis de manera directa para obtener la data
-    showGeneralDialog(
-      barrierColor: Colors.black.withOpacity(0.5),
-      transitionBuilder: (context, a1, a2, widget) {
-        final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
-        return Transform(transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
-          child: Opacity(opacity: a1.value,
-            child: AlertDialog(
-              shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
-              title: Center(child: Text("Nota",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: kCardColor2,)),), 
-              content: StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState){
-                return Container(height: 120,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [                          
-                          Text('Si tiene algún inconveniente con su programación, puede escribir al número: ',style: TextStyle(color: kgray)),
-                          SizedBox(height: 15),                          
-                          TextButton(onPressed: () => launch('tel://3317-4537'),
-                          child: Text('3317-4537',style: TextStyle(color: Colors.blue[500],fontSize: 24))),                         
-                      ]
-                    ),
-                  ),
-                );
-              }),                  
-              actions:<Widget> [                          
-                Center(
-                  child: TextButton(style: TextButton.styleFrom(primary: Colors.white,backgroundColor: Colors.green,),
-                    onPressed: () => {
-                        setState((){
-                          Navigator.pop(context);                                                  
-                        }),
-                    },
-                    child: Text('Entendido'),                            
-                  ),
-                ),                                                                                
-              ],
-            ),
-          ),
-        );
-      },
-      transitionDuration: Duration(milliseconds: 200),
-      barrierDismissible: true,
-      barrierLabel: '',
-      context: context,
-      pageBuilder: (context, animation1, animation2) {
-        return null;
-      });      
-  }
+
 //////////////////////////////////////////////////// Funciones //////////////////////////////////////////
 }
