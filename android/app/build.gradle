@@ -44,11 +44,11 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.smartdriver.devs"
         minSdkVersion 16
-        versionCode 5 
+        versionCode 6 
         targetSdkVersion 30
         multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
-        versionName "1.0.4"
+        versionName "1.0.5"
     }
 
     signingConfigs {

@@ -50,7 +50,6 @@ class _DetailScreenState extends State<DetailScreen> {
         ),
         drawer: MenuLateral(),
         backgroundColor: widget.plantilla.color,
-        //drawer: DriverMenuLateral(),
         body: Body(plantilla: widget.plantilla),
       ),
     );

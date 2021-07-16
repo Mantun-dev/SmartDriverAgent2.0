@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
+import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 //import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/Screens/Profile/profile_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Welcome/welcome_screen.dart';
@@ -59,10 +60,9 @@ class _MenuLateralState extends State<MenuLateral> {
           ListTile(
             title: Text('Mi perfil'),
             leading: Icon(Icons.account_circle),
-            onTap: () {              
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return ProfilePage();
-              }));
+            onTap: () {  
+              Navigator.pushReplacement(context,MaterialPageRoute(builder: (_) => ProfilePage()))
+              .then((_) => HomeScreen());                           
               fetchProfile();
             },
            
@@ -72,9 +72,8 @@ class _MenuLateralState extends State<MenuLateral> {
             title: Text('Mis proximos viajes'),
             leading: Icon(Icons.airport_shuttle),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return DetailScreen(plantilla: plantilla[0]);
-              }));
+              Navigator.pushReplacement(context,MaterialPageRoute(builder: (_) => DetailScreen(plantilla: plantilla[0])))
+              .then((_) => ProfilePage());                 
             },
           ),
           Divider(),
@@ -82,9 +81,8 @@ class _MenuLateralState extends State<MenuLateral> {
             title: Text('Historial de viajes'),
             leading: Icon(Icons.history),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return DetailScreen(plantilla: plantilla[1]);
-              }));
+              Navigator.pushReplacement(context,MaterialPageRoute(builder: (_) => DetailScreen(plantilla: plantilla[1])))
+              .then((_) => DetailScreen(plantilla: plantilla[0]));  
             },
           ),
           Divider(),
@@ -92,10 +90,8 @@ class _MenuLateralState extends State<MenuLateral> {
             title: Text('Solicitud de cambios'),
             leading: Icon(Icons.outbox),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return DetailScreen(plantilla: plantilla[3]);
-              }));
-              
+              Navigator.pushReplacement(context,MaterialPageRoute(builder: (_) => DetailScreen(plantilla: plantilla[3])))
+              .then((_) => DetailScreen(plantilla: plantilla[2]));                
             },
           ),
           Divider(),
@@ -103,12 +99,11 @@ class _MenuLateralState extends State<MenuLateral> {
             title: Text('Generar codigo qr'),
             leading: Icon(Icons.qr_code),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return DetailScreen(plantilla: plantilla[2]);
-              }));
+              Navigator.pushReplacement(context,MaterialPageRoute(builder: (_) => DetailScreen(plantilla: plantilla[2])))
+              .then((_) => DetailScreen(plantilla: plantilla[3]));  
             },
           ), 
-          if (prefs.companyId == "1")... {
+          if (prefs.companyId == "2")... {
             Container(
               child: Column(children: [
                 Divider(),
@@ -129,7 +124,9 @@ class _MenuLateralState extends State<MenuLateral> {
             onTap: () {  
               SweetAlert.show(context,
                 subtitle: "Está seguro que desea salir?",
-                style: SweetAlertStyle.confirm,
+                style: SweetAlertStyle.confirm, 
+                confirmButtonText: "Confirmar",
+                cancelButtonText: "Cancelar",                
                 showCancelButton: true, onPress: (bool isConfirm) {
                 if(isConfirm){                
                   fetchDeleteSession();  
@@ -141,7 +138,7 @@ class _MenuLateralState extends State<MenuLateral> {
                   });
                   
                 }else{
-                  SweetAlert.show(context,subtitle: "¡Canceledo!", style: SweetAlertStyle.success);
+                  SweetAlert.show(context,subtitle: "¡Cancelado!", style: SweetAlertStyle.success);
                 }
                 // return false to keep dialog
                 return false;

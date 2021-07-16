@@ -566,8 +566,7 @@ class _NextTripScreenState extends State<NextTripScreen> {
                           return SizedBox();
                         },
                         onRatingUpdate: (rating1) {
-                          onChanged1(rating1);
-                          print(rating1);
+                          onChanged1(rating1);                          
                         },
                       ),
                       Divider(),
@@ -592,8 +591,7 @@ class _NextTripScreenState extends State<NextTripScreen> {
                           return SizedBox();
                         },
                         onRatingUpdate: (rating2) {
-                          onChanged2(rating2);
-                          print(rating2);
+                          onChanged2(rating2);                          
                         },
                       ),
                       Divider(),
@@ -618,8 +616,7 @@ class _NextTripScreenState extends State<NextTripScreen> {
                           return SizedBox();
                         },                              
                         onRatingUpdate: (rating3) {
-                          onChanged3(rating3);
-                          print(rating3);
+                          onChanged3(rating3);                          
                         },
                       ),
                     ]
@@ -631,7 +628,7 @@ class _NextTripScreenState extends State<NextTripScreen> {
             actions:<Widget> [    
               Row(
                 children: [
-                  SizedBox(width: 10.0), 
+                  SizedBox(width: 15.0), 
                   ButtonTheme(minWidth: 60.0,child: TextButton(style: TextButton.styleFrom(primary: Colors.white,backgroundColor: Colors.orange),
                     onPressed: () => {
                       //fetch skip Rating
