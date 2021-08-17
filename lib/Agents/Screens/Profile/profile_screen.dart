@@ -73,37 +73,126 @@ class _DataTableExample extends State<ProfilePage> {
                     //ingreso de data
                     return SingleChildScrollView(
                       child: Card(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),margin: EdgeInsets.all(15),elevation: 10,
-                        child: Container(decoration: BoxDecoration(shape: BoxShape.rectangle,borderRadius: BorderRadius.circular(10)),margin: EdgeInsets.symmetric(horizontal: 15.0),width: 500,height: 400,
+                        child: Container(decoration: BoxDecoration(shape: BoxShape.rectangle,borderRadius: BorderRadius.circular(10)),margin: EdgeInsets.symmetric(horizontal: 15.0),width: 500,height: 460,
                           child: DataTable(columns: [
                             DataColumn(label: Text('Datos',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: kCardColor2,))),
                           ], rows: [
-                            DataRow(cells: [
-                              DataCell(Text('No. empleado: ${abc.data.agentId}',style: TextStyle(color: kgray))),
-                            ]),
-                            if (abc.data.countName == null)... {                              
+                            if (prefs.companyId == "8")... {
+                              if (abc.data == null )... {
+                                DataRow(cells: [
+                                DataCell(Text('No. empleado: ',style: TextStyle(color: kgray))),
+                              ]),                                                          
                               DataRow(cells: [
-                                DataCell(Text('',style: TextStyle(color: kgray)))    
+                                DataCell(Text('Usuario: ',style: TextStyle(color: kgray)))    
                               ]),
-                            }else...{
                               DataRow(cells: [
-                                DataCell(Text('Cuenta: ${abc.data.countName}',style: TextStyle(color: kgray)))    
+                                DataCell(Text('Nombre: ',style: TextStyle(color: kgray)))
                               ]),
+                              DataRow(cells: [
+                                DataCell(Text('Teléfono: ',style: TextStyle(color: kgray)))
+                              ]),
+                              DataRow(cells: [
+                                DataCell(Text('Email: ',style: TextStyle(color: kgray)))
+                              ]),
+                              DataRow(cells: [
+                                DataCell(Text('Dirección:',style: TextStyle(color: kgray)))
+                              ]),
+                              
+                                DataRow(cells: [
+                                DataCell(Text('Acceso autorizado: ',style: TextStyle(color: kgray)))
+                              ]),
+                            } else... {
+                              DataRow(cells: [
+                                DataCell(Text('No. empleado: ${abc.data.agentUser}',style: TextStyle(color: kgray))),
+                              ]),
+                              
+                              DataRow(cells: [
+                                DataCell(Text('Usuario: ${abc.data.agentUser}',style: TextStyle(color: kgray)))    
+                              ]),
+                              DataRow(cells: [
+                                DataCell(Text('Nombre: ${abc.data.agentFullname}',style: TextStyle(color: kgray)))
+                              ]),
+                              DataRow(cells: [
+                                DataCell(Text('Teléfono: ${abc.data.agentPhone}',style: TextStyle(color: kgray)))
+                              ]),
+                              DataRow(cells: [
+                                DataCell(Text('Email: ${abc.data.agentEmail}',style: TextStyle(color: kgray)))
+                              ]),
+                              DataRow(cells: [
+                                DataCell(Text('Dirección: ${abc.data.agentReferencePoint}, ${abc.data.neighborhoodName}, \n${abc.data.townName}',style: TextStyle(color: kgray)))
+                              ]),
+                              if (abc.data.neighborhoodReferencePoint == null)... {
+                                
+                              } else... {
+                                DataRow(cells: [
+                                DataCell(Text('Acceso autorizado: ${abc.data.neighborhoodReferencePoint}',style: TextStyle(color: kgray)))
+                              ]),
+                              }
                             },
-                            DataRow(cells: [
-                              DataCell(Text('Usuario: ${abc.data.agentUser}',style: TextStyle(color: kgray)))    
-                            ]),
-                            DataRow(cells: [
-                              DataCell(Text('Nombre: ${abc.data.agentFullname}',style: TextStyle(color: kgray)))
-                            ]),
-                            DataRow(cells: [
-                              DataCell(Text('Teléfono: ${abc.data.agentPhone}',style: TextStyle(color: kgray)))
-                            ]),
-                            DataRow(cells: [
-                              DataCell(Text('Email: ${abc.data.agentEmail}',style: TextStyle(color: kgray)))
-                            ]),
-                            DataRow(cells: [
-                              DataCell(Text('Dirección: ${abc.data.agentReferencePoint} ${abc.data.neighborhoodName} \n${abc.data.townName} ${abc.data.departmentName}',style: TextStyle(color: kgray)))
-                            ]),
+                            } else... {
+                            if (abc.data == null )... {
+                                DataRow(cells: [
+                                DataCell(Text('No. empleado: ',style: TextStyle(color: kgray))),
+                              ]),                              
+                              DataRow(cells: [
+                                DataCell(Text('Cuenta: ',style: TextStyle(color: kgray)))    
+                              ]),
+                              DataRow(cells: [
+                                DataCell(Text('Usuario: ',style: TextStyle(color: kgray)))    
+                              ]),
+                              DataRow(cells: [
+                                DataCell(Text('Nombre: ',style: TextStyle(color: kgray)))
+                              ]),
+                              DataRow(cells: [
+                                DataCell(Text('Teléfono: ',style: TextStyle(color: kgray)))
+                              ]),
+                              DataRow(cells: [
+                                DataCell(Text('Email: ',style: TextStyle(color: kgray)))
+                              ]),
+                              DataRow(cells: [
+                                DataCell(Text('Dirección:',style: TextStyle(color: kgray)))
+                              ]),
+                              
+                                DataRow(cells: [
+                                DataCell(Text('Acceso autorizado: ',style: TextStyle(color: kgray)))
+                              ]),
+                            } else... {
+                              DataRow(cells: [
+                                DataCell(Text('No. empleado: ${abc.data.agentUser}',style: TextStyle(color: kgray))),
+                              ]),
+                              if (abc.data.countName == null)... {                              
+                                DataRow(cells: [
+                                  DataCell(Text('Cuenta: ',style: TextStyle(color: kgray)))    
+                                ]),
+                              }else...{
+                                DataRow(cells: [
+                                  DataCell(Text('Cuenta: ${abc.data.countName}',style: TextStyle(color: kgray)))    
+                                ]),
+                              },
+                              DataRow(cells: [
+                                DataCell(Text('Usuario: ${abc.data.agentUser}',style: TextStyle(color: kgray)))    
+                              ]),
+                              DataRow(cells: [
+                                DataCell(Text('Nombre: ${abc.data.agentFullname}',style: TextStyle(color: kgray)))
+                              ]),
+                              DataRow(cells: [
+                                DataCell(Text('Teléfono: ${abc.data.agentPhone}',style: TextStyle(color: kgray)))
+                              ]),
+                              DataRow(cells: [
+                                DataCell(Text('Email: ${abc.data.agentEmail}',style: TextStyle(color: kgray)))
+                              ]),
+                              DataRow(cells: [
+                                DataCell(Text('Dirección: ${abc.data.agentReferencePoint}, ${abc.data.neighborhoodName}, \n${abc.data.townName}',style: TextStyle(color: kgray)))
+                              ]),
+                              if (abc.data.neighborhoodReferencePoint == null)... {
+                                
+                              } else... {
+                                DataRow(cells: [
+                                DataCell(Text('Acceso autorizado: ${abc.data.neighborhoodReferencePoint}',style: TextStyle(color: kgray)))
+                              ]),
+                              }
+                            },
+                            },
                           ]),
                         ),
                       ),
@@ -125,289 +214,561 @@ class _DataTableExample extends State<ProfilePage> {
                       child: Card(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),margin: EdgeInsets.all(15),elevation: 10,
                         child: Container(
                           decoration: BoxDecoration(shape: BoxShape.rectangle,borderRadius: BorderRadius.circular(10)),margin: EdgeInsets.symmetric(horizontal: 5.0),width: 550,height: 400,
-                          child: DataTable(
-                            columns: [
-                              DataColumn(label: Text('Día',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: kPrimaryColor))),
-                              DataColumn(label: Text('Entrada',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: kPrimaryColor))),
-                              DataColumn(label: Text('Salida',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: kPrimaryColor))),
-                            ],
-                            rows: [
-                              DataRow(cells: [
-                                DataCell(Text('Lunes', style: TextStyle(color: kgray))),
-                                DataCell(
-                                    FutureBuilder<Profile>(
-                                    future: item,
-                                    builder: (context, abc){
-                                        if (abc.connectionState == ConnectionState.done) {
-                                          if ('${abc.data.mondayIn}' == 'null') {
-                                            return Text('Día libre'); 
-                                          }else if(abc.hasData){
-                                            return Text('${abc.data.mondayIn}',style: TextStyle(color: kgray));
-                                          }
-                                        }
-                                        else {
-                                          return CircularProgressIndicator();
-                                        }
-                                        return CircularProgressIndicator(); 
-                                    }
-                                  )
-                                ),
-                              DataCell(
-                                FutureBuilder<Profile>(
-                                  future: item,
-                                  builder: (context, abc){
-                                      if (abc.connectionState == ConnectionState.done) {
-                                        if ('${abc.data.mondayOut}' == 'null') {
-                                        return Text('Día libre'); 
-                                        }else if(abc.hasData){
-                                          return Text('${abc.data.mondayOut}',style: TextStyle(color: kgray));
-                                        }
-                                      }
-                                      else {
-                                        return CircularProgressIndicator();
-                                      }
-                                      return CircularProgressIndicator(); 
-                                  }
-                                )
-                              )
-                              ]),
-                              DataRow(cells: [
-                                DataCell(Text('Martes', style: TextStyle(color: kgray))),
-                                DataCell(
-                                  FutureBuilder<Profile>(
-                                    future: item,
-                                    builder: (context, abc){
-                                        if (abc.connectionState == ConnectionState.done) {
-                                          if ('${abc.data.tuesdayIn}' == 'null') {
-                                            return Text('Día libre'); 
-                                          }else if(abc.hasData){
-                                            return Text('${abc.data.tuesdayIn}',style: TextStyle(color: kgray));
-                                          }
-                                        }
-                                        else {
-                                          return CircularProgressIndicator();
-                                        }
-                                        return CircularProgressIndicator(); 
-                                    }
-                                  )
-                                ),
-                                DataCell(
-                                    FutureBuilder<Profile>(
-                                      future: item,
-                                      builder: (context, abc){
-                                          if (abc.connectionState == ConnectionState.done) {
-                                            if ('${abc.data.tuesdayOut}' == 'null') {
-                                              return Text('Día libre'); 
-                                            }else if(abc.hasData){
-                                              return Text('${abc.data.tuesdayOut}',style: TextStyle(color: kgray));
-                                            }
-                                          }
-                                          else {
-                                            return CircularProgressIndicator();
-                                          }
-                                          return CircularProgressIndicator(); 
-                                      }
-                                    )
-                                )
-                              ]),
-                              DataRow(cells: [
-                                DataCell(Text('Miercoles',style: TextStyle(color: kgray))),
-                                DataCell(
-                                  FutureBuilder<Profile>(
-                                    future: item,
-                                    builder: (context, abc){
-                                        if (abc.connectionState == ConnectionState.done) {
-                                          if ('${abc.data.wednesdayIn}' == 'null') {
-                                            return Text('Día libre'); 
-                                          }else if(abc.hasData){
-                                            return Text('${abc.data.wednesdayIn}',style: TextStyle(color: kgray));
-                                          }
-                                        }
-                                        else {
-                                          return CircularProgressIndicator();
-                                        }
-                                        return CircularProgressIndicator();
-                                    }
-                                  )
-                                ),
-                                DataCell(
-                                  FutureBuilder<Profile>(
-                                    future: item,
-                                    builder: (context, abc){
-                                        if (abc.connectionState == ConnectionState.done) {
-                                          if ('${abc.data.wednesdayOut}' == 'null') {
-                                            return Text('Día libre'); 
-                                          }else if(abc.hasData){
-                                            return Text('${abc.data.wednesdayOut}',style: TextStyle(color: kgray));
-                                          }
-                                        }
-                                        else {
-                                          return CircularProgressIndicator();
-                                        }
-
-                                      return CircularProgressIndicator(); 
-                                    }
-                                  )
-                                )
-                              ]),
-                              DataRow(cells: [
-                                DataCell(Text('Jueves', style: TextStyle(color: kgray))),
-                                DataCell(
-                                  FutureBuilder<Profile>(
-                                    future: item,
-                                    builder: (context, abc){
-                                        if (abc.connectionState == ConnectionState.done) {
-                                          if ('${abc.data.thursdayIn}' == 'null') {
-                                            return Text('Día libre'); 
-                                          }else if(abc.hasData){
-                                            return Text('${abc.data.thursdayIn}',style: TextStyle(color: kgray));
-                                          }
-                                        }
-                                        else {
-                                          return CircularProgressIndicator();
-                                        }
-                                      return CircularProgressIndicator(); 
-                                    }
-                                  )
-                                ),
-                                DataCell(
-                                  FutureBuilder<Profile>(
-                                    future: item,
-                                    builder: (context, abc){
-                                        if (abc.connectionState == ConnectionState.done) {
-                                          if ('${abc.data.thursdayOut}' == 'null') {
-                                            return Text('Día libre'); 
-                                          }else if(abc.hasData){
-                                            return Text('${abc.data.thursdayOut}',style: TextStyle(color: kgray));
-                                          }
-                                        }
-                                        else {
-                                          return CircularProgressIndicator();
-                                        }
-                                      return CircularProgressIndicator(); 
-                                    }
-                                  )
-                                )
-                              ]),
-                              DataRow(cells: [
-                                DataCell(Text('Viernes', style: TextStyle(color: kgray))),
-                                DataCell(
-                                  FutureBuilder<Profile>(
-                                    future: item,
-                                    builder: (context, abc){
-                                        if (abc.connectionState == ConnectionState.done) {
-                                          if ('${abc.data.fridayIn}' == 'null') {
-                                            return Text('Día libre'); 
-                                          }else if(abc.hasData){
-                                            return Text('${abc.data.fridayIn}',style: TextStyle(color: kgray));
-                                          }
-                                        }
-                                        else {
-                                          return CircularProgressIndicator();
-                                        }
-                                      return CircularProgressIndicator(); 
-                                    }
-                                  )
-                                ),
-                                DataCell(
-                                  FutureBuilder<Profile>(
-                                    future: item,
-                                    builder: (context, abc){
-                                        if (abc.connectionState == ConnectionState.done) {
-                                          if ('${abc.data.fridayOut}' == 'null') {
-                                            return Text('Día libre'); 
-                                          }else if(abc.hasData){
-                                            return Text('${abc.data.fridayOut}',style: TextStyle(color: kgray));
-                                          }
-                                        }
-                                        else {
-                                          return CircularProgressIndicator();
-                                        }
-                                      return CircularProgressIndicator(); 
-                                    }
-                                  )
-                                )
-                              ]),
-                              DataRow(cells: [
-                                DataCell(Text('Sábado', style: TextStyle(color: kgray))),
-                                DataCell(
-                                  FutureBuilder<Profile>(
-                                    future: item,
-                                    builder: (context, abc){
-                                        if (abc.connectionState == ConnectionState.done) {
-                                          if ('${abc.data.saturdayIn}' == 'null') {
-                                            return Text('Día libre'); 
-                                          }else if(abc.hasData){
-                                            return Text('${abc.data.saturdayOut}',style: TextStyle(color: kgray));
-                                          }
-                                        }
-                                        else {
-                                          return CircularProgressIndicator();
-                                        }
-                                      return CircularProgressIndicator(); 
-                                    }
-                                  )
-                                ),
-                                DataCell(
-                                  FutureBuilder<Profile>(
-                                    future: item,
-                                    builder: (context, abc){
-                                        if (abc.connectionState == ConnectionState.done) {
-                                          if ('${abc.data.saturdayOut}' == 'null') {
-                                            return Text('Día libre'); 
-                                          }else if(abc.hasData){
-                                            return Text('${abc.data.saturdayOut}',style: TextStyle(color: kgray));
-                                          }
-                                        }
-                                        else {
-                                          return CircularProgressIndicator();
-                                        }
-                                      return CircularProgressIndicator(); 
-                                    }
-                                  )
-                                )
-                              ]),
-                              DataRow(cells: [
-                                DataCell(Text('Domingo', style: TextStyle(color: kgray))),
-                                DataCell(
-                                  FutureBuilder<Profile>(
-                                    future: item,
-                                    builder: (context, abc){  
-                                        if (abc.connectionState == ConnectionState.done) {
-                                          if ('${abc.data.sundayIn}' == 'null') {
-                                            return Text('Día libre');
-                                          }else if(abc.hasData){
-                                            return Text('${abc.data.sundayIn}',style: TextStyle(color: kgray));
-                                          }                
-                                        }
-                                        else {
-                                          return CircularProgressIndicator();
-                                        }                                                     
-                                      return CircularProgressIndicator(); 
-                                      }
+                          child: Column(
+                            children: [
+                              if (prefs.companyId == "8")... {
+                                DataTable(
+                                columns: [
+                                  DataColumn(label: Text('Día',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: kPrimaryColor))),
+                                  
+                                  DataColumn(label: Text('Salida',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: kPrimaryColor))),
+                                ],
+                                rows: [
+                                  if (abc.data == null)... {
+                                      DataRow(cells: [
+                                    DataCell(Text('Lunes', style: TextStyle(color: kgray))),
                                     
+                                  DataCell(Text('')
                                   )
-                                ),
-                                DataCell(
-                                  FutureBuilder<Profile>(
-                                    future: item,
-                                    builder: (context, abc){
-                                        if (abc.connectionState == ConnectionState.done) {
-                                          if ('${abc.data.sundayOut}' == 'null') {
-                                            return Text('Día libre'); 
-                                          }else if(abc.hasData){
-                                            return Text('${abc.data.sundayOut}',style: TextStyle(color: kgray));
+                                  ]),
+                                  DataRow(cells: [
+                                    DataCell(Text('Martes', style: TextStyle(color: kgray))),
+                                   
+                                    DataCell(Text('')
+                                    )
+                                  ]),
+                                  DataRow(cells: [
+                                    DataCell(Text('Miercoles',style: TextStyle(color: kgray))),
+                                    
+                                    DataCell(Text('')
+                                    )
+                                  ]),
+                                  DataRow(cells: [
+                                    DataCell(Text('Jueves', style: TextStyle(color: kgray))),
+                                    
+                                    DataCell(Text('')
+                                    )
+                                  ]),
+                                  DataRow(cells: [
+                                    DataCell(Text('Viernes', style: TextStyle(color: kgray))),
+                                    
+                                    DataCell(Text('')
+                                    )
+                                  ]),
+                                  DataRow(cells: [
+                                    DataCell(Text('Sábado', style: TextStyle(color: kgray))),
+                                    
+                                    DataCell(Text('')
+                                    )
+                                  ]),
+                                  DataRow(cells: [
+                                    DataCell(Text('Domingo', style: TextStyle(color: kgray))),
+                                    
+                                    DataCell(Text('')
+                                    )
+                                  ]),
+                                    } else... {
+                                      DataRow(cells: [
+                                        DataCell(Text('Lunes', style: TextStyle(color: kgray))),
+                                        
+                                      DataCell(
+                                        FutureBuilder<Profile>(
+                                          future: item,
+                                          builder: (context, abc){
+                                              if (abc.connectionState == ConnectionState.done) {
+                                                if ('${abc.data.mondayOut}' == 'null') {
+                                                return Text('Día libre'); 
+                                                }else if(abc.hasData){
+                                                  return Text('${abc.data.mondayOut}',style: TextStyle(color: kgray));
+                                                }
+                                              }
+                                              else {
+                                                return CircularProgressIndicator();
+                                              }
+                                              return CircularProgressIndicator(); 
                                           }
-                                        }
-                                        else {
-                                          return CircularProgressIndicator();
-                                        }
-                                      return CircularProgressIndicator(); 
-                                    }
+                                        )
+                                      )
+                                      ]),
+                                      DataRow(cells: [
+                                        DataCell(Text('Martes', style: TextStyle(color: kgray))),
+                                      
+                                        DataCell(
+                                            FutureBuilder<Profile>(
+                                              future: item,
+                                              builder: (context, abc){
+                                                  if (abc.connectionState == ConnectionState.done) {
+                                                    if ('${abc.data.tuesdayOut}' == 'null') {
+                                                      return Text('Día libre'); 
+                                                    }else if(abc.hasData){
+                                                      return Text('${abc.data.tuesdayOut}',style: TextStyle(color: kgray));
+                                                    }
+                                                  }
+                                                  else {
+                                                    return CircularProgressIndicator();
+                                                  }
+                                                  return CircularProgressIndicator(); 
+                                              }
+                                            )
+                                        )
+                                      ]),
+                                      DataRow(cells: [
+                                        DataCell(Text('Miercoles',style: TextStyle(color: kgray))),
+                                        
+                                        DataCell(
+                                          FutureBuilder<Profile>(
+                                            future: item,
+                                            builder: (context, abc){
+                                                if (abc.connectionState == ConnectionState.done) {
+                                                  if ('${abc.data.wednesdayOut}' == 'null') {
+                                                    return Text('Día libre'); 
+                                                  }else if(abc.hasData){
+                                                    return Text('${abc.data.wednesdayOut}',style: TextStyle(color: kgray));
+                                                  }
+                                                }
+                                                else {
+                                                  return CircularProgressIndicator();
+                                                }
 
+                                              return CircularProgressIndicator(); 
+                                            }
+                                          )
+                                        )
+                                      ]),
+                                      DataRow(cells: [
+                                        DataCell(Text('Jueves', style: TextStyle(color: kgray))),
+                                        
+                                        DataCell(
+                                          FutureBuilder<Profile>(
+                                            future: item,
+                                            builder: (context, abc){
+                                                if (abc.connectionState == ConnectionState.done) {
+                                                  if ('${abc.data.thursdayOut}' == 'null') {
+                                                    return Text('Día libre'); 
+                                                  }else if(abc.hasData){
+                                                    return Text('${abc.data.thursdayOut}',style: TextStyle(color: kgray));
+                                                  }
+                                                }
+                                                else {
+                                                  return CircularProgressIndicator();
+                                                }
+                                              return CircularProgressIndicator(); 
+                                            }
+                                          )
+                                        )
+                                      ]),
+                                      DataRow(cells: [
+                                        DataCell(Text('Viernes', style: TextStyle(color: kgray))),
+                                        
+                                        DataCell(
+                                          FutureBuilder<Profile>(
+                                            future: item,
+                                            builder: (context, abc){
+                                                if (abc.connectionState == ConnectionState.done) {
+                                                  if ('${abc.data.fridayOut}' == 'null') {
+                                                    return Text('Día libre'); 
+                                                  }else if(abc.hasData){
+                                                    return Text('${abc.data.fridayOut}',style: TextStyle(color: kgray));
+                                                  }
+                                                }
+                                                else {
+                                                  return CircularProgressIndicator();
+                                                }
+                                              return CircularProgressIndicator(); 
+                                            }
+                                          )
+                                        )
+                                      ]),
+                                      DataRow(cells: [
+                                        DataCell(Text('Sábado', style: TextStyle(color: kgray))),
+                                        
+                                        DataCell(
+                                          FutureBuilder<Profile>(
+                                            future: item,
+                                            builder: (context, abc){
+                                                if (abc.connectionState == ConnectionState.done) {
+                                                  if ('${abc.data.saturdayOut}' == 'null') {
+                                                    return Text('Día libre'); 
+                                                  }else if(abc.hasData){
+                                                    return Text('${abc.data.saturdayOut}',style: TextStyle(color: kgray));
+                                                  }
+                                                }
+                                                else {
+                                                  return CircularProgressIndicator();
+                                                }
+                                              return CircularProgressIndicator(); 
+                                            }
+                                          )
+                                        )
+                                      ]),
+                                      DataRow(cells: [
+                                        DataCell(Text('Domingo', style: TextStyle(color: kgray))),
+                                        
+                                        DataCell(
+                                          FutureBuilder<Profile>(
+                                            future: item,
+                                            builder: (context, abc){
+                                                if (abc.connectionState == ConnectionState.done) {
+                                                  if ('${abc.data.sundayOut}' == 'null') {
+                                                    return Text('Día libre'); 
+                                                  }else if(abc.hasData){
+                                                    return Text('${abc.data.sundayOut}',style: TextStyle(color: kgray));
+                                                  }
+                                                }
+                                                else {
+                                                  return CircularProgressIndicator();
+                                                }
+                                              return CircularProgressIndicator(); 
+                                            }
+
+                                          )
+                                        )
+                                      ]),
+                                    },
+                                ],
+                              ),
+                            
+                              }else...{
+                              DataTable(
+                                columns: [
+                                  DataColumn(label: Text('Día',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: kPrimaryColor))),
+                                  DataColumn(label: Text('Entrada',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: kPrimaryColor))),
+                                  DataColumn(label: Text('Salida',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold,color: kPrimaryColor))),
+                                ],
+                                rows: [
+                                  if (abc.data == null)... {
+                                    DataRow(cells: [
+                                    DataCell(Text('Lunes', style: TextStyle(color: kgray))),
+                                    DataCell(Text('')
+                                    ),
+                                  DataCell(Text('')
                                   )
-                                )
-                              ]),
+                                  ]),
+                                  DataRow(cells: [
+                                    DataCell(Text('Martes', style: TextStyle(color: kgray))),
+                                    DataCell(Text('')
+                                    ),
+                                    DataCell(Text('')
+                                    )
+                                  ]),
+                                  DataRow(cells: [
+                                    DataCell(Text('Miercoles',style: TextStyle(color: kgray))),
+                                    DataCell(Text('')
+                                    ),
+                                    DataCell(Text('')
+                                    )
+                                  ]),
+                                  DataRow(cells: [
+                                    DataCell(Text('Jueves', style: TextStyle(color: kgray))),
+                                    DataCell(Text('')
+                                    ),
+                                    DataCell(Text('')
+                                    )
+                                  ]),
+                                  DataRow(cells: [
+                                    DataCell(Text('Viernes', style: TextStyle(color: kgray))),
+                                    DataCell(Text('')
+                                    ),
+                                    DataCell(Text('')
+                                    )
+                                  ]),
+                                  DataRow(cells: [
+                                    DataCell(Text('Sábado', style: TextStyle(color: kgray))),
+                                    DataCell(Text('')
+                                    ),
+                                    DataCell(Text('')
+                                    )
+                                  ]),
+                                  DataRow(cells: [
+                                    DataCell(Text('Domingo', style: TextStyle(color: kgray))),
+                                    DataCell(Text('')
+                                    ),
+                                    DataCell(Text('')
+                                    )
+                                  ]),
+                                  } else... {
+                                    DataRow(cells: [
+                                      DataCell(Text('Lunes', style: TextStyle(color: kgray))),
+                                      DataCell(
+                                          FutureBuilder<Profile>(
+                                          future: item,
+                                          builder: (context, abc){
+                                              if (abc.connectionState == ConnectionState.done) {
+                                                if ('${abc.data.mondayIn}' == 'null') {
+                                                  return Text('Día libre'); 
+                                                }else if(abc.hasData){
+                                                  return Text('${abc.data.mondayIn}',style: TextStyle(color: kgray));
+                                                }
+                                              }
+                                              else {
+                                                return CircularProgressIndicator();
+                                              }
+                                              return CircularProgressIndicator(); 
+                                          }
+                                        )
+                                      ),
+                                    DataCell(
+                                      FutureBuilder<Profile>(
+                                        future: item,
+                                        builder: (context, abc){
+                                            if (abc.connectionState == ConnectionState.done) {
+                                              if ('${abc.data.mondayOut}' == 'null') {
+                                              return Text('Día libre'); 
+                                              }else if(abc.hasData){
+                                                return Text('${abc.data.mondayOut}',style: TextStyle(color: kgray));
+                                              }
+                                            }
+                                            else {
+                                              return CircularProgressIndicator();
+                                            }
+                                            return CircularProgressIndicator(); 
+                                        }
+                                      )
+                                    )
+                                    ]),
+                                    DataRow(cells: [
+                                      DataCell(Text('Martes', style: TextStyle(color: kgray))),
+                                      DataCell(
+                                        FutureBuilder<Profile>(
+                                          future: item,
+                                          builder: (context, abc){
+                                              if (abc.connectionState == ConnectionState.done) {
+                                                if ('${abc.data.tuesdayIn}' == 'null') {
+                                                  return Text('Día libre'); 
+                                                }else if(abc.hasData){
+                                                  return Text('${abc.data.tuesdayIn}',style: TextStyle(color: kgray));
+                                                }
+                                              }
+                                              else {
+                                                return CircularProgressIndicator();
+                                              }
+                                              return CircularProgressIndicator(); 
+                                          }
+                                        )
+                                      ),
+                                      DataCell(
+                                          FutureBuilder<Profile>(
+                                            future: item,
+                                            builder: (context, abc){
+                                                if (abc.connectionState == ConnectionState.done) {
+                                                  if ('${abc.data.tuesdayOut}' == 'null') {
+                                                    return Text('Día libre'); 
+                                                  }else if(abc.hasData){
+                                                    return Text('${abc.data.tuesdayOut}',style: TextStyle(color: kgray));
+                                                  }
+                                                }
+                                                else {
+                                                  return CircularProgressIndicator();
+                                                }
+                                                return CircularProgressIndicator(); 
+                                            }
+                                          )
+                                      )
+                                    ]),
+                                    DataRow(cells: [
+                                      DataCell(Text('Miercoles',style: TextStyle(color: kgray))),
+                                      DataCell(
+                                        FutureBuilder<Profile>(
+                                          future: item,
+                                          builder: (context, abc){
+                                              if (abc.connectionState == ConnectionState.done) {
+                                                if ('${abc.data.wednesdayIn}' == 'null') {
+                                                  return Text('Día libre'); 
+                                                }else if(abc.hasData){
+                                                  return Text('${abc.data.wednesdayIn}',style: TextStyle(color: kgray));
+                                                }
+                                              }
+                                              else {
+                                                return CircularProgressIndicator();
+                                              }
+                                              return CircularProgressIndicator();
+                                          }
+                                        )
+                                      ),
+                                      DataCell(
+                                        FutureBuilder<Profile>(
+                                          future: item,
+                                          builder: (context, abc){
+                                              if (abc.connectionState == ConnectionState.done) {
+                                                if ('${abc.data.wednesdayOut}' == 'null') {
+                                                  return Text('Día libre'); 
+                                                }else if(abc.hasData){
+                                                  return Text('${abc.data.wednesdayOut}',style: TextStyle(color: kgray));
+                                                }
+                                              }
+                                              else {
+                                                return CircularProgressIndicator();
+                                              }
+
+                                            return CircularProgressIndicator(); 
+                                          }
+                                        )
+                                      )
+                                    ]),
+                                    DataRow(cells: [
+                                      DataCell(Text('Jueves', style: TextStyle(color: kgray))),
+                                      DataCell(
+                                        FutureBuilder<Profile>(
+                                          future: item,
+                                          builder: (context, abc){
+                                              if (abc.connectionState == ConnectionState.done) {
+                                                if ('${abc.data.thursdayIn}' == 'null') {
+                                                  return Text('Día libre'); 
+                                                }else if(abc.hasData){
+                                                  return Text('${abc.data.thursdayIn}',style: TextStyle(color: kgray));
+                                                }
+                                              }
+                                              else {
+                                                return CircularProgressIndicator();
+                                              }
+                                            return CircularProgressIndicator(); 
+                                          }
+                                        )
+                                      ),
+                                      DataCell(
+                                        FutureBuilder<Profile>(
+                                          future: item,
+                                          builder: (context, abc){
+                                              if (abc.connectionState == ConnectionState.done) {
+                                                if ('${abc.data.thursdayOut}' == 'null') {
+                                                  return Text('Día libre'); 
+                                                }else if(abc.hasData){
+                                                  return Text('${abc.data.thursdayOut}',style: TextStyle(color: kgray));
+                                                }
+                                              }
+                                              else {
+                                                return CircularProgressIndicator();
+                                              }
+                                            return CircularProgressIndicator(); 
+                                          }
+                                        )
+                                      )
+                                    ]),
+                                    DataRow(cells: [
+                                      DataCell(Text('Viernes', style: TextStyle(color: kgray))),
+                                      DataCell(
+                                        FutureBuilder<Profile>(
+                                          future: item,
+                                          builder: (context, abc){
+                                              if (abc.connectionState == ConnectionState.done) {
+                                                if ('${abc.data.fridayIn}' == 'null') {
+                                                  return Text('Día libre'); 
+                                                }else if(abc.hasData){
+                                                  return Text('${abc.data.fridayIn}',style: TextStyle(color: kgray));
+                                                }
+                                              }
+                                              else {
+                                                return CircularProgressIndicator();
+                                              }
+                                            return CircularProgressIndicator(); 
+                                          }
+                                        )
+                                      ),
+                                      DataCell(
+                                        FutureBuilder<Profile>(
+                                          future: item,
+                                          builder: (context, abc){
+                                              if (abc.connectionState == ConnectionState.done) {
+                                                if ('${abc.data.fridayOut}' == 'null') {
+                                                  return Text('Día libre'); 
+                                                }else if(abc.hasData){
+                                                  return Text('${abc.data.fridayOut}',style: TextStyle(color: kgray));
+                                                }
+                                              }
+                                              else {
+                                                return CircularProgressIndicator();
+                                              }
+                                            return CircularProgressIndicator(); 
+                                          }
+                                        )
+                                      )
+                                    ]),
+                                    DataRow(cells: [
+                                      DataCell(Text('Sábado', style: TextStyle(color: kgray))),
+                                      DataCell(
+                                        FutureBuilder<Profile>(
+                                          future: item,
+                                          builder: (context, abc){
+                                              if (abc.connectionState == ConnectionState.done) {
+                                                if ('${abc.data.saturdayIn}' == 'null') {
+                                                  return Text('Día libre'); 
+                                                }else if(abc.hasData){
+                                                  return Text('${abc.data.saturdayOut}',style: TextStyle(color: kgray));
+                                                }
+                                              }
+                                              else {
+                                                return CircularProgressIndicator();
+                                              }
+                                            return CircularProgressIndicator(); 
+                                          }
+                                        )
+                                      ),
+                                      DataCell(
+                                        FutureBuilder<Profile>(
+                                          future: item,
+                                          builder: (context, abc){
+                                              if (abc.connectionState == ConnectionState.done) {
+                                                if ('${abc.data.saturdayOut}' == 'null') {
+                                                  return Text('Día libre'); 
+                                                }else if(abc.hasData){
+                                                  return Text('${abc.data.saturdayOut}',style: TextStyle(color: kgray));
+                                                }
+                                              }
+                                              else {
+                                                return CircularProgressIndicator();
+                                              }
+                                            return CircularProgressIndicator(); 
+                                          }
+                                        )
+                                      )
+                                    ]),
+                                    DataRow(cells: [
+                                      DataCell(Text('Domingo', style: TextStyle(color: kgray))),
+                                      DataCell(
+                                        FutureBuilder<Profile>(
+                                          future: item,
+                                          builder: (context, abc){  
+                                              if (abc.connectionState == ConnectionState.done) {
+                                                if ('${abc.data.sundayIn}' == 'null') {
+                                                  return Text('Día libre');
+                                                }else if(abc.hasData){
+                                                  return Text('${abc.data.sundayIn}',style: TextStyle(color: kgray));
+                                                }                
+                                              }
+                                              else {
+                                                return CircularProgressIndicator();
+                                              }                                                     
+                                            return CircularProgressIndicator(); 
+                                            }
+                                          
+                                        )
+                                      ),
+                                      DataCell(
+                                        FutureBuilder<Profile>(
+                                          future: item,
+                                          builder: (context, abc){
+                                              if (abc.connectionState == ConnectionState.done) {
+                                                if ('${abc.data.sundayOut}' == 'null') {
+                                                  return Text('Día libre'); 
+                                                }else if(abc.hasData){
+                                                  return Text('${abc.data.sundayOut}',style: TextStyle(color: kgray));
+                                                }
+                                              }
+                                              else {
+                                                return CircularProgressIndicator();
+                                              }
+                                            return CircularProgressIndicator(); 
+                                          }
+
+                                        )
+                                      )
+                                    ]),
+                                  },
+                                ],
+                              ),
+                            
+                              },
+                              
                             ],
                           ),
                         ),

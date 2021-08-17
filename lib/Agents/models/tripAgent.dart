@@ -19,6 +19,7 @@ class Trips {
         this.telefono,
         this.condition,
         this.tripId,
+        this.commentDriver
     });
 
     String fecha;
@@ -30,6 +31,7 @@ class Trips {
     String telefono;
     String condition;
     int tripId;
+    String commentDriver;
 
     factory Trips.fromJson(Map<String, dynamic> json) => Trips(
         fecha: json["Fecha"],
@@ -41,6 +43,7 @@ class Trips {
         telefono: json["Telefono"],
         condition: json["condition"],
         tripId: json["tripId"],
+        commentDriver: json["commentDriver"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -53,6 +56,7 @@ class Trips {
         "Telefono": telefono,
         "condition": condition,
         "tripId": tripId,
+        "commentDriver": commentDriver
     };
 }
 

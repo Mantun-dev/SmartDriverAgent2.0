@@ -83,8 +83,8 @@ Widget _ticketPendant() {
               children: <Widget>[
                 ListTile(
                   leading: Icon(Icons.bus_alert),
-                  title: Text('Agentes', style: TextStyle(color: Colors.black,fontWeight: FontWeight.normal,fontSize: 20.0)),
-                  subtitle: Text('No hay agentes confirmados para este viaje', style: TextStyle(color: Colors.red,fontWeight: FontWeight.normal,fontSize: 15.0)),
+                  title: Text('Tickets', style: TextStyle(color: Colors.black,fontWeight: FontWeight.normal,fontSize: 20.0)),
+                  subtitle: Text('No hay tickets pendientes', style: TextStyle(color: Colors.red,fontWeight: FontWeight.normal,fontSize: 15.0)),
                 ),                      
               ],
             ),
@@ -106,57 +106,37 @@ Widget _ticketPendant() {
                                 child: ExpansionTile(backgroundColor: Colors.white,
                                   title: Column(crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
-                                      Row(mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          SizedBox(width: 25.0),
-                                          Column(
-                                            children: [
-                                              Icon(Icons.image_aspect_ratio,color: Colors.deepPurple[500],size: 35,),
-                                              Text(' Asunto: ',style: TextStyle(color: Colors.deepPurple[500], fontSize: 17)),
-                                              Text('${abc.data.trips[0].pendant[index].ticketIssue}',style: TextStyle(color: kTextColor)),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                      ListTile(contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                        title: Text('Asunto: '),
+                                        subtitle: Text('${abc.data.trips[0].pendant[index].ticketIssue}',style: TextStyle(color: kTextColor)),
+                                        leading: Icon(Icons.image_aspect_ratio,color: kColorAppBar),
+                                      ),                                    
                                     ],
                                   ),
                                   trailing: SizedBox(),
                                   children: [
                                   //ingreso de data
-                                    Padding(padding: const EdgeInsets.all(10.0),
-                                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Icon(Icons.confirmation_number,color: Colors.deepPurple[500], size: 35),
-                                              Text('No. Ticket: ',style: TextStyle(color: Colors.deepPurple[500],fontSize: 17)),
-                                              Text('${abc.data.trips[0].pendant[index].ticketId}'),
-                                            ],
-                                            ),
-                                          Column(
-                                            children: [
-                                              Icon(Icons.timer,color: Colors.deepPurple[500],size: 35),
-                                              Text('Fecha:',style: TextStyle(color: Colors.deepPurple[500],fontSize: 17)),
-                                              Text('${abc.data.trips[0].pendant[index].ticketDatetime}'),
-                                            ],
-                                          ),
-                                        ],
+                                  Container(
+                                     margin: EdgeInsets.only(left: 15),
+                                    child: Column(children: [
+                                      ListTile(contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                        title: Text('No. Ticket: '),
+                                        subtitle: Text('${abc.data.trips[0].pendant[index].ticketId}'),
+                                        leading: Icon(Icons.confirmation_number,color: kColorAppBar),
                                       ),
-                                    ),
-                                    Padding(padding: const EdgeInsets.all(8.0),
-                                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Icon(Icons.location_pin,color: Colors.deepPurple[500],size: 35),
-                                              Text('Mensaje: ',style: TextStyle(color: Colors.deepPurple[500],fontSize: 17)),
-                                              Text('${abc.data.trips[0].pendant[index].ticketMessage}'),
-                                            ],
-                                          ),
-                                        ],
+                                      ListTile(contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                        title: Text('Fecha:'),
+                                        subtitle: Text('${abc.data.trips[0].pendant[index].ticketDatetime}'),
+                                        leading: Icon(Icons.timer,color: kColorAppBar),
                                       ),
-                                    ),
-                                      
+                                      ListTile(contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                        title: Text('Mensaje: '),
+                                        subtitle: Text('${abc.data.trips[0].pendant[index].ticketMessage}'),
+                                        leading: Icon(Icons.location_pin,color: kColorAppBar),
+                                      ),
+                                    ],),
+                                  ),
+                                            
                                     SizedBox(height: 20.0),
                                   ],
                                 ),
@@ -192,8 +172,8 @@ Widget _ticketProcess() {
               children: <Widget>[
                 ListTile(
                   leading: Icon(Icons.bus_alert),
-                  title: Text('Agentes', style: TextStyle(color: Colors.black,fontWeight: FontWeight.normal,fontSize: 20.0)),
-                  subtitle: Text('No hay agentes confirmados para este viaje', style: TextStyle(color: Colors.red,fontWeight: FontWeight.normal,fontSize: 15.0)),
+                  title: Text('Tickets', style: TextStyle(color: Colors.black,fontWeight: FontWeight.normal,fontSize: 20.0)),
+                  subtitle: Text('No hay tickets en proceso', style: TextStyle(color: Colors.red,fontWeight: FontWeight.normal,fontSize: 15.0)),
                 ),                      
               ],
             ),
@@ -214,70 +194,44 @@ Widget _ticketProcess() {
                               child: ExpansionTile(backgroundColor: Colors.white,
                                 title: Column(crossAxisAlignment: CrossAxisAlignment.end,
                                   children: <Widget>[
-                                    Row(mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(width: 25.0),
-                                        Column(
-                                          children: [
-                                            Icon(Icons.image_aspect_ratio,color: Colors.deepPurple[500],size: 35),
-                                            Text(' Asunto: ',style: TextStyle(color: Colors.deepPurple[500], fontSize: 17)),
-                                            Text('${abc.data.trips[1].closed[index].ticketIssue}',style: TextStyle(color: kTextColor),),
-                                          ],
-                                        ),                                        
-                                      ],
-                                    ),
+                                    ListTile(contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                        title: Text('Asunto: '),
+                                        subtitle: Text('${abc.data.trips[1].closed[index].ticketIssue}',style: TextStyle(color: kTextColor)),
+                                        leading: Icon(Icons.image_aspect_ratio,color: kColorAppBar),
+                                      ),  
+
                                   ],
                                 ),
                                 trailing: SizedBox(),
                                 children: [
                                   //ingreso de data
                                   Container(
-                                    margin: EdgeInsets.only(right: 12),
-                                    child: Padding(padding: const EdgeInsets.all(10.0),
-                                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Column(
-                                            children: [
-                                              Icon(Icons.confirmation_number,color: Colors.deepPurple[500], size: 35),
-                                              Text('No. Ticket: ',style: TextStyle(color: Colors.deepPurple[500],fontSize: 17)),
-                                              Text('${abc.data.trips[1].closed[index].ticketId}'),
-                                            ],
-                                          ),
-                                          Column(
-                                            children: [
-                                              Icon(Icons.timer,color: Colors.deepPurple[500],size: 35,),
-                                              Text('Fecha:',style: TextStyle(color: Colors.deepPurple[500],fontSize: 17)),
-                                              Text('${abc.data.trips[1].closed[index].ticketDatetime}'),
-                                            ],
-                                          ),
-                                        ],
+                                     margin: EdgeInsets.only(left: 15),
+                                    child: Column(children: [
+                                      ListTile(contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                        title: Text('No. Ticket: '),
+                                        subtitle: Text('${abc.data.trips[1].closed[index].ticketId}'),
+                                        leading: Icon(Icons.confirmation_number,color: kColorAppBar),
                                       ),
-                                    ),
+                                      ListTile(contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                        title: Text('Fecha:'),
+                                        subtitle: Text('${abc.data.trips[1].closed[index].ticketDatetime}'),
+                                        leading: Icon(Icons.timer,color: kColorAppBar),
+                                      ),
+                                      ListTile(contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                        title: Text('Mensaje: '),
+                                        subtitle: Text('${abc.data.trips[1].closed[index].ticketMessage}'),
+                                        leading: Icon(Icons.location_pin,color: kColorAppBar),
+                                      ),
+                                      ListTile(contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                        title: Text('Respuesta por: ${abc.data.trips[1].closed[index].userName}'),
+                                        subtitle: Text('${abc.data.trips[1].closed[index].replyMessage}'),
+                                        leading: Icon(Icons.supervised_user_circle,color: kColorAppBar),
+                                      ),
+                                    ],),
                                   ),
-                                  Row(mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Column(
-                                      children: [
-                                        Icon(Icons.message,color: Colors.deepPurple[500],size: 35,),
-                                        Text('Mensaje: ',style: TextStyle(color: Colors.deepPurple[500],fontSize: 17)),
-                                        Text('${abc.data.trips[1].closed[index].ticketMessage}'),
-                                      ],
-                                    ),
-                                    ],
-                                  ),
-                                  Padding(padding: const EdgeInsets.all(8.0),
-                                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Column(
-                                          children: [
-                                            Icon(Icons.supervised_user_circle,color: Colors.deepPurple[500],size: 35,),
-                                            Text('Respuesta por: ${abc.data.trips[1].closed[index].userName}',style: TextStyle(color: Colors.deepPurple[500],fontSize: 17)),
-                                            Text('${abc.data.trips[1].closed[index].replyMessage}'),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  
+                              
                                   SizedBox(height: 20.0),
                                 ],
                               ),

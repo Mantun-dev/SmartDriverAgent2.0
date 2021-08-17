@@ -56,6 +56,8 @@ class _NextTripScreenState extends State<NextTripScreen> {
   final tripId = 0;
 
 
+
+
   @override
   void initState() { 
     super.initState();
@@ -63,11 +65,10 @@ class _NextTripScreenState extends State<NextTripScreen> {
 
     //función callback para mostrar automáticamente el mensaje de alerta de rating
     SchedulerBinding.instance.addPostFrameCallback((_){
-      if (mounted) {
-        
-      setState(() {        
-       this._showRatingAlert();
-      });
+      if (mounted) {        
+        setState(() {        
+        this._showRatingAlert();
+        });
       }
     });
   
@@ -202,6 +203,7 @@ class _NextTripScreenState extends State<NextTripScreen> {
       }
     return MessageAccount.fromJson(json.decode(response.body));
   }  
+  
 
 
   @override
@@ -265,9 +267,18 @@ class _NextTripScreenState extends State<NextTripScreen> {
                               ),
                               ListTile(contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
                                 title: Text('Dirección: '),
-                                subtitle: Text('${abc.data.trips[index].direccion} ${abc.data.trips[index].neighborhoodReferencePoint}'),
+                                subtitle: Text('${abc.data.trips[index].direccion}'),
                                 leading: Icon(Icons.directions, color: kColorAppBar),
                               ),
+                              if (abc.data.trips[index].neighborhoodReferencePoint == null)... {
+                                
+                              }else...{
+                                ListTile(contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                  title: Text('Acceso autorizado: '),
+                                  subtitle: Text('${abc.data.trips[index].neighborhoodReferencePoint}'),
+                                  leading: Icon(Icons.bus_alert, color: kColorAppBar),
+                                ),
+                              },
                               SizedBox(height: 20),
                               //validación de mostrar si la condición está empty mostrar texto de necesita confirmación
                               if ('${abc.data.trips[index].condition}' == 'empty')... {               
@@ -379,12 +390,21 @@ class _NextTripScreenState extends State<NextTripScreen> {
                                 SizedBox(height: 20),
                               //validación de condition in canceled
                               }else if('${abc.data.trips[index].condition}' == 'Canceled')...{
-                                ListTile(contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                  title: Text('Viaje Cancelado: '),
-                                  subtitle: Text('Viaje cancelado, se ha notificado al motorista que usted no necesitará el transporte',
-                                  style: TextStyle(color: Colors.red,fontWeight: FontWeight.normal,fontSize: 15.0)),
-                                  leading: Icon(Icons.timer, color: kColorAppBar),
-                                ),
+                                if ('${abc.data.trips[index].commentDriver}' == 'No confirmó')... {
+                                  ListTile(contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                  title: Text('Viaje cancelado: '),
+                                    subtitle: Text('No confirmó a tiempo',
+                                    style: TextStyle(color: Colors.red,fontWeight: FontWeight.normal,fontSize: 15.0)),
+                                    leading: Icon(Icons.timer, color: kColorAppBar),
+                                  ),  
+                                }else...{
+                                  ListTile(contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                    title: Text('Viaje cancelado: '),
+                                    subtitle: Text('Se ha notificado al motorista que usted no necesitará el transporte',
+                                    style: TextStyle(color: Colors.red,fontWeight: FontWeight.normal,fontSize: 15.0)),
+                                    leading: Icon(Icons.timer, color: kColorAppBar),
+                                  ),
+                                },
                                 SizedBox(height: 20),
                               //validación de horaConductor in empty
                               }else if('${abc.data.trips[index].horaConductor}' == 'empty')...{                        
@@ -418,7 +438,7 @@ class _NextTripScreenState extends State<NextTripScreen> {
               }else{
                return ColorLoader3();
              } 
-            return SizedBox(); 
+            //return SizedBox(); 
             },
           ),
         ],
@@ -537,7 +557,7 @@ class _NextTripScreenState extends State<NextTripScreen> {
       return Transform(transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
         child: Opacity(opacity: a1.value,
           child: AlertDialog(shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
-            title: Center(child: Text('😄¿Cómo calificaría su último viaje?😁')), 
+            title: Center(child: Text('😄 ¿Cómo calificaría su último viaje con\n${resp1.driverFullname}? 😁 ')), 
             content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState){
               return Container(height: 300,width: 500,

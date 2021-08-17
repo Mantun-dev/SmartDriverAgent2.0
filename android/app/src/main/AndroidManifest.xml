@@ -9,7 +9,9 @@
 
    <application
         android:label="Smart Driver"
-        android:icon="@mipmap/launcher_icons">
+        android:icon="@mipmap/launcher_icons"
+        android:allowBackup="true"
+        android:fullBackupContent="false">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

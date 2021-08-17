@@ -20,8 +20,10 @@ import 'dataAgent.dart';
   Future<Profile>fetchProfile() async {
     http.Response response = await http.get(Uri.encodeFull('$ip/api/profile/${prefs.nombreUsuario}'));
     if (response.statusCode == 200) {   
-   
-      return Profile.fromJson(json.decode(response.body));
+      //print("Hola "+response.body);
+      if(response.body.isNotEmpty) {        
+        return Profile.fromJson(json.decode(response.body));
+      }
     } else {
       throw Exception('Failed to load Data');
     }

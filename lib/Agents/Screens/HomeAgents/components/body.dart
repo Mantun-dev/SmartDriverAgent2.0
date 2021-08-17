@@ -182,8 +182,12 @@ class _BodyState extends State<Body> {
     Map<String, dynamic> no = new Map<String, dynamic>.from(json.decode(response.body));
     print(no['counts'].length);
     //aquí se hace la validación de mostra cuando sea null el countId
-    if (si.countId == null) {
+    if(no['counts'].length == 0 || no['counts'].length == null){
+
+    }else{
+      if (si.countId == null) {
        showAlertDialog();
+      }
     }                          
   }
 
