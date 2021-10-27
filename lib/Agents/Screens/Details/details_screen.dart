@@ -29,8 +29,8 @@ class _DetailScreenState extends State<DetailScreen> {
   } 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Stack(
+      children:[ Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.white),
           actions: <Widget>[
@@ -52,6 +52,7 @@ class _DetailScreenState extends State<DetailScreen> {
         backgroundColor: widget.plantilla.color,
         body: Body(plantilla: widget.plantilla),
       ),
+      ]
     );
   }
 }

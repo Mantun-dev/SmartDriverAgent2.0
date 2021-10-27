@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth/Agents/Screens/Details/components/loader.dart';
 import 'package:flutter_auth/Agents/Screens/Login/login_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Register/register_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Signup/components/background.dart';
@@ -47,10 +48,11 @@ class _BodyState extends State<Body> {
     final no = Register.fromJson(json.decode(responses.body));
     //redirección y alertas
      if (responses.statusCode == 200 && no.ok == true) {   
-     setState(() {
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=>
-          RegisterScreen()), (Route<dynamic> route) => false);
-      });
+       prefs.nombreUsuarioDos = agentUser;
+       prefs.emailUsuario = agentEmail;
+     
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=>
+      RegisterScreen()), (Route<dynamic> route) => false);
       SweetAlert.show(context,
         title: no.title,
         subtitle: no.message,
@@ -94,9 +96,21 @@ class _BodyState extends State<Body> {
             _crearEmail(),
             RoundedButton(
               text: "SOLICITAR CÓDIGO",
-              press: () {
+              press: () async{
                 //función fetch
-                fetchUserRegister(user.text, userEmail.text);
+                showGeneralDialog(
+                  context: context,
+                   transitionBuilder: (context, a1, a2, widget) {
+                    return Center(child: ColorLoader3());                    
+                  },
+                  transitionDuration: Duration(milliseconds: 200),
+                  barrierDismissible: false,
+                  barrierLabel: '',
+                  pageBuilder: (context, animation1, animation2) {
+                  return null;
+                  }
+                );
+                await fetchUserRegister(user.text, userEmail.text);
               },
             ),
             SizedBox(height: size.height * 0.03),
@@ -135,7 +149,7 @@ class _BodyState extends State<Body> {
           border: InputBorder.none,
         ),
         onChanged: ( value ) {
-          prefs.nombreUsuario = value;
+          //prefs.nombreUsuario = value;
         },
     ),
     );
@@ -156,7 +170,7 @@ class _BodyState extends State<Body> {
         border: InputBorder.none,
       ),
       onChanged: (value) {
-        prefs.emailUsuario = value;
+        //prefs.emailUsuario = value;
       },
     ),
     );

@@ -693,7 +693,7 @@ class _DataTableExample extends State<ProfilePage> {
                                                 if ('${abc.data.saturdayIn}' == 'null') {
                                                   return Text('Día libre'); 
                                                 }else if(abc.hasData){
-                                                  return Text('${abc.data.saturdayOut}',style: TextStyle(color: kgray));
+                                                  return Text('${abc.data.saturdayIn}',style: TextStyle(color: kgray));
                                                 }
                                               }
                                               else {
@@ -779,16 +779,20 @@ class _DataTableExample extends State<ProfilePage> {
                   }
                 },
               ),
-              Padding(padding:const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-                child: SolicitudCambio(
-                  press: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return DetailScreen(plantilla: plantilla[3]);
-                    }));
-                  },
+              if (prefs.companyId != "7")... {                
+                Padding(padding:const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                  child: SolicitudCambio(
+                    press: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return DetailScreen(plantilla: plantilla[3]);
+                      }));
+                    },
+                  ),
                 ),
-              ),
+              }else...{
+                Text('')
+              },
               SizedBox(height: 50)
             ]),
           )

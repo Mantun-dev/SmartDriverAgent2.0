@@ -39,6 +39,8 @@ class _BodyState extends State<Body> {
   //Declaración de variables globales 
   TextEditingController userPassword = new TextEditingController();
   TextEditingController userName = new TextEditingController();
+  String userN;
+  String userP;
   String agentId = ''; 
   String countId = '';
   final prefs = new PreferenciasUsuario();
@@ -64,9 +66,8 @@ class _BodyState extends State<Body> {
         //Api post refresh data and login    
         http.Response responses = await http.get(Uri.encodeFull('$ip/api/refreshingAgentData/${data['agentUser']}'));
         final si = DataAgent.fromJson(json.decode(responses.body));
-        prefs.nombreUsuarioFull = si.agentFullname; 
-        prefs.emailUsuario = si.agentEmail;
-        prefs.companyId = si.companyId.toString();
+        
+        
         print(PushNotificationServices.token);
         Map data2 = {
           'agentId' : '${si.agentId}',
@@ -77,17 +78,22 @@ class _BodyState extends State<Body> {
         final no = DataAgents.fromJson(json.decode(response.body));
 
         //muestra alert y redirección a HomeScreen 
-        if (response.statusCode == 200 && no.ok == true && responses.statusCode == 200) {          
-          http.Response responseToken = await http.post(Uri.encodeFull('$ip/api/registerTokenIdCellPhoneAgent'), body: data2);
-          final claro = DataToken.fromJson(json.decode(responseToken.body));           
-          prefs.tokenAndroid = claro.data[0].token;
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=>
-          HomeScreen()), (Route<dynamic> route) => false);
-          SweetAlert.show(context,
-            title: "Bienvenido(a)",
-            subtitle: si.agentFullname,
-            style: SweetAlertStyle.success
-          );
+          if (response.statusCode == 200 && no.ok == true && responses.statusCode == 200) {          
+            http.Response responseToken = await http.post(Uri.encodeFull('$ip/api/registerTokenIdCellPhoneAgent'), body: data2);
+            final claro = DataToken.fromJson(json.decode(responseToken.body));  
+            prefs.nombreUsuarioFull = si.agentFullname; 
+            prefs.emailUsuario = si.agentEmail;
+            prefs.companyId = si.companyId.toString();
+            prefs.passwordUsuario = agentPassword;
+            prefs.nombreUsuario = agentUser;         
+            prefs.tokenAndroid = claro.data[0].token;
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=>
+            HomeScreen()), (Route<dynamic> route) => false);
+            SweetAlert.show(context,
+              title: "Bienvenido(a)",
+              subtitle: si.agentFullname,
+              style: SweetAlertStyle.success
+            );
           } else if (no.ok != true) {
             SweetAlert.show(context,
               title: "Alerta",
@@ -104,8 +110,8 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-    userName = new TextEditingController( text: prefs.nombreUsuario );
-    userPassword = new TextEditingController(text: prefs.passwordUsuario);
+    // userName = new TextEditingController( text: prefs.nombreUsuario );
+    // userPassword = new TextEditingController(text: prefs.passwordUsuario);
     _passwordVisible = false;
   }
 
@@ -179,9 +185,7 @@ class _BodyState extends State<Body> {
           hintText: "Ingrese su usuario",
           border: InputBorder.none,
         ),
-        onChanged: ( value ) {
-          prefs.nombreUsuario = value;
-        },
+        
     ),
     );
   }
@@ -191,9 +195,7 @@ class _BodyState extends State<Body> {
      child: TextField(
       controller: userPassword,
       obscureText: !_passwordVisible,
-      onChanged: (value){
-        prefs.passwordUsuario = value;
-      },
+      
       cursorColor: kPrimaryColor,
         decoration: InputDecoration(
           hintText: "Contraseña",

@@ -15,8 +15,6 @@ class PreferenciasUsuario {
     this._prefs = await SharedPreferences.getInstance();
   }
 
-
-
   // GET y SET del nombreUsuario
   get nombreUsuario {
     return _prefs.getString('nombreUsuario') ?? '';
@@ -25,6 +23,16 @@ class PreferenciasUsuario {
   set nombreUsuario( String value ) {
     _prefs.setString('nombreUsuario', value);
   }
+
+    // GET y SET del nombreUsuario
+  get nombreUsuarioDos {
+    return _prefs.getString('nombreUsuarioDos') ?? '';
+  }
+
+  set nombreUsuarioDos( String value ) {
+    _prefs.setString('nombreUsuarioDos', value);
+  }
+
 
 
     // GET y SET del nombreUsuario
@@ -74,7 +82,28 @@ class PreferenciasUsuario {
     _prefs.setString('tokenAndroid', value);
   }
 
- 
+    // GET y SET version
+  get versionNew {
+    return _prefs.getString('versionNew') ?? '';
+  }
+
+  set versionNew( String value ) {
+    _prefs.setString('versionNew', value);
+  }
+
+      // GET y SET version
+  get versionOld {
+    return _prefs.getString('versionOld') ?? '';
+  }
+
+  set versionOld( String value ) {
+    _prefs.setString('versionOld', value);
+  }
+
+
+  void removeData() {
+    _prefs.clear();
+  }
 
   remove(){
     _prefs.remove('nombreUsuario');

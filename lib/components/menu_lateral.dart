@@ -85,15 +85,17 @@ class _MenuLateralState extends State<MenuLateral> {
               .then((_) => DetailScreen(plantilla: plantilla[0]));  
             },
           ),
-          Divider(),
-          ListTile(
-            title: Text('Solicitud de cambios'),
-            leading: Icon(Icons.outbox),
-            onTap: () {
-              Navigator.pushReplacement(context,MaterialPageRoute(builder: (_) => DetailScreen(plantilla: plantilla[3])))
-              .then((_) => DetailScreen(plantilla: plantilla[2]));                
-            },
-          ),
+          if (prefs.companyId != "7")... {
+            Divider(),
+            ListTile(
+              title: Text('Solicitud de cambios'),
+              leading: Icon(Icons.outbox),
+              onTap: () {
+                Navigator.pushReplacement(context,MaterialPageRoute(builder: (_) => DetailScreen(plantilla: plantilla[3])))
+                .then((_) => DetailScreen(plantilla: plantilla[2]));                
+              },
+            ),            
+          },
           Divider(),
           ListTile(
             title: Text('Generar codigo qr'),
@@ -130,7 +132,8 @@ class _MenuLateralState extends State<MenuLateral> {
                 showCancelButton: true, onPress: (bool isConfirm) {
                 if(isConfirm){                
                   fetchDeleteSession();  
-                  prefs.remove();                   
+                  prefs.remove(); 
+                  prefs.removeData();                  
                   SweetAlert.show(context,subtitle: "¡Gracias por usar Smart Driver!", style: SweetAlertStyle.success);
                   new Future.delayed(new Duration(seconds: 2),(){
                   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=>

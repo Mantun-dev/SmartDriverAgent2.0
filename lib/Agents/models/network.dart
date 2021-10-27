@@ -20,7 +20,7 @@ import 'dataAgent.dart';
   Future<Profile>fetchProfile() async {
     http.Response response = await http.get(Uri.encodeFull('$ip/api/profile/${prefs.nombreUsuario}'));
     if (response.statusCode == 200) {   
-      //print("Hola "+response.body);
+      print("Hola "+response.body);
       if(response.body.isNotEmpty) {        
         return Profile.fromJson(json.decode(response.body));
       }
@@ -28,6 +28,30 @@ import 'dataAgent.dart';
       throw Exception('Failed to load Data');
     }
   }
+
+    Future<Profile>fetchVersion() async {
+    http.Response response = await http.get(Uri.encodeFull("https://play.google.com/store/apps/details?id=" + "com.smartdriver.devs&hl=en"));
+      //print(response.body);
+      if(response.statusCode == 200){
+        String data = response.body;
+
+        String pat1 = 'Current Version</div><span class="htlgb"><div class="IQ1z0d"><span class="htlgb">';
+        String pat2 = '</span>';
+
+        int p1 = data.indexOf(pat1) + pat1.length;
+        String f = data.substring(p1, data.length);
+        int p2 = f.indexOf(pat2);
+
+        String currentVersion = f.substring(0, p2);
+
+        //return currentVersion;
+        prefs.versionNew = currentVersion;
+      
+      }
+
+
+  }
+
 
 
 //fetch Tips
@@ -97,4 +121,5 @@ Future < TripsList6>fetchTicketStory() async {
       throw Exception('Failed to load Data');
     }
   }
+
 

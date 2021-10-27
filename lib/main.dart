@@ -1,10 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
+
 import 'package:flutter_auth/Agents/sharePrefers/services.dart';
 import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
+
+
 //import 'Agents/Screens/Login/components/body.dart';
 import 'Agents/Screens/Welcome/welcome_screen.dart';
 import 'Agents/sharePrefers/preferencias_usuario.dart';
@@ -32,11 +35,12 @@ class _MyAppState extends State<MyApp> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey(debugLabel: "Main Navigator");
   final prefs = new PreferenciasUsuario();
 
+
   //función de la clase de notificaciones que necesita ser inicializada
   //para hacer las respectivas notificaciones y redirecciones
   @override
   void initState() { 
-    super.initState();    
+    super.initState();          
     PushNotificationServices.messageStream.listen((event) {
       if (event == 'PROCESS_TRIP') {
        navigatorKey.currentState?.push(

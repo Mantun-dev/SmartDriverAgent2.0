@@ -31,7 +31,7 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-    user = new TextEditingController( text: prefs.nombreUsuario );
+    user = new TextEditingController( text: prefs.nombreUsuarioDos );
     userEmail = new TextEditingController(text: prefs.emailUsuario);
   }
 
@@ -50,7 +50,7 @@ class _BodyState extends State<Body> {
     final no = Register.fromJson(json.decode(responses.body));
     //redirección y alertas
      if (responses.statusCode == 200 && no.ok == true) {   
-     print(responses.body);
+     //print(responses.body);
      setState(() {
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=>
           LoginScreen()), (Route<dynamic> route) => false);
@@ -133,7 +133,7 @@ class _BodyState extends State<Body> {
           border: InputBorder.none,
         ),
         onChanged: ( value ) {
-          prefs.nombreUsuario = value;
+          prefs.nombreUsuarioDos = value;
         },
     ),
     );
@@ -155,7 +155,7 @@ class _BodyState extends State<Body> {
         border: InputBorder.none,
       ),
       onChanged: (value) {
-        prefs.emailUsuario = value;
+       prefs.emailUsuario = value;
       },
     ),
     );

@@ -1,11 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/components/background.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/components/item_card.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/components/rateMyDriver.dart';
+import 'package:flutter_auth/Agents/Screens/Welcome/welcome_screen.dart';
 import 'package:flutter_auth/Agents/models/dataAgent.dart';
 import 'package:flutter_auth/Agents/models/messageCount.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
@@ -13,8 +13,11 @@ import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/constants.dart';
 import 'package:sweetalert/sweetalert.dart';
+import 'package:package_info/package_info.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
+
+import 'package:url_launcher/url_launcher.dart';
 
 
 class Body extends StatefulWidget {
@@ -34,6 +37,12 @@ class _BodyState extends State<Body> {
   Future<DataAgent> item;
   final prefs = new PreferenciasUsuario();  
   String ip = "https://smtdriver.com";
+  PackageInfo _packageInfo = PackageInfo(
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+  );
   
   //variables y funciones que necesitan inialización
   @override
@@ -52,10 +61,7 @@ class _BodyState extends State<Body> {
     }
     ); 
 
-    // Timer.periodic(
-    // Duration(minutes: 1), 
-    // (Timer t) => {
-    // });
+ 
    SchedulerBinding.instance.addPostFrameCallback((_){
      if (mounted) {
      setState(() {        
@@ -66,9 +72,120 @@ class _BodyState extends State<Body> {
     }
      );    
       //callback
+    _initPackageInfo();
+    fetchVersion(); 
+    SchedulerBinding.instance.addPostFrameCallback((_){
+      if (mounted) {        
+        setState(() {        
+          _showVersionTrue();
+        });
+      }
+    });
+   
 
     item = fetchRefres();
   }
+  Future<void> _initPackageInfo() async {
+    final PackageInfo info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+      prefs.versionOld = _packageInfo.version;
+    });
+  }
+
+
+  void _showVersionTrue() async{    
+      //validacion
+      if (prefs.versionOld != prefs.versionNew) {
+        showAlertVersion();        
+      }    
+   
+  }
+  _launchURL() async {
+  const url = 'https://play.google.com/store/apps/details?id=com.smartdriver.devs';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
+
+  showAlertVersion()async{
+    showGeneralDialog(
+      barrierColor: Colors.black.withOpacity(0.5),
+      transitionBuilder: (context, a1, a2, widget) {
+        final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
+        return Transform(transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
+          child: Opacity(opacity: a1.value,
+            child:AlertDialog(
+        content: Container(
+          width: 400,
+          height: 140,
+          child: Column(
+            children: <Widget>[
+
+              Icon(Icons.warning, color: Colors.orangeAccent, size: 35.0),
+              SizedBox(height: 10),
+              Text(
+                'Actualización disponible',
+                style: TextStyle(
+                  fontSize: 20, fontWeight: FontWeight.bold
+                ),
+              ),
+
+              SizedBox(height: 20),
+              Row(
+                children: [
+                  SizedBox(width: 27),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        primary: Colors.white,
+                        backgroundColor: Colors.orange
+                      ),
+                      onPressed: () => {
+                            Navigator.pop(context),                                            
+                      },
+                      child: Text('Después'),                
+                    ), 
+                    SizedBox(width: 20),
+                  Column(
+                    children: [
+
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        primary: Colors.white,
+                        backgroundColor: Colors.green
+                      ),
+                      onPressed: () => {
+                            Navigator.pop(context),
+                            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=>
+                            WelcomeScreen()), (Route<dynamic> route) => false),
+                            prefs.removeData(),                                                  
+                            _launchURL(),
+                            
+                      },
+                      child: Text('Descargar'),                
+                    ), 
+                    ],
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+      )
+    ) );
+        
+    },
+    transitionDuration: Duration(milliseconds: 200),
+    barrierDismissible: false,
+    barrierLabel: '',
+    context: context,
+    pageBuilder: (context, animation1, animation2) {
+      return null;
+    }); 
+  
+}
 
 //función fetch para enviar la cuenta seleccionada 
   Future<dynamic>fetchCountSend(String agentId, String countId) async {

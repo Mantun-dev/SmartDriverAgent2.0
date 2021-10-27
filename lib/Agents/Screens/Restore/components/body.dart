@@ -40,16 +40,16 @@ class _BodyState extends State<Body> {
     http.Response responses = await http.post(Uri.encodeFull('$ip/api/reset'), body: data);
     final no = Register.fromJson(json.decode(responses.body));
     //alertas y redirecciones
-     if (responses.statusCode == 200 && no.ok == true) {   
-     setState(() {
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=>
-          LoginScreen()), (Route<dynamic> route) => false);
-      });
-      SweetAlert.show(context,
-        title: no.title,
-        subtitle: no.message,
-        style: SweetAlertStyle.success
-      );
+     if (responses.statusCode == 200 && no.ok == true) {          
+        setState(() {
+            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=>
+            LoginScreen()), (Route<dynamic> route) => false);
+        });
+        SweetAlert.show(context,
+          title: no.title,
+          subtitle: no.message,
+          style: SweetAlertStyle.success
+        );
       } else if (no.ok != true) {
         SweetAlert.show(context,
           title: no.title,
@@ -126,9 +126,7 @@ class _BodyState extends State<Body> {
           hintText: "Ingrese su usuario",
           border: InputBorder.none,
         ),
-        onChanged: ( value ) {
-          prefs.nombreUsuario = value;
-        },
+
     ),
     );
   }
