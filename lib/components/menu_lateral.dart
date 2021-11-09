@@ -232,9 +232,11 @@ class _MenuLateralState extends State<MenuLateral> {
                           children: [
                             Text("Plazos de confirmación",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: kCardColor2,)),
                             SizedBox(height: 5),
-                            Text('Horario de 5:00 am a 12:00 pm hora máxima de confirmación 8:30 pm',style: TextStyle(color: kgray)),
+                            Text('Horario de 5:00 am a 11:00 pm hora máxima de confirmación 8:30 pm',style: TextStyle(color: kgray)),
                             SizedBox(height: 15),
-                            Text('Horario de 2:00 pm a 5:00 pm hora máxima de confirmación 10:00 am',style: TextStyle(color: kgray)), 
+                            Text('Horario de 12M hora máxima de confirmación 7:30 am',style: TextStyle(color: kgray)), 
+                            SizedBox(height: 15,),
+                            Text('Horario de 2:00 pm a 3:00 pm hora máxima de confirmación 10:00 am',style: TextStyle(color: kgray)), 
                             SizedBox(height: 30,),
                             Text("Nota",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: kCardColor2,)),                        
                           ],

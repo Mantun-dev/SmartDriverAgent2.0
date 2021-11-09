@@ -135,8 +135,9 @@ class _BodyState extends State<Body> {
 
               SizedBox(height: 20),
               Row(
+                mainAxisAlignment:MainAxisAlignment.spaceAround,
                 children: [
-                  SizedBox(width: 27),
+                  
                     TextButton(
                       style: TextButton.styleFrom(
                         primary: Colors.white,
@@ -147,7 +148,7 @@ class _BodyState extends State<Body> {
                       },
                       child: Text('Después'),                
                     ), 
-                    SizedBox(width: 20),
+                   
                   Column(
                     children: [
 
@@ -158,9 +159,7 @@ class _BodyState extends State<Body> {
                       ),
                       onPressed: () => {
                             Navigator.pop(context),
-                            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=>
-                            WelcomeScreen()), (Route<dynamic> route) => false),
-                            prefs.removeData(),                                                  
+                                                                              
                             _launchURL(),
                             
                       },
@@ -411,7 +410,11 @@ void _showAlert()async{
                     child: Column(
                       children: [                                                 
                           SizedBox(height: 5),
-                          Text('Este usuario no está siendo agendado para el servicio de transporte, sin embargo, puede solicitar el uso de transporte mediante un ticket.',style: TextStyle(color: kgray)),                        
+                          if (prefs.companyId == "7")... {
+                            Text('Este usuario no está siendo agendado para el servicio de transporte, comuniquese con su supervisor.',style: TextStyle(color: kgray)),                                                    
+                          } else... {
+                            Text('Este usuario no está siendo agendado para el servicio de transporte, sin embargo, puede solicitar el uso de transporte mediante un ticket.',style: TextStyle(color: kgray)),                        
+                          }
                       ]
                     ),
                   ),

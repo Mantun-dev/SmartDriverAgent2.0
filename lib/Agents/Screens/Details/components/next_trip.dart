@@ -536,12 +536,14 @@ class _NextTripScreenState extends State<NextTripScreen> {
     http.Response responses = await http.get(Uri.encodeFull('$ip/api/refreshingAgentData/${prefs.nombreUsuario}'));
     final resp = DataAgent.fromJson(json.decode(responses.body));
     http.Response response = await http.get(Uri.encodeFull('$ip/api/ratingTrip/${resp.agentId}'));
-    final resp1 = Rating.fromJson(json.decode(response.body));
-    //validación para mostrar alerta
-      if (resp1.tripId != 0) {
-        showAlertDialogRating();
-      }                      
-    
+    if (response.body.isNotEmpty) {      
+      final resp1 = Rating.fromJson(json.decode(response.body));
+      //validación para mostrar alerta      
+        if (resp1.tripId != 0) {        
+          showAlertDialogRating();
+        }                      
+      
+    }
   }
 
 

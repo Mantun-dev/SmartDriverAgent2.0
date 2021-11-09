@@ -2,6 +2,7 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/Details/components/historyTicket.dart';
+import 'package:flutter_auth/Agents/Screens/Details/components/loader.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/models/dataAgentMessage.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
@@ -116,10 +117,21 @@ class _TicketScreenState extends State<TicketScreen> {
                   ),
                   SizedBox(height: 10),
                   TextButton(style: TextButton.styleFrom(primary: Colors.white,backgroundColor: kCardColor2),
-                    onPressed: () => {
+                    onPressed: () async {
                       //función envío de ticket
-                      fetchTicket(prefs.nombreUsuario, ticketIssue.text, ticketMessage.text),
-                      
+                      showGeneralDialog(
+                        context: context,
+                        transitionBuilder: (context, a1, a2, widget) {
+                          return Center(child: ColorLoader3());                    
+                        },
+                        transitionDuration: Duration(milliseconds: 200),
+                        barrierDismissible: false,
+                        barrierLabel: '',
+                        pageBuilder: (context, animation1, animation2) {
+                        return null;
+                        }
+                      );
+                      await fetchTicket(prefs.nombreUsuario, ticketIssue.text, ticketMessage.text);                      
                     },
                     child: Text('Enviar'),                    
                   ),
