@@ -101,6 +101,14 @@ class PreferenciasUsuario {
   }
 
 
+  get tripId {
+    return _prefs.getString('tripId') ?? '';
+  }
+
+  set tripId( String value ) {
+    _prefs.setString('tripId', value);
+  }
+
   void removeData() {
     _prefs.clear();
   }

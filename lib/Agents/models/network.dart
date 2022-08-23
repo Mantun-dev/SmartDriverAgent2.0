@@ -54,14 +54,16 @@ import 'dataAgent.dart';
 
 
 
-//fetch Tips
+//fetch Tips 
   Future<TripsList>fetchTrips() async {
     http.Response response = await http.get(Uri.encodeFull('$ip/api/trips/${prefs.nombreUsuario}'));
   
     if (response.statusCode == 200) {   
-      
-      return TripsList.fromJson(json.decode(response.body));
-
+      final trip = TripsList.fromJson(json.decode(response.body));
+      for (var i = 0; i < trip.trips.length; i++) {        
+        print(trip.trips[i].btnCancelTrip);
+      }
+      return trip;
     } else {
       throw Exception('Failed to load Data');
     }
@@ -94,8 +96,8 @@ import 'dataAgent.dart';
 
 //fetch Ticket Story
 Future < TripsList6>fetchTicketStory() async {
-   http.Response response0 = await http.get(Uri.encodeFull('$ip/api/refreshingAgentData/${prefs.nombreUsuario}'));
-   final si = DataAgent.fromJson(json.decode(response0.body));
+    http.Response response0 = await http.get(Uri.encodeFull('$ip/api/refreshingAgentData/${prefs.nombreUsuario}'));
+    final si = DataAgent.fromJson(json.decode(response0.body));
     http.Response response = await http.get(Uri.encodeFull('$ip/api/tickets/${si.agentId}'));
     final data = TripsList6.fromJson(json.decode(response.body)); 
     if (response.statusCode == 200) {  
@@ -114,7 +116,7 @@ Future < TripsList6>fetchTicketStory() async {
     };
     http.Response response = await http.post(Uri.encodeFull('$ip/api/deleteTokenSession'), body: data);
     if (response.statusCode == 200) {   
-         
+        
       return DataAgents.fromJson(json.decode(response.body));
 
     } else {

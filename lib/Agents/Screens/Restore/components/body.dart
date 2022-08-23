@@ -40,6 +40,7 @@ class _BodyState extends State<Body> {
     http.Response responses = await http.post(Uri.encodeFull('$ip/api/reset'), body: data);
     final no = Register.fromJson(json.decode(responses.body));
     //alertas y redirecciones
+    print(responses.body);
      if (responses.statusCode == 200 && no.ok == true) {          
         setState(() {
             Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=>

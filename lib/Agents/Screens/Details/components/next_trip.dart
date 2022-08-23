@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -26,18 +28,19 @@ import 'package:url_launcher/url_launcher.dart';
 class NextTripScreen extends StatefulWidget {
   //creación de instancias de clases de Json con sus variables
   final TripsList item;
-    final Plantilla plantilla;
-    
-  const NextTripScreen({Key key, this.item, this.plantilla}) : super(key: key);
+  final Plantilla plantilla;
+  final DataAgent itemx;
+  const NextTripScreen({Key key, this.item, this.plantilla, this.itemx}) : super(key: key);
 
   @override
   _NextTripScreenState createState() => _NextTripScreenState();
 }
 
-class _NextTripScreenState extends State<NextTripScreen> {
+class _NextTripScreenState extends State<NextTripScreen> with WidgetsBindingObserver {
 
   //variables globales para cada función
   Future<TripsList> item;
+  Future<DataAgent> itemx;
   final prefs = new PreferenciasUsuario();
   //variable para comentario
   String comment = ' ';
@@ -51,18 +54,18 @@ class _NextTripScreenState extends State<NextTripScreen> {
   //variables para rating
   double rating1;
   double rating2;
-  double rating3;
+  double rating3;  
   String ip = "https://smtdriver.com";
   final tripId = 0;
 
-
+  
 
 
   @override
   void initState() { 
     super.initState();
     item = fetchTrips();
-
+    itemx = fetchRefres();    
     //función callback para mostrar automáticamente el mensaje de alerta de rating
     SchedulerBinding.instance.addPostFrameCallback((_){
       if (mounted) {        
@@ -71,17 +74,47 @@ class _NextTripScreenState extends State<NextTripScreen> {
         });
       }
     });
-  
-
+    WidgetsBinding.instance.addObserver(this);
     message = new TextEditingController();
 
     //variable rating inicializadas
     rating1 = 0;
     rating2 = 0;
     rating3 = 0;
+    final prefs = new PreferenciasUsuario();
 
     //inicializador del botón de android para manejarlo manual   
     BackButtonInterceptor.add(myInterceptor);
+  }
+
+void didChangeAppLifecycleState(AppLifecycleState state) {
+  // setState(() {
+  // });
+    if (AppLifecycleState.resumed == state) {
+        fetchTripsButton();
+    }
+}
+
+//fetch Tips
+  Future<TripsList>fetchTripsButton() async {
+    http.Response response = await http.get(Uri.encodeFull('$ip/api/trips/${prefs.nombreUsuario}'));
+  
+    if (response.statusCode == 200) { 
+      final trip = TripsList.fromJson(json.decode(response.body));
+      for (var i = 0; i < trip.trips.length; i++) {        
+        if (trip .trips[i].btnCancelTrip == false ||  trip .trips[i].btnCancelTrip == true) {    
+          print(trip.trips[i].btnCancelTrip);
+          print('hola');  
+          if (mounted) {
+            Navigator.pushReplacement(context,MaterialPageRoute(builder: (_) => DetailScreen(plantilla: plantilla[0])))
+              .then((_) => DetailScreen(plantilla: plantilla[0]));     
+          }      
+        }
+      }
+
+    } else {
+      throw Exception('Failed to load Data');
+    }
   }
 
 
@@ -89,6 +122,7 @@ class _NextTripScreenState extends State<NextTripScreen> {
   void dispose() {
     //creación del dispose para removerlo después del evento
     BackButtonInterceptor.remove(myInterceptor);
+    WidgetsBinding.instance.addObserver(this);
     super.dispose();
   }
 
@@ -105,6 +139,7 @@ class _NextTripScreenState extends State<NextTripScreen> {
 //función para confirmar trip
   Future<dynamic>fetchConfirm(String agentUser, String tripId, String condition, String comment) async {
       //<List<Map<String, dynamic>>>
+      prefs.tripId = tripId;
       Map data = {
         'agentUser' : agentUser,
         'tripId'    : tripId,
@@ -128,6 +163,8 @@ class _NextTripScreenState extends State<NextTripScreen> {
       final algo= await http.get(Uri.encodeFull('$ip/api/getMaskReminder/${resps.agentId}'));
       print(algo.body);
       showAlertDialog();
+      Navigator.pop(context);
+
     } 
     else if(response.statusCode == 500){
       SweetAlert.show(context,
@@ -138,7 +175,7 @@ class _NextTripScreenState extends State<NextTripScreen> {
     }
     return Message.fromJson(json.decode(response.body));
   }
-
+  
   //función para cancel trip
   Future<dynamic>fetchCancel(String agentUser, String tripId, String conditionC, String message) async {
       //<List<Map<String, dynamic>>>
@@ -147,7 +184,7 @@ class _NextTripScreenState extends State<NextTripScreen> {
         'tripId'    : tripId,
         'condition' :  conditionC,
         'comment'   : message
-      };
+      };      
     //api cancel trip
     http.Response response = await http.post(Uri.encodeFull('$ip/api/confirmTrip'), body: data);
     final resp = Message.fromJson(json.decode(response.body));   
@@ -287,9 +324,8 @@ class _NextTripScreenState extends State<NextTripScreen> {
                                   subtitle: Text('Necesita confirmación para poder asignarle una hora de encuentro',style: TextStyle(color: Colors.red,fontWeight: FontWeight.normal,fontSize: 15.0)),
                                   leading: Icon(Icons.timer, color: kColorAppBar),
                                 ),
-
                                 TextButton(style: TextButton.styleFrom(shape: RoundedRectangleBorder(side: BorderSide(color: kCardColor2, width: 2),borderRadius: BorderRadius.circular(50)),backgroundColor: kPrimaryColor,),                                                                
-                                  onPressed: () {                          
+                                  onPressed: () {                                                           
                                     showGeneralDialog(barrierColor: Colors.black.withOpacity(0.5),
                                       transitionBuilder: (context, a1, a2, widget) {
                                         final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
@@ -306,7 +342,7 @@ class _NextTripScreenState extends State<NextTripScreen> {
                                                     onPressed: () => {  
                                                       //función fetch confirm 
                                                       fetchConfirm( prefs.nombreUsuario, '${abc.data.trips[index].tripId}', condition , comment  ),
-                                                      Navigator.pop(context),   
+                                                        
                                                     },
                                                     child: Text('Si'),                                                
                                                   ), 
@@ -425,6 +461,78 @@ class _NextTripScreenState extends State<NextTripScreen> {
                                   leading: Icon(Icons.timer, color: kColorAppBar),
                                 ),
                               },
+                              if ('${abc.data.trips[index].condition}' == 'Confirmed')... {   
+                                if (abc.data.trips[index].companyId == 1 || abc.data.trips[index].companyId == 7 ||
+                                    abc.data.trips[index].companyId == 3 || abc.data.trips[index].companyId == 5 ||
+                                    abc.data.trips[index].companyId == 9 || abc.data.trips[index].companyId == 11||
+                                    abc.data.trips[index].companyId ==12
+                                )... {
+                                  if (abc.data.trips[index].btnCancelTrip == true)... {                                    
+                                    TextButton(style: TextButton.styleFrom(primary: Colors.white,backgroundColor: Colors.red),
+                                          child: Text('Cancelar viaje'),    
+                                          onPressed: () => {                                        
+                                            showGeneralDialog(barrierColor: Colors.black.withOpacity(0.5),
+                                              transitionBuilder: (context, a1, a2, widget) {
+                                                return Transform.scale(scale: a1.value,
+                                                  child: Opacity(opacity: a1.value,
+                                                    child: AlertDialog(
+                                                      shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+                                                      title: Center(
+                                                        child: Text('¿Razón por la cual no hará uso del transporte?',textAlign: TextAlign.center)),
+                                                      content: TextField(controller: message,decoration: InputDecoration(labelText: 'Escriba aquí')),
+                                                      actions: [
+                                                        Row(
+                                                          children: [
+                                                            SizedBox(width: 60.0),
+                                                            TextButton(style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20),primary: Colors.white,backgroundColor: Colors.blueAccent),                                                                      
+                                                              onPressed: () => {
+                                                                //función fetch cancel
+                                                                fetchCancel( prefs.nombreUsuario, '${abc.data.trips[index].tripId}', conditionC , message.text  ),
+                                                                Navigator.pop(context),
+                                                              },
+                                                              child: Text('Enviar'),                                                                      
+                                                            ),
+                                                            SizedBox(width: 10.0),
+                                                            TextButton(style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20),primary: Colors.white,backgroundColor: Colors.red),
+                                                              onPressed: () => {
+                                                                Navigator.pop(context),
+                                                              },
+                                                              child: Text('Cerrar'),                                                                      
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              transitionDuration: Duration(milliseconds: 200),
+                                              barrierDismissible: true,
+                                              barrierLabel: '',
+                                              context: context,
+                                              pageBuilder: (context, animation1, animation2) {
+                                                return null;
+                                              }),
+                                              
+                                          },
+                                                                                        
+                                        ), 
+                                  } else...{
+                                    ListTile(contentPadding: EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                      title: Text('Viaje'),
+                                      subtitle: Text('Su tiempo para cancelar el viaje ha expirado',
+                                      style: TextStyle(color: Colors.red,fontWeight: FontWeight.normal,fontSize: 15.0)),
+                                      leading: Icon(Icons.timer, color: kColorAppBar),
+                                    ),
+                                  }
+                                  
+                                          
+                                }                                                            
+                                
+                              }else...{
+                                
+                              },
+                            
                             ]
                           ),                  
                           ),
@@ -436,8 +544,8 @@ class _NextTripScreenState extends State<NextTripScreen> {
                   }
                 } 
               }else{
-               return ColorLoader3();
-             } 
+                return ColorLoader3();
+              } 
             //return SizedBox(); 
             },
           ),

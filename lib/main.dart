@@ -40,11 +40,11 @@ class _MyAppState extends State<MyApp> {
   //para hacer las respectivas notificaciones y redirecciones
   @override
   void initState() { 
-    super.initState();          
+    super.initState();            
     PushNotificationServices.messageStream.listen((event) {
       if (event == 'PROCESS_TRIP') {
        navigatorKey.currentState?.push(
-         MaterialPageRoute(builder: (_) => DetailScreen(plantilla: plantilla[0])));              
+        MaterialPageRoute(builder: (_) => DetailScreen(plantilla: plantilla[0])));              
       }     
       print(event);    
     });

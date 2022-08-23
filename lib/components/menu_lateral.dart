@@ -64,8 +64,7 @@ class _MenuLateralState extends State<MenuLateral> {
               Navigator.pushReplacement(context,MaterialPageRoute(builder: (_) => ProfilePage()))
               .then((_) => HomeScreen());                           
               fetchProfile();
-            },
-           
+            },           
           ),
           Divider(),
           ListTile(
@@ -85,17 +84,29 @@ class _MenuLateralState extends State<MenuLateral> {
               .then((_) => DetailScreen(plantilla: plantilla[0]));  
             },
           ),
-          if (prefs.companyId != "7")... {
-            Divider(),
-            ListTile(
-              title: Text('Solicitud de cambios'),
-              leading: Icon(Icons.outbox),
-              onTap: () {
-                Navigator.pushReplacement(context,MaterialPageRoute(builder: (_) => DetailScreen(plantilla: plantilla[3])))
-                .then((_) => DetailScreen(plantilla: plantilla[2]));                
-              },
-            ),            
-          },
+          FutureBuilder<DataAgent>(
+            future: itemx,
+            builder: (context, abc){
+                if (abc.connectionState == ConnectionState.done) {
+                  if (abc.data.companyId != 7) {
+                    return Column(children: [
+                      Divider(),
+                      ListTile(
+                        title: Text('Solicitud de cambios'),
+                        leading: Icon(Icons.outbox),
+                        onTap: () {
+                          Navigator.pushReplacement(context,MaterialPageRoute(builder: (_) => DetailScreen(plantilla: plantilla[3])))
+                          .then((_) => DetailScreen(plantilla: plantilla[2]));                
+                        },
+                      ),  
+                    ],); 
+                  }
+                }
+                else {
+                  return Text("");
+                }
+              return Text(""); 
+          }),
           Divider(),
           ListTile(
             title: Text('Generar codigo qr'),
@@ -105,20 +116,28 @@ class _MenuLateralState extends State<MenuLateral> {
               .then((_) => DetailScreen(plantilla: plantilla[3]));  
             },
           ), 
-          if (prefs.companyId == "2")... {
-            Container(
-              child: Column(children: [
-                Divider(),
-                ListTile(
-                 title: Text('información'),
-                 leading: Icon(Icons.inbox),
-                 onTap: () {
-                 _showBottomModal(context);
-                 },
-                )
-              ],),
-            )
-          },                   
+          FutureBuilder<DataAgent>(
+            future: itemx,
+            builder: (context, abc){
+                if (abc.connectionState == ConnectionState.done) {
+                  if (abc.data.companyId == 2) {
+                    return Column(children: [
+                      Divider(),
+                      ListTile(
+                      title: Text('información'),
+                      leading: Icon(Icons.inbox),
+                      onTap: () {
+                      _showBottomModal(context);
+                      },
+                      ) 
+                    ],); 
+                  }
+                }
+                else {
+                  return Text("");
+                }
+              return Text(""); 
+            }),                   
           Divider(),
           ListTile(
             title: Text('Cerrar sesión'),
@@ -232,7 +251,7 @@ class _MenuLateralState extends State<MenuLateral> {
                           children: [
                             Text("Plazos de confirmación",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold,color: kCardColor2,)),
                             SizedBox(height: 5),
-                            Text('Horario de 5:00 am a 11:00 pm hora máxima de confirmación 8:30 pm',style: TextStyle(color: kgray)),
+                            Text('Horario de 5:00 am a 11:00 am hora máxima de confirmación 8:30 pm',style: TextStyle(color: kgray)),
                             SizedBox(height: 15),
                             Text('Horario de 12M hora máxima de confirmación 7:30 am',style: TextStyle(color: kgray)), 
                             SizedBox(height: 15,),

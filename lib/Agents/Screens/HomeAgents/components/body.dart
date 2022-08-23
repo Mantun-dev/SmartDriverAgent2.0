@@ -73,14 +73,14 @@ class _BodyState extends State<Body> {
      );    
       //callback
     _initPackageInfo();
-    fetchVersion(); 
-    SchedulerBinding.instance.addPostFrameCallback((_){
-      if (mounted) {        
-        setState(() {        
-          _showVersionTrue();
-        });
-      }
-    });
+    //fetchVersion(); 
+    // SchedulerBinding.instance.addPostFrameCallback((_){
+    //   if (mounted) {        
+    //     setState(() {        
+    //   //    _showVersionTrue();
+    //     });
+    //   }
+    // });
    
 
     item = fetchRefres();
@@ -332,7 +332,7 @@ class _BodyState extends State<Body> {
                         //iteración de cuentas, muestra cada una de ellas con su valor
                         for (int i = 0; i < no['counts'].length; i++)...{                              
                           ListTile(                              
-                             title: Text('${no['counts'][i]['countName']}',style: Theme.of(context).textTheme.subtitle1.copyWith(color: i == no['counts'].length ? Colors.black38 : Colors.black),),
+                            title: Text('${no['counts'][i]['countName']}',style: Theme.of(context).textTheme.subtitle1.copyWith(color: i == no['counts'].length ? Colors.black38 : Colors.black),),
                             leading: Radio(
                               value: no['counts'][i]['countId'],
                               groupValue: _value,                              

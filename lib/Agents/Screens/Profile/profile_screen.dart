@@ -3,6 +3,7 @@ import 'package:flutter_auth/Agents/Screens/Details/components/loader.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/Screens/Signup/components/background.dart';
+import 'package:flutter_auth/Agents/models/dataAgent.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 //import 'package:flutter_auth/Agents/models/dataAgent.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
@@ -22,7 +23,8 @@ class ProfilePage extends StatefulWidget {
   //instancias de plantilla y perfil con sus variabless
   final Plantilla plantilla;
   final Profile item;
-  const ProfilePage({Key key, this.plantilla, this.item}) : super(key: key);
+  final Profile itemx;
+  const ProfilePage({Key key, this.plantilla, this.item, this.itemx}) : super(key: key);
   @override
   _DataTableExample createState() => _DataTableExample();
 }
@@ -31,10 +33,12 @@ class _DataTableExample extends State<ProfilePage> {
 
   //variables
   Future<Profile> item;
+  Future<DataAgent> itemx;
 
   @override  
   void initState() {  
-    super.initState();  
+    super.initState();
+    itemx = fetchRefres();  
     //indexar variable a fetch
     item = fetchProfile();  
   }  
@@ -779,20 +783,30 @@ class _DataTableExample extends State<ProfilePage> {
                   }
                 },
               ),
-              if (prefs.companyId != "7")... {                
-                Padding(padding:const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-                  child: SolicitudCambio(
-                    press: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return DetailScreen(plantilla: plantilla[3]);
-                      }));
-                    },
-                  ),
-                ),
-              }else...{
-                Text('')
-              },
+              FutureBuilder<DataAgent>(
+                future: itemx,
+                builder: (context, abc){
+                    if (abc.connectionState == ConnectionState.done) {
+                      if (abc.data.companyId != 7) {
+                        return Padding(padding:const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                      child: SolicitudCambio(
+                        press: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return DetailScreen(plantilla: plantilla[3]);
+                          }));
+                        },
+                      ),
+                    ); 
+                      }else{
+                        Text('');
+                      }
+                    }
+                    else {
+                      return Text("");
+                    }
+                  return Text(""); 
+                }),            
               SizedBox(height: 50)
             ]),
           )
