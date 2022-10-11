@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import 'dart:math';
 
-
 //Clase de circulo de carga
 class ColorLoader3 extends StatefulWidget {
   final double radius;
@@ -13,14 +12,15 @@ class ColorLoader3 extends StatefulWidget {
   _ColorLoader3State createState() => _ColorLoader3State();
 }
 
-class _ColorLoader3State extends State<ColorLoader3> with SingleTickerProviderStateMixin {
-  Animation<double> animationRotation;
-  Animation<double> animationRadiusIn;
-  Animation<double> animationRadiusOut;
-  AnimationController controller;
+class _ColorLoader3State extends State<ColorLoader3>
+    with SingleTickerProviderStateMixin {
+  late Animation<double> animationRotation;
+  late Animation<double> animationRadiusIn;
+  late Animation<double> animationRadiusOut;
+  late AnimationController controller;
 
-  double radius;
-  double dotRadius;
+  late double radius;
+  late double dotRadius;
 
   @override
   void initState() {
@@ -82,7 +82,6 @@ class _ColorLoader3State extends State<ColorLoader3> with SingleTickerProviderSt
       //color: Colors.black12,
       child: new Center(
         child: new RotationTransition(
-          
           turns: animationRotation,
           child: new Container(
             //color: Colors.limeAccent,
@@ -187,7 +186,6 @@ class _ColorLoader3State extends State<ColorLoader3> with SingleTickerProviderSt
 
   @override
   void dispose() {
-
     controller.dispose();
     super.dispose();
   }
@@ -197,7 +195,7 @@ class Dot extends StatelessWidget {
   final double radius;
   final Color color;
 
-  Dot({this.radius, this.color});
+  Dot({required this.radius, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +204,6 @@ class Dot extends StatelessWidget {
         width: radius,
         height: radius,
         decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-
       ),
     );
   }

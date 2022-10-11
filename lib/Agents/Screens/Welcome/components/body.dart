@@ -4,30 +4,35 @@ import 'package:flutter_auth/Agents/Screens/Signup/signup_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Welcome/components/background.dart';
 import 'package:flutter_auth/components/rounded_button.dart';
 import 'package:flutter_auth/constants.dart';
-import 'package:flutter_svg/svg.dart';
+
+import 'package:lottie/lottie.dart';
 
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     // This size provide us total height and width of our screen
     return Background(
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SizedBox(
+              height: 30,
+            ),
             Text(
-              "BIENVENIDO A SMART DRIVER",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              "Bienvenido a",
+              style: TextStyle(
+                  fontSize: 20, fontWeight: FontWeight.w400, color: firstColor),
             ),
-            SizedBox(height: size.height * 0.05),
-            SvgPicture.asset(
-              "assets/icons/chat.svg",
-              height: size.height * 0.45,
+            Text(
+              'SMART DRIVER',
+              style: TextStyle(
+                  fontSize: 35, fontWeight: FontWeight.bold, color: firstColor),
             ),
-            SizedBox(height: size.height * 0.05),
+            Lottie.asset('assets/videos/welcome.json'),
             RoundedButton(
               text: "INGRESAR",
+              color: thirdColor,
               press: () {
                 Navigator.push(
                   context,
@@ -41,8 +46,8 @@ class Body extends StatelessWidget {
             ),
             RoundedButton(
               text: "REGISTRATE",
-              color: kPrimaryLightColor,
-              textColor: Colors.black,
+              color: thirdColor,
+              textColor: Colors.white,
               press: () {
                 Navigator.push(
                   context,
@@ -54,6 +59,32 @@ class Body extends StatelessWidget {
                 );
               },
             ),
+            SizedBox(
+              height: 60,
+            ),
+            Row(children: <Widget>[
+              SizedBox(width: 100),
+              Text(
+                'Made with',
+                style: TextStyle(color: Colors.white),
+              ),
+              Icon(Icons.favorite, color: fourthColor),
+              SizedBox(
+                width: 3,
+              ),
+              Text(
+                'by',
+                style: TextStyle(color: Colors.white),
+              ),
+              SizedBox(
+                width: 3,
+              ),
+              Text(
+                'MANTUN',
+                style:
+                    TextStyle(color: secondColor, fontWeight: FontWeight.bold),
+              )
+            ])
           ],
         ),
       ),

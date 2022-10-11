@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth/constants.dart';
 
 class SolicitudCambio extends StatelessWidget {
-  final bool profile;
-  final Function press;
+  final bool? profile;
+  final VoidCallback? press;
   const SolicitudCambio({
-    Key key,
+    Key? key,
     this.profile = true,
     this.press,
   }) : super(key: key);
@@ -22,11 +22,11 @@ class SolicitudCambio extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
-                profile ? '¿Es su informacion incorrecta?' : "",
+                profile != null ? '¿Es su informacion incorrecta?' : "",
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontSize: 14,
-                  color: kPrimaryColor,
+                  color: GradiantV_1,
                 ),
               ),
             ),
@@ -36,17 +36,16 @@ class SolicitudCambio extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(right: 10.0),
               child: Text(
-                profile ? "\tSolicite cambio aquí." : "",
+                profile != null ? "\tSolicita cambio aquí." : "",
                 textAlign: TextAlign.left,
                 style: TextStyle(
-                  fontSize: 13,
-                  color: kPrimaryColor,
+                  fontSize: 14,
+                  color: GradiantV_1,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
           ),
-          
         ],
       ),
     );

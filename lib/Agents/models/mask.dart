@@ -9,17 +9,17 @@ Mask maskFromJson(String str) => Mask.fromJson(json.decode(str));
 String maskToJson(Mask data) => json.encode(data.toJson());
 
 class Mask {
-    Mask({
-        this.viewed,
-    });
+  Mask({
+    this.viewed,
+  });
 
-    bool viewed;
+  bool? viewed;
 
-    factory Mask.fromJson(Map<String, dynamic> json) => Mask(
+  factory Mask.fromJson(Map<String, dynamic> json) => Mask(
         viewed: json["viewed"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "viewed": viewed,
-    };
+      };
 }

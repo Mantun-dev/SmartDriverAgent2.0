@@ -3,11 +3,11 @@ import 'package:flutter_auth/components/text_field_container.dart';
 import 'package:flutter_auth/constants.dart';
 
 class CodeRequest extends StatelessWidget {
-  final String hintText;
-  final IconData icon;
-  final ValueChanged<String> onChanged;
+  final String? hintText;
+  final IconData? icon;
+  final ValueChanged<String>? onChanged;
   const CodeRequest({
-    Key key,
+    Key? key,
     this.hintText,
     this.icon = Icons.lock_outline,
     this.onChanged,

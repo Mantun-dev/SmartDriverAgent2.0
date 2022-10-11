@@ -4,34 +4,36 @@
 
 import 'dart:convert';
 
-List<Story> storyFromJson(String str) => List<Story>.from(json.decode(str).map((x) => Story.fromJson(x)));
+List<Story> storyFromJson(String str) =>
+    List<Story>.from(json.decode(str).map((x) => Story.fromJson(x)));
 
-String storyToJson(List<Story> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String storyToJson(List<Story> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Story {
-    Story({
-        this.fecha,
-        this.horaEntrada,
-        this.hora,
-        this.estado,
-        this.conductor,
-        this.telefono,
-        this.abordo,
-        this.tripId,
-        this.direccion,
-    });
+  Story({
+    this.fecha,
+    this.horaEntrada,
+    this.hora,
+    this.estado,
+    this.conductor,
+    this.telefono,
+    this.abordo,
+    this.tripId,
+    this.direccion,
+  });
 
-    String fecha;
-    String horaEntrada;
-    String hora;
-    String estado;
-    String conductor;
-    String telefono;
-    bool abordo;
-    int tripId;
-    String direccion;
+  String? fecha;
+  String? horaEntrada;
+  String? hora;
+  String? estado;
+  String? conductor;
+  String? telefono;
+  bool? abordo;
+  int? tripId;
+  String? direccion;
 
-    factory Story.fromJson(Map<String, dynamic> json) => Story(
+  factory Story.fromJson(Map<String, dynamic> json) => Story(
         fecha: json["Fecha"],
         horaEntrada: json["horaEntrada"],
         hora: json["Hora"],
@@ -41,9 +43,9 @@ class Story {
         abordo: json["Abordo"],
         tripId: json["tripId"],
         direccion: json["Direccion"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "Fecha": fecha,
         "horaEntrada": horaEntrada,
         "Hora": hora,
@@ -53,5 +55,5 @@ class Story {
         "Abordo": abordo,
         "tripId": tripId,
         "Direccion": direccion,
-    };
+      };
 }

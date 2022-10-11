@@ -12,47 +12,63 @@ import '../../../constants.dart';
 class DetailScreen extends StatefulWidget {
   final Plantilla plantilla;
 
-    final DataAgent item;
-  const DetailScreen({Key key, this.plantilla,  this.item}) : super(key: key);
+  final DataAgent? item;
+  const DetailScreen({Key? key, required this.plantilla, this.item})
+      : super(key: key);
 
   @override
   _DetailScreenState createState() => _DetailScreenState();
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-    Future<DataAgent> item;
-  
-  @override  
-  void initState() {  
-    super.initState();  
-    item = fetchRefres();  
-  } 
+  Future<DataAgent>? item;
+
+  @override
+  void initState() {
+    super.initState();
+    item = fetchRefres();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children:[ Scaffold(
+    return Stack(children: [
+      Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: IconThemeData(color: secondColor, size: 35),
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: Icon(
+                Icons.arrow_circle_left,
+                size: 40,
+                color: thirdColor,
+              ),
               onPressed: () {
-                setState(() {                  
-                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context)=>
-                  HomeScreen()), (Route<dynamic> route) => false);
+                setState(() {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => HomeScreen()),
+                      (Route<dynamic> route) => false);
                 });
               },
             ),
             SizedBox(width: kDefaultPadding / 4)
           ],
-          backgroundColor: kColorAppBar,
+          backgroundColor: backgroundColor,
           elevation: 15,
         ),
         drawer: MenuLateral(),
-        backgroundColor: widget.plantilla.color,
-        body: Body(plantilla: widget.plantilla),
+        body: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                Colors.blue,
+                Colors.red,
+              ],
+            )),
+            child: Body(plantilla: widget.plantilla)),
       ),
-      ]
-    );
+    ]);
   }
 }

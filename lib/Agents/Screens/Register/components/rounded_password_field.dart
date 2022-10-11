@@ -3,9 +3,9 @@ import 'package:flutter_auth/components/text_field_container.dart';
 import 'package:flutter_auth/constants.dart';
 
 class RoundedPasswordFieldRegister extends StatelessWidget {
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onChanged;
   const RoundedPasswordFieldRegister({
-    Key key,
+    Key? key,
     this.onChanged,
   }) : super(key: key);
 

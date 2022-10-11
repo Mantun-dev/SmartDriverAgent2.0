@@ -3,11 +3,15 @@ import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/components/add_cart.dart';
 import 'package:flutter_auth/components/description.dart';
 import 'package:flutter_auth/components/plantilla_titleWithImage.dart';
+import 'package:flutter_auth/constants.dart';
 //import 'package:flutter_auth/constants.dart';
 
 class Body extends StatefulWidget {
   final Plantilla plantilla;
-  const Body({Key key, this.plantilla}) : super(key: key);
+  const Body({
+    Key? key,
+    required this.plantilla,
+  }) : super(key: key);
 
   @override
   _BodyState createState() => _BodyState();
@@ -28,14 +32,14 @@ class _BodyState extends State<Body> {
                   Container(
                     width: size.width,
                     height: size.height,
-                    margin: EdgeInsets.only(top: size.height * 0.25),
+                    margin: EdgeInsets.only(top: size.height * 0.27),
                     padding: EdgeInsets.only(
                       top: 30.0,
                       left: 0,
                       right: 0,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: backgroundColor,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(24),
                           topRight: Radius.circular(24)),

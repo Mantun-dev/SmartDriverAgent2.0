@@ -7,12 +7,10 @@ import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class Description extends StatefulWidget {
   const Description({
-    Key key,
-    @required this.plantilla,
-
+    Key? key,
+    required this.plantilla,
   }) : super(key: key);
 
   final Plantilla plantilla;
@@ -22,7 +20,7 @@ class Description extends StatefulWidget {
 }
 
 class _DescriptionState extends State<Description> {
-    bool radioShowAndHide = true;
+  bool radioShowAndHide = true;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -39,9 +37,9 @@ class _DescriptionState extends State<Description> {
     return Column(
       children: [
         if (widget.plantilla.id == 1) ...[
-          if (prefs.companyId == "2")... {              
-            if (radioShowAndHide == true)... {
-              showAndHide(),            
+          if (prefs.companyId == "2") ...{
+            if (radioShowAndHide == true) ...{
+              showAndHide(),
             },
           },
           _mostrarPrimerventana(),
@@ -60,86 +58,96 @@ class _DescriptionState extends State<Description> {
     );
   }
 
-    Widget showAndHide(){
-      
+  Widget showAndHide() {
     return Container(
       child: Column(
         children: [
           Visibility(
-            maintainSize: true, 
-            maintainAnimation: true,
-            maintainState: true,
-            visible: radioShowAndHide, 
-            child: message()
-          ),                  
+              maintainSize: true,
+              maintainAnimation: true,
+              maintainState: true,
+              visible: radioShowAndHide,
+              child: message()),
         ],
       ),
     );
   }
 
-  Widget message(){    
+  Widget message() {
     return Container(
-        margin: EdgeInsets.only(left: 0.0,right: 0.0),
-        child: Stack(
-            children: <Widget>[
-            Container(
-                padding: EdgeInsets.only(
-                top: 18.0,
+      margin: EdgeInsets.only(left: 0.0, right: 0.0),
+      child: Stack(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(
+              top: 18.0,
+            ),
+            margin: EdgeInsets.only(top: 13.0, right: 8.0),
+            decoration: BoxDecoration(
+                color: Colors.blueGrey[100],
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(16.0),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 0.0,
+                    offset: Offset(0.0, 0.0),
+                  ),
+                ]),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                SizedBox(
+                  height: 20.0,
                 ),
-                margin: EdgeInsets.only(top: 13.0,right: 8.0),
-                decoration: BoxDecoration(
-                    color: Colors.blueGrey[100],
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(16.0),
-                    boxShadow: <BoxShadow>[
-                    BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 0.0,
-                        offset: Offset(0.0, 0.0),
-                    ),
-                    ]),
-                child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                    SizedBox(
-                    height: 20.0,
-                    ),
-                    TextButton(onPressed: () => launch('tel://3317-4537'),child: RichText(textAlign: TextAlign.center,text: TextSpan(children: <TextSpan>[
-                    TextSpan(text: "Si tiene algún inconveniente con su programación, puede escribir al número: ",style: TextStyle(color: Colors.black87)),
-                    TextSpan(text: "3317-4537",style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold)),]),
+                TextButton(
+                    onPressed: () => launchUrl(Uri.parse('tel://3317-4537')),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                            text:
+                                "Si tiene algún inconveniente con su programación, puede escribir al número: ",
+                            style: TextStyle(color: Colors.black87)),
+                        TextSpan(
+                            text: "3317-4537",
+                            style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontWeight: FontWeight.bold)),
+                      ]),
                     )),
-                    SizedBox(height: 24.0),  
-                ],
-                ),
+                SizedBox(height: 24.0),
+              ],
             ),
-            Positioned(
-                right: 0.0,
-                child: GestureDetector(
-                onTap: (){
-                    if (radioShowAndHide) {
-                      setState(() {
-                        radioShowAndHide = false;
-                      });
-                    } else {
-                      setState(() {
-                        radioShowAndHide = true;
-                      });
-                    }
-                },
-                child: Align(
-                    alignment: Alignment.topRight,
-                    child: CircleAvatar(
-                    radius: 14.0,
-                    backgroundColor: Colors.white,
-                    child: Icon(Icons.close, color: Colors.red),
-                    ),
+          ),
+          Positioned(
+            right: 0.0,
+            child: GestureDetector(
+              onTap: () {
+                if (radioShowAndHide) {
+                  setState(() {
+                    radioShowAndHide = false;
+                  });
+                } else {
+                  setState(() {
+                    radioShowAndHide = true;
+                  });
+                }
+              },
+              child: Align(
+                alignment: Alignment.topRight,
+                child: CircleAvatar(
+                  radius: 14.0,
+                  backgroundColor: Colors.white,
+                  child: Icon(Icons.close, color: Colors.red),
                 ),
-                ),
+              ),
             ),
-            ],
-        ),
-        );
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _mostrarPrimerventana() {

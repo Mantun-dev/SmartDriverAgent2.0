@@ -4,58 +4,70 @@
 
 import 'dart:convert';
 
-List<TicketHistory> ticketHistoryFromJson(String str) => List<TicketHistory>.from(json.decode(str).map((x) => TicketHistory.fromJson(x)));
+List<TicketHistory> ticketHistoryFromJson(String str) =>
+    List<TicketHistory>.from(
+        json.decode(str).map((x) => TicketHistory.fromJson(x)));
 
-String ticketHistoryToJson(List<TicketHistory> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String ticketHistoryToJson(List<TicketHistory> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class TicketHistory {
-    TicketHistory({
-        this.pendant,
-        this.closed,
-    });
+  TicketHistory({
+    this.pendant,
+    this.closed,
+  });
 
-    List<Pendant> pendant;
-    List<Closed> closed;
+  List<Pendant>? pendant;
+  List<Closed>? closed;
 
-    factory TicketHistory.fromJson(Map<String, dynamic> json) => TicketHistory(
-        pendant: json["pendant"] == null ? null : List<Pendant>.from(json["pendant"].map((x) => Pendant.fromJson(x))),
-        closed: json["closed"] == null ? null : List<Closed>.from(json["closed"].map((x) => Closed.fromJson(x))),
-    );
+  factory TicketHistory.fromJson(Map<String, dynamic> json) => TicketHistory(
+        pendant: json["pendant"] == null
+            ? null
+            : List<Pendant>.from(
+                json["pendant"].map((x) => Pendant.fromJson(x))),
+        closed: json["closed"] == null
+            ? null
+            : List<Closed>.from(json["closed"].map((x) => Closed.fromJson(x))),
+      );
 
-    Map<String, dynamic> toJson() => {
-        "pendant": pendant == null ? null : List<dynamic>.from(pendant.map((x) => x.toJson())),
-        "closed": closed == null ? null : List<dynamic>.from(closed.map((x) => x.toJson())),
-    };
+  Map<String, dynamic> toJson() => {
+        "pendant": pendant == null
+            ? null
+            : List<dynamic>.from(pendant!.map((x) => x.toJson())),
+        "closed": closed == null
+            ? null
+            : List<dynamic>.from(closed!.map((x) => x.toJson())),
+      };
 }
 
 class Closed {
-    Closed({
-        this.ticketId,
-        this.agentEmployeeId,
-        this.agentFullname,
-        this.ticketIssue,
-        this.ticketMessage,
-        this.ticketDatetime,
-        this.agentId,
-        this.replyId,
-        this.replyMessage,
-        this.userName,
-        this.userFullname,
-    });
+  Closed({
+    required this.ticketId,
+    required this.agentEmployeeId,
+    required this.agentFullname,
+    required this.ticketIssue,
+    required this.ticketMessage,
+    required this.ticketDatetime,
+    required this.agentId,
+    required this.replyId,
+    required this.replyMessage,
+    required this.userName,
+    required this.userFullname,
+  });
 
-    int ticketId;
-    String agentEmployeeId;
-    String agentFullname;
-    String ticketIssue;
-    String ticketMessage;
-    String ticketDatetime;
-    int agentId;
-    int replyId;
-    String replyMessage;
-    String userName;
-    String userFullname;
+  int ticketId;
+  String agentEmployeeId;
+  String agentFullname;
+  String ticketIssue;
+  String ticketMessage;
+  String ticketDatetime;
+  int agentId;
+  int replyId;
+  String replyMessage;
+  String userName;
+  String userFullname;
 
-    factory Closed.fromJson(Map<String, dynamic> json) => Closed(
+  factory Closed.fromJson(Map<String, dynamic> json) => Closed(
         ticketId: json["ticketId"],
         agentEmployeeId: json["agentEmployeeId"],
         agentFullname: json["agentFullname"],
@@ -67,9 +79,9 @@ class Closed {
         replyMessage: json["replyMessage"],
         userName: json["userName"],
         userFullname: json["userFullname"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "ticketId": ticketId,
         "agentEmployeeId": agentEmployeeId,
         "agentFullname": agentFullname,
@@ -81,29 +93,29 @@ class Closed {
         "replyMessage": replyMessage,
         "userName": userName,
         "userFullname": userFullname,
-    };
+      };
 }
 
 class Pendant {
-    Pendant({
-        this.ticketId,
-        this.agentEmployeeId,
-        this.agentFullname,
-        this.ticketIssue,
-        this.ticketMessage,
-        this.ticketDatetime,
-        this.agentId,
-    });
+  Pendant({
+    required this.ticketId,
+    required this.agentEmployeeId,
+    required this.agentFullname,
+    required this.ticketIssue,
+    required this.ticketMessage,
+    required this.ticketDatetime,
+    required this.agentId,
+  });
 
-    int ticketId;
-    String agentEmployeeId;
-    String agentFullname;
-    String ticketIssue;
-    String ticketMessage;
-    String ticketDatetime;
-    int agentId;
+  int ticketId;
+  String agentEmployeeId;
+  String agentFullname;
+  String ticketIssue;
+  String ticketMessage;
+  String ticketDatetime;
+  int agentId;
 
-    factory Pendant.fromJson(Map<String, dynamic> json) => Pendant(
+  factory Pendant.fromJson(Map<String, dynamic> json) => Pendant(
         ticketId: json["ticketId"],
         agentEmployeeId: json["agentEmployeeId"],
         agentFullname: json["agentFullname"],
@@ -111,9 +123,9 @@ class Pendant {
         ticketMessage: json["ticketMessage"],
         ticketDatetime: json["ticketDatetime"],
         agentId: json["agentId"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "ticketId": ticketId,
         "agentEmployeeId": agentEmployeeId,
         "agentFullname": agentFullname,
@@ -121,24 +133,22 @@ class Pendant {
         "ticketMessage": ticketMessage,
         "ticketDatetime": ticketDatetime,
         "agentId": agentId,
-    };
+      };
 }
-
 
 class TripsList6 {
   final List<TicketHistory> trips;
 
   TripsList6({
-    this.trips,
+    required this.trips,
   });
 
   factory TripsList6.fromJson(List<dynamic> parsedJson) {
-
     List<TicketHistory> trips = [];
 
-    trips = parsedJson.map((i)=>TicketHistory.fromJson(i)).toList();
+    trips = parsedJson.map((i) => TicketHistory.fromJson(i)).toList();
     return new TripsList6(
-       trips: trips,
+      trips: trips,
     );
   }
 }

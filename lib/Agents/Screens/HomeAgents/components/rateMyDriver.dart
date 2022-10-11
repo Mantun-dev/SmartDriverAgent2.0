@@ -24,13 +24,13 @@ class RateMyApp {
   int remindLaunches;
 
   /// The base launch date.
-  DateTime baseLaunchDate;
+  late DateTime baseLaunchDate;
 
   /// Number of launches.
-  int launches;
+  late int launches;
 
   /// Whether the dialog should not be opened again.
-  bool doNotOpenAgain;
+  late bool doNotOpenAgain;
 
   /// Creates a new rate my app instance.
   RateMyApp({
@@ -134,11 +134,11 @@ class RateMyAppDialog extends StatelessWidget {
                   onPressed: () {
                     rateMyApp.doNotOpenAgain = true;
                     Navigator.pop(context);
-                    return RateMyApp._CHANNEL.invokeMethod('launchStore', {
-                      // 'appId': Platform.isIOS
-                      //   ? rateMyApp.appStoreIdentifier
-                      // : rateMyApp.googlePlayIdentifier,
-                    });
+                    // return RateMyApp._CHANNEL.invokeMethod('launchStore', {
+                    //   // 'appId': Platform.isIOS
+                    //   //   ? rateMyApp.appStoreIdentifier
+                    //   // : rateMyApp.googlePlayIdentifier,
+                    // });
                   },
                 ),
                 TextButton(
