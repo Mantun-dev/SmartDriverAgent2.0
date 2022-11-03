@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
+import 'package:flutter_auth/Agents/Screens/Chat/socketChat.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/components/body.dart';
 import 'package:flutter_auth/Agents/Screens/Profile/profile_screen.dart';
-import 'package:flutter_auth/Agents/models/network.dart';
+//import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/components/menu_lateral.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -14,6 +16,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+ final StreamSocket streamSocket = StreamSocket(host: '192.168.1.3:3010');
+  @override
+  void initState() {    
+    super.initState();
+    ChatApis().dataLogin('8', 'agente',  'FRANKLIN');
+    streamSocket.socket.on('entrarChat_flutter', (data) {             
+        //ChatApis().getDataUsuarios(data['Usuarios']);              
+    });
+  }
+
+  @override
+  void dispose() {    
+    super.dispose();
+    streamSocket.close();
+  }
+  
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,9 +60,9 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return ChatScreen(
-                rol: 'prefs.rol',
-                nombre: prefs.nombreUsuario,
-                sala: 'prefs.sala',
+                id: '8',
+                rol: 'agente',
+                nombre: 'FRANKLIN',
               );
             }));
           },

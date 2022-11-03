@@ -21,8 +21,7 @@ final prefs = new PreferenciasUsuario();
 Future<Profile> fetchProfile() async {
   http.Response response =
       await http.get(Uri.parse('$ip/api/profile/${prefs.nombreUsuario}'));
-  if (response.statusCode == 200) {
-    print("Hola " + response.body);
+  if (response.statusCode == 200) {    
     if (response.body.isNotEmpty) {
       return Profile.fromJson(json.decode(response.body));
     }

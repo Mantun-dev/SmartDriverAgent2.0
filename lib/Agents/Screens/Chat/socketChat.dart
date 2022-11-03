@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class StreamSocket {
-  final _socketResponse = StreamController<dynamic>();
-  Stream<dynamic> get getResponse => _socketResponse.stream;
+  //final _socketResponse = StreamController<dynamic>();
+  //Stream<dynamic> get getResponse => _socketResponse.stream;
 
   final String host;
   late final IO.Socket socket;
@@ -32,44 +32,43 @@ class StreamSocket {
     // ignore: avoid_print
     socket.onError((error) => print(error.toString()));
 
-    socket.on(
-        'unauthorized',
-        (msg) => {
+    socket.on('unauthorized',(msg) => {
               // ignore: avoid_print
               print('no doy'),
               // ignore: avoid_print
               print(msg), // 'jwtoken not provided' || 'access denied'
             });
-    socket.on('terminal:location', (data) {
-      //print('si doy');
-      //print(data);
-      if (!_socketResponse.isClosed) _socketResponse.sink.add(data);
-    });
+    // socket.on('terminal:location', (data) {
+    //   //print('si doy');
+    //   //print(data);
+    //   if (!_socketResponse.isClosed) _socketResponse.sink.add(data);
+    // });
     // ignore: avoid_print
     socket.onDisconnect((_) => print('disconnect to chat'));
   }
 
-  void sendTextMessage(String message) {
-    socket.emit('msg', message);
-  }
+  // void sendTextMessage(String message) {
+  //   socket.emit('msg', message);
+  // }
 
-  void sendCommands(Map message) {
-    socket.emit('terminal:command', message);
-  }
+  // void sendCommands(Map message) {
+  //   socket.emit('terminal:command', message);
+  // }
 
-  void sendAlarmFind(Map message) {
-    socket.emit('terminal:find', message);
-  }
+  // void sendAlarmFind(Map message) {
+  //   socket.emit('terminal:find', message);
+  // }
 
-  void sendOperateDelay(Map relay) {
-    socket.emit('terminal:relay', relay);
-  }
+  // void sendOperateDelay(Map relay) {
+  //   socket.emit('terminal:relay', relay);
+  // }
 
   void connect() {}
 
   void close() {
-    _socketResponse.close();
-    socket.destroy();
-    socket.disconnect().close();
+    //_socketResponse.close();
+    //socket.destroy();
+    socket.close();
+    //socket.disconnect().close();
   }
 }

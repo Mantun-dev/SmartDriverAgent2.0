@@ -3,6 +3,8 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
+import 'package:flutter_auth/Agents/Screens/Chat/socketChat.dart';
 import 'package:flutter_auth/Agents/Screens/Details/components/loader.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
@@ -56,7 +58,7 @@ class _NextTripScreenState extends State<NextTripScreen>
   late double rating3;
   String ip = "https://smtdriver.com";
   final tripId = 0;
-
+  final StreamSocket streamSocket = StreamSocket(host: '192.168.1.3:3010');
   @override
   void initState() {
     super.initState();
@@ -460,6 +462,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                               backgroundColor:
                                                                   Colors.green),
                                                           onPressed: () => {
+                                                            ChatApis().confirmOrCancel('CONFIRMADO'),                                                            
                                                             //función fetch confirm
                                                             fetchConfirm(
                                                                 prefs
@@ -522,6 +525,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                               TextButton(
                                                                                 style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: Colors.blueAccent),
                                                                                 onPressed: () => {
+                                                                                  ChatApis().confirmOrCancel('RECHAZADO'),
+                                                                                  
                                                                                   //función fetch cancel
                                                                                   fetchCancel(prefs.nombreUsuario, '${abc.data!.trips[index].tripId}', conditionC, message.text),
                                                                                   Navigator.pop(context),

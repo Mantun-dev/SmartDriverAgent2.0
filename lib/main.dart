@@ -8,6 +8,8 @@ import 'package:flutter_auth/components/splash_screen.dart';
 import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
+import 'package:flutter_auth/providers/chat.dart';
+import 'package:provider/provider.dart';
 import 'Agents/sharePrefers/preferencias_usuario.dart';
 
 Future<void> main() async {
@@ -49,22 +51,29 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     //Aqui es donde se inicializa la aplicación
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      title: 'Smart Driver',
-      theme: ThemeData(
-        primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: backgroundColor,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: ChatProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        navigatorKey: navigatorKey,
+        debugShowCheckedModeBanner: false,
+        title: 'Smart Driver',
+        theme: ThemeData(
+          primaryColor: kPrimaryColor,
+          scaffoldBackgroundColor: backgroundColor,
+        ),
+        //home: prefs.nombreUsuario ==null?WelcomeScreen():HomeScreen(),
+        initialRoute: prefs.nombreUsuario == null || prefs.nombreUsuario == ""
+            ? 'login'
+            : 'home',
+        routes: {
+          'login': (BuildContext context) => SplashView(),
+          'home': (BuildContext context) => HomeScreen(),
+        },
       ),
-      //home: prefs.nombreUsuario ==null?WelcomeScreen():HomeScreen(),
-      initialRoute: prefs.nombreUsuario == null || prefs.nombreUsuario == ""
-          ? 'login'
-          : 'home',
-      routes: {
-        'login': (BuildContext context) => SplashView(),
-        'home': (BuildContext context) => HomeScreen(),
-      },
     );
   }
 }
