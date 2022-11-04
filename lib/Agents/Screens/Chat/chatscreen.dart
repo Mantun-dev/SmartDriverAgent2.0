@@ -6,7 +6,7 @@ import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
 import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/providers/chat.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
+//import 'package:intl/intl.dart';
 // ignore: library_prefixes
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:provider/provider.dart';
@@ -36,30 +36,16 @@ class _ChatScreenState extends State<ChatScreen> {
   var usuario = {};
   String? sala;
   String? id;
+  String? idDb;
+  String? modid;
+  String? nameDriver;
   ScrollController _scrollController = new ScrollController();
+  final arrayTemp = [];
   final StreamSocket streamSocket = StreamSocket(host: '192.168.1.3:3010');
+  
   _sendMessage() {
-    DateTime now = DateTime.now();
-    String formattedHour = DateFormat('kk:mm:ss').format(now);
-    var formatter = new DateFormat('dd');
-    String dia = formatter.format(now);
-    var formatter2 = new DateFormat('MM');
-    String mes = formatter2.format(now);
-    var formatter3 = new DateFormat('yy');
-    String anio = formatter3.format(now);
-    streamSocket.socket.emit('enviar-mensaje', {
-      'mensaje': _messageInputController.text.trim(),
-      'sala': sala,
-      'user': widget.nombre,
-      'id': id,
-      'hora': formattedHour,
-      'dia': dia,
-      'mes': mes,
-      'año': anio
-    });
-    streamSocket.socket.on('saveF', ((data){  
-      ChatApis().saveMessages(data);
-    }));
+    ChatApis().sendMessage(_messageInputController.text.trim(), sala.toString(), widget.nombre, id.toString(), modid!, nameDriver!, idDb!);       
+    ChatApis().rendV(modid!, sala!); 
     _messageInputController.clear();
   }
 
@@ -68,18 +54,37 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     //Important: If your server is running on localhost and you are testing your app on Android then replace http://localhost:3000 with http://10.0.2.2:3000
     
-    ChatApis().dataLogin(widget.id, widget.rol,  widget.nombre);
+    //ChatApis().dataLogin(widget.id, widget.rol,  widget.nombre);
+
+   //scroll();
+    
+    datas();
+    //inicializador del botón de android para manejarlo manual
+    BackButtonInterceptor.add(myInterceptor);
+    
+  }
+
+void datas(){
+    ChatApis().dataLogin(widget.id, widget.rol,  widget.nombre);    
     streamSocket.socket.on('detectarE', (data) => print(data));
-    streamSocket.socket.on('entrarChat_flutter', (data) { 
+    streamSocket.socket.on('entrarChat_flutter', (data) {     
       sala = data['Usuarios']['sala'];
       id = data['Usuarios']['id'];
-      for (var i = 0; i < data['listM'].length; i++) {   
-        print(data['listM'].length);            
-        ChatApis().getDataUsuarios(data['Usuarios']);    
-        if (mounted) {          
-          Provider.of<ChatProvider>(context, listen: false).addNewMessage(Message.fromJson(data['listM'][i]));
-        }   
-      }
+      idDb = data['Usuarios']['_id'];
+      modid = data['Usuarios']['mot_id'];
+      nameDriver = data['targetN'];
+        print('*****************************************************');            
+        //print(data['listM']);
+        Provider.of<ChatProvider>(context, listen: false).mensaje2.clear();
+         data['listM'].forEach((value){
+          print(value);
+            if (mounted) {          
+              Provider.of<ChatProvider>(context, listen: false).addNewMessage(Message.fromJson(value));
+            } 
+         });
+      // for (var i = 0; i < data['listM'].length; i++) {   
+      //   //ChatApis().getDataUsuarios(data['Usuarios']); 
+      // }
     });
 
     streamSocket.socket.on('flutter-mensaje',((data) {
@@ -88,39 +93,40 @@ class _ChatScreenState extends State<ChatScreen> {
         }
       }),
     );
-
+    
     streamSocket.socket.on('enviar-mensaje',((data) {
         if (mounted) {          
           Provider.of<ChatProvider>(context, listen: false).addNewMessage(Message.fromJson(data));
         }
       }),
     );
-   scroll();
-    
+}
 
-    //inicializador del botón de android para manejarlo manual
-    BackButtonInterceptor.add(myInterceptor);
-    
-  }
-  
 
   @override
   void dispose() {
+    super.dispose();
     _messageInputController.dispose();
-    streamSocket.socket.close();
+    
     //creación del dispose para removerlo después del evento
     BackButtonInterceptor.remove(myInterceptor);
-    super.dispose();
   }
   bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
-    print("BACK BUTTON!"); // Do some stuff.
+    print("BACK BUTTON!"); // Do some stuff.  
+      streamSocket.socket.disconnect();  
+      streamSocket.socket.close();  
+      streamSocket.socket.dispose();
+      
+    print(streamSocket.socket.connected);  
+    
     //Navigator.of(context).pop();
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (BuildContext context) => HomeScreen()),
-        (Route<dynamic> route) => false);
+    Navigator.of(context).pop();
 
     return true;
   }
+
+
+  
 
   void scroll()async{
     await Future.delayed(const Duration(milliseconds: 300));
@@ -179,8 +185,9 @@ class _ChatScreenState extends State<ChatScreen> {
                   builder: (context, provider, child) => ListView.separated(
                     controller: _scrollController,
                     padding: const EdgeInsets.all(16),
-                    itemBuilder: (context, index) {
+                    itemBuilder: (context, index) {                      
                       final message = provider.mensaje[index];
+                      print(provider.mensaje2.length);
                       return Wrap(
                         alignment: message.user == widget.nombre
                             ? WrapAlignment.end

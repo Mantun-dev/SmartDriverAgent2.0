@@ -20,16 +20,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {    
     super.initState();
-    ChatApis().dataLogin('8', 'agente',  'FRANKLIN');
-    streamSocket.socket.on('entrarChat_flutter', (data) {             
-        //ChatApis().getDataUsuarios(data['Usuarios']);              
-    });
+    //streamSocket.socket.connect();
+    //ChatApis().dataLogin('8', 'agente',  'FRANKLIN');
+    // streamSocket.socket.on('entrarChat_flutter', (data) {             
+    //     //ChatApis().getDataUsuarios(data['Usuarios']);              
+    // });
   }
 
   @override
   void dispose() {    
     super.dispose();
-    streamSocket.close();
+    //streamSocket.close();
   }
   
   
@@ -58,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
             color: firstColor,
           ),
           onPressed: () {
+            
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return ChatScreen(
                 id: '8',

@@ -3,19 +3,21 @@ import 'dart:async';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class StreamSocket {
-  //final _socketResponse = StreamController<dynamic>();
-  //Stream<dynamic> get getResponse => _socketResponse.stream;
+  final socketResponse = StreamController<dynamic>();
+  Stream<dynamic> get getResponse => socketResponse.stream;
 
   final String host;
   late final IO.Socket socket;
 
   StreamSocket({required this.host}) {
     socket = IO.io(
-        'http://$host',
-        IO.OptionBuilder()
-            .setTransports(['websocket']) // for Flutter or Dart VM
+        'http://$host',IO.OptionBuilder()
+            .setTransports(['websocket'])
+            //.enableForceNewConnection() // for Flutter or Dart VM
             .setExtraHeaders({'foo': 'bar'}) // optional
             .build());
+    
+  print('hola');
   }
 
   void connectAndListen() {
@@ -66,7 +68,7 @@ class StreamSocket {
   void connect() {}
 
   void close() {
-    //_socketResponse.close();
+    socketResponse.close();
     //socket.destroy();
     socket.close();
     //socket.disconnect().close();
