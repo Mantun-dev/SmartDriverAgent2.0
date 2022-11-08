@@ -2,33 +2,34 @@
 import 'dart:convert';
 
 import 'package:flutter_auth/Agents/Screens/Chat/socketChat.dart';
+import 'package:flutter_auth/helpers/base_client.dart';
+import 'package:flutter_auth/helpers/res_apis.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+
+
 //import 'dart:convert' show json;
 
 class ChatApis {
   
-  final StreamSocket streamSocket = StreamSocket(host: '192.168.1.3:3010');
+  final StreamSocket streamSocket = StreamSocket(host: '192.168.1.4:3010');
   List info = [];    
-  dynamic getDataUsuariosVar;
+  dynamic getDataUsuariosVar;  
+  final header = {"Content-Type": "application/json" };
 
-  void dataLogin(String id,String rol,String nombre)async { 
+  Future dataLogin(String id,String rol,String nombre)async { 
+    print(id+rol+nombre);      
     streamSocket.socket.connect();    
-    var dataU = await http.get(Uri.parse('http://192.168.1.3:8080/api/usuarios/$id'));  
-    var dataU2 = await http.get(Uri.parse('http://192.168.1.3:8080/api/usuarios'));  
-    var dataS = await http.get(Uri.parse('http://192.168.1.3:8080/api/salas'));  
-    var dataM = await http.get(Uri.parse('http://192.168.1.3:8080/api/mensajes')); 
-    final sendDataU = jsonDecode(dataU.body);
-    final sendDataU2 = jsonDecode(dataU2.body);
-    final sendDataS = jsonDecode(dataS.body);
-    final sendDataM = jsonDecode(dataM.body);    
-    Map data = {
-      'send': {'nombre':nombre.toUpperCase(), 'rol': rol.toUpperCase(),'id': id},
-      'send2': sendDataU,
-      'send3': sendDataU2['usuarios'],
-      'send4': sendDataS['salas'],
-      'send5':sendDataM['mensajes']
-    };
+    var dataU  =  await  BaseClient().get(RestApis.usuerWithId+ '/$id', {"Content-Type": "application/json" });     
+    var dataU2 =  await  BaseClient().get(RestApis.userwithOutId,      {"Content-Type": "application/json" });    
+    var dataS  =  await  BaseClient().get(RestApis.rooms,              {"Content-Type": "application/json" });    
+    var dataM  =  await  BaseClient().get(RestApis.messages,           {"Content-Type": "application/json" });   
+    if (dataU == null|| dataU2 == null || dataS == null|| dataM == null) return null; 
+    final sendDataU = jsonDecode(dataU);
+    final sendDataU2 = jsonDecode(dataU2);
+    final sendDataS = jsonDecode(dataS);    
+    final sendDataM = jsonDecode(dataM);  
+    Map data = {'send': {'nombre':nombre.toUpperCase(), 'rol': rol.toUpperCase(),'id': id},'send2': sendDataU,'send3': sendDataU2['usuarios'],'send4': sendDataS['salas'],'send5':sendDataM['mensajes']};
     String str = json.encode(data);
     streamSocket.socket.emit('login_F',str);
   }
@@ -42,33 +43,12 @@ class ChatApis {
     var formatter3 = new DateFormat('yy');
     String anio = formatter3.format(now);
     print(message);
-    streamSocket.socket.emit('enviar-mensaje', {
-      'mensaje': message,
-      'sala': sala,
-      'user': nombre,
-      'id': id,
-      'hora': formattedHour,
-      'dia': dia,
-      'mes': mes,
-      'año': anio
-    }); 
-    Map sendMessage ={
-      "id_emisor": idDb, 
-      "Nombre_emisor": nombre, 
-      "Mensaje": message, 
-      "Sala": sala, 
-      "id_receptor": motId, 
-      "Nombre_receptor": nameDriver, 
-      "Tipo": "MENSAJE", 
-      "Dia": dia, 
-      "Mes": mes, 
-      "Año": anio, 
-      "Hora": formattedHour
-      };
-      String str = json.encode(sendMessage);
-    var ok =await http.post(Uri.parse('http://192.168.1.3:8080/api/mensajes'), 
-        body: str, headers: {"Content-Type": "application/json" });
-        print(ok.body);
+    streamSocket.socket.emit('enviar-mensaje', {'mensaje': message,'sala': sala,'user': nombre,'id': id,'hora': formattedHour,'dia': dia,'mes': mes,'año': anio}); 
+    Map sendMessage ={"id_emisor": idDb, "Nombre_emisor": nombre, "Mensaje": message, "Sala": sala, "id_receptor": motId, "Nombre_receptor": nameDriver, "Tipo": "MENSAJE", "Dia": dia, "Mes": mes, "Año": anio, "Hora": formattedHour};
+ 
+    var ok =await BaseClient().post(RestApis.messages, sendMessage, {"Content-Type": "application/json" });   
+    if (ok == null) return null;
+    print(ok);
   }
 
   void getDataUsuarios(dynamic getData){
@@ -84,19 +64,15 @@ class ChatApis {
       'Estado': confirmOrCancel
     };
     String str = json.encode(info);
-    await http.put(Uri.parse("http://192.168.1.3:8080/api/salas/4"),headers: {"Content-Type": "application/json" },
-      body: str
-    );
+    await http.put(Uri.parse(RestApis.rooms+"/12"),headers: {"Content-Type": "application/json" },body: str);
 
-    var response1 = await http.get(Uri.parse('http://192.168.1.3:8080/api/salas/Tripid/4')); 
-    final sendData1 = jsonDecode(response1.body);
-    var response2 = await http.get(Uri.parse('http://192.168.1.3:8080/api/salas/userId/0')); 
-    final sendData2 = jsonDecode(response2.body);
+    var response1 = await BaseClient().get(RestApis.rooms+'/Tripid/12', header);      
+    var response2 = await BaseClient().get(RestApis.rooms+'/userId/0', header);   
+    if (response1 == null || response2 == null) return null;
+    final sendData1 = jsonDecode(response1);
+    final sendData2 = jsonDecode(response2);
 
-    Map info2 = {
-      'info1': sendData1['salas']['Agentes'],
-      'info2':sendData2['salas']
-    };
+    Map info2 = {'info1': sendData1['salas']['Agentes'],'info2':sendData2['salas']};
     String str2 = json.encode(info2);
     streamSocket.socket.emit('peticionI', str2);
   }

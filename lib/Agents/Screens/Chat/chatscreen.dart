@@ -41,7 +41,7 @@ class _ChatScreenState extends State<ChatScreen> {
   String? nameDriver;
   ScrollController _scrollController = new ScrollController();
   final arrayTemp = [];
-  final StreamSocket streamSocket = StreamSocket(host: '192.168.1.3:3010');
+  final StreamSocket streamSocket = StreamSocket(host: '192.168.1.4:3010');
   
   _sendMessage() {
     ChatApis().sendMessage(_messageInputController.text.trim(), sala.toString(), widget.nombre, id.toString(), modid!, nameDriver!, idDb!);       
@@ -56,9 +56,9 @@ class _ChatScreenState extends State<ChatScreen> {
     
     //ChatApis().dataLogin(widget.id, widget.rol,  widget.nombre);
 
-   //scroll();
     
     datas();
+    scroll();
     //inicializador del botón de android para manejarlo manual
     BackButtonInterceptor.add(myInterceptor);
     

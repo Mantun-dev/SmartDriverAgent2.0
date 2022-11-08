@@ -16,8 +16,6 @@ class StreamSocket {
             //.enableForceNewConnection() // for Flutter or Dart VM
             .setExtraHeaders({'foo': 'bar'}) // optional
             .build());
-    
-  print('hola');
   }
 
   void connectAndListen() {
