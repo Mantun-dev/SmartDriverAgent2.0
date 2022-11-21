@@ -13,6 +13,9 @@ const kgray = Color(0xFF424242);
 
 //////////////////////////////New SmartDriver Colors/////////////////////////////////////
 const backgroundColor = Color(0xFF303440);
+const backgroundColor2 = Color(0xFF454158);
+const chatFirst = Color(0xFF23212C);
+const chatSecond = Color(0xFF9580FF);
 const firstColor = Color(0xFF8AFF80);
 const secondColor = Color(0xFFFFC97F);
 const thirdColor = Color(0xFF9580FF);

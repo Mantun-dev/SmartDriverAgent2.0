@@ -59,7 +59,7 @@ class _BodyState extends State<Body> {
           .get(Uri.parse('$ip/api/refreshingAgentData/${data['agentUser']}'));
       final si = DataAgent.fromJson(json.decode(responses.body));
       //enviamos el id del agente para obtener el id de la cuenta
-      print(PushNotificationServices.token);
+      //print(PushNotificationServices.token);
       Map data2 = {
         'agentId': '${si.agentId}',
         'device': device,

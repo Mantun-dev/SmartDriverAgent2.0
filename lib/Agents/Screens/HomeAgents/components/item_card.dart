@@ -34,8 +34,8 @@ class _ItemCardState extends State<ItemCard> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: 320,
-            height: 158,
+            width: 350,
+            height: 160,
             padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
             decoration: BoxDecoration(
                 boxShadow: [
@@ -87,7 +87,7 @@ class _ItemCardState extends State<ItemCard> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 12, left: 10),
+                          padding: const EdgeInsets.only(bottom: 9, left: 10),
                           child: Text(
                             widget.plantilla.description,
                             style: TextStyle(

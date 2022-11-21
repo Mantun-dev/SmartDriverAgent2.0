@@ -18,7 +18,9 @@ class Message {
         this.dia,
         this.mes,
         this.ao,
-        this.tipo
+        this.tipo,
+        this.leido,
+        this.id2
     });
 
     String? user;
@@ -30,6 +32,8 @@ class Message {
     dynamic mes;
     dynamic ao;
     String? tipo;
+    bool? leido;
+    dynamic id2;
 
     factory Message.fromJson(Map<String, dynamic> json) => Message(
         mensaje: json["mensaje"],
@@ -40,7 +44,9 @@ class Message {
         dia: json["dia"],
         mes: json["mes"],
         ao: json["año"],
-        tipo: json["tipo"]
+        tipo: json["tipo"],
+        leido: json["leido"],
+        id2: json["_id"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -52,6 +58,8 @@ class Message {
         "dia": dia,
         "mes": mes,
         "año": ao,
-        "tipo": tipo
+        "tipo": tipo,
+        "leido": leido,
+        "_id": id2
     };
 }

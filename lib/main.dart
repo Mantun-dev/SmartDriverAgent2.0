@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
         navigatorKey.currentState?.push(MaterialPageRoute(
             builder: (_) => DetailScreen(plantilla: plantilla[0])));
       }
-      print(event);
+      //print(event);
     });
   }
 

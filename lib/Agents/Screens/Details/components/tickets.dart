@@ -40,7 +40,7 @@ class _TicketScreenState extends State<TicketScreen> {
 
 //creación de función booleana para el evento del boton back android
   bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
-    print("BACK BUTTON!"); // Do some stuff.
+    //print("BACK BUTTON!"); // Do some stuff.
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (BuildContext context) => HomeScreen()),
         (Route<dynamic> route) => false);

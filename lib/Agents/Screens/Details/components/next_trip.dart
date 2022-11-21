@@ -103,7 +103,7 @@ class _NextTripScreenState extends State<NextTripScreen>
       for (var i = 0; i < trip.trips.length; i++) {
         if (trip.trips[i].btnCancelTrip == false ||
             trip.trips[i].btnCancelTrip == true) {
-          print(trip.trips[i].btnCancelTrip);
+          //print(trip.trips[i].btnCancelTrip);
           if (mounted) {
             Navigator.pushReplacement(
                     context,
@@ -129,7 +129,7 @@ class _NextTripScreenState extends State<NextTripScreen>
 
 //creación de función booleana para el evento del boton back android
   bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
-    print("BACK BUTTON!"); // Do some stuff.
+    //print("BACK BUTTON!"); // Do some stuff.
     //Navigator.of(context).pop();
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (BuildContext context) => HomeScreen()),
@@ -169,7 +169,7 @@ class _NextTripScreenState extends State<NextTripScreen>
           style: SweetAlertStyle.success);
       final algo =
           await http.get(Uri.parse('$ip/api/getMaskReminder/${resps.agentId}'));
-      print(algo.body);
+      //print(algo.body);
       showAlertDialog();
       Navigator.pop(context);
     } else if (response.statusCode == 500) {
@@ -322,481 +322,498 @@ class _NextTripScreenState extends State<NextTripScreen>
                       physics: ClampingScrollPhysics(),
                       itemCount: abc.data!.trips.length,
                       itemBuilder: (context, index) {
-                        return Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          margin: EdgeInsets.symmetric(vertical: 15),
-                          elevation: 10,
-                          child: Container(
-                            child: Column(children: [
-                              ListTile(
-                                contentPadding:
-                                    EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                title: Text('Fecha: '),
-                                subtitle:
-                                    Text('${abc.data!.trips[index].fecha}'),
-                                leading: Icon(Icons.calendar_today,
-                                    color: kColorAppBar),
-                              ),
-                              ListTile(
-                                contentPadding:
-                                    EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                title: Text('Hora: '),
-                                subtitle: Text(
-                                    '${abc.data!.trips[index].horaEntrada}'),
-                                leading: Icon(Icons.timer, color: kColorAppBar),
-                              ),
-                              ListTile(
-                                contentPadding:
-                                    EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                title: Text('Motorista: '),
-                                subtitle:
-                                    Text('${abc.data!.trips[index].conductor}'),
-                                leading: Icon(Icons.card_travel,
-                                    color: kColorAppBar),
-                              ),
-                              ListTile(
-                                contentPadding:
-                                    EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                title: Text('Teléfono: '),
-                                subtitle: TextButton(
-                                    onPressed: () => launchUrl(Uri.parse(
-                                        'tel://${abc.data!.trips[index].telefono}')),
-                                    child: Container(
-                                        margin: EdgeInsets.only(right: 180),
-                                        child: Text(
-                                            '${abc.data!.trips[index].telefono}',
-                                            style: TextStyle(
-                                                color: Colors.blue[500],
-                                                fontSize: 14)))),
-                                leading: Icon(Icons.phone, color: kColorAppBar),
-                              ),
-                              ListTile(
-                                contentPadding:
-                                    EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                title: Text('Dirección: '),
-                                subtitle:
-                                    Text('${abc.data!.trips[index].direccion}'),
-                                leading:
-                                    Icon(Icons.directions, color: kColorAppBar),
-                              ),
-                              if (abc.data!.trips[index]
-                                      .neighborhoodReferencePoint ==
-                                  null)
-                                ...{}
-                              else ...{
+                        return Container(
+                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                          decoration: BoxDecoration(boxShadow: [
+                            BoxShadow(
+                                blurStyle: BlurStyle.normal,
+                                color: Colors.white.withOpacity(0.1),
+                                blurRadius: 10,
+                                spreadRadius: 1,
+                                offset: Offset(-5, 12)),
+                            BoxShadow(
+                                blurStyle: BlurStyle.normal,
+                                color: Colors.black.withOpacity(1),
+                                blurRadius: 18,
+                                spreadRadius: -15,
+                                offset: Offset(18, 5)),
+                          ], borderRadius: BorderRadius.circular(15)),
+                          child: Card(
+                            color: backgroundColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            margin: EdgeInsets.symmetric(vertical: 0),
+                            elevation: 10,
+                            child: Container(
+                              child: Column(children: [
                                 ListTile(
                                   contentPadding:
                                       EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                  title: Text('Acceso autorizado: '),
-                                  subtitle: Text(
-                                      '${abc.data!.trips[index].neighborhoodReferencePoint}'),
-                                  leading: Icon(Icons.bus_alert,
-                                      color: kColorAppBar),
+                                  title: Text('Fecha: ', style: TextStyle(color: Colors.white),),
+                                  subtitle:
+                                      Text('${abc.data!.trips[index].fecha}', style: TextStyle(color: Colors.white),),
+                                  leading: Icon(Icons.calendar_today,
+                                      color: GradiantV1, size: 35),
                                 ),
-                              },
-                              SizedBox(height: 20),
-                              //validación de mostrar si la condición está empty mostrar texto de necesita confirmación
-                              if ('${abc.data!.trips[index].condition}' ==
-                                  'empty') ...{
                                 ListTile(
                                   contentPadding:
                                       EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                  title: Text('Hora de encuentro: '),
+                                  title: Text('Hora: ', style: TextStyle(color: Colors.white),),
                                   subtitle: Text(
-                                      'Necesita confirmación para poder asignarle una hora de encuentro',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 15.0)),
+                                      '${abc.data!.trips[index].horaEntrada}', style: TextStyle(color: Colors.white,),),
+                                  leading: Icon(Icons.timer, color: GradiantV1, size: 35),
+                                ),
+                                ListTile(
+                                  contentPadding:
+                                      EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                  title: Text('Motorista: ', style: TextStyle(color: Colors.white)),
+                                  subtitle:
+                                      Text('${abc.data!.trips[index].conductor}', style: TextStyle(color: Colors.white)),
+                                  leading: Icon(Icons.card_travel,
+                                    color: GradiantV1, size: 35),
+                                ),
+                                ListTile(
+                                  contentPadding:
+                                      EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                  title: Text('Teléfono: ', style: TextStyle(color: Colors.white)),
+                                  subtitle: TextButton(
+                                      onPressed: () => launchUrl(Uri.parse(
+                                          'tel://${abc.data!.trips[index].telefono}')),
+                                      child: Container(
+                                          margin: EdgeInsets.only(right: 185),
+                                          child: Text(
+                                              '${abc.data!.trips[index].telefono}',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14)))),
+                                  leading: Icon(Icons.phone, color: GradiantV1, size: 35),
+                                ),
+                                ListTile(
+                                  contentPadding:
+                                      EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                  title: Text('Dirección: ', style: TextStyle(color: Colors.white)),
+                                  subtitle:
+                                      Text('${abc.data!.trips[index].direccion}', style: TextStyle(color: Colors.white)),
                                   leading:
-                                      Icon(Icons.timer, color: kColorAppBar),
+                                      Icon(Icons.directions, color: GradiantV1, size: 35),
                                 ),
-                                TextButton(
-                                  style: TextButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                        side: BorderSide(
-                                            color: kCardColor2, width: 2),
-                                        borderRadius:
-                                            BorderRadius.circular(50)),
-                                    backgroundColor: kPrimaryColor,
-                                  ),
-                                  onPressed: () {
-                                    showGeneralDialog(
-                                        barrierColor:
-                                            Colors.black.withOpacity(0.5),
-                                        transitionBuilder:
-                                            (context, a1, a2, widget) {
-                                          final curvedValue = Curves
-                                                  .easeInOutBack
-                                                  .transform(a1.value) -
-                                              1.0;
-                                          return Transform(
-                                            transform:
-                                                Matrix4.translationValues(0.0,
-                                                    curvedValue * 200, 0.0),
-                                            child: Opacity(
-                                              opacity: a1.value,
-                                              child: AlertDialog(
-                                                shape: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            16.0)),
-                                                title: Center(
-                                                    child:
-                                                        Text('Confirmación')),
-                                                content: Text(
-                                                    '¿Hará uso del transporte designado?',
-                                                    textAlign:
-                                                        TextAlign.center),
-                                                actions: [
-                                                  Container(
-                                                      child: Center(
-                                                    child: Row(
-                                                      children: [
-                                                        SizedBox(width: 20),
-                                                        TextButton(
-                                                          style: TextButton.styleFrom(
-                                                              foregroundColor:
-                                                                  Colors.white,
-                                                              backgroundColor:
-                                                                  Colors.green),
-                                                          onPressed: () => {
-                                                            ChatApis().confirmOrCancel('CONFIRMADO'),                                                            
-                                                            //función fetch confirm
-                                                            fetchConfirm(
-                                                                prefs
-                                                                    .nombreUsuario,
-                                                                '${abc.data!.trips[index].tripId}',
-                                                                condition,
-                                                                comment),
-                                                          },
-                                                          child: Text('Si'),
-                                                        ),
-                                                        SizedBox(width: 20),
-                                                        TextButton(
-                                                          style: TextButton
-                                                              .styleFrom(
-                                                                  foregroundColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .red),
-                                                          child: Text('No'),
-                                                          onPressed: () => {
-                                                            Navigator.pop(
-                                                                context),
-                                                            showGeneralDialog(
-                                                                barrierColor: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                                transitionBuilder:
-                                                                    (context,
-                                                                        a1,
-                                                                        a2,
-                                                                        widget) {
-                                                                  return Transform
-                                                                      .scale(
-                                                                    scale: a1
-                                                                        .value,
-                                                                    child:
-                                                                        Opacity(
-                                                                      opacity: a1
-                                                                          .value,
-                                                                      child:
-                                                                          AlertDialog(
-                                                                        shape: OutlineInputBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(16.0)),
-                                                                        title: Center(
-                                                                            child:
-                                                                                Text('¿Razón por la cual no hará uso del transporte?', textAlign: TextAlign.center)),
-                                                                        content: TextField(
-                                                                            controller:
-                                                                                message,
-                                                                            decoration:
-                                                                                InputDecoration(labelText: 'Escriba aquí')),
-                                                                        actions: [
-                                                                          Row(
-                                                                            children: [
-                                                                              SizedBox(width: 60.0),
-                                                                              TextButton(
-                                                                                style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: Colors.blueAccent),
-                                                                                onPressed: () => {
-                                                                                  ChatApis().confirmOrCancel('RECHAZADO'),
-                                                                                  
-                                                                                  //función fetch cancel
-                                                                                  fetchCancel(prefs.nombreUsuario, '${abc.data!.trips[index].tripId}', conditionC, message.text),
-                                                                                  Navigator.pop(context),
-                                                                                },
-                                                                                child: Text('Enviar'),
-                                                                              ),
-                                                                              SizedBox(width: 10.0),
-                                                                              TextButton(
-                                                                                style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: Colors.red),
-                                                                                onPressed: () => {
-                                                                                  Navigator.pop(context),
-                                                                                },
-                                                                                child: Text('Cerrar'),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  );
-                                                                },
-                                                                transitionDuration:
-                                                                    Duration(
-                                                                        milliseconds:
-                                                                            200),
-                                                                barrierDismissible:
-                                                                    true,
-                                                                barrierLabel:
-                                                                    '',
-                                                                context:
-                                                                    context,
-                                                                pageBuilder: (context,
-                                                                    animation1,
-                                                                    animation2) {
-                                                                  return widget;
-                                                                }),
-                                                          },
-                                                        ),
-                                                        SizedBox(width: 20),
-                                                        TextButton(
-                                                          style: TextButton.styleFrom(
-                                                              foregroundColor:
-                                                                  Colors.white,
-                                                              backgroundColor:
-                                                                  Colors
-                                                                      .blueAccent),
-                                                          onPressed: () => {
-                                                            Navigator.pop(
-                                                                context),
-                                                          },
-                                                          child: Text('Cerrar'),
-                                                        ),
-                                                        SizedBox(width: 10.0),
-                                                      ],
-                                                    ),
-                                                  ))
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        transitionDuration:
-                                            Duration(milliseconds: 200),
-                                        barrierDismissible: true,
-                                        barrierLabel: '',
-                                        context: context,
-                                        pageBuilder:
-                                            (context, animation1, animation2) {
-                                          return widget;
-                                        });
-                                  },
-                                  child: Text(
-                                      'Presione para confirmar o cancelar',
-                                      style: TextStyle(color: Colors.white)),
-                                ),
-                                SizedBox(height: 20),
-                                //validación de condition in canceled
-                              } else if ('${abc.data!.trips[index].condition}' ==
-                                  'Canceled') ...{
-                                if ('${abc.data!.trips[index].commentDriver}' ==
-                                    'No confirmó') ...{
+                                if (abc.data!.trips[index]
+                                        .neighborhoodReferencePoint ==
+                                    null)
+                                  ...{}
+                                else ...{
                                   ListTile(
                                     contentPadding:
                                         EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                    title: Text('Viaje cancelado: '),
-                                    subtitle: Text('No confirmó a tiempo',
-                                        style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 15.0)),
-                                    leading:
-                                        Icon(Icons.timer, color: kColorAppBar),
-                                  ),
-                                } else ...{
-                                  ListTile(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                    title: Text('Viaje cancelado: '),
+                                    title: Text('Acceso autorizado: '),
                                     subtitle: Text(
-                                        'Se ha notificado al motorista que usted no necesitará el transporte',
-                                        style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 15.0)),
-                                    leading:
-                                        Icon(Icons.timer, color: kColorAppBar),
+                                        '${abc.data!.trips[index].neighborhoodReferencePoint}'),
+                                    leading: Icon(Icons.bus_alert,
+                                        color: kColorAppBar),
                                   ),
                                 },
                                 SizedBox(height: 20),
-                                //validación de horaConductor in empty
-                              } else if ('${abc.data!.trips[index].horaConductor}' ==
-                                  'empty') ...{
-                                ListTile(
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                  title: Text('Hora de encuentro: '),
-                                  subtitle: Text(
-                                      'Viaje confirmado, espere a que el motorista asigne la hora a la que pasará por usted',
-                                      style: TextStyle(
-                                          color: Colors.green,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 15.0)),
-                                  leading:
-                                      Icon(Icons.timer, color: kColorAppBar),
-                                ),
-                                SizedBox(height: 20),
-                                //validación que aparezca la hora
-                              } else ...{
-                                ListTile(
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                  title: Text('Hora de encuentro: '),
-                                  subtitle: Text(
-                                      '${abc.data!.trips[index].horaConductor}',
-                                      style: TextStyle(
-                                          color: Colors.green,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 25.0)),
-                                  leading:
-                                      Icon(Icons.timer, color: kColorAppBar),
-                                ),
-                              },
-                              if ('${abc.data!.trips[index].condition}' ==
-                                  'Confirmed') ...{
-                                if (abc.data!.trips[index].companyId == 1 ||
-                                    abc.data!.trips[index].companyId == 7 ||
-                                    abc.data!.trips[index].companyId == 3 ||
-                                    abc.data!.trips[index].companyId == 5 ||
-                                    abc.data!.trips[index].companyId == 9 ||
-                                    abc.data!.trips[index].companyId == 11 ||
-                                    abc.data!.trips[index].companyId == 12) ...{
-                                  if (abc.data!.trips[index].btnCancelTrip ==
-                                      true) ...{
-                                    TextButton(
-                                      style: TextButton.styleFrom(
-                                          foregroundColor: Colors.white,
-                                          backgroundColor: Colors.red),
-                                      child: Text('Cancelar viaje'),
-                                      onPressed: () => {
-                                        showGeneralDialog(
-                                            barrierColor:
-                                                Colors.black.withOpacity(0.5),
-                                            transitionBuilder:
-                                                (context, a1, a2, widget) {
-                                              return Transform.scale(
-                                                scale: a1.value,
-                                                child: Opacity(
-                                                  opacity: a1.value,
-                                                  child: AlertDialog(
-                                                    shape: OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                    16.0)),
-                                                    title: Center(
-                                                        child: Text(
-                                                            '¿Razón por la cual no hará uso del transporte?',
-                                                            textAlign: TextAlign
-                                                                .center)),
-                                                    content: TextField(
-                                                        controller: message,
-                                                        decoration: InputDecoration(
-                                                            labelText:
-                                                                'Escriba aquí')),
-                                                    actions: [
-                                                      Row(
+                                //validación de mostrar si la condición está empty mostrar texto de necesita confirmación
+                                if ('${abc.data!.trips[index].condition}' ==
+                                    'empty') ...{
+                                  ListTile(
+                                    contentPadding:
+                                        EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                    title: Text('Hora de encuentro: ', style: TextStyle(color: Colors.white),),
+                                    subtitle: Text(
+                                        'Necesita confirmación para poder asignarle una hora de encuentro',
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 15.0)),
+                                    leading:
+                                        Icon(Icons.timer, color: GradiantV1, size: 35),
+                                  ),
+                                  SizedBox(height: 10,),
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      shape: RoundedRectangleBorder(                                    
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      backgroundColor: secondColor,
+                                    ),
+                                    onPressed: () {
+                                      showGeneralDialog(
+                                          barrierColor:
+                                              Colors.black.withOpacity(0.5),
+                                          transitionBuilder:
+                                              (context, a1, a2, widget) {
+                                            final curvedValue = Curves
+                                                    .easeInOutBack
+                                                    .transform(a1.value) -
+                                                1.0;
+                                            return Transform(
+                                              transform:
+                                                  Matrix4.translationValues(0.0,
+                                                      curvedValue * 200, 0.0),
+                                              child: Opacity(
+                                                opacity: a1.value,
+                                                child: AlertDialog(
+                                                  shape: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16.0)),
+                                                  title: Center(
+                                                      child:
+                                                          Text('Confirmación')),
+                                                  content: Text(
+                                                      '¿Hará uso del transporte designado?',
+                                                      textAlign:
+                                                          TextAlign.center),
+                                                  actions: [
+                                                    Container(
+                                                        child: Center(
+                                                      child: Row(
                                                         children: [
-                                                          SizedBox(width: 60.0),
+                                                          SizedBox(width: 20),
                                                           TextButton(
                                                             style: TextButton.styleFrom(
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                        horizontal:
-                                                                            20),
                                                                 foregroundColor:
-                                                                    Colors
-                                                                        .white,
+                                                                    Colors.white,
+                                                                backgroundColor:
+                                                                    Colors.green),
+                                                            onPressed: () => {
+                                                              ChatApis().confirmOrCancel('CONFIRMADO'),                                                            
+                                                              //función fetch confirm
+                                                              fetchConfirm(
+                                                                  prefs
+                                                                      .nombreUsuario,
+                                                                  '${abc.data!.trips[index].tripId}',
+                                                                  condition,
+                                                                  comment),
+                                                            },
+                                                            child: Text('Si'),
+                                                          ),
+                                                          SizedBox(width: 20),
+                                                          TextButton(
+                                                            style: TextButton
+                                                                .styleFrom(
+                                                                    foregroundColor:
+                                                                        Colors
+                                                                            .white,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .red),
+                                                            child: Text('No'),
+                                                            onPressed: () => {
+                                                              Navigator.pop(
+                                                                  context),
+                                                              showGeneralDialog(
+                                                                  barrierColor: Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                          0.5),
+                                                                  transitionBuilder:
+                                                                      (context,
+                                                                          a1,
+                                                                          a2,
+                                                                          widget) {
+                                                                    return Transform
+                                                                        .scale(
+                                                                      scale: a1
+                                                                          .value,
+                                                                      child:
+                                                                          Opacity(
+                                                                        opacity: a1
+                                                                            .value,
+                                                                        child:
+                                                                            AlertDialog(
+                                                                          shape: OutlineInputBorder(
+                                                                              borderRadius:
+                                                                                  BorderRadius.circular(16.0)),
+                                                                          title: Center(
+                                                                              child:
+                                                                                  Text('¿Razón por la cual no hará uso del transporte?', textAlign: TextAlign.center)),
+                                                                          content: TextField(
+                                                                              controller:
+                                                                                  message,
+                                                                              decoration:
+                                                                                  InputDecoration(labelText: 'Escriba aquí')),
+                                                                          actions: [
+                                                                            Row(
+                                                                              children: [
+                                                                                SizedBox(width: 60.0),
+                                                                                TextButton(
+                                                                                  style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: Colors.blueAccent),
+                                                                                  onPressed: () => {
+                                                                                    ChatApis().confirmOrCancel('RECHAZADO'),
+                                                                                    
+                                                                                    //función fetch cancel
+                                                                                    fetchCancel(prefs.nombreUsuario, '${abc.data!.trips[index].tripId}', conditionC, message.text),
+                                                                                    Navigator.pop(context),
+                                                                                  },
+                                                                                  child: Text('Enviar'),
+                                                                                ),
+                                                                                SizedBox(width: 10.0),
+                                                                                TextButton(
+                                                                                  style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: Colors.red),
+                                                                                  onPressed: () => {
+                                                                                    Navigator.pop(context),
+                                                                                  },
+                                                                                  child: Text('Cerrar'),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                  transitionDuration:
+                                                                      Duration(
+                                                                          milliseconds:
+                                                                              200),
+                                                                  barrierDismissible:
+                                                                      true,
+                                                                  barrierLabel:
+                                                                      '',
+                                                                  context:
+                                                                      context,
+                                                                  pageBuilder: (context,
+                                                                      animation1,
+                                                                      animation2) {
+                                                                    return widget;
+                                                                  }),
+                                                            },
+                                                          ),
+                                                          SizedBox(width: 20),
+                                                          TextButton(
+                                                            style: TextButton.styleFrom(
+                                                                foregroundColor:
+                                                                    Colors.white,
                                                                 backgroundColor:
                                                                     Colors
                                                                         .blueAccent),
                                                             onPressed: () => {
-                                                              //función fetch cancel
-                                                              fetchCancel(
-                                                                  prefs
-                                                                      .nombreUsuario,
-                                                                  '${abc.data!.trips[index].tripId}',
-                                                                  conditionC,
-                                                                  message.text),
                                                               Navigator.pop(
                                                                   context),
                                                             },
-                                                            child:
-                                                                Text('Enviar'),
+                                                            child: Text('Cerrar'),
                                                           ),
                                                           SizedBox(width: 10.0),
-                                                          TextButton(
-                                                            style: TextButton.styleFrom(
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                        horizontal:
-                                                                            20),
-                                                                foregroundColor:
-                                                                    Colors
-                                                                        .white,
-                                                                backgroundColor:
-                                                                    Colors.red),
-                                                            onPressed: () => {
-                                                              Navigator.pop(
-                                                                  context),
-                                                            },
-                                                            child:
-                                                                Text('Cerrar'),
-                                                          ),
                                                         ],
                                                       ),
-                                                    ],
-                                                  ),
+                                                    ))
+                                                  ],
                                                 ),
-                                              );
-                                            },
-                                            transitionDuration:
-                                                Duration(milliseconds: 200),
-                                            barrierDismissible: true,
-                                            barrierLabel: '',
-                                            context: context,
-                                            pageBuilder: (context, animation1,
-                                                animation2) {
-                                              return widget;
-                                            }),
-                                      },
+                                              ),
+                                            );
+                                          },
+                                          transitionDuration:
+                                              Duration(milliseconds: 200),
+                                          barrierDismissible: true,
+                                          barrierLabel: '',
+                                          context: context,
+                                          pageBuilder:
+                                              (context, animation1, animation2) {
+                                            return widget;
+                                          });
+                                    },
+                                    child: Text(
+                                        'Presione para confirmar o cancelar',
+                                        style: TextStyle(color: backgroundColor2, fontSize: 16)),
+                                  ),
+                                  SizedBox(height: 20),
+                                  //validación de condition in canceled
+                                } else if ('${abc.data!.trips[index].condition}' ==
+                                    'Canceled') ...{
+                                  if ('${abc.data!.trips[index].commentDriver}' ==
+                                      'No confirmó') ...{
+                                    ListTile(
+                                      contentPadding:
+                                          EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                      title: Text('Viaje cancelado: '),
+                                      subtitle: Text('No confirmó a tiempo',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 15.0)),
+                                      leading:
+                                          Icon(Icons.timer, color: kColorAppBar),
                                     ),
                                   } else ...{
                                     ListTile(
                                       contentPadding:
                                           EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                      title: Text('Viaje'),
+                                      title: Text('Viaje cancelado: '),
                                       subtitle: Text(
-                                          'Su tiempo para cancelar el viaje ha expirado',
+                                          'Se ha notificado al motorista que usted no necesitará el transporte',
                                           style: TextStyle(
                                               color: Colors.red,
                                               fontWeight: FontWeight.normal,
                                               fontSize: 15.0)),
-                                      leading: Icon(Icons.timer,
-                                          color: kColorAppBar),
+                                      leading:
+                                          Icon(Icons.timer, color: kColorAppBar),
                                     ),
+                                  },
+                                  SizedBox(height: 20),
+                                  //validación de horaConductor in empty
+                                } else if ('${abc.data!.trips[index].horaConductor}' ==
+                                    'empty') ...{
+                                  ListTile(
+                                    contentPadding:
+                                        EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                    title: Text('Hora de encuentro: '),
+                                    subtitle: Text(
+                                        'Viaje confirmado, espere a que el motorista asigne la hora a la que pasará por usted',
+                                        style: TextStyle(
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 15.0)),
+                                    leading:
+                                        Icon(Icons.timer, color: kColorAppBar),
+                                  ),
+                                  SizedBox(height: 20),
+                                  //validación que aparezca la hora
+                                } else ...{
+                                  ListTile(
+                                    contentPadding:
+                                        EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                    title: Text('Hora de encuentro: ', style: TextStyle(color: Colors.white),),
+                                    subtitle: Text(
+                                        '${abc.data!.trips[index].horaConductor}',
+                                        style: TextStyle(
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 25.0)),
+                                    leading:
+                                        Icon(Icons.timer, color: kColorAppBar),
+                                  ),
+                                },
+                                if ('${abc.data!.trips[index].condition}' ==
+                                    'Confirmed') ...{
+                                  if (abc.data!.trips[index].companyId == 1 ||
+                                      abc.data!.trips[index].companyId == 7 ||
+                                      abc.data!.trips[index].companyId == 3 ||
+                                      abc.data!.trips[index].companyId == 5 ||
+                                      abc.data!.trips[index].companyId == 9 ||
+                                      abc.data!.trips[index].companyId == 11 ||
+                                      abc.data!.trips[index].companyId == 12) ...{
+                                    if (abc.data!.trips[index].btnCancelTrip ==
+                                        true) ...{
+                                      TextButton(
+                                        style: TextButton.styleFrom(
+                                            foregroundColor: Colors.white,
+                                            backgroundColor: Colors.red),
+                                        child: Text('Cancelar viaje'),
+                                        onPressed: () => {
+                                          showGeneralDialog(
+                                              barrierColor:
+                                                  Colors.black.withOpacity(0.5),
+                                              transitionBuilder:
+                                                  (context, a1, a2, widget) {
+                                                return Transform.scale(
+                                                  scale: a1.value,
+                                                  child: Opacity(
+                                                    opacity: a1.value,
+                                                    child: AlertDialog(
+                                                      shape: OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      16.0)),
+                                                      title: Center(
+                                                          child: Text(
+                                                              '¿Razón por la cual no hará uso del transporte?',
+                                                              textAlign: TextAlign
+                                                                  .center)),
+                                                      content: TextField(
+                                                          controller: message,
+                                                          decoration: InputDecoration(
+                                                              labelText:
+                                                                  'Escriba aquí')),
+                                                      actions: [
+                                                        Row(
+                                                          children: [
+                                                            SizedBox(width: 60.0),
+                                                            TextButton(
+                                                              style: TextButton.styleFrom(
+                                                                  padding: EdgeInsets
+                                                                      .symmetric(
+                                                                          horizontal:
+                                                                              20),
+                                                                  foregroundColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .blueAccent),
+                                                              onPressed: () => {
+                                                                //función fetch cancel
+                                                                fetchCancel(
+                                                                    prefs
+                                                                        .nombreUsuario,
+                                                                    '${abc.data!.trips[index].tripId}',
+                                                                    conditionC,
+                                                                    message.text),
+                                                                Navigator.pop(
+                                                                    context),
+                                                              },
+                                                              child:
+                                                                  Text('Enviar'),
+                                                            ),
+                                                            SizedBox(width: 10.0),
+                                                            TextButton(
+                                                              style: TextButton.styleFrom(
+                                                                  padding: EdgeInsets
+                                                                      .symmetric(
+                                                                          horizontal:
+                                                                              20),
+                                                                  foregroundColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  backgroundColor:
+                                                                      Colors.red),
+                                                              onPressed: () => {
+                                                                Navigator.pop(
+                                                                    context),
+                                                              },
+                                                              child:
+                                                                  Text('Cerrar'),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              transitionDuration:
+                                                  Duration(milliseconds: 200),
+                                              barrierDismissible: true,
+                                              barrierLabel: '',
+                                              context: context,
+                                              pageBuilder: (context, animation1,
+                                                  animation2) {
+                                                return widget;
+                                              }),
+                                        },
+                                      ),
+                                    } else ...{
+                                      ListTile(
+                                        contentPadding:
+                                            EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                        title: Text('Viaje'),
+                                        subtitle: Text(
+                                            'Su tiempo para cancelar el viaje ha expirado',
+                                            style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 15.0)),
+                                        leading: Icon(Icons.timer,
+                                            color: kColorAppBar),
+                                      ),
+                                    }
                                   }
-                                }
-                              } else
-                                ...{},
-                            ]),
+                                } else
+                                  ...{},
+                              ]),
+                            ),
                           ),
                         );
                       });
@@ -823,7 +840,7 @@ class _NextTripScreenState extends State<NextTripScreen>
         await http.get(Uri.parse('$ip/api/getMaskReminder/${resp.agentId}'));
     final resp1 = Mask.fromJson(json.decode(response.body));
     //validacion si fué visto la alerta
-    print(resp1.viewed);
+    //print(resp1.viewed);
     if (resp1.viewed != null) {
       await http
           .get(Uri.parse('$ip/api/markAsViewedMaskReminder/${resp.agentId}'));

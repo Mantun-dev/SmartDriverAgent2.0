@@ -64,7 +64,7 @@ Future<TripsList> fetchTrips() async {
   if (response.statusCode == 200) {
     final trip = TripsList.fromJson(json.decode(response.body));
     for (var i = 0; i < trip.trips.length; i++) {
-      print(trip.trips[i].btnCancelTrip);
+      //print(trip.trips[i].btnCancelTrip);
     }
     return trip;
   } else {
@@ -90,7 +90,7 @@ Future<List<Story>> fetchTripsStory() async {
   final data = json.decode(response.body);
   final paymentList = data as List;
   if (response.statusCode == 200) {
-    print(paymentList.length);
+    //print(paymentList.length);
     return paymentList.map((data) => Story.fromJson(data)).toList();
   } else {
     throw Exception('Failed to load Data');
@@ -106,7 +106,7 @@ Future<TripsList6> fetchTicketStory() async {
       await http.get(Uri.parse('$ip/api/tickets/${si.agentId}'));
   final data = TripsList6.fromJson(json.decode(response.body));
   if (response.statusCode == 200) {
-    print(data.trips[0].pendant!.length);
+    //print(data.trips[0].pendant!.length);
     return TripsList6.fromJson(json.decode(response.body));
   } else {
     throw Exception('Failed to load Data');

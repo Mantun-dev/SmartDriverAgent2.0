@@ -231,7 +231,7 @@ class _BodyState extends State<Body> {
                         itemCount: plantilla.length,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 1,
-                          mainAxisExtent: 185,
+                          mainAxisExtent: 180,
                         ),
                         itemBuilder: (context, index) => Padding(
                           padding: const EdgeInsets.only(top: 20.0),
@@ -333,7 +333,7 @@ class _BodyState extends State<Body> {
         await http.get(Uri.parse('$ip/api/getCounts/${si.companyId}'));
     Map<String, dynamic> no =
         new Map<String, dynamic>.from(json.decode(response.body));
-    print(no['counts'].length);
+    //print(no['counts'].length);
     //aquí se hace la validación de mostra cuando sea null el countId
     if (no['counts'].length == 0 || no['counts'].length == null) {
     } else {
@@ -393,7 +393,7 @@ class _BodyState extends State<Body> {
                                   : (value) {
                                       setState(() {
                                         onChanged(value);
-                                        print(value);
+                                        //print(value);
                                       });
                                     },
                             ),

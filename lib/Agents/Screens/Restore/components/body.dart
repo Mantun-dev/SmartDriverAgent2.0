@@ -41,7 +41,7 @@ class _BodyState extends State<Body> {
         await http.post(Uri.parse('$ip/api/reset'), body: data);
     final no = Register.fromJson(json.decode(responses.body));
     //alertas y redirecciones
-    print(responses.body);
+    //print(responses.body);
     if (responses.statusCode == 200 && no.ok == true) {
       setState(() {
         Navigator.of(context).pushAndRemoveUntil(
