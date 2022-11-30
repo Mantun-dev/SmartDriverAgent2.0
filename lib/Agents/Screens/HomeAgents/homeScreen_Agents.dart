@@ -31,10 +31,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void getCounterNotification()async{
-    final getData = await ChatApis().notificationCounter();      
-    setState(() {      
-      counter = getData;
-    });
+    final getData = await ChatApis().notificationCounter();   
+    if (mounted) {
+      setState(() {      
+        counter = getData;
+      });
+      
+    }   
   }
 
   @override

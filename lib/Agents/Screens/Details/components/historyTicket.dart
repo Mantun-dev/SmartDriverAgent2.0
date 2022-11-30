@@ -41,9 +41,9 @@ class _DataTableExample extends State<HistoryTicketScreen> {
       home: Scaffold(
           drawer: MenuLateral(),
           appBar: AppBar(
-            backgroundColor: kColorAppBar,
-            elevation: 0,
-            title: Center(child: Text('Información General')),
+            backgroundColor: backgroundColor,
+            elevation: 20,
+            title: Center(child: Text('')),
             iconTheme: IconThemeData(color: Colors.white),
             actions: <Widget>[
               IconButton(
@@ -93,29 +93,51 @@ class _DataTableExample extends State<HistoryTicketScreen> {
         if (abc.connectionState == ConnectionState.done) {
           //validación de arreglo vacio
           if (abc.data!.trips[0].pendant!.length == 0) {
-            return Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              margin: EdgeInsets.symmetric(vertical: 15),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(Icons.bus_alert),
-                    title: Text('Tickets',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 20.0)),
-                    subtitle: Text('No hay tickets pendientes',
-                        style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15.0)),
+            return Container(
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        blurStyle: BlurStyle.normal,
+                        color: Colors.white.withOpacity(0.2),
+                        blurRadius: 30,
+                        spreadRadius: -13,
+                        offset: Offset(-15, -6)),
+                    BoxShadow(
+                        blurStyle: BlurStyle.normal,
+                        color: Colors.black.withOpacity(0.6),
+                        blurRadius: 18,
+                        spreadRadius: -15,
+                        offset: Offset(18, 5)),
+                  ], borderRadius: BorderRadius.circular(15)),
+                  child: Card(
+                    elevation: 10,
+                    color: backgroundColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    margin: EdgeInsets.symmetric(vertical: 15),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ListTile(
+                          leading: Icon(
+                            Icons.bus_alert,
+                            size: 50,
+                            color: Colors.white,
+                          ),
+                          title: Text('Tickets',
+                              style: TextStyle(
+                                  color: thirdColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0)),
+                          subtitle: Text('No hay tickets pendientes',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15.0)),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            );
+                );
           } else {
             return FutureBuilder<TripsList6>(
               future: item,
@@ -129,9 +151,24 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                       //retorno de container y card con la data respectiva
                       return Container(
                         width: 500.0,
+                        decoration: BoxDecoration(boxShadow: [
+                          BoxShadow(
+                              blurStyle: BlurStyle.normal,
+                              color: Colors.white.withOpacity(0.2),
+                              blurRadius: 30,
+                              spreadRadius: -13,
+                              offset: Offset(-15, -6)),
+                          BoxShadow(
+                              blurStyle: BlurStyle.normal,
+                              color: Colors.black.withOpacity(0.6),
+                              blurRadius: 18,
+                              spreadRadius: -15,
+                              offset: Offset(18, 5)),
+                        ], borderRadius: BorderRadius.circular(15)),
                         child: Column(
                           children: [
                             Card(
+                              color: backgroundColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
                               margin: EdgeInsets.all(15.0),
@@ -141,7 +178,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: ExpansionTile(
-                                      backgroundColor: Colors.white,
+                                      backgroundColor: backgroundColor,
                                       title: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.end,
@@ -232,29 +269,52 @@ class _DataTableExample extends State<HistoryTicketScreen> {
         if (abc.connectionState == ConnectionState.done) {
           //validación de arreglo vacio
           if (abc.data!.trips[1].closed?.length == 0) {
-            return Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              margin: EdgeInsets.symmetric(vertical: 15),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(Icons.bus_alert),
-                    title: Text('Tickets',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 20.0)),
-                    subtitle: Text('No hay tickets en proceso',
-                        style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15.0)),
+            return Container(
+                  width: 500.0,
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        blurStyle: BlurStyle.normal,
+                        color: Colors.white.withOpacity(0.2),
+                        blurRadius: 30,
+                        spreadRadius: -13,
+                        offset: Offset(-15, -6)),
+                    BoxShadow(
+                        blurStyle: BlurStyle.normal,
+                        color: Colors.black.withOpacity(0.6),
+                        blurRadius: 18,
+                        spreadRadius: -15,
+                        offset: Offset(18, 5)),
+                  ], borderRadius: BorderRadius.circular(15)),
+                  child: Card(
+                    elevation: 10,
+                    color: backgroundColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    margin: EdgeInsets.symmetric(vertical: 15),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ListTile(
+                          leading: Icon(
+                            Icons.bus_alert,
+                            size: 50,
+                            color: Colors.white,
+                          ),
+                          title: Text('Tickets',
+                              style: TextStyle(
+                                  color: thirdColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0)),
+                          subtitle: Text('No hay tickets en procesp',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15.0)),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            );
+                );
           } else {
             return FutureBuilder<TripsList6>(
               future: item,
@@ -268,9 +328,24 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                     itemBuilder: (context, index) {
                       return Container(
                         width: 500.0,
+                        decoration: BoxDecoration(boxShadow: [
+                          BoxShadow(
+                              blurStyle: BlurStyle.normal,
+                              color: Colors.white.withOpacity(0.2),
+                              blurRadius: 30,
+                              spreadRadius: -13,
+                              offset: Offset(-15, -6)),
+                          BoxShadow(
+                              blurStyle: BlurStyle.normal,
+                              color: Colors.black.withOpacity(0.6),
+                              blurRadius: 18,
+                              spreadRadius: -15,
+                              offset: Offset(18, 5)),
+                        ], borderRadius: BorderRadius.circular(15)),
                         child: Column(
                           children: [
                             Card(
+                              color: backgroundColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
                               margin: EdgeInsets.all(15.0),
@@ -280,7 +355,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: ExpansionTile(
-                                      backgroundColor: Colors.white,
+                                      backgroundColor: backgroundColor,
                                       title: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.end,

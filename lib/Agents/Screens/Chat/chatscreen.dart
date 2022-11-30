@@ -42,7 +42,7 @@ class _ChatScreenState extends State<ChatScreen> {
   bool? isLoading = false;
   ScrollController _scrollController = new ScrollController();
   final arrayTemp = [];
-  final StreamSocket streamSocket = StreamSocket(host: 'zuey4.localtonet.com');
+  final StreamSocket streamSocket = StreamSocket(host: 'f181-138-0-230-165.ngrok.io');
   
   _sendMessage(String text) {
     ChatApis().sendMessage(text, sala.toString(), widget.nombre, id.toString(), modid!, nameDriver!, idDb!);       
@@ -329,7 +329,7 @@ void controllerLoading(bool? controller){
                         NeumorphicButton(
                           margin: EdgeInsets.only(top: 0),
                           onPressed: () {
-                            _messageInputController.text = "Lo estoy buscando";
+                            _messageInputController.text = "Estoy buscandole";
                             if (_messageInputController.text.trim().isNotEmpty) {
                               _sendMessage(_messageInputController.text);
                             }
@@ -342,7 +342,7 @@ void controllerLoading(bool? controller){
                           ),
                           padding: const EdgeInsets.all(12.0),
                           child: Text(
-                            "Lo estoy buscando",
+                            "Estoy buscandole",
                             style: TextStyle(color: _textColor(context)),
                           )),                        
                       ],

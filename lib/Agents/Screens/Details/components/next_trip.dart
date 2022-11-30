@@ -397,25 +397,18 @@ class _NextTripScreenState extends State<NextTripScreen>
                                   leading:
                                       Icon(Icons.directions, color: GradiantV1, size: 35),
                                 ),
-                                if (abc.data!.trips[index]
-                                        .neighborhoodReferencePoint ==
-                                    null)
-                                  ...{}
-                                else ...{
+                                if (abc.data!.trips[index].neighborhoodReferencePoint != null)...{
                                   ListTile(
                                     contentPadding:
                                         EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                    title: Text('Acceso autorizado: '),
+                                    title: Text('Acceso autorizado: ', style: TextStyle(color: Colors.white)),
                                     subtitle: Text(
-                                        '${abc.data!.trips[index].neighborhoodReferencePoint}'),
-                                    leading: Icon(Icons.bus_alert,
-                                        color: kColorAppBar),
-                                  ),
-                                },
+                                        '${abc.data!.trips[index].neighborhoodReferencePoint}', style: TextStyle(color: Colors.white)),
+                                    leading: Icon(Icons.bus_alert, color: GradiantV1, size: 35),
+                                  ),},                               
                                 SizedBox(height: 20),
                                 //validación de mostrar si la condición está empty mostrar texto de necesita confirmación
-                                if ('${abc.data!.trips[index].condition}' ==
-                                    'empty') ...{
+                                if ('${abc.data!.trips[index].condition}' =='empty') ...{
                                   ListTile(
                                     contentPadding:
                                         EdgeInsets.fromLTRB(5, 5, 10, 0),
@@ -454,29 +447,31 @@ class _NextTripScreenState extends State<NextTripScreen>
                                               child: Opacity(
                                                 opacity: a1.value,
                                                 child: AlertDialog(
+                                                  backgroundColor: backgroundColor,
                                                   shape: OutlineInputBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               16.0)),
                                                   title: Center(
                                                       child:
-                                                          Text('Confirmación')),
+                                                          Text('Confirmación', style: TextStyle(color: Colors.white))),
                                                   content: Text(
                                                       '¿Hará uso del transporte designado?',
                                                       textAlign:
-                                                          TextAlign.center),
+                                                          TextAlign.center, style: TextStyle(color: Colors.white)),
                                                   actions: [
                                                     Container(
                                                         child: Center(
                                                       child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                         children: [
-                                                          SizedBox(width: 20),
+                                                          
                                                           TextButton(
                                                             style: TextButton.styleFrom(
                                                                 foregroundColor:
-                                                                    Colors.white,
+                                                                    Colors.black,
                                                                 backgroundColor:
-                                                                    Colors.green),
+                                                                    firstColor),
                                                             onPressed: () => {
                                                               ChatApis().confirmOrCancel('CONFIRMADO'),                                                            
                                                               //función fetch confirm
@@ -489,16 +484,15 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                             },
                                                             child: Text('Si'),
                                                           ),
-                                                          SizedBox(width: 20),
+                                                          
                                                           TextButton(
                                                             style: TextButton
                                                                 .styleFrom(
                                                                     foregroundColor:
                                                                         Colors
-                                                                            .white,
+                                                                            .black,
                                                                     backgroundColor:
-                                                                        Colors
-                                                                            .red),
+                                                                        GradiantV_1),
                                                             child: Text('No'),
                                                             onPressed: () => {
                                                               Navigator.pop(
@@ -523,23 +517,25 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                             .value,
                                                                         child:
                                                                             AlertDialog(
+                                                                              backgroundColor: backgroundColor,
                                                                           shape: OutlineInputBorder(
                                                                               borderRadius:
                                                                                   BorderRadius.circular(16.0)),
                                                                           title: Center(
                                                                               child:
-                                                                                  Text('¿Razón por la cual no hará uso del transporte?', textAlign: TextAlign.center)),
+                                                                                  Text('¿Razón por la cual no hará uso del transporte?', textAlign: TextAlign.center, style: TextStyle(color: Colors.white))),
                                                                           content: TextField(
                                                                               controller:
                                                                                   message,
                                                                               decoration:
-                                                                                  InputDecoration(labelText: 'Escriba aquí')),
+                                                                                  InputDecoration(labelText: 'Escriba aquí', labelStyle: TextStyle(color: Colors.white))),
                                                                           actions: [
                                                                             Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                                               children: [
-                                                                                SizedBox(width: 60.0),
+                                                                                
                                                                                 TextButton(
-                                                                                  style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: Colors.blueAccent),
+                                                                                  style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: firstColor),
                                                                                   onPressed: () => {
                                                                                     ChatApis().confirmOrCancel('RECHAZADO'),
                                                                                     
@@ -547,15 +543,15 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                                     fetchCancel(prefs.nombreUsuario, '${abc.data!.trips[index].tripId}', conditionC, message.text),
                                                                                     Navigator.pop(context),
                                                                                   },
-                                                                                  child: Text('Enviar'),
+                                                                                  child: Text('Enviar', style: TextStyle(color: Colors.black)),
                                                                                 ),
-                                                                                SizedBox(width: 10.0),
+                                                                                
                                                                                 TextButton(
-                                                                                  style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: Colors.red),
+                                                                                  style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: GradiantV_1),
                                                                                   onPressed: () => {
                                                                                     Navigator.pop(context),
                                                                                   },
-                                                                                  child: Text('Cerrar'),
+                                                                                  child: Text('Cerrar', style: TextStyle(color: Colors.black)),
                                                                                 ),
                                                                               ],
                                                                             ),
@@ -581,21 +577,20 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                   }),
                                                             },
                                                           ),
-                                                          SizedBox(width: 20),
+                                                          
                                                           TextButton(
                                                             style: TextButton.styleFrom(
                                                                 foregroundColor:
-                                                                    Colors.white,
+                                                                    Colors.black,
                                                                 backgroundColor:
-                                                                    Colors
-                                                                        .blueAccent),
+                                                                    Gradiant2),
                                                             onPressed: () => {
                                                               Navigator.pop(
                                                                   context),
                                                             },
                                                             child: Text('Cerrar'),
                                                           ),
-                                                          SizedBox(width: 10.0),
+                                                          
                                                         ],
                                                       ),
                                                     ))
@@ -620,27 +615,26 @@ class _NextTripScreenState extends State<NextTripScreen>
                                   ),
                                   SizedBox(height: 20),
                                   //validación de condition in canceled
-                                } else if ('${abc.data!.trips[index].condition}' ==
-                                    'Canceled') ...{
-                                  if ('${abc.data!.trips[index].commentDriver}' ==
-                                      'No confirmó') ...{
+                                }, 
+                                if ('${abc.data!.trips[index].condition}' == 'Canceled') ...{
+                                  if ('${abc.data!.trips[index].commentDriver}' == 'No confirmó') ...{
                                     ListTile(
                                       contentPadding:
                                           EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                      title: Text('Viaje cancelado: '),
+                                      title: Text('Viaje cancelado: ' , style: TextStyle(color: Colors.white)),
                                       subtitle: Text('No confirmó a tiempo',
                                           style: TextStyle(
                                               color: Colors.red,
                                               fontWeight: FontWeight.normal,
                                               fontSize: 15.0)),
                                       leading:
-                                          Icon(Icons.timer, color: kColorAppBar),
+                                          Icon(Icons.timer, color: GradiantV1, size: 35),
                                     ),
                                   } else ...{
                                     ListTile(
                                       contentPadding:
                                           EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                      title: Text('Viaje cancelado: '),
+                                      title: Text('Viaje cancelado: ' , style: TextStyle(color: Colors.white)),
                                       subtitle: Text(
                                           'Se ha notificado al motorista que usted no necesitará el transporte',
                                           style: TextStyle(
@@ -648,7 +642,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                               fontWeight: FontWeight.normal,
                                               fontSize: 15.0)),
                                       leading:
-                                          Icon(Icons.timer, color: kColorAppBar),
+                                          Icon(Icons.timer, color: GradiantV1, size: 35),
                                     ),
                                   },
                                   SizedBox(height: 20),
@@ -658,7 +652,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                   ListTile(
                                     contentPadding:
                                         EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                    title: Text('Hora de encuentro: '),
+                                    title: Text('Hora de encuentro: ', style: TextStyle(color: Colors.white)),
                                     subtitle: Text(
                                         'Viaje confirmado, espere a que el motorista asigne la hora a la que pasará por usted',
                                         style: TextStyle(
@@ -666,7 +660,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                             fontWeight: FontWeight.normal,
                                             fontSize: 15.0)),
                                     leading:
-                                        Icon(Icons.timer, color: kColorAppBar),
+                                        Icon(Icons.timer, color: GradiantV1, size: 35),
                                   ),
                                   SizedBox(height: 20),
                                   //validación que aparezca la hora
@@ -682,7 +676,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                             fontWeight: FontWeight.normal,
                                             fontSize: 25.0)),
                                     leading:
-                                        Icon(Icons.timer, color: kColorAppBar),
+                                        Icon(Icons.timer, color: GradiantV1, size: 35),
                                   ),
                                 },
                                 if ('${abc.data!.trips[index].condition}' ==
@@ -798,15 +792,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       ListTile(
                                         contentPadding:
                                             EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                        title: Text('Viaje'),
+                                        title: Text('Viaje', style: TextStyle(color: Colors.white)),
                                         subtitle: Text(
                                             'Su tiempo para cancelar el viaje ha expirado',
                                             style: TextStyle(
                                                 color: Colors.red,
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 15.0)),
-                                        leading: Icon(Icons.timer,
-                                            color: kColorAppBar),
+                                        leading: Icon(Icons.timer, color: GradiantV1, size: 35),
                                       ),
                                     }
                                   }

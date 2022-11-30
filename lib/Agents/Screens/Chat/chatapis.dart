@@ -12,7 +12,7 @@ import 'package:intl/intl.dart';
 
 class ChatApis {
   
-  final StreamSocket streamSocket = StreamSocket(host: 'zuey4.localtonet.com');
+  final StreamSocket streamSocket = StreamSocket(host: 'f181-138-0-230-165.ngrok.io');
   List info = [];    
   //dynamic getDataUsuariosVar;  
   final header = {"Content-Type": "application/json" };
@@ -22,7 +22,7 @@ class ChatApis {
     var dataU  =  await  BaseClient().get(RestApis.usuerWithId+ '/$id', {"Content-Type": "application/json" });             
     var dataU2 =  await  BaseClient().get(RestApis.userwithOutId,      {"Content-Type": "application/json" });    
     var dataS  =  await  BaseClient().get(RestApis.rooms,              {"Content-Type": "application/json" });    
-    var dataM  =  await  BaseClient().get(RestApis.messages,           {"Content-Type": "application/json" });   
+    var dataM  =  await  BaseClient().get(RestApis.messages+'/12',           {"Content-Type": "application/json" });   
     if (dataU == null|| dataU2 == null || dataS == null|| dataM == null) return null; 
     final sendDataU = jsonDecode(dataU);    
     final sendDataU2 = jsonDecode(dataU2);

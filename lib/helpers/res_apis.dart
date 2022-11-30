@@ -2,10 +2,10 @@
 class RestApis {
 
   //apis to chat
-  static String usuerWithId = 'https://42b7-138-0-230-161.ngrok.io/api/usuarios';
-  static String userwithOutId = 'https://42b7-138-0-230-161.ngrok.io/api/usuarios';
-  static String rooms = 'https://42b7-138-0-230-161.ngrok.io/api/salas';
-  static String messages = 'https://42b7-138-0-230-161.ngrok.io/api/mensajes';
+  static String usuerWithId = 'http://dycgy.localtonet.com/api/usuarios';
+  static String userwithOutId = 'http://dycgy.localtonet.com/api/usuarios';
+  static String rooms = 'http://dycgy.localtonet.com/api/salas';
+  static String messages = 'http://dycgy.localtonet.com/api/mensajes';
 
 
   //normals apis

@@ -50,7 +50,7 @@ class _QrScannScreenState extends State<QrScannScreen> {
             borderRadius: BorderRadius.circular(10),
           ),
           margin: EdgeInsets.symmetric(horizontal: 15.0),
-          height: 350,
+          height: 400,
           child: Column(children: [
             SizedBox(
               height: 30,

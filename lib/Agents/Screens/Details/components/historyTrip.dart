@@ -57,29 +57,51 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
         if (abc.connectionState == ConnectionState.done) {
           //validación arreglo vacio
           if (abc.data!.length == 0) {
-            return Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              margin: EdgeInsets.symmetric(vertical: 15),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(Icons.bus_alert),
-                    title: Text('Agentes',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 26.0)),
-                    subtitle: Text('No hay viajes realizados',
-                        style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 18.0)),
+            return Container(
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        blurStyle: BlurStyle.normal,
+                        color: Colors.white.withOpacity(0.2),
+                        blurRadius: 30,
+                        spreadRadius: -13,
+                        offset: Offset(-15, -6)),
+                    BoxShadow(
+                        blurStyle: BlurStyle.normal,
+                        color: Colors.black.withOpacity(0.6),
+                        blurRadius: 18,
+                        spreadRadius: -15,
+                        offset: Offset(18, 5)),
+                  ], borderRadius: BorderRadius.circular(15)),
+                  child: Card(
+                    elevation: 10,
+                    color: backgroundColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    margin: EdgeInsets.symmetric(vertical: 15),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ListTile(
+                          leading: Icon(
+                            Icons.bus_alert,
+                            size: 50,
+                            color: Colors.white,
+                          ),
+                          title: Text('Agentes',
+                              style: TextStyle(
+                                  color: thirdColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0)),
+                          subtitle: Text('No hay viajes realizados',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15.0)),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            );
+                );
           } else {
             //retorno de ListView builder
             return ListView.builder(
