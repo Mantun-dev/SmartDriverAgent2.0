@@ -23,20 +23,23 @@ class Trips {
       required this.tripId,
       required this.commentDriver,
       required this.companyId,
-      required this.btnCancelTrip});
+      required this.btnCancelTrip,
+      required this.driverId
+      });
 
-  String fecha;
-  String horaEntrada;
-  String horaConductor;
-  String direccion;
-  String neighborhoodReferencePoint;
-  String conductor;
-  String telefono;
-  String condition;
-  int tripId;
-  String commentDriver;
-  int companyId;
+  String? fecha;
+  String? horaEntrada;
+  String? horaConductor;
+  String? direccion;
+  String? neighborhoodReferencePoint;
+  String? conductor;
+  String? telefono;
+  String? condition;
+  int? tripId;
+  String? commentDriver;
+  int? companyId;
   dynamic btnCancelTrip;
+  dynamic driverId;  
 
   factory Trips.fromJson(Map<String, dynamic> json) => Trips(
       fecha: json["Fecha"],
@@ -50,7 +53,9 @@ class Trips {
       tripId: json["tripId"],
       commentDriver: json["commentDriver"],
       companyId: json["companyId"],
-      btnCancelTrip: json["btnCancelTrip"]);
+      btnCancelTrip: json["btnCancelTrip"],
+      driverId: json["driverId"]
+      );
 
   Map<String, dynamic> toJson() => {
         "Fecha": fecha,
@@ -64,7 +69,8 @@ class Trips {
         "tripId": tripId,
         "commentDriver": commentDriver,
         "companyId": companyId,
-        "btnCancelTrip": btnCancelTrip
+        "btnCancelTrip": btnCancelTrip,
+        "driverId": driverId
       };
 }
 

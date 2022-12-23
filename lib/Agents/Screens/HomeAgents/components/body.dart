@@ -13,7 +13,7 @@ import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/constants.dart';
-import 'package:sweetalert/sweetalert.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:package_info/package_info.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
@@ -181,16 +181,17 @@ class _BodyState extends State<Body> {
     //alertas
     final yep = MessageAccount.fromJson(json.decode(respons.body));
     if (yep.ok == true && respons.statusCode == 200 && countId == '0') {
-      SweetAlert.show(context,
+      QuickAlert.show(
+        context: context,
           title: 'Cuentas',
-          subtitle:
-              ' No ha seleccionado una cuenta valida\n si no desea hacerlo presione cancelar.',
-          style: SweetAlertStyle.error);
+          text: ' No ha seleccionado una cuenta valida\n si no desea hacerlo presione cancelar.',
+          type: QuickAlertType.error);
     } else if (yep.ok == true && respons.statusCode == 200) {
-      SweetAlert.show(context,
+      QuickAlert.show(
+        context: context,
           title: yep.title,
-          subtitle: yep.message,
-          style: SweetAlertStyle.success);
+          text: yep.message,
+          type: QuickAlertType.success);
     }
     return Map<String, dynamic>.from(json.decode(response.body));
   }
@@ -280,24 +281,31 @@ class _BodyState extends State<Body> {
                       child: GridView.builder(
                         shrinkWrap: true,
                         //todas las cards
-                        itemCount: plantilla.length,
+                        itemCount: 3,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 1,
+                          mainAxisExtent: 180,                          
                         ),
                         itemBuilder: (context, index) => ItemCard(
                             plantilla: plantilla[index],
                             press: () {
                               setState(() {
-                                if (plantilla[index] == plantilla[1]) {
+                                if (plantilla[index] == plantilla[0]) {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
                                     return DetailScreen(
-                                        plantilla: plantilla[1]);
+                                        plantilla: plantilla[0]);
                                   }));
-                                } else if (plantilla[index] == plantilla[2]) {
+                                } else if (plantilla[index] == plantilla[1]) {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
                                     return DetailScreenHistoryTrip(
+                                        plantilla: plantilla[1]);
+                                  }));
+                                }else if (plantilla[index] == plantilla[2]) {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return DetailScreenQr(
                                         plantilla: plantilla[2]);
                                   }));
                                 }

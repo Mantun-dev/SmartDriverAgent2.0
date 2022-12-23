@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
 //import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
-import 'package:flutter_auth/Agents/Screens/Chat/socketChat.dart';
+
 import 'package:flutter_auth/Agents/Screens/HomeAgents/components/body.dart';
 import 'package:flutter_auth/Agents/Screens/Profile/profile_screen.dart';
+import 'package:flutter_auth/Agents/models/network.dart';
+//import 'package:flutter_auth/Agents/models/profileAgent.dart';
 //import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/components/menu_lateral.dart';
 import 'package:flutter_svg/svg.dart';
@@ -12,17 +14,33 @@ import '../../../constants.dart';
 import '../Chat/chatscreen.dart';
 
 class HomeScreen extends StatefulWidget {
+    
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  final StreamSocket streamSocket = StreamSocket(host: 'djc5t.localtonet.com');
+class _HomeScreenState extends State<HomeScreen> {  
+  //final StreamSocket streamSocket = StreamSocket(host: 'djc5t.localtonet.com');
+  String? tripIdTologin;
   int? counter;
+  String? driverId;
+  String? agentId;
   @override
   void initState() {    
-    super.initState();
-    getCounterNotification();
+    super.initState(); 
+    
+    fetchTrips().then((value){
+      if (value.trips.isNotEmpty) {         
+        for (var i = 0; i < value.trips.length; i++) {                  
+            tripIdTologin =  value.trips[i].tripId.toString(); 
+            driverId = value.trips[i].driverId.toString();            
+            fetchProfile().then((val){      
+              getCounterNotification(value.trips[i].tripId.toString(), val.agentId.toString());
+   
+            });
+        }
+      }
+    });
     //streamSocket.socket.connect();
     //ChatApis().dataLogin('8', 'agente',  'FRANKLIN');
     // streamSocket.socket.on('entrarChat_flutter', (data) {             
@@ -30,14 +48,20 @@ class _HomeScreenState extends State<HomeScreen> {
     // });
   }
 
-  void getCounterNotification()async{
-    final getData = await ChatApis().notificationCounter();   
-    if (mounted) {
-      setState(() {      
-        counter = getData;
-      });
-      
-    }   
+
+
+  void getCounterNotification(String? tripId, String? agentId)async{
+    final getData = await ChatApis().notificationCounter(tripId!, agentId!);   
+    if (getData != null) {      
+      if (getData > 0) {
+        if (mounted) {
+        setState(() {      
+          counter = getData;
+        });
+        
+      }   
+      }
+    }
   }
 
   @override
@@ -66,13 +90,17 @@ class _HomeScreenState extends State<HomeScreen> {
       actions: <Widget>[
         InkWell(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return ChatScreen(
-                id: '8',
-                rol: 'agente',
-                nombre: 'FRANKLIN',
-              );
-            }));
+            fetchProfile().then((value) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ChatScreen(
+                  id: '${value.agentId}',
+                  rol: 'agente',
+                  nombre: '${value.agentFullname}',
+                  sala: '$tripIdTologin',
+                  driverId: '$driverId'
+                );
+              }));
+            });
           },
           child: Container( 
           padding: EdgeInsets.only(top: 16),       

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/Details/components/loader.dart';
-import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
+import 'package:flutter_auth/Agents/Screens/Details/details_screen_changes.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/Screens/Signup/components/background.dart';
 import 'package:flutter_auth/Agents/models/dataAgent.dart';
@@ -411,7 +411,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.mondayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.mondayOut}',
@@ -436,7 +437,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.tuesdayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.tuesdayOut}',
@@ -461,7 +463,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.wednesdayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.wednesdayOut}',
@@ -487,7 +490,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.thursdayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.thursdayOut}',
@@ -512,7 +516,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.fridayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.fridayOut}',
@@ -537,7 +542,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.saturdayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.saturdayOut}',
@@ -562,7 +568,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.sundayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.sundayOut}',
@@ -767,7 +774,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.wednesdayIn}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.wednesdayIn}',
@@ -787,7 +795,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.wednesdayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.wednesdayOut}',
@@ -813,7 +822,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.thursdayIn}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.thursdayIn}',
@@ -833,7 +843,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.thursdayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.thursdayOut}',
@@ -858,7 +869,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.fridayIn}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.fridayIn}',
@@ -878,7 +890,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.fridayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.fridayOut}',
@@ -903,7 +916,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.saturdayIn}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.saturdayIn}',
@@ -923,7 +937,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.saturdayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.saturdayOut}',
@@ -948,7 +963,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.sundayIn}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.sundayIn}',
@@ -968,7 +984,8 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.sundayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre');
+                                                    return Text('Día libre',style: TextStyle(
+                                          color: Colors.white));
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.sundayOut}',
@@ -1009,7 +1026,7 @@ class _DataTableExample extends State<ProfilePage> {
                             press: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return DetailScreen(plantilla: plantilla[3]);
+                                return DetailScreenChanges(plantilla: plantilla[3]);
                               }));
                             },
                           ),

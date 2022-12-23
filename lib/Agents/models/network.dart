@@ -106,7 +106,7 @@ Future<TripsList6> fetchTicketStory() async {
       await http.get(Uri.parse('$ip/api/tickets/${si.agentId}'));
   final data = TripsList6.fromJson(json.decode(response.body));
   if (response.statusCode == 200) {
-    //print(data.trips[0].pendant!.length);
+    print(data.trips[0].pendant!.length);
     return TripsList6.fromJson(json.decode(response.body));
   } else {
     throw Exception('Failed to load Data');

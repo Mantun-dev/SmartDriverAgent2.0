@@ -2,11 +2,11 @@
 class RestApis {
 
   //apis to chat
-  static String usuerWithId = 'http://dycgy.localtonet.com/api/usuarios';
-  static String userwithOutId = 'http://dycgy.localtonet.com/api/usuarios';
-  static String rooms = 'http://dycgy.localtonet.com/api/salas';
-  static String messages = 'http://dycgy.localtonet.com/api/mensajes';
+  static String usuerWithId = 'https://apichat.smtdriver.com/api/usuarios';
+  static String userwithOutId = 'https://apichat.smtdriver.com/api/usuarios';
+  static String rooms = 'https://apichat.smtdriver.com/api/salas';
+  static String messages = 'https://apichat.smtdriver.com/api/mensajes';
 
+  static String apiNotifications = 'https://admin.smtdriver.com/sendMessageNotification';
 
-  //normals apis
 }

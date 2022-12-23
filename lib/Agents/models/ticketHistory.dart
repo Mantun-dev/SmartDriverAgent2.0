@@ -55,17 +55,17 @@ class Closed {
     required this.userFullname,
   });
 
-  int ticketId;
-  String agentEmployeeId;
-  String agentFullname;
-  String ticketIssue;
-  String ticketMessage;
-  String ticketDatetime;
-  int agentId;
-  int replyId;
-  String replyMessage;
-  String userName;
-  String userFullname;
+  int? ticketId;
+  String? agentEmployeeId;
+  String? agentFullname;
+  String? ticketIssue;
+  String? ticketMessage;
+  String? ticketDatetime;
+  int? agentId;
+  int? replyId;
+  String? replyMessage;
+  String? userName;
+  String? userFullname;
 
   factory Closed.fromJson(Map<String, dynamic> json) => Closed(
         ticketId: json["ticketId"],

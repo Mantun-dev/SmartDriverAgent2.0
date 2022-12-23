@@ -13,7 +13,7 @@ import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 import 'dart:convert' show json;
-import 'package:sweetalert/sweetalert.dart';
+import 'package:quickalert/quickalert.dart';
 
 import '../../../../constants.dart';
 
@@ -54,17 +54,18 @@ class _BodyState extends State<Body> {
           MaterialPageRoute(
               builder: (BuildContext context) => RegisterScreen()),
           (Route<dynamic> route) => false);
-      SweetAlert.show(context,
+          QuickAlert.show(
+        context: context,
           title: no.title,
-          subtitle: no.message,
-          style: SweetAlertStyle.success);
+          text: no.message,
+          type: QuickAlertType.success);
+
     } else if (no.ok != true) {
-      SweetAlert.show(
-        context,
-        title: no.title,
-        subtitle: no.message,
-        style: SweetAlertStyle.error,
-      );
+        QuickAlert.show(
+        context: context,
+          title: no.title,
+          text: no.message,
+          type: QuickAlertType.error);
     }
     return Register.fromJson(json.decode(responses.body));
   }

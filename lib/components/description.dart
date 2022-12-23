@@ -5,6 +5,7 @@ import 'package:flutter_auth/Agents/Screens/Details/components/qr_Screen.dart';
 import 'package:flutter_auth/Agents/Screens/Details/components/tickets.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
+import 'package:flutter_auth/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Description extends StatefulWidget {
@@ -39,7 +40,12 @@ class _DescriptionState extends State<Description> {
         if (widget.plantilla.id == 1) ...[
           if (prefs.companyId == "2") ...{
             if (radioShowAndHide == true) ...{
-              showAndHide(),
+              showAndHide("2"),
+            },
+          },
+          if (prefs.companyId == "3") ...{
+            if (radioShowAndHide == true) ...{
+              showAndHide("3"),
             },
           },
           _mostrarPrimerventana(),
@@ -58,7 +64,7 @@ class _DescriptionState extends State<Description> {
     );
   }
 
-  Widget showAndHide() {
+  Widget showAndHide(String id) {
     return Container(
       child: Column(
         children: [
@@ -67,13 +73,13 @@ class _DescriptionState extends State<Description> {
               maintainAnimation: true,
               maintainState: true,
               visible: radioShowAndHide,
-              child: message()),
+              child: message(id)),
         ],
       ),
     );
   }
 
-  Widget message() {
+  Widget message(String id) {
     return Container(
       margin: EdgeInsets.only(left: 0.0, right: 0.0),
       child: Stack(
@@ -84,7 +90,7 @@ class _DescriptionState extends State<Description> {
             ),
             margin: EdgeInsets.only(top: 13.0, right: 8.0),
             decoration: BoxDecoration(
-                color: Colors.blueGrey[100],
+                color: backgroundColor2,
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(16.0),
                 boxShadow: <BoxShadow>[
@@ -101,22 +107,11 @@ class _DescriptionState extends State<Description> {
                 SizedBox(
                   height: 20.0,
                 ),
-                TextButton(
-                    onPressed: () => launchUrl(Uri.parse('tel://3317-4537')),
-                    child: RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(children: <TextSpan>[
-                        TextSpan(
-                            text:
-                                "Si tiene algún inconveniente con su programación, puede escribir al número: ",
-                            style: TextStyle(color: Colors.black87)),
-                        TextSpan(
-                            text: "3317-4537",
-                            style: TextStyle(
-                                color: Colors.blueAccent,
-                                fontWeight: FontWeight.bold)),
-                      ]),
+                TextButton(onPressed: () => id=='2'?launchUrl(Uri.parse('tel://3317-4537')):launchUrl(Uri.parse('tel://8871-6819')),child: RichText(textAlign: TextAlign.center,text: TextSpan(children: <TextSpan>[
+                    TextSpan(text: id=='2'?"Si tiene algún inconveniente con su programación, puede escribir al número: ":"Para consultas o sugerencias de 9:00am a 5:00pm puede escribirnos al número: ",style: TextStyle(color: Colors.white)),
+                    TextSpan(text: id=='2'?"3317-4537":'8871-6819' ,style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold)),]),
                     )),
+
                 SizedBox(height: 24.0),
               ],
             ),

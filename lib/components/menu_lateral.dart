@@ -1,7 +1,11 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'package:flutter/material.dart';
+import 'package:flutter_auth/Agents/Screens/Chat/chatscreen.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
+import 'package:flutter_auth/Agents/Screens/Details/details_screen_changes.dart';
+import 'package:flutter_auth/Agents/Screens/Details/details_screen_history.dart';
+import 'package:flutter_auth/Agents/Screens/Details/details_screen_qr.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 //import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/Screens/Profile/profile_screen.dart';
@@ -13,8 +17,10 @@ import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/Agents/models/profileAgent.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/constants.dart';
-import 'package:sweetalert/sweetalert.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../Agents/Screens/HomeAgents/components/item_card.dart';
 
 //import 'package:flutter_auth/Drivers/Screens/HomeDriver/homeScreen_Driver.dart';
 
@@ -31,7 +37,8 @@ class _MenuLateralState extends State<MenuLateral> {
   Future<Profile>? item;
   Future<DataAgent>? itemx;
   final prefs = new PreferenciasUsuario();
-
+  String? tripIdTologin;
+  String? driverId;
   TextEditingController nameUser = new TextEditingController();
 
   @override
@@ -40,6 +47,16 @@ class _MenuLateralState extends State<MenuLateral> {
     item = fetchProfile();
     itemx = fetchRefres();
     nameUser = new TextEditingController(text: prefs.nombreUsuario);
+    fetchTrips().then((value){
+      if (value.trips.isNotEmpty) {         
+        for (var i = 0; i < value.trips.length; i++) { 
+          print(value.trips[i].tripId.toString());
+          driverId = value.trips[i].driverId.toString();
+          print(driverId);
+            tripIdTologin =  value.trips[i].tripId.toString(); 
+        }
+      }
+    });
   }
 
   @override
@@ -78,7 +95,7 @@ class _MenuLateralState extends State<MenuLateral> {
             color: Colors.white,
           ),
           ListTile(
-            title: Text('Mis proximos viajes',
+            title: Text('Mis próximos viajes',
                 style: TextStyle(color: Colors.white, fontSize: 18)),
             leading: Icon(
               Icons.airport_shuttle,
@@ -108,7 +125,7 @@ class _MenuLateralState extends State<MenuLateral> {
                       context,
                       MaterialPageRoute(
                           builder: (_) =>
-                              DetailScreen(plantilla: plantilla[1])))
+                              DetailScreenHistoryTrip(plantilla: plantilla[1])))
                   .then((_) => DetailScreen(plantilla: plantilla[0]));
             },
           ),
@@ -133,7 +150,7 @@ class _MenuLateralState extends State<MenuLateral> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => DetailScreen(
+                                    builder: (_) => DetailScreenChanges(
                                         plantilla: plantilla[3]))).then(
                                 (_) => DetailScreen(plantilla: plantilla[2]));
                           },
@@ -160,7 +177,7 @@ class _MenuLateralState extends State<MenuLateral> {
                       context,
                       MaterialPageRoute(
                           builder: (_) =>
-                              DetailScreen(plantilla: plantilla[2])))
+                              DetailScreenQr(plantilla: plantilla[2])))
                   .then((_) => DetailScreen(plantilla: plantilla[3]));
             },
           ),
@@ -173,7 +190,19 @@ class _MenuLateralState extends State<MenuLateral> {
               color: Colors.white,
               size: 30,
             ),
-            onTap: () {},
+            onTap: () {
+              fetchProfile().then((value) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ChatScreen(
+                    id: '${value.agentId}',
+                    rol: 'agente',
+                    nombre: '${value.agentFullname}',
+                    sala: '$tripIdTologin',
+                    driverId: '$driverId',
+                  );
+                }));
+              });
+            },
           ),
           Divider(color: Colors.white),
           ListTile(
@@ -185,32 +214,40 @@ class _MenuLateralState extends State<MenuLateral> {
               size: 30,
             ),
             onTap: () {
-              SweetAlert.show(context,
-                  subtitle: "Está seguro que desea salir?",
-                  style: SweetAlertStyle.confirm,
-                  confirmButtonText: "Confirmar",
-                  cancelButtonText: "Cancelar",
-                  showCancelButton: true, onPress: (bool isConfirm) {
-                if (isConfirm) {
+              QuickAlert.show(
+                context: context,
+                title: "Está seguro que desea salir?",          
+                type: QuickAlertType.success,
+                confirmBtnText: 'Confirmar',
+                cancelBtnText: 'Cancelar',
+                showCancelBtn: true,  
+                confirmBtnTextStyle: TextStyle(fontSize: 15, color: Colors.white),
+                cancelBtnTextStyle:TextStyle(color: Colors.red, fontSize: 15, fontWeight:FontWeight.bold ), 
+                onConfirmBtnTap:() {
                   fetchDeleteSession();
                   prefs.remove();
                   prefs.removeData();
-                  SweetAlert.show(context,
-                      subtitle: "¡Gracias por usar Smart Driver!",
-                      style: SweetAlertStyle.success);
+                  QuickAlert.show(
+                    context: context,
+                    type: QuickAlertType.success,
+                    text: "¡Gracias por usar Smart Driver!",
+                  );
                   new Future.delayed(new Duration(seconds: 2), () {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                             builder: (BuildContext context) => WelcomeScreen()),
                         (Route<dynamic> route) => false);
                   });
-                } else {
-                  SweetAlert.show(context,
-                      subtitle: "¡Cancelado!", style: SweetAlertStyle.success);
-                }
-                // return false to keep dialog
-                return false;
-              });
+                },
+                onCancelBtnTap: (() {
+                  Navigator.pop(context);
+                  QuickAlert.show(
+                    context: context,
+                    type: QuickAlertType.success,
+                    text: "Cancelado",
+                  );
+                })
+              );
 
               //Navigator.push( context, MaterialPageRoute(builder: (context) => WelcomeScreen()));
             },

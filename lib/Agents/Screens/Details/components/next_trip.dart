@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison, import_of_legacy_library_into_null_safe
 
+//import 'dart:ui';
+
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -21,8 +23,8 @@ import 'package:flutter_auth/constants.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
-
-import 'package:sweetalert/sweetalert.dart';
+import 'package:quickalert/quickalert.dart';
+//import 'package:sweetalert/sweetalert.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NextTripScreen extends StatefulWidget {
@@ -163,22 +165,22 @@ class _NextTripScreenState extends State<NextTripScreen>
               MaterialPageRoute(
                   builder: (_) => DetailScreen(plantilla: plantilla[0])))
           .then((_) => DetailScreen(plantilla: plantilla[0]));
-      SweetAlert.show(context,
+      QuickAlert.show(
+        context: context,
           title: "Enviado",
-          subtitle: resp.message,
-          style: SweetAlertStyle.success);
+          text: resp.message,
+          type: QuickAlertType.success);
       final algo =
           await http.get(Uri.parse('$ip/api/getMaskReminder/${resps.agentId}'));
       //print(algo.body);
       showAlertDialog();
       Navigator.pop(context);
     } else if (response.statusCode == 500) {
-      SweetAlert.show(
-        context,
-        title: "Alerta",
-        subtitle: resp.message,
-        style: SweetAlertStyle.error,
-      );
+      QuickAlert.show(
+        context: context,
+          title: "Alerta",
+          text: resp.message,
+          type: QuickAlertType.error);
     }
     return Message.fromJson(json.decode(response.body));
   }
@@ -205,18 +207,17 @@ class _NextTripScreenState extends State<NextTripScreen>
               MaterialPageRoute(
                   builder: (_) => DetailScreen(plantilla: plantilla[0])))
           .then((_) => DetailScreen(plantilla: plantilla[0]));
-      SweetAlert.show(context,
+          QuickAlert.show(
+        context: context,
           title: "Cancelación éxitosa",
-          subtitle:
-              "El motorista será notificado que usted no hará uso del transporte",
-          style: SweetAlertStyle.success);
+          text: "El motorista será notificado que usted no hará uso del transporte",
+          type: QuickAlertType.success);
     } else if (response.statusCode == 500) {
-      SweetAlert.show(
-        context,
-        title: "Alerta",
-        subtitle: resp.message,
-        style: SweetAlertStyle.error,
-      );
+      QuickAlert.show(
+        context: context,
+          title: "Alerta",
+          text: resp.message,
+          type: QuickAlertType.error);
     }
     return Message.fromJson(json.decode(response.body));
   }
@@ -239,19 +240,18 @@ class _NextTripScreenState extends State<NextTripScreen>
     final resp = MessageAccount.fromJson(json.decode(response.body));
     //alertas
     if (response.statusCode == 200 && resp.ok == true) {
-      SweetAlert.show(
-        context,
-        title: resp.title,
-        subtitle: resp.message,
-        style: SweetAlertStyle.success,
-      );
+      
+      QuickAlert.show(
+        context: context,
+          title: resp.title,
+          text: resp.message,
+          type: QuickAlertType.success);
     } else if (response.statusCode == 200 && resp.ok != true) {
-      SweetAlert.show(
-        context,
-        title: resp.title,
-        subtitle: resp.message,
-        style: SweetAlertStyle.error,
-      );
+      QuickAlert.show(
+        context: context,
+          title: resp.title,
+          text: resp.message,
+          type: QuickAlertType.error);
     }
     return MessageAccount.fromJson(json.decode(response.body));
   }
@@ -259,384 +259,161 @@ class _NextTripScreenState extends State<NextTripScreen>
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <Widget>[
-        //creación del future builder
+      children: [
         FutureBuilder<TripsList>(
-          future: item,
-          builder: (context, abc) {
-            if (abc.connectionState == ConnectionState.done) {
-              //validación si el arreglo viene vacío
-              if (abc.data!.trips.length == 0) {
-                return Container(
-                  decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                        blurStyle: BlurStyle.normal,
-                        color: Colors.white.withOpacity(0.2),
-                        blurRadius: 30,
-                        spreadRadius: -13,
-                        offset: Offset(-15, -6)),
-                    BoxShadow(
-                        blurStyle: BlurStyle.normal,
-                        color: Colors.black.withOpacity(0.6),
-                        blurRadius: 18,
-                        spreadRadius: -15,
-                        offset: Offset(18, 5)),
-                  ], borderRadius: BorderRadius.circular(15)),
-                  child: Card(
-                    elevation: 10,
-                    color: backgroundColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: EdgeInsets.symmetric(vertical: 15),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        ListTile(
-                          leading: Icon(
-                            Icons.bus_alert,
-                            size: 50,
-                            color: Colors.white,
-                          ),
-                          title: Text('Próximo viaje',
-                              style: TextStyle(
-                                  color: thirdColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.0)),
-                          subtitle: Text('No tiene viajes asignados',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 15.0)),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-                //validación si el arreglo contiene información
-              } else {
+              future: item,
+              builder: (context, abc) {
                 if (abc.connectionState == ConnectionState.done) {
-                  //desplegar data dinámica con LisView builder
-                  return ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      itemCount: abc.data!.trips.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                          decoration: BoxDecoration(boxShadow: [
-                            BoxShadow(
-                                blurStyle: BlurStyle.normal,
-                                color: Colors.white.withOpacity(0.1),
-                                blurRadius: 10,
-                                spreadRadius: 1,
-                                offset: Offset(-5, 12)),
-                            BoxShadow(
-                                blurStyle: BlurStyle.normal,
-                                color: Colors.black.withOpacity(1),
-                                blurRadius: 18,
-                                spreadRadius: -15,
-                                offset: Offset(18, 5)),
-                          ], borderRadius: BorderRadius.circular(15)),
-                          child: Card(
-                            color: backgroundColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            margin: EdgeInsets.symmetric(vertical: 0),
-                            elevation: 10,
-                            child: Container(
-                              child: Column(children: [
-                                ListTile(
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                  title: Text('Fecha: ', style: TextStyle(color: Colors.white),),
-                                  subtitle:
-                                      Text('${abc.data!.trips[index].fecha}', style: TextStyle(color: Colors.white),),
-                                  leading: Icon(Icons.calendar_today,
+                  //validación si el arreglo viene vacío
+                  if (abc.data?.trips.length == 0) {
+                    return Container(
+                      decoration: BoxDecoration(boxShadow: [
+                        BoxShadow(
+                            blurStyle: BlurStyle.normal,
+                            color: Colors.white.withOpacity(0.2),
+                            blurRadius: 30,
+                            spreadRadius: -13,
+                            offset: Offset(-15, -6)),
+                        BoxShadow(
+                            blurStyle: BlurStyle.normal,
+                            color: Colors.black.withOpacity(0.6),
+                            blurRadius: 18,
+                            spreadRadius: -15,
+                            offset: Offset(18, 5)),
+                      ], borderRadius: BorderRadius.circular(15)),
+                      child: Card(
+                        elevation: 10,
+                        color: backgroundColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        margin: EdgeInsets.symmetric(vertical: 15),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              leading: Icon(
+                                Icons.bus_alert,
+                                size: 50,
+                                color: Colors.white,
+                              ),
+                              title: Text('Próximo viaje',
+                                  style: TextStyle(
+                                      color: thirdColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0)),
+                              subtitle: Text('No tiene viajes asignados',
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 15.0)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                    //validación si el arreglo contiene información
+                  } else {
+                    if (abc.connectionState == ConnectionState.done) {
+                          //desplegar data dinámica con LisView builder
+                      return ListView.builder(
+                          scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                          itemCount: abc.data?.trips.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                              decoration: BoxDecoration(boxShadow: [
+                                BoxShadow(
+                                    blurStyle: BlurStyle.normal,
+                                    color: Colors.white.withOpacity(0.1),
+                                    blurRadius: 10,
+                                    spreadRadius: 1,
+                                    offset: Offset(-5, 12)),
+                                BoxShadow(
+                                    blurStyle: BlurStyle.normal,
+                                    color: Colors.black.withOpacity(1),
+                                    blurRadius: 18,
+                                    spreadRadius: -15,
+                                    offset: Offset(18, 5)),
+                              ], borderRadius: BorderRadius.circular(15)),
+                              child: Card(
+                                color: backgroundColor,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                margin: EdgeInsets.symmetric(vertical: 0),
+                                elevation: 10,
+                                child: Column(
+                                  children: [
+                                  ListTile(
+                                    contentPadding:
+                                        EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                    title: Text('Fecha: ', style: TextStyle(color: Colors.white),),
+                                    subtitle:
+                                        Text('${abc.data?.trips[index].fecha}', style: TextStyle(color: Colors.white),),
+                                    leading: Icon(Icons.calendar_today,
+                                        color: GradiantV1, size: 35),
+                                  ),
+                                  ListTile(
+                                    contentPadding:
+                                        EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                    title: Text('Hora: ', style: TextStyle(color: Colors.white),),
+                                    subtitle: Text(
+                                        '${abc.data?.trips[index].horaEntrada}', style: TextStyle(color: Colors.white,),),
+                                    leading: Icon(Icons.timer, color: GradiantV1, size: 35),
+                                  ),
+                                  ListTile(
+                                    contentPadding:
+                                        EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                    title: Text('Motorista: ', style: TextStyle(color: Colors.white)),
+                                    subtitle:
+                                        Text('${abc.data?.trips[index].conductor}', style: TextStyle(color: Colors.white)),
+                                    leading: Icon(Icons.card_travel,
                                       color: GradiantV1, size: 35),
-                                ),
-                                ListTile(
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                  title: Text('Hora: ', style: TextStyle(color: Colors.white),),
-                                  subtitle: Text(
-                                      '${abc.data!.trips[index].horaEntrada}', style: TextStyle(color: Colors.white,),),
-                                  leading: Icon(Icons.timer, color: GradiantV1, size: 35),
-                                ),
-                                ListTile(
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                  title: Text('Motorista: ', style: TextStyle(color: Colors.white)),
-                                  subtitle:
-                                      Text('${abc.data!.trips[index].conductor}', style: TextStyle(color: Colors.white)),
-                                  leading: Icon(Icons.card_travel,
-                                    color: GradiantV1, size: 35),
-                                ),
-                                ListTile(
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                  title: Text('Teléfono: ', style: TextStyle(color: Colors.white)),
-                                  subtitle: TextButton(
-                                      onPressed: () => launchUrl(Uri.parse(
-                                          'tel://${abc.data!.trips[index].telefono}')),
-                                      child: Container(
-                                          margin: EdgeInsets.only(right: 185),
-                                          child: Text(
-                                              '${abc.data!.trips[index].telefono}',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14)))),
-                                  leading: Icon(Icons.phone, color: GradiantV1, size: 35),
-                                ),
-                                ListTile(
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                  title: Text('Dirección: ', style: TextStyle(color: Colors.white)),
-                                  subtitle:
-                                      Text('${abc.data!.trips[index].direccion}', style: TextStyle(color: Colors.white)),
-                                  leading:
-                                      Icon(Icons.directions, color: GradiantV1, size: 35),
-                                ),
-                                if (abc.data!.trips[index].neighborhoodReferencePoint != null)...{
+                                  ),
                                   ListTile(
                                     contentPadding:
                                         EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                    title: Text('Acceso autorizado: ', style: TextStyle(color: Colors.white)),
-                                    subtitle: Text(
-                                        '${abc.data!.trips[index].neighborhoodReferencePoint}', style: TextStyle(color: Colors.white)),
-                                    leading: Icon(Icons.bus_alert, color: GradiantV1, size: 35),
-                                  ),},                               
-                                SizedBox(height: 20),
-                                //validación de mostrar si la condición está empty mostrar texto de necesita confirmación
-                                if ('${abc.data!.trips[index].condition}' =='empty') ...{
+                                    title: Text('Teléfono: ', style: TextStyle(color: Colors.white)),
+                                    subtitle: TextButton(
+                                        onPressed: () => launchUrl(Uri.parse(
+                                            'tel://${abc.data?.trips[index].telefono}')),
+                                        child: Container(
+                                            margin: EdgeInsets.only(right: 185),
+                                            child: Text(
+                                                '${abc.data?.trips[index].telefono}',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14)))),
+                                    leading: Icon(Icons.phone, color: GradiantV1, size: 35),
+                                  ),
                                   ListTile(
                                     contentPadding:
                                         EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                    title: Text('Hora de encuentro: ', style: TextStyle(color: Colors.white),),
-                                    subtitle: Text(
-                                        'Necesita confirmación para poder asignarle una hora de encuentro',
-                                        style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 15.0)),
+                                    title: Text('Dirección: ', style: TextStyle(color: Colors.white)),
+                                    subtitle:
+                                        Text('${abc.data?.trips[index].direccion}', style: TextStyle(color: Colors.white)),
                                     leading:
-                                        Icon(Icons.timer, color: GradiantV1, size: 35),
+                                        Icon(Icons.directions, color: GradiantV1, size: 35),
                                   ),
-                                  SizedBox(height: 10,),
-                                  TextButton(
-                                    style: TextButton.styleFrom(
-                                      shape: RoundedRectangleBorder(                                    
-                                          borderRadius:
-                                              BorderRadius.circular(50)),
-                                      backgroundColor: secondColor,
-                                    ),
-                                    onPressed: () {
-                                      showGeneralDialog(
-                                          barrierColor:
-                                              Colors.black.withOpacity(0.5),
-                                          transitionBuilder:
-                                              (context, a1, a2, widget) {
-                                            final curvedValue = Curves
-                                                    .easeInOutBack
-                                                    .transform(a1.value) -
-                                                1.0;
-                                            return Transform(
-                                              transform:
-                                                  Matrix4.translationValues(0.0,
-                                                      curvedValue * 200, 0.0),
-                                              child: Opacity(
-                                                opacity: a1.value,
-                                                child: AlertDialog(
-                                                  backgroundColor: backgroundColor,
-                                                  shape: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              16.0)),
-                                                  title: Center(
-                                                      child:
-                                                          Text('Confirmación', style: TextStyle(color: Colors.white))),
-                                                  content: Text(
-                                                      '¿Hará uso del transporte designado?',
-                                                      textAlign:
-                                                          TextAlign.center, style: TextStyle(color: Colors.white)),
-                                                  actions: [
-                                                    Container(
-                                                        child: Center(
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                        children: [
-                                                          
-                                                          TextButton(
-                                                            style: TextButton.styleFrom(
-                                                                foregroundColor:
-                                                                    Colors.black,
-                                                                backgroundColor:
-                                                                    firstColor),
-                                                            onPressed: () => {
-                                                              ChatApis().confirmOrCancel('CONFIRMADO'),                                                            
-                                                              //función fetch confirm
-                                                              fetchConfirm(
-                                                                  prefs
-                                                                      .nombreUsuario,
-                                                                  '${abc.data!.trips[index].tripId}',
-                                                                  condition,
-                                                                  comment),
-                                                            },
-                                                            child: Text('Si'),
-                                                          ),
-                                                          
-                                                          TextButton(
-                                                            style: TextButton
-                                                                .styleFrom(
-                                                                    foregroundColor:
-                                                                        Colors
-                                                                            .black,
-                                                                    backgroundColor:
-                                                                        GradiantV_1),
-                                                            child: Text('No'),
-                                                            onPressed: () => {
-                                                              Navigator.pop(
-                                                                  context),
-                                                              showGeneralDialog(
-                                                                  barrierColor: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          0.5),
-                                                                  transitionBuilder:
-                                                                      (context,
-                                                                          a1,
-                                                                          a2,
-                                                                          widget) {
-                                                                    return Transform
-                                                                        .scale(
-                                                                      scale: a1
-                                                                          .value,
-                                                                      child:
-                                                                          Opacity(
-                                                                        opacity: a1
-                                                                            .value,
-                                                                        child:
-                                                                            AlertDialog(
-                                                                              backgroundColor: backgroundColor,
-                                                                          shape: OutlineInputBorder(
-                                                                              borderRadius:
-                                                                                  BorderRadius.circular(16.0)),
-                                                                          title: Center(
-                                                                              child:
-                                                                                  Text('¿Razón por la cual no hará uso del transporte?', textAlign: TextAlign.center, style: TextStyle(color: Colors.white))),
-                                                                          content: TextField(
-                                                                              controller:
-                                                                                  message,
-                                                                              decoration:
-                                                                                  InputDecoration(labelText: 'Escriba aquí', labelStyle: TextStyle(color: Colors.white))),
-                                                                          actions: [
-                                                                            Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                              children: [
-                                                                                
-                                                                                TextButton(
-                                                                                  style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: firstColor),
-                                                                                  onPressed: () => {
-                                                                                    ChatApis().confirmOrCancel('RECHAZADO'),
-                                                                                    
-                                                                                    //función fetch cancel
-                                                                                    fetchCancel(prefs.nombreUsuario, '${abc.data!.trips[index].tripId}', conditionC, message.text),
-                                                                                    Navigator.pop(context),
-                                                                                  },
-                                                                                  child: Text('Enviar', style: TextStyle(color: Colors.black)),
-                                                                                ),
-                                                                                
-                                                                                TextButton(
-                                                                                  style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: GradiantV_1),
-                                                                                  onPressed: () => {
-                                                                                    Navigator.pop(context),
-                                                                                  },
-                                                                                  child: Text('Cerrar', style: TextStyle(color: Colors.black)),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                    );
-                                                                  },
-                                                                  transitionDuration:
-                                                                      Duration(
-                                                                          milliseconds:
-                                                                              200),
-                                                                  barrierDismissible:
-                                                                      true,
-                                                                  barrierLabel:
-                                                                      '',
-                                                                  context:
-                                                                      context,
-                                                                  pageBuilder: (context,
-                                                                      animation1,
-                                                                      animation2) {
-                                                                    return widget;
-                                                                  }),
-                                                            },
-                                                          ),
-                                                          
-                                                          TextButton(
-                                                            style: TextButton.styleFrom(
-                                                                foregroundColor:
-                                                                    Colors.black,
-                                                                backgroundColor:
-                                                                    Gradiant2),
-                                                            onPressed: () => {
-                                                              Navigator.pop(
-                                                                  context),
-                                                            },
-                                                            child: Text('Cerrar'),
-                                                          ),
-                                                          
-                                                        ],
-                                                      ),
-                                                    ))
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          transitionDuration:
-                                              Duration(milliseconds: 200),
-                                          barrierDismissible: true,
-                                          barrierLabel: '',
-                                          context: context,
-                                          pageBuilder:
-                                              (context, animation1, animation2) {
-                                            return widget;
-                                          });
-                                    },
-                                    child: Text(
-                                        'Presione para confirmar o cancelar',
-                                        style: TextStyle(color: backgroundColor2, fontSize: 16)),
-                                  ),
-                                  SizedBox(height: 20),
-                                  //validación de condition in canceled
-                                }, 
-                                if ('${abc.data!.trips[index].condition}' == 'Canceled') ...{
-                                  if ('${abc.data!.trips[index].commentDriver}' == 'No confirmó') ...{
+                                  if (abc.data?.trips[index].neighborhoodReferencePoint != null)...{
                                     ListTile(
                                       contentPadding:
                                           EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                      title: Text('Viaje cancelado: ' , style: TextStyle(color: Colors.white)),
-                                      subtitle: Text('No confirmó a tiempo',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 15.0)),
-                                      leading:
-                                          Icon(Icons.timer, color: GradiantV1, size: 35),
-                                    ),
-                                  } else ...{
-                                    ListTile(
-                                      contentPadding:
-                                          EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                      title: Text('Viaje cancelado: ' , style: TextStyle(color: Colors.white)),
+                                      title: Text('Acceso autorizado: ', style: TextStyle(color: Colors.white)),
                                       subtitle: Text(
-                                          'Se ha notificado al motorista que usted no necesitará el transporte',
+                                          '${abc.data?.trips[index].neighborhoodReferencePoint}', style: TextStyle(color: Colors.white)),
+                                      leading: Icon(Icons.bus_alert, color: GradiantV1, size: 35),
+                                    ),},                               
+                                  SizedBox(height: 20),
+                                  //validación de mostrar si la condición está empty mostrar texto de necesita confirmación
+                                  if ('${abc.data?.trips[index].condition}' =='empty') ...{
+                                    ListTile(
+                                      contentPadding:
+                                          EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                      title: Text('Hora de encuentro: ', style: TextStyle(color: Colors.white),),
+                                      subtitle: Text(
+                                          'Necesita confirmación para poder asignarle una hora de encuentro',
                                           style: TextStyle(
                                               color: Colors.red,
                                               fontWeight: FontWeight.normal,
@@ -644,182 +421,405 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       leading:
                                           Icon(Icons.timer, color: GradiantV1, size: 35),
                                     ),
-                                  },
-                                  SizedBox(height: 20),
-                                  //validación de horaConductor in empty
-                                } else if ('${abc.data!.trips[index].horaConductor}' ==
-                                    'empty') ...{
-                                  ListTile(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                    title: Text('Hora de encuentro: ', style: TextStyle(color: Colors.white)),
-                                    subtitle: Text(
-                                        'Viaje confirmado, espere a que el motorista asigne la hora a la que pasará por usted',
-                                        style: TextStyle(
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 15.0)),
-                                    leading:
-                                        Icon(Icons.timer, color: GradiantV1, size: 35),
-                                  ),
-                                  SizedBox(height: 20),
-                                  //validación que aparezca la hora
-                                } else ...{
-                                  ListTile(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                    title: Text('Hora de encuentro: ', style: TextStyle(color: Colors.white),),
-                                    subtitle: Text(
-                                        '${abc.data!.trips[index].horaConductor}',
-                                        style: TextStyle(
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 25.0)),
-                                    leading:
-                                        Icon(Icons.timer, color: GradiantV1, size: 35),
-                                  ),
-                                },
-                                if ('${abc.data!.trips[index].condition}' ==
-                                    'Confirmed') ...{
-                                  if (abc.data!.trips[index].companyId == 1 ||
-                                      abc.data!.trips[index].companyId == 7 ||
-                                      abc.data!.trips[index].companyId == 3 ||
-                                      abc.data!.trips[index].companyId == 5 ||
-                                      abc.data!.trips[index].companyId == 9 ||
-                                      abc.data!.trips[index].companyId == 11 ||
-                                      abc.data!.trips[index].companyId == 12) ...{
-                                    if (abc.data!.trips[index].btnCancelTrip ==
-                                        true) ...{
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                            foregroundColor: Colors.white,
-                                            backgroundColor: Colors.red),
-                                        child: Text('Cancelar viaje'),
-                                        onPressed: () => {
-                                          showGeneralDialog(
-                                              barrierColor:
-                                                  Colors.black.withOpacity(0.5),
-                                              transitionBuilder:
-                                                  (context, a1, a2, widget) {
-                                                return Transform.scale(
-                                                  scale: a1.value,
-                                                  child: Opacity(
-                                                    opacity: a1.value,
-                                                    child: AlertDialog(
-                                                      shape: OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      16.0)),
-                                                      title: Center(
-                                                          child: Text(
-                                                              '¿Razón por la cual no hará uso del transporte?',
-                                                              textAlign: TextAlign
-                                                                  .center)),
-                                                      content: TextField(
-                                                          controller: message,
-                                                          decoration: InputDecoration(
-                                                              labelText:
-                                                                  'Escriba aquí')),
-                                                      actions: [
-                                                        Row(
+                                    SizedBox(height: 10,),
+                                    TextButton(
+                                      style: TextButton.styleFrom(
+                                        shape: RoundedRectangleBorder(                                    
+                                            borderRadius:
+                                                BorderRadius.circular(50)),
+                                        backgroundColor: secondColor,
+                                      ),
+                                      onPressed: () {
+                                        showGeneralDialog(
+                                            barrierColor:
+                                                Colors.black.withOpacity(0.5),
+                                            transitionBuilder:
+                                                (context, a1, a2, widget) {
+                                              final curvedValue = Curves
+                                                      .easeInOutBack
+                                                      .transform(a1.value) -
+                                                  1.0;
+                                              return Transform(
+                                                transform:
+                                                    Matrix4.translationValues(0.0,
+                                                        curvedValue * 200, 0.0),
+                                                child: Opacity(
+                                                  opacity: a1.value,
+                                                  child: AlertDialog(
+                                                    backgroundColor: backgroundColor,
+                                                    shape: OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                16.0)),
+                                                    title: Center(
+                                                        child:
+                                                            Text('Confirmación', style: TextStyle(color: Colors.white))),
+                                                    content: Text(
+                                                        '¿Hará uso del transporte designado?',
+                                                        textAlign:
+                                                            TextAlign.center, style: TextStyle(color: Colors.white)),
+                                                    actions: [
+                                                      Container(
+                                                          child: Center(
+                                                        child: Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                           children: [
-                                                            SizedBox(width: 60.0),
+                                                            
                                                             TextButton(
                                                               style: TextButton.styleFrom(
-                                                                  padding: EdgeInsets
-                                                                      .symmetric(
-                                                                          horizontal:
-                                                                              20),
                                                                   foregroundColor:
-                                                                      Colors
-                                                                          .white,
+                                                                      Colors.black,
                                                                   backgroundColor:
-                                                                      Colors
-                                                                          .blueAccent),
+                                                                      firstColor),
                                                               onPressed: () => {
-                                                                //función fetch cancel
-                                                                fetchCancel(
+                                                                ChatApis().confirmOrCancel('CONFIRMADO'),                                                            
+                                                                //función fetch confirm
+                                                                fetchConfirm(
                                                                     prefs
                                                                         .nombreUsuario,
-                                                                    '${abc.data!.trips[index].tripId}',
-                                                                    conditionC,
-                                                                    message.text),
+                                                                    '${abc.data?.trips[index].tripId}',
+                                                                    condition,
+                                                                    comment),
+                                                              },
+                                                              child: Text('Si'),
+                                                            ),
+                                                            
+                                                            TextButton(
+                                                              style: TextButton
+                                                                  .styleFrom(
+                                                                      foregroundColor:
+                                                                          Colors
+                                                                              .black,
+                                                                      backgroundColor:
+                                                                          GradiantV_1),
+                                                              child: Text('No'),
+                                                              onPressed: () => {
                                                                 Navigator.pop(
                                                                     context),
+                                                                showGeneralDialog(
+                                                                    barrierColor: Colors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                            0.5),
+                                                                    transitionBuilder:
+                                                                        (context,
+                                                                            a1,
+                                                                            a2,
+                                                                            widget) {
+                                                                      return Transform
+                                                                          .scale(
+                                                                        scale: a1
+                                                                            .value,
+                                                                        child:
+                                                                            Opacity(
+                                                                          opacity: a1
+                                                                              .value,
+                                                                          child:
+                                                                              AlertDialog(
+                                                                                backgroundColor: backgroundColor,
+                                                                            shape: OutlineInputBorder(
+                                                                                borderRadius:
+                                                                                    BorderRadius.circular(16.0)),
+                                                                            title: Center(
+                                                                                child:
+                                                                                    Text('¿Razón por la cual no hará uso del transporte?', textAlign: TextAlign.center, style: TextStyle(color: Colors.white))),
+                                                                            content: TextField(
+                                                                                controller:
+                                                                                    message,
+                                                                                decoration:
+                                                                                    InputDecoration(labelText: 'Escriba aquí', labelStyle: TextStyle(color: Colors.white))),
+                                                                            actions: [
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                                children: [
+                                                                                  
+                                                                                  TextButton(
+                                                                                    style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: firstColor),
+                                                                                    onPressed: () => {
+                                                                                      ChatApis().confirmOrCancel('RECHAZADO'),
+                                                                                      
+                                                                                      //función fetch cancel
+                                                                                      fetchCancel(prefs.nombreUsuario, '${abc.data?.trips[index].tripId}', conditionC, message.text),
+                                                                                      Navigator.pop(context),
+                                                                                    },
+                                                                                    child: Text('Enviar', style: TextStyle(color: Colors.black)),
+                                                                                  ),
+                                                                                  
+                                                                                  TextButton(
+                                                                                    style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: GradiantV_1),
+                                                                                    onPressed: () => {
+                                                                                      Navigator.pop(context),
+                                                                                    },
+                                                                                    child: Text('Cerrar', style: TextStyle(color: Colors.black)),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                    transitionDuration:
+                                                                        Duration(
+                                                                            milliseconds:
+                                                                                200),
+                                                                    barrierDismissible:
+                                                                        true,
+                                                                    barrierLabel:
+                                                                        '',
+                                                                    context:
+                                                                        context,
+                                                                    pageBuilder: (context,
+                                                                        animation1,
+                                                                        animation2) {
+                                                                      return widget;
+                                                                    }),
                                                               },
-                                                              child:
-                                                                  Text('Enviar'),
                                                             ),
-                                                            SizedBox(width: 10.0),
+                                                            
                                                             TextButton(
                                                               style: TextButton.styleFrom(
-                                                                  padding: EdgeInsets
-                                                                      .symmetric(
-                                                                          horizontal:
-                                                                              20),
                                                                   foregroundColor:
-                                                                      Colors
-                                                                          .white,
+                                                                      Colors.black,
                                                                   backgroundColor:
-                                                                      Colors.red),
+                                                                      Gradiant2),
                                                               onPressed: () => {
                                                                 Navigator.pop(
                                                                     context),
                                                               },
-                                                              child:
-                                                                  Text('Cerrar'),
+                                                              child: Text('Cerrar'),
                                                             ),
+                                                            
                                                           ],
                                                         ),
-                                                      ],
-                                                    ),
+                                                      ))
+                                                    ],
                                                   ),
-                                                );
-                                              },
-                                              transitionDuration:
-                                                  Duration(milliseconds: 200),
-                                              barrierDismissible: true,
-                                              barrierLabel: '',
-                                              context: context,
-                                              pageBuilder: (context, animation1,
-                                                  animation2) {
-                                                return widget;
-                                              }),
-                                        },
+                                                ),
+                                              );
+                                            },
+                                            transitionDuration:
+                                                Duration(milliseconds: 200),
+                                            barrierDismissible: true,
+                                            barrierLabel: '',
+                                            context: context,
+                                            pageBuilder:
+                                                (context, animation1, animation2) {
+                                              return widget;
+                                            });
+                                      },
+                                      child: Text(
+                                          'Presione para confirmar o cancelar',
+                                          style: TextStyle(color: backgroundColor2, fontSize: 16)),
+                                    ),
+                                    SizedBox(height: 20),
+                                    //validación de condition in canceled
+                                  }, 
+                                  if ('${abc.data?.trips[index].condition}' == 'Canceled') ...{
+                                    if ('${abc.data?.trips[index].commentDriver}' == 'No confirmó') ...{
+                                      ListTile(
+                                        contentPadding:
+                                            EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                        title: Text('Viaje cancelado: ' , style: TextStyle(color: Colors.white)),
+                                        subtitle: Text('No confirmó a tiempo',
+                                            style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 15.0)),
+                                        leading:
+                                            Icon(Icons.timer, color: GradiantV1, size: 35),
                                       ),
                                     } else ...{
                                       ListTile(
                                         contentPadding:
                                             EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                        title: Text('Viaje', style: TextStyle(color: Colors.white)),
+                                        title: Text('Viaje cancelado: ' , style: TextStyle(color: Colors.white)),
                                         subtitle: Text(
-                                            'Su tiempo para cancelar el viaje ha expirado',
+                                            'Se ha notificado al motorista que usted no necesitará el transporte',
                                             style: TextStyle(
                                                 color: Colors.red,
                                                 fontWeight: FontWeight.normal,
                                                 fontSize: 15.0)),
-                                        leading: Icon(Icons.timer, color: GradiantV1, size: 35),
+                                        leading:
+                                            Icon(Icons.timer, color: GradiantV1, size: 35),
                                       ),
+                                    },
+                                    SizedBox(height: 20),
+                                    //validación de horaConductor in empty
+                                  } else if ('${abc.data?.trips[index].horaConductor}' ==
+                                      'empty') ...{
+                                    ListTile(
+                                      contentPadding:
+                                          EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                      title: Text('Hora de encuentro: ', style: TextStyle(color: Colors.white)),
+                                      subtitle: Text(
+                                          'Viaje confirmado, espere a que el motorista asigne la hora a la que pasará por usted',
+                                          style: TextStyle(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 15.0)),
+                                      leading:
+                                          Icon(Icons.timer, color: GradiantV1, size: 35),
+                                    ),
+                                    SizedBox(height: 20),
+                                    //validación que aparezca la hora
+                                  } else ...{
+                                    ListTile(
+                                      contentPadding:
+                                          EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                      title: Text('Hora de encuentro: ', style: TextStyle(color: Colors.white),),
+                                      subtitle: Text(
+                                          '${abc.data?.trips[index].horaConductor}',
+                                          style: TextStyle(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 25.0)),
+                                      leading:
+                                          Icon(Icons.timer, color: GradiantV1, size: 35),
+                                    ),
+                                  },
+                                  if ('${abc.data?.trips[index].condition}' ==
+                                      'Confirmed') ...{
+                                    if (abc.data?.trips[index].companyId == 1 ||
+                                        abc.data?.trips[index].companyId == 7 ||
+                                        abc.data?.trips[index].companyId == 3 ||
+                                        abc.data?.trips[index].companyId == 5 ||
+                                        abc.data?.trips[index].companyId == 9 ||
+                                        abc.data?.trips[index].companyId == 11 ||
+                                        abc.data?.trips[index].companyId == 12) ...{
+                                      if (abc.data?.trips[index].btnCancelTrip ==
+                                          true) ...{
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                              foregroundColor: Colors.white,
+                                              backgroundColor: Colors.red),
+                                          child: Text('Cancelar viaje'),
+                                          onPressed: () => {
+                                            showGeneralDialog(
+                                                barrierColor:
+                                                    Colors.black.withOpacity(0.5),
+                                                transitionBuilder:
+                                                    (context, a1, a2, widget) {
+                                                  return Transform.scale(
+                                                    scale: a1.value,
+                                                    child: Opacity(
+                                                      opacity: a1.value,
+                                                      child: AlertDialog(
+                                                        shape: OutlineInputBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        16.0)),
+                                                        title: Center(
+                                                            child: Text(
+                                                                '¿Razón por la cual no hará uso del transporte?',
+                                                                textAlign: TextAlign
+                                                                    .center)),
+                                                        content: TextField(
+                                                            controller: message,
+                                                            decoration: InputDecoration(
+                                                                labelText:
+                                                                    'Escriba aquí')),
+                                                        actions: [
+                                                          Row(
+                                                            children: [
+                                                              SizedBox(width: 60.0),
+                                                              TextButton(
+                                                                style: TextButton.styleFrom(
+                                                                    padding: EdgeInsets
+                                                                        .symmetric(
+                                                                            horizontal:
+                                                                                20),
+                                                                    foregroundColor:
+                                                                        Colors
+                                                                            .white,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .blueAccent),
+                                                                onPressed: () => {
+                                                                  //función fetch cancel
+                                                                  fetchCancel(
+                                                                      prefs
+                                                                          .nombreUsuario,
+                                                                      '${abc.data?.trips[index].tripId}',
+                                                                      conditionC,
+                                                                      message.text),
+                                                                  Navigator.pop(
+                                                                      context),
+                                                                },
+                                                                child:
+                                                                    Text('Enviar'),
+                                                              ),
+                                                              SizedBox(width: 10.0),
+                                                              TextButton(
+                                                                style: TextButton.styleFrom(
+                                                                    padding: EdgeInsets
+                                                                        .symmetric(
+                                                                            horizontal:
+                                                                                20),
+                                                                    foregroundColor:
+                                                                        Colors
+                                                                            .white,
+                                                                    backgroundColor:
+                                                                        Colors.red),
+                                                                onPressed: () => {
+                                                                  Navigator.pop(
+                                                                      context),
+                                                                },
+                                                                child:
+                                                                    Text('Cerrar'),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                transitionDuration:
+                                                    Duration(milliseconds: 200),
+                                                barrierDismissible: true,
+                                                barrierLabel: '',
+                                                context: context,
+                                                pageBuilder: (context, animation1,
+                                                    animation2) {
+                                                  return widget;
+                                                }),
+                                          },
+                                        ),
+                                      } else ...{
+                                        ListTile(
+                                          contentPadding:
+                                              EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                          title: Text('Viaje', style: TextStyle(color: Colors.white)),
+                                          subtitle: Text(
+                                              'Su tiempo para cancelar el viaje ha expirado',
+                                              style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 15.0)),
+                                          leading: Icon(Icons.timer, color: GradiantV1, size: 35),
+                                        ),
+                                      }
                                     }
-                                  }
-                                } else
-                                  ...{},
-                              ]),
-                            ),
-                          ),
-                        );
-                      });
+                                  } else
+                                    ...{},
+                                ]),
+                              ),
+                            );
+                          });               
+                  
+                    }else{
+                    return CircularProgressIndicator();
+                  }
+                  
+                  }
                 } else {
-                  return CircularProgressIndicator();
+                  return ColorLoader3();
                 }
-              }
-            } else {
-              return ColorLoader3();
-            }
-            //return SizedBox();
-          },
-        ),
+                //return SizedBox();
+              },
+            ),
       ],
     );
   }
@@ -943,11 +943,12 @@ class _NextTripScreenState extends State<NextTripScreen>
             child: Opacity(
               opacity: a1.value,
               child: AlertDialog(
+                backgroundColor: backgroundColor,
                 shape: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16.0)),
                 title: Center(
                     child: Text(
-                        '😄 ¿Cómo calificaría su último viaje con\n${resp1.driverFullname}? 😁 ')),
+                        '😄 ¿Cómo calificaría su último viaje con\n${resp1.driverFullname}? 😁 ', style: TextStyle(color: Colors.white),)),
                 content: StatefulBuilder(
                     builder: (BuildContext context, StateSetter setState) {
                   return Container(
@@ -958,7 +959,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         //creación reacciones para conducción
                         Divider(),
                         SizedBox(height: 10.0),
-                        Text('Conducción'),
+                        Text('Conducción', style: TextStyle(color: Colors.white)),
                         SizedBox(height: 5.0),
                         RatingBar.builder(
                           initialRating: 0,
@@ -990,7 +991,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         Divider(),
                         SizedBox(height: 10.0),
                         //creación reacciones para amabilidad
-                        Text('Amabilidad del motorista'),
+                        Text('Amabilidad del motorista', style: TextStyle(color: Colors.white)),
                         SizedBox(height: 5.0),
                         RatingBar.builder(
                           initialRating: 0,
@@ -1024,7 +1025,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         Divider(),
                         SizedBox(height: 10.0),
                         //creación reacciones para condiciones
-                        Text('Condiciones del vehículo'),
+                        Text('Condiciones del vehículo', style: TextStyle(color: Colors.white)),
                         SizedBox(height: 5.0),
                         RatingBar.builder(
                           initialRating: 0,
@@ -1059,14 +1060,15 @@ class _NextTripScreenState extends State<NextTripScreen>
                 }),
                 actions: <Widget>[
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      SizedBox(width: 15.0),
+                      
                       ButtonTheme(
                           minWidth: 60.0,
                           child: TextButton(
                             style: TextButton.styleFrom(
                                 foregroundColor: Colors.white,
-                                backgroundColor: Colors.orange),
+                                backgroundColor: secondColor),
                             onPressed: () => {
                               //fetch skip Rating
                               fetchSkipRating(
@@ -1080,25 +1082,25 @@ class _NextTripScreenState extends State<NextTripScreen>
                             },
                             child: Text('Omitir'),
                           )),
-                      SizedBox(width: 5.0),
+                      
                       ButtonTheme(
                           minWidth: 60.0,
                           child: TextButton(
                             style: TextButton.styleFrom(
                                 foregroundColor: Colors.white,
-                                backgroundColor: Colors.grey),
+                                backgroundColor: kgray),
                             onPressed: () => {
                               Navigator.pop(context),
                             },
                             child: Text('Ahora no'),
                           )),
-                      SizedBox(width: 5.0),
+                      
                       ButtonTheme(
                         minWidth: 60.0,
                         child: TextButton(
                           style: TextButton.styleFrom(
                               foregroundColor: Colors.white,
-                              backgroundColor: Colors.blue),
+                              backgroundColor: GradiantV1),
                           onPressed: () => {
                             Navigator.pop(context),
                             showGeneralDialog(
@@ -1109,21 +1111,24 @@ class _NextTripScreenState extends State<NextTripScreen>
                                     child: Opacity(
                                       opacity: a1.value,
                                       child: AlertDialog(
+                                        backgroundColor: backgroundColor,
                                         shape: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(16.0)),
                                         title: Center(
                                             child: Text(
-                                                'Describa su experiencia (opcional)',
-                                                textAlign: TextAlign.center)),
+                                                'Estamos evaluando a nuestros \nmotoristas, para esto es \nmuy importante su comentario.',
+                                                textAlign: TextAlign.center, style: TextStyle(color: Colors.white),)),
                                         content: TextField(
                                             controller: message,
                                             decoration: InputDecoration(
-                                                labelText: 'Escriba aquí')),
+                                                labelText: 'Escriba aquí'),
+                                                style: TextStyle(color: Colors.white),
+                                                ),
                                         actions: [
                                           Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              SizedBox(width: 60.0),
                                               TextButton(
                                                 style: TextButton.styleFrom(
                                                     padding:
@@ -1132,7 +1137,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                     foregroundColor:
                                                         Colors.white,
                                                     backgroundColor:
-                                                        Colors.blueAccent),
+                                                        GradiantV1),
                                                 onPressed: () => {
                                                   //fetch skip rating
                                                   fetchSkipRating(
@@ -1146,7 +1151,6 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                 },
                                                 child: Text('Enviar'),
                                               ),
-                                              SizedBox(width: 70.0),
                                             ],
                                           ),
                                         ],

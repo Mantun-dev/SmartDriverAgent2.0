@@ -15,7 +15,7 @@ import 'package:flutter_auth/components/forgot_password.dart';
 import 'package:flutter_auth/components/rounded_button.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:lottie/lottie.dart';
-import 'package:sweetalert/sweetalert.dart';
+import 'package:quickalert/quickalert.dart';
 import '../../../../constants.dart';
 
 import 'package:http/http.dart' as http;
@@ -47,12 +47,11 @@ class _BodyState extends State<Body> {
     Map data = {'agentUser': agentUser, 'agentPassword': agentPassword};
     String device = "mobile";
     if (agentUser == "" && agentPassword == "") {
-      SweetAlert.show(
-        context,
-        title: "Alerta",
-        subtitle: "Campos vacios",
-        style: SweetAlertStyle.error,
-      );
+      QuickAlert.show(
+        context: context,
+          title: "Alerta",
+          text: "Campos vacios",
+          type: QuickAlertType.error);
     } else {
       //Api post refresca la informacion enviada desde el backend hacia el login
       http.Response responses = await http
@@ -82,21 +81,21 @@ class _BodyState extends State<Body> {
         prefs.companyId = si.companyId.toString();
         prefs.passwordUsuario = agentPassword;
         prefs.nombreUsuario = agentUser;
-        prefs.tokenAndroid = claro.data[0].token;
+        prefs.tokenAndroid = claro.data![0].token!;
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => HomeScreen()),
             (Route<dynamic> route) => false);
-        SweetAlert.show(context,
-            title: "\nBienvenido(a)",
-            subtitle: si.agentFullname,
-            style: SweetAlertStyle.success);
+             QuickAlert.show(
+        context: context,
+          title: "\nBienvenido(a)",
+          text: si.agentFullname,
+          type: QuickAlertType.success);
       } else if (no.ok != true) {
-        SweetAlert.show(
-          context,
+        QuickAlert.show(
+        context: context,
           title: "\nError",
-          subtitle: no.message,
-          style: SweetAlertStyle.error,
-        );
+          text: no.message,
+          type: QuickAlertType.error);
       }
       return DataAgents.fromJson(json.decode(response.body));
     }

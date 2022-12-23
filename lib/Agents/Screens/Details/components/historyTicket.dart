@@ -94,50 +94,50 @@ class _DataTableExample extends State<HistoryTicketScreen> {
           //validación de arreglo vacio
           if (abc.data!.trips[0].pendant!.length == 0) {
             return Container(
-                  decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                        blurStyle: BlurStyle.normal,
-                        color: Colors.white.withOpacity(0.2),
-                        blurRadius: 30,
-                        spreadRadius: -13,
-                        offset: Offset(-15, -6)),
-                    BoxShadow(
-                        blurStyle: BlurStyle.normal,
-                        color: Colors.black.withOpacity(0.6),
-                        blurRadius: 18,
-                        spreadRadius: -15,
-                        offset: Offset(18, 5)),
-                  ], borderRadius: BorderRadius.circular(15)),
-                  child: Card(
-                    elevation: 10,
-                    color: backgroundColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: EdgeInsets.symmetric(vertical: 15),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        ListTile(
-                          leading: Icon(
-                            Icons.bus_alert,
-                            size: 50,
-                            color: Colors.white,
-                          ),
-                          title: Text('Tickets',
-                              style: TextStyle(
-                                  color: thirdColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.0)),
-                          subtitle: Text('No hay tickets pendientes',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 15.0)),
-                        ),
-                      ],
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                    blurStyle: BlurStyle.normal,
+                    color: Colors.white.withOpacity(0.2),
+                    blurRadius: 30,
+                    spreadRadius: -13,
+                    offset: Offset(-15, -6)),
+                BoxShadow(
+                    blurStyle: BlurStyle.normal,
+                    color: Colors.black.withOpacity(0.6),
+                    blurRadius: 18,
+                    spreadRadius: -15,
+                    offset: Offset(18, 5)),
+              ], borderRadius: BorderRadius.circular(15)),
+              child: Card(
+                elevation: 10,
+                color: backgroundColor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                margin: EdgeInsets.symmetric(vertical: 15),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(
+                        Icons.bus_alert,
+                        size: 50,
+                        color: Colors.white,
+                      ),
+                      title: Text('Tickets',
+                          style: TextStyle(
+                              color: thirdColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20.0)),
+                      subtitle: Text('No hay tickets pendientes',
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15.0)),
                     ),
-                  ),
-                );
+                  ],
+                ),
+              ),
+            );
           } else {
             return FutureBuilder<TripsList6>(
               future: item,
@@ -186,14 +186,22 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                           ListTile(
                                             contentPadding: EdgeInsets.fromLTRB(
                                                 5, 5, 10, 0),
-                                            title: Text('Asunto: '),
+                                            title: Text('Asunto: ',
+                                                style: TextStyle(
+                                                    color: secondColor,
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
                                             subtitle: Text(
                                                 '${abc.data!.trips[0].pendant![index].ticketIssue}',
                                                 style: TextStyle(
-                                                    color: kTextColor)),
+                                                    color: Colors.white,
+                                                    fontSize: 15)),
                                             leading: Icon(
-                                                Icons.image_aspect_ratio,
-                                                color: kColorAppBar),
+                                              Icons.image_aspect_ratio,
+                                              color: Colors.white,
+                                              size: 50,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -208,33 +216,48 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                                 contentPadding:
                                                     EdgeInsets.fromLTRB(
                                                         5, 5, 10, 0),
-                                                title: Text('No. Ticket: '),
+                                                title: Text('No. Ticket: ',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                                 subtitle: Text(
-                                                    '${abc.data!.trips[0].pendant![index].ticketId}'),
+                                                    '${abc.data!.trips[0].pendant![index].ticketId}',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                                 leading: Icon(
                                                     Icons.confirmation_number,
-                                                    color: kColorAppBar),
+                                                    color: GradiantV1,
+                                                    size: 35),
                                               ),
                                               ListTile(
                                                 contentPadding:
                                                     EdgeInsets.fromLTRB(
                                                         5, 5, 10, 0),
-                                                title: Text('Fecha:'),
+                                                title: Text('Fecha:',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                                 subtitle: Text(
-                                                    '${abc.data!.trips[0].pendant![index].ticketDatetime}'),
+                                                    '${abc.data!.trips[0].pendant![index].ticketDatetime}',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                                 leading: Icon(Icons.timer,
-                                                    color: kColorAppBar),
+                                                    color: GradiantV1,
+                                                    size: 35),
                                               ),
                                               ListTile(
                                                 contentPadding:
                                                     EdgeInsets.fromLTRB(
                                                         5, 5, 10, 0),
-                                                title: Text('Mensaje: '),
+                                                title: Text('Mensaje: ',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                                 subtitle: Text(
-                                                    '${abc.data!.trips[0].pendant![index].ticketMessage}'),
+                                                    '${abc.data!.trips[0].pendant![index].ticketMessage}',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                                 leading: Icon(
                                                     Icons.location_pin,
-                                                    color: kColorAppBar),
+                                                    color: GradiantV1,
+                                                    size: 35),
                                               ),
                                             ],
                                           ),
@@ -270,51 +293,51 @@ class _DataTableExample extends State<HistoryTicketScreen> {
           //validación de arreglo vacio
           if (abc.data!.trips[1].closed?.length == 0) {
             return Container(
-                  width: 500.0,
-                  decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                        blurStyle: BlurStyle.normal,
-                        color: Colors.white.withOpacity(0.2),
-                        blurRadius: 30,
-                        spreadRadius: -13,
-                        offset: Offset(-15, -6)),
-                    BoxShadow(
-                        blurStyle: BlurStyle.normal,
-                        color: Colors.black.withOpacity(0.6),
-                        blurRadius: 18,
-                        spreadRadius: -15,
-                        offset: Offset(18, 5)),
-                  ], borderRadius: BorderRadius.circular(15)),
-                  child: Card(
-                    elevation: 10,
-                    color: backgroundColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: EdgeInsets.symmetric(vertical: 15),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        ListTile(
-                          leading: Icon(
-                            Icons.bus_alert,
-                            size: 50,
-                            color: Colors.white,
-                          ),
-                          title: Text('Tickets',
-                              style: TextStyle(
-                                  color: thirdColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.0)),
-                          subtitle: Text('No hay tickets en procesp',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 15.0)),
-                        ),
-                      ],
+              width: 500.0,
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                    blurStyle: BlurStyle.normal,
+                    color: Colors.white.withOpacity(0.2),
+                    blurRadius: 30,
+                    spreadRadius: -13,
+                    offset: Offset(-15, -6)),
+                BoxShadow(
+                    blurStyle: BlurStyle.normal,
+                    color: Colors.black.withOpacity(0.6),
+                    blurRadius: 18,
+                    spreadRadius: -15,
+                    offset: Offset(18, 5)),
+              ], borderRadius: BorderRadius.circular(15)),
+              child: Card(
+                elevation: 10,
+                color: backgroundColor,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                margin: EdgeInsets.symmetric(vertical: 15),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(
+                        Icons.bus_alert,
+                        size: 50,
+                        color: Colors.white,
+                      ),
+                      title: Text('Tickets',
+                          style: TextStyle(
+                              color: thirdColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20.0)),
+                      subtitle: Text('No hay tickets en proceso',
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15.0)),
                     ),
-                  ),
-                );
+                  ],
+                ),
+              ),
+            );
           } else {
             return FutureBuilder<TripsList6>(
               future: item,
@@ -363,14 +386,22 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                           ListTile(
                                             contentPadding: EdgeInsets.fromLTRB(
                                                 5, 5, 10, 0),
-                                            title: Text('Asunto: '),
+                                            title: Text('Asunto: ',
+                                                style: TextStyle(
+                                                    color: secondColor,
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
                                             subtitle: Text(
                                                 '${abc.data?.trips[1].closed![index].ticketIssue}',
                                                 style: TextStyle(
-                                                    color: kTextColor)),
+                                                    color: Colors.white,
+                                                    fontSize: 15)),
                                             leading: Icon(
-                                                Icons.image_aspect_ratio,
-                                                color: kColorAppBar),
+                                              Icons.image_aspect_ratio,
+                                              color: Colors.white,
+                                              size: 50,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -385,46 +416,66 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                                 contentPadding:
                                                     EdgeInsets.fromLTRB(
                                                         5, 5, 10, 0),
-                                                title: Text('No. Ticket: '),
+                                                title: Text('No. Ticket: ',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                                 subtitle: Text(
-                                                    '${abc.data!.trips[1].closed![index].ticketId}'),
+                                                    '${abc.data!.trips[1].closed![index].ticketId}',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                                 leading: Icon(
                                                     Icons.confirmation_number,
-                                                    color: kColorAppBar),
+                                                    color: GradiantV1,
+                                                    size: 35),
                                               ),
                                               ListTile(
                                                 contentPadding:
                                                     EdgeInsets.fromLTRB(
                                                         5, 5, 10, 0),
-                                                title: Text('Fecha:'),
+                                                title: Text('Fecha:',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                                 subtitle: Text(
-                                                    '${abc.data!.trips[1].closed![index].ticketDatetime}'),
+                                                    '${abc.data!.trips[1].closed![index].ticketDatetime}',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                                 leading: Icon(Icons.timer,
-                                                    color: kColorAppBar),
+                                                    color: GradiantV1,
+                                                    size: 35),
                                               ),
                                               ListTile(
                                                 contentPadding:
                                                     EdgeInsets.fromLTRB(
                                                         5, 5, 10, 0),
-                                                title: Text('Mensaje: '),
+                                                title: Text('Mensaje: ',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                                 subtitle: Text(
-                                                    '${abc.data!.trips[1].closed![index].ticketMessage}'),
+                                                    '${abc.data!.trips[1].closed![index].ticketMessage}',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                                 leading: Icon(
                                                     Icons.location_pin,
-                                                    color: kColorAppBar),
+                                                    color: GradiantV1,
+                                                    size: 35),
                                               ),
                                               ListTile(
                                                 contentPadding:
                                                     EdgeInsets.fromLTRB(
                                                         5, 5, 10, 0),
                                                 title: Text(
-                                                    'Respuesta por: ${abc.data!.trips[1].closed![index].userName}'),
+                                                    'Respuesta por: ${abc.data!.trips[1].closed![index].userName}',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                                 subtitle: Text(
-                                                    '${abc.data!.trips[1].closed![index].replyMessage}'),
+                                                    '${abc.data!.trips[1].closed![index].replyMessage}',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
                                                 leading: Icon(
                                                     Icons
                                                         .supervised_user_circle,
-                                                    color: kColorAppBar),
+                                                    color: GradiantV1,
+                                                    size: 35),
                                               ),
                                             ],
                                           ),

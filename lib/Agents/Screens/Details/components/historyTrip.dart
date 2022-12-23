@@ -174,7 +174,10 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                         ListTile(
                                           contentPadding:
                                               EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                          title: Text('Hora de encuentro: '),
+                                          title: Text('Hora de encuentro: ',
+                                      style: TextStyle(
+                                          color: secondColor,                                          
+                                          fontWeight: FontWeight.bold)),
                                           subtitle: Text(''),
                                           leading: Icon(Icons.timer,
                                               color: kColorAppBar),
@@ -183,26 +186,32 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                         ListTile(
                                           contentPadding:
                                               EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                          title: Text('Hora de encuentro: '),
+                                          title: Text('Hora de encuentro: ',
+                                      style: TextStyle(
+                                          color: Colors.white)),
                                           subtitle:
-                                              Text('${abc.data![index].hora}'),
+                                              Text('${abc.data![index].hora}',style: TextStyle(
+                                          color: Colors.white)),
                                           leading: Icon(Icons.timer,
-                                              color: kColorAppBar),
+                                               color: GradiantV1, size: 35),
                                         ),
                                       },
                                       ListTile(
                                         contentPadding:
                                             EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                        title: Text('Motorista: '),
+                                        title: Text('Motorista: ',style: TextStyle(
+                                          color: Colors.white)),
                                         subtitle: Text(
-                                            '${abc.data![index].conductor}'),
+                                            '${abc.data![index].conductor}',style: TextStyle(
+                                          color: Colors.white)),
                                         leading: Icon(Icons.card_travel,
-                                            color: kColorAppBar),
+                                            color: GradiantV1, size: 35),
                                       ),
                                       ListTile(
                                         contentPadding:
                                             EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                        title: Text('Teléfono: '),
+                                        title: Text('Teléfono: ',style: TextStyle(
+                                          color: Colors.white)),
                                         subtitle: TextButton(
                                             onPressed: () => launchUrl(Uri.parse(
                                                 'tel://${abc.data![index].telefono}')),
@@ -215,25 +224,29 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                                         color: Colors.blue[500],
                                                         fontSize: 14)))),
                                         leading: Icon(Icons.phone,
-                                            color: kColorAppBar),
+                                            color: GradiantV1, size: 35),
                                       ),
                                       ListTile(
                                         contentPadding:
                                             EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                        title: Text('Dirección: '),
+                                        title: Text('Dirección: ',style: TextStyle(
+                                          color: Colors.white)),
                                         subtitle: Text(
-                                            '${abc.data![index].direccion}'),
+                                            '${abc.data![index].direccion}',style: TextStyle(
+                                          color: Colors.white)),
                                         leading: Icon(Icons.directions,
-                                            color: kColorAppBar),
+                                           color: GradiantV1, size: 35),
                                       ),
                                       ListTile(
                                         contentPadding:
                                             EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                        title: Text('Estado: '),
+                                        title: Text('Estado: ',style: TextStyle(
+                                          color: Colors.white)),
                                         subtitle:
-                                            Text('${abc.data![index].estado}'),
-                                        leading: Icon(Icons.verified_user,
-                                            color: kColorAppBar),
+                                            Text('${abc.data![index].estado}',style: TextStyle(
+                                          color: Colors.white)),
+                                        leading: Icon(Icons.verified_user,                                            
+                                           color: GradiantV1, size: 35),
                                       ),
                                     ],
                                   ),

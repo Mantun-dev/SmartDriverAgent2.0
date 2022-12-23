@@ -12,8 +12,8 @@ import 'package:flutter_auth/constants.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
-import 'package:sweetalert/sweetalert.dart';
-
+//import 'package:sweetalert/sweetalert.dart';
+import 'package:quickalert/quickalert.dart';
 import '../../../../components/rounded_button.dart';
 
 class TicketScreen extends StatefulWidget {
@@ -70,21 +70,36 @@ class _TicketScreenState extends State<TicketScreen> {
           await http.post(Uri.parse('$ip/api/tickets'), body: data);
       final no = DataAgents.fromJson(json.decode(response.body));
       //alertas
+      // if (ticketIssue == "" || ticketMessage == "") {
+      //   SweetAlert.show(context,
+      //       title: "Campos vacios",
+      //       subtitle: "Favor completar los campos requeridos",
+      //       style: SweetAlertStyle.error);
+      //   Navigator.pop(context);
+      // }
+
       if (response.statusCode == 200 && no.ok == true) {
         Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (_) => HomeScreen()))
             .then((_) => TicketScreen());
-        SweetAlert.show(context,
-            title: "Ticket enviado",
-            subtitle: no.message,
-            style: SweetAlertStyle.success);
-      } else if (no.ok != true) {
-        SweetAlert.show(
-          context,
+            QuickAlert.show(
+        context: context,
+          title: "Ticket enviado",
+          text: no.message,
+          type: QuickAlertType.success);
+      }  
+      if (no.ok != true) {
+         QuickAlert.show(
+        context: context,
           title: "Alerta",
-          subtitle: no.message,
-          style: SweetAlertStyle.error,
-        );
+          text: no.message,
+          type: QuickAlertType.error);
+        new Future.delayed(new Duration(seconds: 2), () {
+          Navigator.pop(context);
+        });
+        new Future.delayed(new Duration(seconds: 3), () {
+          Navigator.pop(context);
+        });
       }
       return DataAgents.fromJson(json.decode(response.body));
     }
@@ -210,7 +225,7 @@ class _TicketScreenState extends State<TicketScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  //SizedBox(height: 10),
                   Container(
                     decoration: BoxDecoration(boxShadow: [
                       BoxShadow(
