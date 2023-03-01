@@ -20,7 +20,7 @@ import 'package:flutter_auth/constants.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../Agents/Screens/HomeAgents/components/item_card.dart';
+//import '../Agents/Screens/HomeAgents/components/item_card.dart';
 
 //import 'package:flutter_auth/Drivers/Screens/HomeDriver/homeScreen_Driver.dart';
 
@@ -50,9 +50,9 @@ class _MenuLateralState extends State<MenuLateral> {
     fetchTrips().then((value){
       if (value.trips.isNotEmpty) {         
         for (var i = 0; i < value.trips.length; i++) { 
-          print(value.trips[i].tripId.toString());
+         // print(value.trips[i].tripId.toString());
           driverId = value.trips[i].driverId.toString();
-          print(driverId);
+          //print(driverId);
             tripIdTologin =  value.trips[i].tripId.toString(); 
         }
       }

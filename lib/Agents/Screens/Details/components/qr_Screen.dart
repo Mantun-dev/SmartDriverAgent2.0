@@ -55,8 +55,8 @@ class _QrScannScreenState extends State<QrScannScreen> {
             SizedBox(
               height: 30,
             ),
-            //llamado del QrImage para mostrar el qr del usuario actual
-            QrImage(data: prefs.nombreUsuario),
+            Expanded(child: QrImage(data: prefs.nombreUsuario),)
+            //llamado del QrImage para mostrar el qr del usuario actual            
           ]),
         ));
   }

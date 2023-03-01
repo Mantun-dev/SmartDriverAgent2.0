@@ -89,7 +89,7 @@ class _TicketScreenState extends State<TicketScreen> {
           type: QuickAlertType.success);
       }  
       if (no.ok != true) {
-         QuickAlert.show(
+        QuickAlert.show(
         context: context,
           title: "Alerta",
           text: no.message,

@@ -13,7 +13,7 @@ class BaseClient {
     try {    
       var response = await http.get(uri, headers: header).timeout(const Duration(seconds: timeOutDuration));
       internet = true;
-      print(response.body);
+      //print(response.body);
       return _processResponse(response);
     } catch (e) {
       internet = false;
@@ -30,7 +30,7 @@ class BaseClient {
     try {
       var response = await http.post(uri, body: payload, headers: header).timeout(const Duration(seconds: timeOutDuration));
       internet = true;
-      print(response.body);
+      //print(response.body);
       return _processResponse(response);
     } catch (e) {
 

@@ -39,6 +39,10 @@ class _BodyState extends State<Body> {
   Future<DataAgent>? item;
   final prefs = new PreferenciasUsuario();
   String ip = "https://smtdriver.com";
+  String ip2 = "https://admin.smtdriver.com";
+  String? msgtoShow;
+  int? display;
+
   PackageInfo _packageInfo = PackageInfo(
     appName: 'Unknown',
     packageName: 'Unknown',
@@ -70,14 +74,7 @@ class _BodyState extends State<Body> {
     });
     //callback
     _initPackageInfo();
-    //fetchVersion();
-    // SchedulerBinding.instance.addPostFrameCallback((_){
-    //   if (mounted) {
-    //     setState(() {
-    //   //    _showVersionTrue();
-    //     });
-    //   }
-    // });
+    getMessage();
 
     item = fetchRefres();
   }
@@ -196,6 +193,19 @@ class _BodyState extends State<Body> {
     return Map<String, dynamic>.from(json.decode(response.body));
   }
 
+
+  getMessage()async{
+    http.Response responses = await http.get(Uri.parse('$ip/api/refreshingAgentData/${prefs.nombreUsuario}'));
+    final si = DataAgent.fromJson(json.decode(responses.body));
+    Map data = {'agentId': si.agentId.toString()};
+    http.Response responses2 = await http.post(Uri.parse('$ip2/agents/warning/transportation'), body: data);    
+    var msg = json.decode(responses2.body);
+    setState(() {            
+      msgtoShow = msg['msg'];
+      display = msg['display'];    
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -217,6 +227,50 @@ class _BodyState extends State<Body> {
               ),
             ),
             SizedBox(height: 20),
+            FutureBuilder<DataAgent>(
+              future: item,
+              builder: (BuildContext context, abc) {
+                  if (abc.connectionState == ConnectionState.done) {
+                    if (abc.data!.companyId == 2 || abc.data!.companyId == 3 || abc.data!.companyId == 1) {
+                      if (display == 1) {                        
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: backgroundColor2,
+                              borderRadius: BorderRadius.circular(15)
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text('🔺$msgtoShow 🔺',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                        );
+                      }else{
+                        return Text("");
+                      }
+                    }else{
+                      return Text("");
+                    }
+                  }else{
+                    return CircularProgressIndicator();
+                  }
+                }
+              ),
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       color: backgroundColor2,
+            //       borderRadius: BorderRadius.circular(15)
+            //     ),
+            //     child: Padding(
+            //       padding: const EdgeInsets.all(10.0),
+            //       child: Text('Tiene viaje(s) donde confirmó y no salió a tomar el transporte. Si esto ocurre por 3ra vez, el sistema le dará de baja y no será agendado para el servicio de transporte. Deberá justificar el caso enviando un ticket solicitando el uso de transporte.',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+            //     ),
+            //   ),
+            // ),
+            
             //future builder para hacer la validación que aparezcan 3 o las 4 cards
             // las que necesarias a mostrar
             FutureBuilder<DataAgent>(
@@ -315,7 +369,7 @@ class _BodyState extends State<Body> {
                     );
                   }
                 } else {
-                  return CircularProgressIndicator();
+                  return Text('');
                 }
               },
             ),
@@ -490,15 +544,7 @@ class _BodyState extends State<Body> {
                     child: SingleChildScrollView(
                       child: Column(children: [
                         SizedBox(height: 5),
-                        if (prefs.companyId == "7") ...{
-                          Text(
-                              'Este usuario no está siendo agendado para el servicio de transporte, comuniquese con su supervisor.',
-                              style: TextStyle(color: kgray)),
-                        } else ...{
-                          Text(
-                              'Este usuario no está siendo agendado para el servicio de transporte, sin embargo, puede solicitar el uso de transporte mediante un ticket.',
-                              style: TextStyle(color: kgray)),
-                        }
+                        Text('Usted no está siendo agendado para el servicio de transporte, debe comunicarse con su supervisor.',style: TextStyle(color: kgray)),
                       ]),
                     ),
                   );

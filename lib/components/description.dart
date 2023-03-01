@@ -38,6 +38,7 @@ class _DescriptionState extends State<Description> {
     return Column(
       children: [
         if (widget.plantilla.id == 1) ...[
+          //showAndHide("2"),
           if (prefs.companyId == "2") ...{
             if (radioShowAndHide == true) ...{
               showAndHide("2"),
