@@ -1057,10 +1057,12 @@ class _NextTripScreenState extends State<NextTripScreen>
     // };
     http.Response responsex = await http.get(Uri.parse('$ip/api/ratingTrip/${resp.agentId}'));
     //http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/searchRating'),body:  dat);
-    var getData = json.decode(responsex.body);
-    //print(getData['tripId']);
-    if (getData['tripId'] != 0 && responsex.body.isNotEmpty) {
-      showAlertDialogRatingOld();       
+    if (responsex.body.isNotEmpty) {      
+      var getData = json.decode(responsex.body);
+      //print(getData['tripId']);
+      if (getData['tripId'] != 0 && responsex.body.isNotEmpty) {
+        showAlertDialogRatingOld();       
+      }
     }
     //final resp1 = Rating.fromJson(json.decode(responsex.body));
     //print(getData[0]);

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
 //import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
 
 import 'package:flutter_auth/Agents/Screens/HomeAgents/components/body.dart';
+import 'package:flutter_auth/Agents/Screens/Login/login_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Profile/profile_screen.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 //import 'package:flutter_auth/Agents/models/profileAgent.dart';
 //import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/components/menu_lateral.dart';
 import 'package:flutter_svg/svg.dart';
-
+//import 'package:http/http.dart' as http;
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../../../constants.dart';
 import '../Chat/chatscreen.dart';
 
@@ -19,7 +23,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {  
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {  
   //final StreamSocket streamSocket = StreamSocket(host: 'djc5t.localtonet.com');
   String? tripIdTologin;
   int? counter;
@@ -28,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {    
     super.initState(); 
-    
+    WidgetsBinding.instance.addObserver(this);
     fetchTrips().then((value){
       if (value.trips.isNotEmpty) {         
         for (var i = 0; i < value.trips.length; i++) {                  
@@ -41,14 +45,43 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     });
-    //streamSocket.socket.connect();
-    //ChatApis().dataLogin('8', 'agente',  'FRANKLIN');
-    // streamSocket.socket.on('entrarChat_flutter', (data) {             
-    //     //ChatApis().getDataUsuarios(data['Usuarios']);              
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {
+          this.closeSession();
+        });
+      }
+    });
+  }
+    void didChangeAppLifecycleState(AppLifecycleState state) {
+    // setState(() {
     // });
+    if (AppLifecycleState.resumed == state) {
+      if(mounted){
+        //print('hola');
+        closeSession();
+        //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) =>DetailScreen(plantilla: plantilla[0])),(Route<dynamic> route) => false);
+      }
+    }
   }
 
-
+  closeSession() async {
+    fetchRefres().then((value) {
+      if (value.disabled == 1 ) {
+        fetchDeleteSession();
+        prefs.remove();
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
+            (Route<dynamic> route) => false);
+            QuickAlert.show(
+              context: context,
+              type: QuickAlertType.error,
+              title: "Lo sentimos",
+              text: "Usuario deshabilitado",
+            );
+      }
+    });
+  }
 
   void getCounterNotification(String? tripId, String? agentId)async{
     final getData = await ChatApis().notificationCounter(tripId!, agentId!);   
@@ -67,6 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {    
     super.dispose();
+    WidgetsBinding.instance.addObserver(this);
     //streamSocket.close();
   }
   

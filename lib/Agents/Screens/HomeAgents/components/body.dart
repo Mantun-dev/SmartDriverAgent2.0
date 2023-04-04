@@ -200,10 +200,12 @@ class _BodyState extends State<Body> {
     Map data = {'agentId': si.agentId.toString()};
     http.Response responses2 = await http.post(Uri.parse('$ip2/agents/warning/transportation'), body: data);    
     var msg = json.decode(responses2.body);
-    setState(() {            
-      msgtoShow = msg['msg'];
-      display = msg['display'];    
-    });
+    if (mounted) {      
+      setState(() {            
+        msgtoShow = msg['msg'];
+        display = msg['display'];    
+      });
+    }
   }
 
   @override
@@ -226,37 +228,22 @@ class _BodyState extends State<Body> {
                     .copyWith(fontWeight: FontWeight.w400, color: firstColor),
               ),
             ),
-            SizedBox(height: 20),
-            FutureBuilder<DataAgent>(
-              future: item,
-              builder: (BuildContext context, abc) {
-                  if (abc.connectionState == ConnectionState.done) {
-                    if (abc.data!.companyId == 2 || abc.data!.companyId == 3 || abc.data!.companyId == 1) {
-                      if (display == 1) {                        
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: backgroundColor2,
-                              borderRadius: BorderRadius.circular(15)
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Text('🔺$msgtoShow 🔺',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
-                            ),
-                          ),
-                        );
-                      }else{
-                        return Text("");
-                      }
-                    }else{
-                      return Text("");
-                    }
-                  }else{
-                    return CircularProgressIndicator();
-                  }
-                }
-              ),
+            SizedBox(height: 20),            
+            if (display == 1)... {                        
+              Padding(
+                padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: backgroundColor2,
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text('🔺$msgtoShow',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+                  ),
+                ),
+              )
+            },                                          
             // Padding(
             //   padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
             //   child: Container(

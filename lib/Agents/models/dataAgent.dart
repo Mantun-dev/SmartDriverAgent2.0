@@ -22,6 +22,9 @@ class DataAgent {
     this.neighborhoodId,
     this.agentUser,
     this.countId,
+    this.singleScheduling,
+    this.btnCancelTrip,
+    this.disabled
   });
 
   int? agentId;
@@ -36,6 +39,10 @@ class DataAgent {
   int? neighborhoodId;
   String? agentUser;
   int? countId;
+  bool? singleScheduling;
+  bool? btnCancelTrip;
+  dynamic disabled;
+
 
   factory DataAgent.fromJson(Map<String, dynamic> json) => DataAgent(
         agentId: json["agentId"],
@@ -50,6 +57,9 @@ class DataAgent {
         neighborhoodId: json["neighborhoodId"],
         agentUser: json["agentUser"],
         countId: json["countId"],
+        singleScheduling: json["singleScheduling"],
+        btnCancelTrip: json["btnCancelTrip"],
+        disabled: json["disabled"]
       );
 
   Map<String, dynamic> toJson() => {
@@ -65,5 +75,8 @@ class DataAgent {
         "neighborhoodId": neighborhoodId,
         "agentUser": agentUser,
         "countId": countId,
+        "singleScheduling": singleScheduling,
+        "btnCancelTrip": btnCancelTrip,
+        "disabled": disabled
       };
 }
