@@ -193,6 +193,11 @@ class _NextTripScreenState extends State<NextTripScreen>
           type: QuickAlertType.success);
       final algo =
           await http.get(Uri.parse('$ip/api/getMaskReminder/${resps.agentId}'));
+
+      Map data2 = {"idU": resps.agentId.toString(), "Estado": 'CONFIRMADO'};
+      String sendData2 = json.encode(data2);
+      await http.put(Uri.parse('https://apichat.smtdriver.com/api/salas/$tripId'), body: sendData2, headers: {"Content-Type": "application/json"});
+
       //print(algo.body);
       showAlertDialog();
       Navigator.pop(context);
@@ -220,6 +225,14 @@ class _NextTripScreenState extends State<NextTripScreen>
     http.Response response =
         await http.post(Uri.parse('$ip/api/confirmTrip'), body: data);
     final resp = Message.fromJson(json.decode(response.body));
+
+    http.Response responses = await http
+        .get(Uri.parse('$ip/api/refreshingAgentData/${prefs.nombreUsuario}'));
+    final resps = DataAgent.fromJson(json.decode(responses.body));
+
+    Map data2 = {"idU": resps.agentId.toString(), "Estado": 'RECHAZADO'};
+      String sendData2 = json.encode(data2);
+      await http.put(Uri.parse('https://apichat.smtdriver.com/api/salas/$tripId'), body: sendData2, headers: {"Content-Type": "application/json"});
 
     //redirección y alertas
     if (response.statusCode == 200) {
