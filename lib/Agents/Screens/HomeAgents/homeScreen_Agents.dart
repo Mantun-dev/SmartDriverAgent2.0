@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
+import 'package:flutter_auth/Agents/Screens/Chat/listchats.dart';
 //import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
 
 import 'package:flutter_auth/Agents/Screens/HomeAgents/components/body.dart';
@@ -15,7 +16,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../../../constants.dart';
-import '../Chat/chatscreen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' show json;
 
 class HomeScreen extends StatefulWidget {
     
@@ -84,16 +86,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   }
 
   void getCounterNotification(String? tripId, String? agentId)async{
-    final getData = await ChatApis().notificationCounter(tripId!, agentId!);   
-    if (getData != null) {      
-      if (getData > 0) {
-        if (mounted) {
+    
+    http.Response response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/salas/agenteId/$agentId'));
+    final resp = json.decode(response.body);
+
+    if (resp['salas'].isNotEmpty) {      
+      if (mounted) {
         setState(() {      
-          counter = getData;
-        });
-        
-      }   
+          counter = resp['salas'].length;
+        });  
       }
+    }else{
+      counter = 0;
     }
   }
 
@@ -126,12 +130,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           onTap: () {
             fetchProfile().then((value) {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return ChatScreen(
+                return ChatsList(
                   id: '${value.agentId}',
                   rol: 'agente',
                   nombre: '${value.agentFullname}',
-                  sala: '$tripIdTologin',
-                  driverId: '$driverId'
                 );
               }));
             });

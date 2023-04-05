@@ -287,10 +287,7 @@ class _ChatScreenState extends State<ChatScreen> {
             streamSocket.socket.disconnect();
             streamSocket.socket.close();
             streamSocket.socket.dispose();
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (BuildContext context) => HomeScreen()),
-                (Route<dynamic> route) => false);
+            Navigator.of(context).pop();
           },
         ),
         actions: <Widget>[
