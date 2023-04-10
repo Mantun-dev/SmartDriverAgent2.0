@@ -65,8 +65,9 @@ class _ChatsListState extends State<ChatsList> {
 
     listaChats2 = listaChats;
 
-    setState(() { });
-
+    if(mounted){
+      setState(() { });
+    }
   }
 
   @override
@@ -107,7 +108,7 @@ class _ChatsListState extends State<ChatsList> {
         ],
       ),
       backgroundColor: backgroundColor,
-      body: SingleChildScrollView(
+      body: listaChats != null ? listaChats2.length>0 ? SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -244,7 +245,17 @@ class _ChatsListState extends State<ChatsList> {
 
           ],
         ),
-      ),
+      ) :Align(
+          alignment: Alignment.center,
+              child: Text("No hay salas de chat actualmente",
+                  style: TextStyle(color: Colors.white, fontSize: 17)
+                )
+            ) : Align(
+          alignment: Alignment.center,
+              child: Text("No hay salas de chat actualmente",
+                  style: TextStyle(color: Colors.white, fontSize: 17)
+                )
+            ),
     );
   }
 }

@@ -307,8 +307,7 @@ class _ChatScreenState extends State<ChatScreen> {
           SizedBox(width: kDefaultPadding / 2)
         ],
       ),
-      body: streamSocket.socket.connected
-          ? isLoading == true
+      body: isLoading == true
               ? Column(
                   children: [
                     Expanded(
@@ -542,9 +541,6 @@ class _ChatScreenState extends State<ChatScreen> {
                   ],
                 )
               : Center(child: CircularProgressIndicator())
-          : Center(
-              child: Text("No hay una sala de chat actualmente",
-                  style: TextStyle(color: Colors.white, fontSize: 17))),
     );
   }
 }
