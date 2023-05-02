@@ -189,7 +189,7 @@ class _NextTripScreenState extends State<NextTripScreen>
       QuickAlert.show(
           context: context,
           title: "Enviado",
-          text: resp.message,
+          text: 'Su viaje ha sido confirmado',
           type: QuickAlertType.success);
       final algo =
           await http.get(Uri.parse('$ip/api/getMaskReminder/${resps.agentId}'));
@@ -427,6 +427,20 @@ class _NextTripScreenState extends State<NextTripScreen>
                             margin: EdgeInsets.symmetric(vertical: 0),
                             elevation: 10,
                             child: Column(children: [
+                              ListTile(
+                                contentPadding:
+                                    EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                title: Text(
+                                  'Viaje: ',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                subtitle: Text(
+                                  '${abc.data?.trips[index].tripId}',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                leading: Icon(Icons.tag,
+                                    color: GradiantV1, size: 35),
+                              ),
                               ListTile(
                                 contentPadding:
                                     EdgeInsets.fromLTRB(5, 5, 10, 0),
