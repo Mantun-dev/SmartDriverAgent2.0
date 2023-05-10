@@ -10,6 +10,7 @@ import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/providers/chat.dart';
 import 'package:provider/provider.dart';
+import 'package:upgrader/upgrader.dart';
 import 'Agents/sharePrefers/preferencias_usuario.dart';
 
 Future<void> main() async {
@@ -70,8 +71,8 @@ class _MyAppState extends State<MyApp> {
             ? 'login'
             : 'home',
         routes: {
-          'login': (BuildContext context) => SplashView(),
-          'home': (BuildContext context) => HomeScreen(),
+          'login': (BuildContext context) => UpgradeAlert(child: SplashView()),
+          'home': (BuildContext context) => UpgradeAlert(child: HomeScreen()),
         },
       ),
     );

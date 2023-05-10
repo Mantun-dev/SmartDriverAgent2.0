@@ -52,6 +52,7 @@ dependencies:
   url_launcher: ^6.1.5
   video_player: ^2.4.7
   flutter_neumorphic: ^3.2.0
+  upgrader: ^6.4.0
 
 
 dev_dependencies:
