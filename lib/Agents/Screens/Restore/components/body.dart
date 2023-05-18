@@ -67,76 +67,154 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
-      child: SingleChildScrollView(
+      child: Container(
+        height: size.height,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: 20),
-            Text(
-              "REESTABLECER CONTRASEÑA",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 30, color: firstColor),
+
+        children: [
+          SizedBox(height: 20),
+          Container(
+            width: size.width,
+            child: Stack(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 40, right: 40),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: Duration(milliseconds: 500 ), // Adjust the animation duration as needed
+                          pageBuilder: (_, __, ___) => LoginScreen(),
+                          transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: Offset(-1.0, 0.0),
+                                end: Offset.zero,
+                              ).animate(animation),
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color.fromRGBO(40, 93, 169, 1),
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Icon(
+                        Icons.arrow_back_outlined,
+                        color: Color.fromRGBO(40, 93, 169, 1),
+                        size:30
+                      ),
+                    ),
+                  ),
+                ),
+  
+                Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        "Reestablecer",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal, fontSize: 27, color: Color.fromRGBO(40, 93, 169, 1)),
+                      ),
+                      Text(
+                        "Contraseña",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal, fontSize: 27, color: Color.fromRGBO(40, 93, 169, 1)),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            Lottie.asset('assets/videos/reestablecer.json'),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Text(
-                'Escribe tu nombre de usuario, se enviará un enlace al correo para reestablecer tu contraseña',
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: (15.0),
-                    color: Colors.white),
-                textAlign: TextAlign.center,
+          ),
+
+
+          Container(
+            margin: EdgeInsets.only(left: 40, right: 40),
+            child: Column(
+                children: [
+                  SizedBox(height: size.height * 0.12),
+                  Text(
+                    'Escriba su nombre de usuario, se enviará un enlace al correo para reestablecer tu contraseña',
+                    style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: (12.0),
+                        color: Colors.black),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: size.height * 0.08),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: _crearUsuario(),
+                  ),
+                  SizedBox(height: size.height * 0.04),
+                  OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                side: BorderSide(color: Colors.black),
+                                fixedSize: Size(size.width-80, 50)
+                              ),
+                              onPressed: () {
+                                fetchUserResetPass(user.text);
+                              },
+                              child: Text(
+                                "Enviar",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.normal
+                                ),
+                              ),
+                            ),
+                ],
               ),
-            ),
-            SizedBox(height: size.height * 0.01),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5.0),
-              child: _crearUsuario(),
-            ),
-            RoundedButton(
-                color: thirdColor,
-                text: 'ENVIAR',
-                press: () {
-                  fetchUserResetPass(user.text);
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  //   return SecondRestoreScreen();
-                  // }));
-                }),
-          ],
-        ),
+          ),
+
+        ],
+      ),
       ),
     );
   }
 
 //Widgets fields
   Widget _crearUsuario() {
-    return Container(
-      margin: EdgeInsets.only(left: 35, right: 35),
-      padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 50),
-      decoration: BoxDecoration(
-          border: const GradientBoxBorder(
-            gradient: LinearGradient(colors: [GradiantV_2, GradiantV_1]),
-            width: 4,
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 10, right: 10),
+          child: TextField(
+            style: TextStyle(color: Colors.white),
+            controller: user,
+            //onChanged: onChanged,
+            cursorColor: thirdColor,
+            decoration: InputDecoration(
+              icon: Icon(
+                Icons.person_outline,
+                color: Color.fromRGBO(40, 93, 169, 1),
+                size: 30,
+              ),
+              hintText: "Ingrese su usuario",
+              hintStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.normal),
+              border: InputBorder.none,
+            ),
           ),
-          borderRadius: BorderRadius.circular(50)),
-      child: TextField(
-        style: TextStyle(color: Colors.white),
-        controller: user,
-        //onChanged: onChanged,
-        cursorColor: thirdColor,
-        decoration: InputDecoration(
-          icon: Icon(
-            Icons.person,
-            color: thirdColor,
-            size: 30,
-          ),
-          hintText: "Ingrese su usuario",
-          hintStyle: TextStyle(color: Colors.white),
-          border: InputBorder.none,
         ),
-      ),
+        Divider(
+          color: Color.fromRGBO(158, 158, 158, 1),
+          thickness: 1.0,
+        )
+      ],
     );
   }
 }

@@ -8,8 +8,8 @@ class RestoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
-      body: SafeArea(child: Body()),
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(child: SafeArea(child: Body())),
     );
   }
 }
