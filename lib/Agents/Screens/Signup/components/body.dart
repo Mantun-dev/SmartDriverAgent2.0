@@ -80,176 +80,155 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-      child: Background(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-
-            SizedBox(height: 20),
-
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SizedBox(height: 20),
+        Stack(
+          children: [
             Container(
-            width: size.width,
-            child: Stack(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 40, right: 40),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          transitionDuration: Duration(milliseconds: 500 ), // Adjust the animation duration as needed
-                          pageBuilder: (_, __, ___) => WelcomeScreen(),
-                          transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                            return SlideTransition(
-                              position: Tween<Offset>(
-                                begin: Offset(-1.0, 0.0),
-                                end: Offset.zero,
-                              ).animate(animation),
-                              child: child,
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Color.fromRGBO(40, 93, 169, 1),
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      child: Icon(
-                        Icons.arrow_back_outlined,
-                        color: Color.fromRGBO(40, 93, 169, 1),
-                        size:30
-                      ),
+              margin: EdgeInsets.only(left: 40, right: 40),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: Duration(milliseconds: 500 ), // Adjust the animation duration as needed
+                      pageBuilder: (_, __, ___) => WelcomeScreen(),
+                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: Offset(-1.0, 0.0),
+                            end: Offset.zero,
+                          ).animate(animation),
+                          child: child,
+                        );
+                      },
                     ),
-                  ),
-                ),
-  
-                Center(child: Text("Regístrate",style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1), fontSize: 22),)),
-              ],
-            ),
-          ),
-            SizedBox(height: 20),
-            Container(
-              height: 80,
-              width: 80,
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(40, 93, 169, 1),
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.white,
-                  width: 2.0,
-                ),
-              ),
-              child: Icon(
-                Icons.person_outline,
-                color: Colors.white,
-                size: 50,
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Text(
-                "Escribe tu usuario designado y un correo válido, se enviará un código de confirmación para que puedas registrarte.",
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black,fontSize: 12),
-              ),
-            ),
-            _crearUsuario(),
-            SizedBox(height: 10),
-            _crearEmail(),
-            SizedBox(height: 10),
-            _crearPassword(),
-            SizedBox(height: 10),
-            _crearPasswordConfirm(),
-            SizedBox(height: 20),
-            OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              side: BorderSide(color: Colors.black),
-                              fixedSize: Size(size.width-80, 50)
-                            ),
-                            onPressed: () async {
-                              //función fetch
-
-                              await fetchUserRegister(user.text, userEmail.text);
-                            },
-                            child: Text(
-                              "Enviar",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontWeight: FontWeight.normal
-                              ),
-                            ),
-                          ),
-            AlreadyHaveAnAccountCheck(
-              login: false,
-              press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return LoginScreen();
-                    },
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 10),
-
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    transitionDuration: Duration(milliseconds: 500 ), // Adjust the animation duration as needed
-                    pageBuilder: (_, __, ___) => LoginScreen(),
-                    transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                      return SlideTransition(
-                        position: Tween<Offset>(
-                          begin: Offset(-1.0, 0.0),
-                          end: Offset.zero,
-                        ).animate(animation),
-                        child: child,
-                      );
-                    },
-                  ),
-                );
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '¿Ya tienes una cuenta? ',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                      fontWeight: FontWeight.normal
-                    ),
-                  ),
-                  Text(
-                    'Ingresa aquí',
-                    style: TextStyle(
-                      fontSize: 14,
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
                       color: Color.fromRGBO(40, 93, 169, 1),
-                      fontWeight: FontWeight.normal
+                      width: 1.0,
                     ),
+                    borderRadius: BorderRadius.circular(5.0),
                   ),
-                ],
+                  child: Icon(
+                    Icons.arrow_back_outlined,
+                    color: Color.fromRGBO(40, 93, 169, 1),
+                    size:30
+                  ),
+                ),
               ),
             ),
+  
+            Center(child: Text("Regístrate",style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1), fontSize: 22),)),
           ],
         ),
-      ),
+        SizedBox(height: 20),
+        Container(
+          height: 80,
+          width: 80,
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(40, 93, 169, 1),
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: Colors.white,
+              width: 2.0,
+            ),
+          ),
+          child: Icon(
+            Icons.person_outline,
+            color: Colors.white,
+            size: 50,
+          ),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: Text(
+            "Escribe tu usuario designado y un correo válido, se enviará un código de confirmación para que puedas registrarte.",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.black,fontSize: 12),
+          ),
+        ),
+        _crearUsuario(),
+        SizedBox(height: 10),
+        _crearEmail(),
+        SizedBox(height: 10),
+        _crearPassword(),
+        SizedBox(height: 10),
+        _crearPasswordConfirm(),
+        SizedBox(height: 20),
+        OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          side: BorderSide(color: Colors.black),
+                          fixedSize: Size(size.width-80, 50)
+                        ),
+                        onPressed: () async {
+                          //función fetch
+
+                          await fetchUserRegister(user.text, userEmail.text);
+                        },
+                        child: Text(
+                          "Enviar",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.normal
+                          ),
+                        ),
+                      ),
+        
+        SizedBox(height: 10),
+
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                transitionDuration: Duration(milliseconds: 500 ), // Adjust the animation duration as needed
+                pageBuilder: (_, __, ___) => LoginScreen(),
+                transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                  return SlideTransition(
+                    position: Tween<Offset>(
+                      begin: Offset(-1.0, 0.0),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: child,
+                  );
+                },
+              ),
+            );
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '¿Ya tienes una cuenta? ',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black,
+                  fontWeight: FontWeight.normal
+                ),
+              ),
+              Text(
+                'Ingresa aquí',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Color.fromRGBO(40, 93, 169, 1),
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
