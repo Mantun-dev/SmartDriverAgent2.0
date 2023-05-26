@@ -203,10 +203,11 @@ class _NextTripScreenState extends State<NextTripScreen>
       Navigator.pop(context);
     } else if (response.statusCode == 500) {
       QuickAlert.show(
-          context: context,
-          title: "Alerta",
-          text: resp.message,
-          type: QuickAlertType.error);
+        context: context,
+        title: "Alerta",
+        text: resp.message,
+        type: QuickAlertType.error
+      );
     }
     return Message.fromJson(json.decode(response.body));
   }

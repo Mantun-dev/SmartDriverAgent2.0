@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/Login/login_screen.dart';
+import 'package:flutter_auth/Agents/Screens/Register/fail_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Signup/components/background.dart';
 import 'package:flutter_auth/Agents/models/register.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
@@ -14,6 +15,8 @@ import 'dart:convert' show json;
 import 'package:quickalert/quickalert.dart';
 
 import '../../../../constants.dart';
+import '../../Signup/signup_screen.dart';
+import '../success_screen.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -52,29 +55,46 @@ class _BodyState extends State<Body> {
       'agentPassword': agentPassword,
       'agentPassword2': agentPassword2
     };
+    print(data);
     //api register
     http.Response responses =
         await http.post(Uri.parse('$ip/api/register'), body: data);
     final no = Register.fromJson(json.decode(responses.body));
     //redirección y alertas
     if (responses.statusCode == 200 && no.ok == true) {
-      //print(responses.body);
-      setState(() {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
-            (Route<dynamic> route) => false);
-      });
-       QuickAlert.show(
-        context: context,
-          title: no.title,
-          text: no.message,
-          type: QuickAlertType.success);
+      Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: Duration(milliseconds: 500 ), // Adjust the animation duration as needed
+                      pageBuilder: (_, __, ___) => SuccessScreen(),
+                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: Offset(-1.0, 0.0),
+                            end: Offset.zero,
+                          ).animate(animation),
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
     } else if (no.ok != true) {
-      QuickAlert.show(
-        context: context,
-          title: no.title,
-          text: no.message,
-          type: QuickAlertType.error);
+     Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: Duration(milliseconds: 500 ), // Adjust the animation duration as needed
+                      pageBuilder: (_, __, ___) => FailScreen(),
+                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: Offset(-1.0, 0.0),
+                            end: Offset.zero,
+                          ).animate(animation),
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
     }
     return Register.fromJson(json.decode(responses.body));
   }
@@ -82,50 +102,152 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-      color: backgroundColor,
-      child: Background(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "REGÍSTRATE",
-                style: TextStyle(fontWeight: FontWeight.bold),
+    return Column(
+      children: <Widget>[
+
+        SizedBox(height: 20),
+        Stack(
+          children: [
+            Container(
+              margin: EdgeInsets.only(left: 40, right: 40),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: Duration(milliseconds: 500 ), // Adjust the animation duration as needed
+                      pageBuilder: (_, __, ___) => SignUpScreen(),
+                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: Offset(-1.0, 0.0),
+                            end: Offset.zero,
+                          ).animate(animation),
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Color.fromRGBO(40, 93, 169, 1),
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  child: Icon(
+                    Icons.arrow_back_outlined,
+                    color: Color.fromRGBO(40, 93, 169, 1),
+                    size:30
+                  ),
+                ),
               ),
-              SizedBox(height: size.height * 0.03),
-              SvgPicture.asset(
-                "assets/icons/driver-pana.svg",
-                height: size.height * 0.35,
-              ),
-              Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Container(
-                    margin: EdgeInsets.all(10.0),
-                    child: Text(
-                        'Ingresa una contraseña y el código de confirmacion enviado a tu correo',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        )),
-                  )),
-              _crearUsuario(),
-              _crearEmail(),
-              _crearCode(),
-              _crearPassw1(),
-              _crearPassw2(),
-              RoundedButton(
-                  text: "REGISTRARME",
-                  press: () {
-                    fetchUserRegisterCode(user.text, userEmail.text,
-                        userCode.text, userPassword1.text, userPassword2.text);
-                  }),
-              SizedBox(height: size.height * 0.05),
-            ],
+            ),
+  
+            Center(child: Text("Ingresar código",style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1), fontSize: 27),),),
+          ],
+        ),
+        
+        SizedBox(height: 60),
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: 430,
+            maxHeight: 210,
+          ),
+          child: Image.asset('assets/images/verification.png'),
+        ),
+        SizedBox(height: 60),
+
+        Text(
+          'Ingresa el código de verificación',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 21,
+          )
+        ),
+        SizedBox(height: 15),
+        Center(
+          child: Text(
+            'Te enviamos un código de verificación a tu correo electrónico',
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: 13,
+            )
           ),
         ),
-      ),
+          SizedBox(height: 5),
+          Center(
+            child: GestureDetector(
+              onTap: () async{
+                await fetchUserRegister(prefs.nombreUsuario, prefs.emailUsuario);
+              },
+              child: Text(
+                'Reenviar código',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                  color: Color.fromRGBO(40, 93, 169, 1)
+                )
+              ),
+            ),
+          ),
+
+        SizedBox(height: 30),
+        _crearCode(),
+        SizedBox(height: 20),
+  
+        OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            side: BorderSide(color: Colors.black),
+              fixedSize: Size(size.width-80, 50)
+          ),
+          onPressed: () async {
+            fetchUserRegisterCode(prefs.nombreUsuario, prefs.emailUsuario,userCode.text, prefs.passwordUsuario, prefs.passwordUsuario);
+          },
+          child: Text(
+            "Verificar",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.normal
+            ),
+          ),
+        ),
+        SizedBox(height: size.height * 0.05),
+      ],
     );
+  }
+
+  Future<dynamic> fetchUserRegister(String agentUser, String agentEmail) async {
+    //<List<Map<String,Register>>>
+    Map data = {'agentUser': agentUser, 'agentEmail': agentEmail};
+    //manejo de api register
+    http.Response responses =
+        await http.post(Uri.parse('$ip/api/code'), body: data);
+    final no = Register.fromJson(json.decode(responses.body));
+    //redirección y alertas
+    if (responses.statusCode == 200 && no.ok == true) {
+
+      QuickAlert.show(
+        context: context,
+        title: no.title,
+        text: "Se reenvio el codigo.",
+        type: QuickAlertType.success
+      );
+
+    } else if (no.ok != true) {
+        QuickAlert.show(
+        context: context,
+          title: no.title,
+          text: no.message,
+          type: QuickAlertType.error);
+    }
+    return Register.fromJson(json.decode(responses.body));
   }
 
 //Widgets de fields
@@ -174,18 +296,58 @@ class _BodyState extends State<Body> {
   }
 
   Widget _crearCode() {
-    return TextFieldContainer(
-      child: TextField(
-        controller: userCode,
-        cursorColor: kPrimaryColor,
-        decoration: InputDecoration(
-          hintText: 'Codigo de Verificación',
-          icon: Icon(
-            Icons.lock_outline,
-            color: kPrimaryColor,
+    int length = userCode.text.length+1;
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 40),
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: Stack(
+              children: [
+                TextField(
+                  onChanged: (value) => setState(() {}),
+                  maxLength: 4,
+                  style: TextStyle(color: Colors.transparent, fontSize: 37),
+                  obscureText: true,
+                  controller: userCode,
+                  cursorColor: Colors.transparent,
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                  ),
+                  buildCounter: (BuildContext context, { int? currentLength, int? maxLength, bool? isFocused }) => SizedBox.shrink(),
+                ),
+                Positioned.fill(
+                  bottom: 20,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: List.generate(4, (index) {
+                        length--;
+                        return Column(
+                          children: [
+                            Column(
+                              children: [
+                                length>0? Text("*", style: TextStyle(color: Colors.black, fontSize: 37),):Text(''),
+                                Container(
+                                  width: 20,
+                                  height: 2,
+                                  color: Colors.grey,
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          border: InputBorder.none,
-        ),
+        ],
       ),
     );
   }

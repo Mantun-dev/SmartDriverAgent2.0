@@ -201,25 +201,25 @@ class _BodyState extends State<Body> {
                 ),
                 SizedBox(height: 15),
                 OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          side: BorderSide(color: Colors.white),
-                          fixedSize: Size(size.width-80, 50)
-                        ),
-                        onPressed: () {
-                          fetchUser(userName.text, userPassword.text);
-                        },
-                        child: Text(
-                          "Ingresar",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.normal
-                          ),
-                        ),
-                      ),
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  side: BorderSide(color: Colors.white),
+                  fixedSize: Size(size.width-80, 50)
+                  ),
+                  onPressed: () {
+                    fetchUser(userName.text, userPassword.text);
+                  },
+                  child: Text(
+                    "Ingresar",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.normal
+                    ),
+                  ),
+                ),
                 SizedBox(height: 15),
                 AlreadyHaveAnAccountCheck(
                   press: () {

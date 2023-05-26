@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/Login/login_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Signup/signup_screen.dart';
 
+import '../../Register/success_screen.dart';
+
 
 class Body extends StatelessWidget {
   @override

@@ -45,7 +45,7 @@ class _BodyState extends State<Body> {
   }
 
   //función fetch para registrar usuarios
-  Future<dynamic> fetchUserRegister(String agentUser, String agentEmail) async {
+  Future<dynamic> fetchUserRegister(String agentUser, String agentEmail, password1) async {
     //<List<Map<String,Register>>>
     Map data = {'agentUser': agentUser, 'agentEmail': agentEmail};
     //manejo de api register
@@ -54,18 +54,20 @@ class _BodyState extends State<Body> {
     final no = Register.fromJson(json.decode(responses.body));
     //redirección y alertas
     if (responses.statusCode == 200 && no.ok == true) {
-      prefs.nombreUsuarioDos = agentUser;
+      prefs.nombreUsuario = agentUser;
       prefs.emailUsuario = agentEmail;
+      prefs.passwordUsuario=password1;
 
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-              builder: (BuildContext context) => RegisterScreen()),
-          (Route<dynamic> route) => false);
-          QuickAlert.show(
+        MaterialPageRoute(builder:(BuildContext context) => RegisterScreen()),
+        (Route<dynamic> route) => false
+      );
+      QuickAlert.show(
         context: context,
-          title: no.title,
-          text: no.message,
-          type: QuickAlertType.success);
+        title: no.title,
+        text: no.message,
+        type: QuickAlertType.success
+      );
 
     } else if (no.ok != true) {
         QuickAlert.show(
@@ -172,8 +174,28 @@ class _BodyState extends State<Body> {
                         ),
                         onPressed: () async {
                           //función fetch
+                          if(userPassword.text.isEmpty){
 
-                          await fetchUserRegister(user.text, userEmail.text);
+                            QuickAlert.show(
+                              context: context,
+                              title: "Alerta",
+                              text: "Ingrese Contraseña",
+                              type: QuickAlertType.error
+                            );
+                            return;
+                          }
+
+                          if(userPasswordC.text!=userPassword.text){
+
+                             QuickAlert.show(
+                              context: context,
+                              title: "Alerta",
+                              text: "Confirme su contraseña",
+                              type: QuickAlertType.error
+                            );
+                            return;
+                          }
+                          await fetchUserRegister(user.text, userEmail.text, userPassword.text);
                         },
                         child: Text(
                           "Enviar",
