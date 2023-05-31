@@ -20,6 +20,7 @@ import 'dart:convert' show json;
 
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../main.dart';
 import '../../Details/details_screen_changes.dart';
 import '../../Details/details_screen_qr.dart';
 
@@ -219,16 +220,36 @@ class _BodyState extends State<Body> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 10.0),
+              padding: EdgeInsets.only(top: 25.0),
               child: Text(
-                'SMART DRIVER',
+                'Hola, ${prefs.nombreUsuarioFull}',
                 style: Theme.of(context)
                     .textTheme
                     .headline4!
-                    .copyWith(fontWeight: FontWeight.w400, color: firstColor),
+                    .copyWith(fontWeight: FontWeight.normal, color: Color.fromRGBO(255, 255, 255, 1), fontSize: 20),
               ),
             ),
-            SizedBox(height: 20),            
+
+            SizedBox(height: 25),      
+
+            Padding(
+              padding: const EdgeInsets.only(right: 12, left: 12),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: TextField(
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search, color: Colors.grey),
+                    hintText: 'Buscar',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ),
+
+            SizedBox(height: 10),            
             if (display == 1)... {                        
               Padding(
                 padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),

@@ -9,9 +9,21 @@ import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/providers/chat.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
+import 'Agents/Screens/Chat/listchats.dart';
+import 'Agents/Screens/Profile/profile_screen.dart';
+import 'Agents/models/network.dart';
 import 'Agents/sharePrefers/preferencias_usuario.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:convert' show json;
+
+import 'components/AppBarPosterior.dart';
+import 'components/AppBarSuperior.dart';
 
 Future<void> main() async {
   //inicialización de clases y variables necesarias para
@@ -21,7 +33,12 @@ Future<void> main() async {
   await PushNotificationServices.initializeApp();
   await prefs.initPrefs();
   await Firebase.initializeApp();
-  runApp(MyApp());
+ runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -34,12 +51,15 @@ class _MyAppState extends State<MyApp> {
   final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey(debugLabel: "Main Navigator");
   final prefs = new PreferenciasUsuario();
+  bool menuDesplegable=false;
 
   //función de la clase de notificaciones que necesita ser inicializada
   //para hacer las respectivas notificaciones y redirecciones
   @override
+
   void initState() {
     super.initState();
+
     PushNotificationServices.messageStream.listen((event) {
       if (event == 'PROCESS_TRIP') {
         navigatorKey.currentState?.push(MaterialPageRoute(
@@ -64,7 +84,7 @@ class _MyAppState extends State<MyApp> {
         title: 'Smart Driver',
         theme: ThemeData(
           primaryColor: kPrimaryColor,
-          scaffoldBackgroundColor: backgroundColor,
+          scaffoldBackgroundColor: Color.fromRGBO(248, 248, 248, 1),
         ),
         //home: prefs.nombreUsuario ==null?WelcomeScreen():HomeScreen(),
         initialRoute: prefs.nombreUsuario == null || prefs.nombreUsuario == ""
@@ -72,9 +92,10 @@ class _MyAppState extends State<MyApp> {
             : 'home',
         routes: {
           'login': (BuildContext context) => UpgradeAlert(child: SplashView()),
-          'home': (BuildContext context) => UpgradeAlert(child: HomeScreen()),
+          'home': (BuildContext context) => UpgradeAlert(child: HomeScreen(),),
         },
       ),
     );
   }
+
 }

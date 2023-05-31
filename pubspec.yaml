@@ -53,7 +53,8 @@ dependencies:
   video_player: ^2.4.7
   flutter_neumorphic: ^3.2.0
   upgrader: ^6.4.0
-
+  flutter_icons: ^1.1.0
+  font_awesome_flutter: ^9.2.0
 
 dev_dependencies:
   change_app_package_name: ^1.1.0

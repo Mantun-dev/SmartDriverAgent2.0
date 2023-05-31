@@ -6,8 +6,10 @@ import 'package:flutter_auth/Agents/Screens/Signup/components/background.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/Agents/models/ticketHistory.dart';
-import 'package:flutter_auth/components/menu_lateral.dart';
+import 'package:flutter_auth/components/AppBarSuperior.dart';
 import 'package:flutter_auth/constants.dart';
+
+import '../../../../components/menu_lateral.dart';
 
 void main() {
   runApp(HistoryTicketScreen());
