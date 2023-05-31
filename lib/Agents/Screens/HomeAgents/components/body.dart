@@ -288,54 +288,39 @@ class _BodyState extends State<Body> {
                   //validación
                   if (abc.data!.companyId != 7) {
                     return Expanded(
-                      child: GridView.builder(
+                      child: GridView.count(
+                        crossAxisCount: 2,
                         shrinkWrap: true,
                         //todas las cards
-                        itemCount: plantilla.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 1,
-                          mainAxisExtent: 180,
-                        ),
-                        itemBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: ItemCard(
+                        children: List.generate(plantilla.length, (index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: ItemCard(
                               plantilla: plantilla[index],
                               press: () {
                                 setState(() {
                                   if (plantilla[index] == plantilla[0]) {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return DetailScreen(
-                                          plantilla: plantilla[index]);
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                      return DetailScreen(plantilla: plantilla[index]);
                                     }));
                                   } else if (plantilla[index] == plantilla[1]) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) {
-                                        return DetailScreenHistoryTrip(
-                                            plantilla: plantilla[index]);
-                                      }),
-                                    );
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                      return DetailScreenHistoryTrip(plantilla: plantilla[index]);
+                                    }));
                                   } else if (plantilla[index] == plantilla[2]) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) {
-                                        return DetailScreenQr(
-                                            plantilla: plantilla[index]);
-                                      }),
-                                    );
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                      return DetailScreenQr(plantilla: plantilla[index]);
+                                    }));
                                   } else if (plantilla[index] == plantilla[3]) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) {
-                                        return DetailScreenChanges(
-                                            plantilla: plantilla[index]);
-                                      }),
-                                    );
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                      return DetailScreenChanges(plantilla: plantilla[index]);
+                                    }));
                                   }
                                 });
-                              }),
-                        ),
+                              },
+                            ),
+                          );
+                        }),
                       ),
                     );
                   } else {

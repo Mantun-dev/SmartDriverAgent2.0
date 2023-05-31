@@ -50,14 +50,12 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                 color: Colors.white,
               ),
               onPressed: () {
-                if(item==1){
-                  Navigator.push(
+                Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) {
                       return HomeScreen();
                     })
                   );
-                }
               },
             ),
           ),
@@ -82,6 +80,20 @@ class _AppBarSuperior extends State<AppBarSuperior> {
           Expanded(
             child: Center(
               child: Text(
+                "Datos personales",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 21
+                ),
+              ),
+            ),
+          ),
+
+          if(item==2)
+          Expanded(
+            child: Center(
+              child: Text(
                 "Próximos viajes",
                 style: TextStyle(
                   color: Colors.white,
@@ -91,6 +103,49 @@ class _AppBarSuperior extends State<AppBarSuperior> {
               ),
             ),
           ),
+
+          if(item==3)
+          Expanded(
+            child: Center(
+              child: Text(
+                "Historial de viajes",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 21
+                ),
+              ),
+            ),
+          ),
+
+          if(item==4)
+          Expanded(
+            child: Center(
+              child: Text(
+                "Código QR",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 21
+                ),
+              ),
+            ),
+          ),
+
+          if(item==5)
+          Expanded(
+            child: Center(
+              child: Text(
+                "Solicitud de cambios",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 21
+                ),
+              ),
+            ),
+          ),
+
         item==0?Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
