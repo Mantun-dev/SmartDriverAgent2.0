@@ -13,6 +13,7 @@ import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/constants.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:package_info/package_info.dart';
 import 'package:http/http.dart' as http;
@@ -213,9 +214,9 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     RateMyApp();
-    return Center(
-      child: Container(
-        height: size.height,
+    return Container(
+      height: size.height,
+      child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -229,9 +230,9 @@ class _BodyState extends State<Body> {
                     .copyWith(fontWeight: FontWeight.normal, color: Color.fromRGBO(255, 255, 255, 1), fontSize: 20),
               ),
             ),
-
+      
             SizedBox(height: 25),      
-
+      
             Padding(
               padding: const EdgeInsets.only(right: 12, left: 12),
               child: Container(
@@ -248,8 +249,8 @@ class _BodyState extends State<Body> {
                 ),
               ),
             ),
-
-            SizedBox(height: 10),            
+      
+            SizedBox(height: 15),            
             if (display == 1)... {                        
               Padding(
                 padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
@@ -260,7 +261,7 @@ class _BodyState extends State<Body> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Text('🔺$msgtoShow',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+                    child: Text('🔺$msgtoShow',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
                   ),
                 ),
               )
@@ -282,90 +283,268 @@ class _BodyState extends State<Body> {
             //future builder para hacer la validación que aparezcan 3 o las 4 cards
             // las que necesarias a mostrar
             FutureBuilder<DataAgent>(
+            future: item,
+            builder: (BuildContext context, abc) {
+              if (abc.connectionState == ConnectionState.done) {
+                //validación
+                if (abc.data!.companyId != 7) {
+                  return GridView.count(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    //todas las cards
+                    children: List.generate(plantilla.length, (index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8.0, left: 8, bottom: 8),
+                        child: ItemCard(
+                          plantilla: plantilla[index],
+                          press: () {
+                            setState(() {
+                              if (plantilla[index] == plantilla[0]) {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return DetailScreen(plantilla: plantilla[index]);
+                                }));
+                              } else if (plantilla[index] == plantilla[1]) {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return DetailScreenHistoryTrip(plantilla: plantilla[index]);
+                                }));
+                              } else if (plantilla[index] == plantilla[2]) {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return DetailScreenQr(plantilla: plantilla[index]);
+                                }));
+                              } else if (plantilla[index] == plantilla[3]) {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return DetailScreenChanges(plantilla: plantilla[index]);
+                                }));
+                              }
+                            });
+                          },
+                        ),
+                      );
+                    }),
+                  );
+                } else {
+                  return GridView.count(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    //todas las cards
+                    children: List.generate(plantilla.length, (index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: ItemCard(
+                          plantilla: plantilla[index],
+                          press: () {
+                            setState(() {
+                              if (plantilla[index] == plantilla[0]) {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return DetailScreen(plantilla: plantilla[0]);
+                                }));
+                              } else if (plantilla[index] == plantilla[1]) {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return DetailScreenHistoryTrip(plantilla: plantilla[1]);
+                                }));
+                              } else if (plantilla[index] == plantilla[2]) {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return DetailScreenQr(plantilla: plantilla[2]);
+                                }));
+                              }
+                            });
+                          },
+                        ),
+                      );
+                    }),
+                  );
+                }
+              } else {
+                return Text('');
+              }
+            },
+          ),
+
+            SizedBox(height: 50),
+
+            FutureBuilder<DataAgent>(
               future: item,
               builder: (BuildContext context, abc) {
-                if (abc.connectionState == ConnectionState.done) {
-                  //validación
-                  if (abc.data!.companyId != 7) {
-                    return Expanded(
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        shrinkWrap: true,
-                        //todas las cards
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 25.0, left: 25, bottom:10),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Últimos viajes',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+                          ),
+
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                return DetailScreenHistoryTrip(plantilla: plantilla[1]);
+                                }
+                              ));
+                            },
+                            child: Text(
+                              'Ver historial',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
                         children: List.generate(plantilla.length, (index) {
                           return Padding(
-                            padding: const EdgeInsets.only(top: 20.0),
-                            child: ItemCard(
-                              plantilla: plantilla[index],
-                              press: () {
-                                setState(() {
-                                  if (plantilla[index] == plantilla[0]) {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                      return DetailScreen(plantilla: plantilla[index]);
-                                    }));
-                                  } else if (plantilla[index] == plantilla[1]) {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                      return DetailScreenHistoryTrip(plantilla: plantilla[index]);
-                                    }));
-                                  } else if (plantilla[index] == plantilla[2]) {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                      return DetailScreenQr(plantilla: plantilla[index]);
-                                    }));
-                                  } else if (plantilla[index] == plantilla[3]) {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                      return DetailScreenChanges(plantilla: plantilla[index]);
-                                    }));
-                                  }
-                                });
-                              },
+                            padding: const EdgeInsets.all(12.0),
+                            child: Container(
+                              width: 240,
+                              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Color.fromRGBO(238, 238, 238, 1),
+                                  width: 2
+                                ),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20)),
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 5),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 15,
+                                          height: 15,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/Numeral.svg",
+                                            color: Color.fromRGBO(40, 93, 169, 1),
+                                          ),
+                                        ),
+                                        Text(
+                                          ' Viaje: ',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Color.fromRGBO(158, 158, 158, 1),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/calendar-note-svgrepo-com.svg",
+                                            color: Color.fromRGBO(40, 93, 169, 1),
+                                          ),
+                                        ),
+                                        Text(
+                                          ' Fecha: ',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Color.fromRGBO(158, 158, 158, 1),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/warning-circle-svgrepo-com.svg",
+                                            color: Color.fromRGBO(40, 93, 169, 1),
+                                          ),
+                                        ),
+                                        Text(
+                                          ' Tipo: ',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Color.fromRGBO(158, 158, 158, 1),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 15,
+                                          height: 15,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/hora.svg",
+                                            color: Color.fromRGBO(40, 93, 169, 1),
+                                          ),
+                                        ),
+                                        Text(
+                                          ' Abordó: ',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Color.fromRGBO(158, 158, 158, 1),
+                                  ),
+                                  SizedBox(height: 5),
+                                ],
+                              ),
+
                             ),
                           );
                         }),
                       ),
-                    );
-                  } else {
-                    return Expanded(
-                      child: GridView.builder(
-                        shrinkWrap: true,
-                        //todas las cards
-                        itemCount: 3,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 1,
-                          mainAxisExtent: 180,                          
-                        ),
-                        itemBuilder: (context, index) => ItemCard(
-                            plantilla: plantilla[index],
-                            press: () {
-                              setState(() {
-                                if (plantilla[index] == plantilla[0]) {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return DetailScreen(
-                                        plantilla: plantilla[0]);
-                                  }));
-                                } else if (plantilla[index] == plantilla[1]) {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return DetailScreenHistoryTrip(
-                                        plantilla: plantilla[1]);
-                                  }));
-                                }else if (plantilla[index] == plantilla[2]) {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return DetailScreenQr(
-                                        plantilla: plantilla[2]);
-                                  }));
-                                }
-                              });
-                            }),
-                      ),
-                    );
-                  }
-                } else {
-                  return Text('');
-                }
+                    ),
+                  ],
+                );
               },
             ),
+      
           ],
         ),
       ),

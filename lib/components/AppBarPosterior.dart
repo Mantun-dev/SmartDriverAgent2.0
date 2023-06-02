@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
 
+import '../Agents/Screens/Chat/listchats.dart';
 import '../Agents/Screens/Profile/profile_screen.dart';
 import '../Agents/models/network.dart';
 
@@ -90,7 +91,7 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                   FontAwesomeIcons.bell,
                   color: Color.fromRGBO(158, 158, 158, 1),
                 ),
-                onPressed: () {
+                onPressed: item==2?null: () {
                   setState(() {
                     item=2;
                   });
@@ -134,9 +135,17 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                   FlutterIcons.message1_ant,
                   color: Color.fromRGBO(158, 158, 158, 1),
                 ),
-                onPressed: () {
+                onPressed: item==3?null:() {
                   setState(() {
-                    item=3;
+                    fetchProfile().then((value) {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return ChatsList(
+                          id: '${value.agentId}',
+                          rol: 'agente',
+                          nombre: '${value.agentFullname}',
+                        );
+                      }));
+                    });
                   });
                 },
               ),

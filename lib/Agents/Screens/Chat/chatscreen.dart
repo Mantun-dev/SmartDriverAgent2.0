@@ -9,16 +9,34 @@ import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/helpers/base_client.dart';
 import 'package:flutter_auth/helpers/res_apis.dart';
 import 'package:flutter_auth/providers/chat.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quickalert/quickalert.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:provider/provider.dart';
 
+import '../../../components/AppBarPosterior.dart';
+import '../../../components/AppBarSuperior.dart';
+import '../../../components/backgroundB.dart';
 import '../../models/message_chat.dart';
 
+import '../../models/network.dart';
+import '../../models/plantilla.dart';
+import '../Details/details_screen.dart';
+import '../Details/details_screen_changes.dart';
+import '../Details/details_screen_history.dart';
+import '../Details/details_screen_qr.dart';
 import '../Profile/profile_screen.dart';
+import '../Welcome/welcome_screen.dart';
+import 'listchats.dart';
 import 'socketChat.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:convert' show json;
 
 class ChatScreen extends StatefulWidget {
   final String nombre;
@@ -40,6 +58,9 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  int? counter;
+  String? tripIdTologin;
+  String? driverId;
   // final _socketResponse = StreamController<dynamic>();
   // Stream<dynamic> get getResponse => _socketResponse.stream;
   IO.Socket? socket;
@@ -82,6 +103,13 @@ class _ChatScreenState extends State<ChatScreen> {
         widget.driverId, nameDriver!);
     //ChatApis().rendV(modid!, sala!);
     _messageInputController.clear();
+  }
+
+  desconectar(){
+    streamSocket.socket.emit('salir');
+    streamSocket.socket.disconnect();
+    streamSocket.socket.close();
+    streamSocket.socket.dispose();
   }
 
   @override
@@ -271,276 +299,972 @@ class _ChatScreenState extends State<ChatScreen> {
         return fechaBs;
     }
 
-    return Scaffold(
-      backgroundColor: backgroundColor2,
-      appBar: AppBar(
-        backgroundColor: backgroundColor,
-        shadowColor: Colors.black87,
-        elevation: 10,
-        title: nameDriver != null ? Text(nameDriver!) : Text(''),
-        iconTheme: IconThemeData(color: secondColor, size: 35),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          color: secondColor,
-          onPressed: () {
-            streamSocket.socket.emit('salir');
-            streamSocket.socket.disconnect();
-            streamSocket.socket.close();
-            streamSocket.socket.dispose();
-            Navigator.of(context).pop();
-          },
-        ),
-        actions: <Widget>[
-          //aquí está el icono de las notificaciones
-          IconButton(
-            icon: SvgPicture.asset(
-              "assets/icons/user.svg",
-              width: 100,
-            ),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return ProfilePage();
-              }));
-            },
-          ),
-
-          SizedBox(width: kDefaultPadding / 2)
-        ],
-      ),
-      body: isLoading == true
-              ? Column(
-                  children: [
-                    Expanded(
-                      child: Consumer<ChatProvider>(
-                        builder: (context, provider, child) =>
-                            SingleChildScrollView(
-                          reverse: true,
-                          child: ListView.separated(
-                            shrinkWrap: true,
-                            controller: _scrollController,
-                            padding: const EdgeInsets.all(16),
-                            itemBuilder: (context, index) {
-                              final message = provider.mensaje[index];
-                              //print(message.user);
-                              //print(widget.nombre);
-                              return Wrap(
-                                alignment:
-                                    message.user == widget.nombre.toUpperCase()
-                                        ? WrapAlignment.end
-                                        : WrapAlignment.start,
-                                children: [
-                                  Center(
-                                    child: fecha('${message.mes}/${message.dia}/${message.ao}')==true 
-                                    ?Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Card(
-                                        color: Color.fromARGB(255, 101, 87, 170),
-                                        child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(hoy_ayer('${message.mes}/${message.dia}/${message.ao}'), style: TextStyle(color: Colors.white, fontSize: 17)),
-                                        ),
-                                      ),
-                                    ) : null,
-                                  ),
-                                  Card(
-                                    color: message.user ==
-                                            widget.nombre.toUpperCase()
-                                        ? chatSecond
-                                        : chatFirst,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment: message.user ==
-                                                widget.nombre.toUpperCase()
-                                            ? CrossAxisAlignment.end
-                                            : CrossAxisAlignment.start,
-                                        children: [
-                                          if (message.mensaje != null) ...{
-                                            Text(
-                                              message.mensaje!,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 17),
-                                            ),
-                                            Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                if (message.user ==
-                                                    widget.nombre.toUpperCase())
-                                                  Text(
-                                                    message.hora,
-                                                    style: TextStyle(
-                                                        color: chatFirst,
-                                                        fontSize: 12),
-                                                  ),
-                                                if (message.user !=
-                                                    widget.nombre.toUpperCase())
-                                                  Text(
-                                                    message.hora,
-                                                    style: TextStyle(
-                                                        color: Colors.grey[400],
-                                                        fontSize: 12),
-                                                  ),
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
-                                                if (message.user ==
-                                                    widget.nombre.toUpperCase())
-                                                  Icon(
-                                                    message.leido == true
-                                                        ? Icons.done_all
-                                                        : Icons.done,
-                                                    size: 15,
-                                                    color: message.leido == true
-                                                        ? firstColor
-                                                        : Colors.grey,
-                                                  )
-                                              ],
-                                            ),
-                                          },
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              );
-                            },
-                            separatorBuilder: (_, index) => const SizedBox(
-                              height: 5,
+    Size size = MediaQuery.of(context).size;
+    return BackgroundBody(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+                appBar: PreferredSize(
+                  preferredSize: Size.fromHeight(56),
+                  child: AppBar(
+                    backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                      elevation: 0,
+                      iconTheme: IconThemeData(color: Colors.white, size: 25),
+                      automaticallyImplyLeading: false, 
+                      actions: <Widget>[
+                      //aquí está el icono de las notificaciones
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: 45,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 0.5,
                             ),
-                            itemCount: provider.mensaje.length,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              desconectar();
+                              fetchProfile().then((value) {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return ChatsList(
+                                    id: '${value.agentId}',
+                                    rol: 'agente',
+                                    nombre: '${value.agentFullname}',
+                                  );
+                                }));
+                              });
+                            },
                           ),
                         ),
                       ),
+
+                      Expanded(
+                        child: Center(
+                          child: nameDriver != null ? 
+                          Text(
+                            nameDriver!,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 21
+                            ),
+                          ) 
+                          : Text(''),
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: menu(size),
+                      )
+                    ],
+                  ),
+                ),
+                body: Column(
+                  children: [
+                    Expanded(
+                      child: isLoading == true
+                        ? body(fecha, hoy_ayer, context)
+                        : Center(child: CircularProgressIndicator()
+                      ),
                     ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Container(
-                        //color: Gradiant2,
-                        height: 50,
-                        child: Row(
-                          children: [
-                            SizedBox(width: 5),
-                            NeumorphicButton(
-                                margin: EdgeInsets.only(top: 0),
-                                onPressed: () {
-                                  _messageInputController.text =
-                                      "Viene en camino?";
-                                  if (_messageInputController.text
-                                      .trim()
-                                      .isNotEmpty) {
-                                    _sendMessage(_messageInputController.text);
-                                  }
-                                },
-                                style: NeumorphicStyle(
-                                  shape: NeumorphicShape.flat,
-                                  boxShape: NeumorphicBoxShape.roundRect(
-                                      BorderRadius.circular(8)),
-                                  //border: NeumorphicBorder()
+                    menuInferior(context, 3)
+                  ],
+                ),
+              ),
+    );
+  }
+
+  void getCounterNotification(String? tripId, String? agentId)async{
+    
+    http.Response response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/salas/agenteId/$agentId'));
+    final resp = json.decode(response.body);
+
+    if (resp['salas'].isNotEmpty) {      
+      if (mounted) {
+        setState(() {      
+          counter = resp['salas'].length;
+        });  
+      }
+    }else{
+      counter = 0;
+    }
+  }
+
+  AppBar menuInferior(BuildContext context, item) {
+    return AppBar(
+    backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+    elevation: 10,
+    iconTheme: IconThemeData(size: 25),
+    automaticallyImplyLeading: false, // Ocultar el ícono del Drawer
+    actions: <Widget>[
+      Expanded(
+        child: item==0?IconButton(
+          icon: Icon(
+            Icons.home_outlined,
+            color: Color.fromRGBO(40, 93, 169, 1),
+            size: 35,
+          ),
+          onPressed: null,
+        ):IconButton(
+          icon: Icon(
+            Icons.home_outlined,
+            color: Color.fromRGBO(158, 158, 158, 1),
+            size: 35,
+          ),
+          onPressed: () {
+            desconectar();
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return HomeScreen();
+                })
+              );
+          },
+        ),
+      ),
+
+      Padding(
+        padding: const EdgeInsets.only(top:5, left: 20, right: 20),
+        child: Stack(
+          children: [
+            IconButton(
+              icon: item==2?Icon(
+                FontAwesomeIcons.bell,
+                color: Color.fromRGBO(40, 93, 169, 1),
+              ):Icon(
+                FontAwesomeIcons.bell,
+                color: Color.fromRGBO(158, 158, 158, 1),
+              ),
+              onPressed: item==2?null:() {
+                setState(() {
+                  item=2;
+                });
+              },
+            ),
+            Container(
+              width: 65,
+              height: 35,
+              alignment: Alignment.topRight,
+              margin: EdgeInsets.only(top: 5),
+              child: Container(
+                height: 15,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.transparent,
+                    border: Border.all(color: Color(0xffc32c37), width: 1.5)),
+                child: Padding(
+                  padding: const EdgeInsets.all(0.0),
+                  child: Center(
+                    child: Text(
+                      '0',
+                      style: TextStyle(fontSize: 10, color: Color(0xffc32c37), fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+                ],
+              ),
+      ),
+
+      Padding(
+        padding: const EdgeInsets.only(top:5, left: 20,),
+        child: Stack(
+          children: [
+            IconButton(
+              icon: item==3?Icon(
+                FlutterIcons.message1_ant,
+                color: Color.fromRGBO(40, 93, 169, 1),
+              ):Icon(
+                FlutterIcons.message1_ant,
+                color: Color.fromRGBO(158, 158, 158, 1),
+              ),
+              onPressed: item==3?null:() {
+                desconectar();
+                setState(() {
+                  fetchProfile().then((value) {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return ChatsList(
+                        id: '${value.agentId}',
+                        rol: 'agente',
+                        nombre: '${value.agentFullname}',
+                      );
+                    }));
+                  });
+                });
+              },
+            ),
+            Container(
+              width: 75,
+              height: 35,
+              alignment: Alignment.topRight,
+              margin: EdgeInsets.only(top: 5),
+              child: Container(
+                height: 15,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.transparent,
+                    border: Border.all(color: Color(0xffc32c37), width: 1.5)),
+                child: Padding(
+                  padding: const EdgeInsets.all(0.0),
+                  child: Center(
+                    child: Text(
+                      counter!=null?'$counter':'0',
+                      style: TextStyle(fontSize: 10, color: Color(0xffc32c37), fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+                ],
+              ),
+      ),
+
+      Expanded(
+        child: item==1?IconButton(
+          icon: Icon(
+            FontAwesomeIcons.userCircle,
+            color: Color.fromRGBO(40, 93, 169, 1),
+          ),
+          onPressed: null,
+        ):IconButton(
+          icon: Icon(
+            FontAwesomeIcons.userCircle,
+            color: Color.fromRGBO(158, 158, 158, 1),
+          ),
+          onPressed: () {
+            desconectar();
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) {
+                  return ProfilePage();
+                })
+              );
+          },
+        ),
+      ),
+    ],
+  );
+  }
+
+  Column body(bool fecha(dynamic fechaBs), String hoy_ayer(dynamic fechaBs), BuildContext context) {
+    return Column(
+                children: [
+                  Expanded(
+                    child: Consumer<ChatProvider>(
+                      builder: (context, provider, child) =>
+                          SingleChildScrollView(
+                        reverse: true,
+                        child: ListView.separated(
+                          shrinkWrap: true,
+                          controller: _scrollController,
+                          padding: const EdgeInsets.all(16),
+                          itemBuilder: (context, index) {
+                            final message = provider.mensaje[index];
+                            //print(message.user);
+                            //print(widget.nombre);
+                            return Wrap(
+                              alignment:
+                                  message.user == widget.nombre.toUpperCase()
+                                      ? WrapAlignment.end
+                                      : WrapAlignment.start,
+                              children: [
+                                Center(
+                                  child: fecha('${message.mes}/${message.dia}/${message.ao}')==true 
+                                  ?Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Card(
+                                      color: Color.fromARGB(255, 101, 87, 170),
+                                      child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(hoy_ayer('${message.mes}/${message.dia}/${message.ao}'), style: TextStyle(color: Colors.white, fontSize: 17)),
+                                      ),
+                                    ),
+                                  ) : null,
                                 ),
-                                padding: const EdgeInsets.all(12.0),
-                                child: Text(
-                                  "Viene en camino?",
-                                  style: TextStyle(color: _textColor(context)),
-                                )),
-                            SizedBox(width: 5),
-                            NeumorphicButton(
-                                margin: EdgeInsets.only(top: 0),
-                                onPressed: () {
-                                  _messageInputController.text = "Estoy aquí";
-                                  if (_messageInputController.text
-                                      .trim()
-                                      .isNotEmpty) {
-                                    _sendMessage(_messageInputController.text);
-                                  }
-                                },
-                                style: NeumorphicStyle(
-                                  shape: NeumorphicShape.flat,
-                                  boxShape: NeumorphicBoxShape.roundRect(
-                                      BorderRadius.circular(8)),
-                                  //border: NeumorphicBorder()
-                                ),
-                                padding: const EdgeInsets.all(12.0),
-                                child: Text(
-                                  "Estoy aquí",
-                                  style: TextStyle(color: _textColor(context)),
-                                )),
-                            SizedBox(width: 5),
-                            NeumorphicButton(
-                                margin: EdgeInsets.only(top: 0),
-                                onPressed: () {
-                                  _messageInputController.text =
-                                      "Estoy buscandole";
-                                  if (_messageInputController.text
-                                      .trim()
-                                      .isNotEmpty) {
-                                    _sendMessage(_messageInputController.text);
-                                  }
-                                },
-                                style: NeumorphicStyle(
-                                  shape: NeumorphicShape.flat,
-                                  boxShape: NeumorphicBoxShape.roundRect(
-                                      BorderRadius.circular(8)),
-                                  //border: NeumorphicBorder()
-                                ),
-                                padding: const EdgeInsets.all(12.0),
-                                child: Text(
-                                  "Estoy buscandole",
-                                  style: TextStyle(color: _textColor(context)),
-                                )),
-                          ],
+                                Card(
+                                  color: message.user ==
+                                          widget.nombre.toUpperCase()
+                                      ? chatSecond
+                                      : chatFirst,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: message.user ==
+                                              widget.nombre.toUpperCase()
+                                          ? CrossAxisAlignment.end
+                                          : CrossAxisAlignment.start,
+                                      children: [
+                                        if (message.mensaje != null) ...{
+                                          Text(
+                                            message.mensaje!,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17),
+                                          ),
+                                          Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              if (message.user ==
+                                                  widget.nombre.toUpperCase())
+                                                Text(
+                                                  message.hora,
+                                                  style: TextStyle(
+                                                      color: chatFirst,
+                                                      fontSize: 12),
+                                                ),
+                                              if (message.user !=
+                                                  widget.nombre.toUpperCase())
+                                                Text(
+                                                  message.hora,
+                                                  style: TextStyle(
+                                                      color: Colors.grey[400],
+                                                      fontSize: 12),
+                                                ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              if (message.user ==
+                                                  widget.nombre.toUpperCase())
+                                                Icon(
+                                                  message.leido == true
+                                                      ? Icons.done_all
+                                                      : Icons.done,
+                                                  size: 15,
+                                                  color: message.leido == true
+                                                      ? firstColor
+                                                      : Colors.grey,
+                                                )
+                                            ],
+                                          ),
+                                        },
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
+                          },
+                          separatorBuilder: (_, index) => const SizedBox(
+                            height: 5,
+                          ),
+                          itemCount: provider.mensaje.length,
                         ),
                       ),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: chatFirst,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                      ),
-                      child: SafeArea(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                margin: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: backgroundColor2,
-                                ),
-                                child: TextField(
-                                  style: TextStyle(color: Colors.white),
-                                  controller: _messageInputController,
-                                  decoration: const InputDecoration(
-                                    hintStyle: TextStyle(color: Colors.white),
-                                    contentPadding: EdgeInsets.only(left: 10),
-                                    hintText: 'Escriba su mensaje aquí...',
-                                    border: InputBorder.none,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            IconButton(
-                              color: chatSecond,
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Container(
+                      //color: Gradiant2,
+                      height: 50,
+                      child: Row(
+                        children: [
+                          SizedBox(width: 5),
+                          NeumorphicButton(
+                              margin: EdgeInsets.only(top: 0),
                               onPressed: () {
+                                _messageInputController.text =
+                                    "Viene en camino?";
                                 if (_messageInputController.text
                                     .trim()
                                     .isNotEmpty) {
-                                  _sendMessage(
-                                      _messageInputController.text.trim());
+                                  _sendMessage(_messageInputController.text);
                                 }
                               },
-                              icon: const Icon(Icons.send),
-                            )
+                              style: NeumorphicStyle(
+                                shape: NeumorphicShape.flat,
+                                boxShape: NeumorphicBoxShape.roundRect(
+                                    BorderRadius.circular(8)),
+                                //border: NeumorphicBorder()
+                              ),
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text(
+                                "Viene en camino?",
+                                style: TextStyle(color: _textColor(context)),
+                              )),
+                          SizedBox(width: 5),
+                          NeumorphicButton(
+                              margin: EdgeInsets.only(top: 0),
+                              onPressed: () {
+                                _messageInputController.text = "Estoy aquí";
+                                if (_messageInputController.text
+                                    .trim()
+                                    .isNotEmpty) {
+                                  _sendMessage(_messageInputController.text);
+                                }
+                              },
+                              style: NeumorphicStyle(
+                                shape: NeumorphicShape.flat,
+                                boxShape: NeumorphicBoxShape.roundRect(
+                                    BorderRadius.circular(8)),
+                                //border: NeumorphicBorder()
+                              ),
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text(
+                                "Estoy aquí",
+                                style: TextStyle(color: _textColor(context)),
+                              )),
+                          SizedBox(width: 5),
+                          NeumorphicButton(
+                              margin: EdgeInsets.only(top: 0),
+                              onPressed: () {
+                                _messageInputController.text =
+                                    "Estoy buscandole";
+                                if (_messageInputController.text
+                                    .trim()
+                                    .isNotEmpty) {
+                                  _sendMessage(_messageInputController.text);
+                                }
+                              },
+                              style: NeumorphicStyle(
+                                shape: NeumorphicShape.flat,
+                                boxShape: NeumorphicBoxShape.roundRect(
+                                    BorderRadius.circular(8)),
+                                //border: NeumorphicBorder()
+                              ),
+                              padding: const EdgeInsets.all(12.0),
+                              child: Text(
+                                "Estoy buscandole",
+                                style: TextStyle(color: _textColor(context)),
+                              )),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: chatFirst,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
+                    child: SafeArea(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              margin: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: backgroundColor2,
+                              ),
+                              child: TextField(
+                                style: TextStyle(color: Colors.white),
+                                controller: _messageInputController,
+                                decoration: const InputDecoration(
+                                  hintStyle: TextStyle(color: Colors.white),
+                                  contentPadding: EdgeInsets.only(left: 10),
+                                  hintText: 'Escriba su mensaje aquí...',
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            color: chatSecond,
+                            onPressed: () {
+                              if (_messageInputController.text
+                                  .trim()
+                                  .isNotEmpty) {
+                                _sendMessage(
+                                    _messageInputController.text.trim());
+                              }
+                            },
+                            icon: const Icon(Icons.send),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+  }
+
+  Container menu(size) {
+    return Container(
+      width: 45,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.white,
+          width: 0.5,
+        ),
+      borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: IconButton(
+        icon: Icon(
+          Icons.menu,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          showGeneralDialog(
+            barrierColor: Colors.black.withOpacity(0.6),
+            transitionBuilder: (context, a1, a2, widget) {
+              final curvedValue = Curves.easeInOut.transform(a1.value);
+              return Transform.translate(
+                offset: Offset(0.0, (1 - curvedValue) * size.height / 2),
+                child: Opacity(
+                  opacity: a1.value,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      height: size.height / 2,
+                      width: size.width,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30.0),
+                          topRight: Radius.circular(30.0),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 120, left: 120, top: 15, bottom: 20),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Color.fromRGBO(187, 187, 187, 1),
+                                  borderRadius: BorderRadius.circular(80)
+                                ),
+                                height: 6,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                  desconectar();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return ProfilePage();
+                                    })
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25,
+                                            height: 25,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/usuario.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(
+                                            ' Mi perfil',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal,
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'Roboto'
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/flechader.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 12),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                  desconectar();
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return DetailScreen(plantilla: plantilla[0]);
+                                }));
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25,
+                                            height: 25,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/proximo_viaje.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(' Próximos viajes', 
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal,
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'Roboto'
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/flechader.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                           SizedBox(height: 12),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                  desconectar();
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return DetailScreenHistoryTrip(plantilla: plantilla[1]);
+                                }));
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25,
+                                            height: 25,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/historial_de_viaje.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(' Historial de viajes', 
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal,
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'Roboto'
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/flechader.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 12),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                  desconectar();
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return DetailScreenQr(plantilla: plantilla[2]);
+                                }));
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25,
+                                            height: 25,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/QR.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(' Generar código QR', 
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal,
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'Roboto'
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/flechader.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 12),                                                     
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                  desconectar();
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return DetailScreenChanges(plantilla: plantilla[3]);
+                                }));
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25,
+                                            height: 25,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/solicitud_de_cambio.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(' Solicitud de cambios', 
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal,
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'Roboto'
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/flechader.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 12),      
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                  desconectar();
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25,
+                                            height: 25,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/tema.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(' Tema', 
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal,
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'Roboto'
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/flechader.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 12),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                  desconectar();
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25,
+                                            height: 25,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/idioma.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(' Idiomas', 
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal,
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'Roboto'
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/flechader.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 12),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                            QuickAlert.show(
+                                              context: context,
+                                              title: "Está seguro que desea salir?",          
+                                              type: QuickAlertType.success,
+                                              confirmBtnText: 'Confirmar',
+                                              cancelBtnText: 'Cancelar',
+                                              showCancelBtn: true,  
+                                              confirmBtnTextStyle: TextStyle(fontSize: 15, color: Colors.white),
+                                              cancelBtnTextStyle:TextStyle(color: Colors.red, fontSize: 15, fontWeight:FontWeight.bold ), 
+                                              onConfirmBtnTap:() {
+                                                desconectar();
+                                                fetchDeleteSession();
+                                                prefs.remove();
+                                                prefs.removeData();
+                                                QuickAlert.show(
+                                                  context: context,
+                                                  type: QuickAlertType.success,
+                                                  text: "¡Gracias por usar Smart Driver!",
+                                                );
+                                                new Future.delayed(new Duration(seconds: 2), () {
+                                                  Navigator.of(context).pushAndRemoveUntil(
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext context) => WelcomeScreen()),
+                                                      (Route<dynamic> route) => false);
+                                                });
+                                              },
+                                              onCancelBtnTap: (() {
+                                                Navigator.pop(context);
+                                                /*QuickAlert.show(
+                                                  context: context,
+                                                  type: QuickAlertType.success,
+                                                  text: "Cancelado",
+                                                );*/
+                                              })
+                                            );
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25,
+                                            height: 25,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/cerrar-sesion.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(' Cerrar sesión', 
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal,
+                                              decoration: TextDecoration.none,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/flechader.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+
                           ],
                         ),
                       ),
                     ),
-                  ],
-                )
-              : Center(child: CircularProgressIndicator())
+                  ),
+                ),
+              );
+            },
+            transitionDuration: Duration(milliseconds: 200),
+            barrierDismissible: true,
+            barrierLabel: '',
+            context: context,
+            pageBuilder: (context, animation1, animation2) {
+              return widget;
+            },
+          );
+
+            
+        },
+      ),
     );
+      
   }
+
 }

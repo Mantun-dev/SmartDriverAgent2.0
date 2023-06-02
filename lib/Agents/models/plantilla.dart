@@ -3,14 +3,13 @@ import 'package:flutter_auth/constants.dart';
 
 //aquí está la clase para después traer la api
 class Plantilla {
-  final String image, imageMain, title, name;
+  final String image, title, name;
   final int id;
   final Color color;
   final description;
   Plantilla({
     required this.id,
     required this.image,
-    required this.imageMain,
     required this.title,
     required this.name,
     required this.description,
@@ -25,38 +24,33 @@ List<Plantilla> plantilla = [
       title: "Próximos viajes",
       name: '',
       //size: 100,
-      description: 'Confirmar los viajes\npendientes a realizar.',
-      image: "assets/images/destination.png",
-      imageMain: "assets/icons/Plantilla2_1.svg",
-      color: backgroundColor),
+      description: 'Confirma o cancela mi próximo viaje',
+      image: "assets/icons/proximo_viaje.svg",
+      color: Colors.white),
   Plantilla(
       id: 2,
       title: "Historial de viajes",
       name: '',
       //size: 20,
-      description: 'Corroborar sus viajes\nrealizados.',
-      image: "assets/images/checklist.png",
-      imageMain: "assets/icons/Plantilla2_2.svg",
-      color: backgroundColor),
+      description: 'Revisar mis viajes programados',
+      image: "assets/icons/historial_de_viaje.svg",
+      color: Colors.white),
   Plantilla(
       id: 3,
       title: "Generar código QR",
       name: '',
       //size: 20,
-      description: 'Observar su código QR\npara sus viajes.',
-      image: "assets/images/QR.png",
-      imageMain: "assets/icons/Plantilla2_3.svg",
-      color: backgroundColor),
+      description: 'Presenta tu código QR antes de abordar',
+      image: "assets/icons/QR.svg",
+      color: Colors.white),
   Plantilla(
       id: 4,
       title: "Solicitud de cambios",
       name: '',
       // size: 20,
-      description:
-          'Envio de tickets para\nsolicitud de cambios y\nrevisión de historial\nde los tickets.',
-      image: "assets/images/ticket.png",
-      imageMain: "assets/icons/Plantilla2_4.svg",
-      color: backgroundColor),
+      description: 'Enviar una solicitud de cambio',
+      image: "assets/icons/solicitud_de_cambio.svg",
+      color: Colors.white),
   // Plantilla(
   //     id: 5,
   //     title: "Chatea con tu\nconductor",

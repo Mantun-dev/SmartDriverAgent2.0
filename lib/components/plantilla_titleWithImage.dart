@@ -32,20 +32,6 @@ class PlantillaTitleWithImage extends StatelessWidget {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              Container(
-                child: Column(
-                  children: [
-                    Hero(
-                      tag: "${plantilla.id}",
-                      child: SvgPicture.asset(
-                        plantilla.imageMain,
-                        fit: BoxFit.contain,
-                        height: 120,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ],
           )
         ],

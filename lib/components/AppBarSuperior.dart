@@ -2,6 +2,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/Screens/Profile/profile_screen.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:quickalert/quickalert.dart';
+
+import '../Agents/Screens/Details/details_screen.dart';
+import '../Agents/Screens/Details/details_screen_changes.dart';
+import '../Agents/Screens/Details/details_screen_history.dart';
+import '../Agents/Screens/Details/details_screen_qr.dart';
+import '../Agents/Screens/Welcome/welcome_screen.dart';
+import '../Agents/models/network.dart';
+import '../Agents/models/plantilla.dart';
 
 
 class AppBarSuperior extends StatefulWidget {
@@ -146,6 +156,20 @@ class _AppBarSuperior extends State<AppBarSuperior> {
             ),
           ),
 
+          if(item==6)
+          Expanded(
+            child: Center(
+              child: Text(
+                "Salas",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 21
+                ),
+              ),
+            ),
+          ),
+
         item==0?Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
@@ -214,6 +238,421 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                           topRight: Radius.circular(30.0),
                         ),
                       ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 120, left: 120, top: 15, bottom: 20),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Color.fromRGBO(187, 187, 187, 1),
+                                  borderRadius: BorderRadius.circular(80)
+                                ),
+                                height: 6,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return ProfilePage();
+                                    })
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25,
+                                            height: 25,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/usuario.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(
+                                            ' Mi perfil',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal,
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'Roboto'
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/flechader.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 12),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return DetailScreen(plantilla: plantilla[0]);
+                                }));
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25,
+                                            height: 25,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/proximo_viaje.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(' Próximos viajes', 
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal,
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'Roboto'
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/flechader.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                           SizedBox(height: 12),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return DetailScreenHistoryTrip(plantilla: plantilla[1]);
+                                }));
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25,
+                                            height: 25,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/historial_de_viaje.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(' Historial de viajes', 
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal,
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'Roboto'
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/flechader.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 12),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return DetailScreenQr(plantilla: plantilla[2]);
+                                }));
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25,
+                                            height: 25,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/QR.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(' Generar código QR', 
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal,
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'Roboto'
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/flechader.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 12),                                                     
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  return DetailScreenChanges(plantilla: plantilla[3]);
+                                }));
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25,
+                                            height: 25,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/solicitud_de_cambio.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(' Solicitud de cambios', 
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal,
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'Roboto'
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/flechader.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 12),      
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                  
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25,
+                                            height: 25,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/tema.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(' Tema', 
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal,
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'Roboto'
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/flechader.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 12),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                  
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25,
+                                            height: 25,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/idioma.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(' Idiomas', 
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal,
+                                              decoration: TextDecoration.none,
+                                              fontFamily: 'Roboto'
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/flechader.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 12),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                            QuickAlert.show(
+                                              context: context,
+                                              title: "Está seguro que desea salir?",          
+                                              type: QuickAlertType.success,
+                                              confirmBtnText: 'Confirmar',
+                                              cancelBtnText: 'Cancelar',
+                                              showCancelBtn: true,  
+                                              confirmBtnTextStyle: TextStyle(fontSize: 15, color: Colors.white),
+                                              cancelBtnTextStyle:TextStyle(color: Colors.red, fontSize: 15, fontWeight:FontWeight.bold ), 
+                                              onConfirmBtnTap:() {
+                                                fetchDeleteSession();
+                                                prefs.remove();
+                                                prefs.removeData();
+                                                QuickAlert.show(
+                                                  context: context,
+                                                  type: QuickAlertType.success,
+                                                  text: "¡Gracias por usar Smart Driver!",
+                                                );
+                                                new Future.delayed(new Duration(seconds: 2), () {
+                                                  Navigator.of(context).pushAndRemoveUntil(
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext context) => WelcomeScreen()),
+                                                      (Route<dynamic> route) => false);
+                                                });
+                                              },
+                                              onCancelBtnTap: (() {
+                                                Navigator.pop(context);
+                                                /*QuickAlert.show(
+                                                  context: context,
+                                                  type: QuickAlertType.success,
+                                                  text: "Cancelado",
+                                                );*/
+                                              })
+                                            );
+                                },
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 25,
+                                            height: 25,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/cerrar-sesion.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(' Cerrar sesión', 
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal,
+                                              decoration: TextDecoration.none,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/flechader.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -227,6 +666,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
               return widget;
             },
           );
+
             
         },
       ),

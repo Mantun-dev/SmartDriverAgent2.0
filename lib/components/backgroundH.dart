@@ -26,9 +26,6 @@ class BackgroundHome extends StatelessWidget {
                               height: size.height / 2.2,
                               decoration: BoxDecoration(
                                 color: Color.fromRGBO(40, 93, 169, 1),
-                                border: Border.all(
-                                  width: 0.5,
-                                ),
                                 borderRadius: BorderRadius.circular(100.0),
                               ),
                             ),

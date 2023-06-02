@@ -11,6 +11,7 @@ import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/Agents/sharePrefers/services.dart';
 import 'package:flutter_auth/components/already_have_an_account_acheck.dart';
 import 'package:flutter_auth/components/forgot_password.dart';
+import 'package:lottie/lottie.dart';
 import 'package:quickalert/quickalert.dart';
 import '../../../../constants.dart';
 
@@ -164,8 +165,21 @@ class _BodyState extends State<Body> {
             ),
           ),
 
+          Positioned(
+            top: 80,
+            right: 0,
+            left: 0,
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: 180,
+                maxHeight: 180,
+              ),
+              child: Lottie.asset('assets/videos/100966-login-successful.json')
+            ),
+          ),
 
           Positioned.fill(
+            top: 120,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -175,11 +189,10 @@ class _BodyState extends State<Body> {
                   child: Stack(
                     children: [
                       Column(children: [
-                      SizedBox(height: 10),
-                      _crearUsuario(size),
-                      SizedBox(height: 10),
-                      _crearPassword(),
-                      SizedBox(height: 20),
+                        _crearUsuario(size),
+                        SizedBox(height: 10),
+                        _crearPassword(),
+                        SizedBox(height: 20),
                       ]),
                       Positioned(
                         bottom: 0,

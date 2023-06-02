@@ -11,6 +11,7 @@ import 'package:flutter_auth/components/rounded_button.dart';
 import 'package:flutter_auth/components/text_field_container.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 import 'dart:convert' show json;
 import 'package:quickalert/quickalert.dart';
 
@@ -146,36 +147,36 @@ class _BodyState extends State<Body> {
               ),
             ),
   
-            Center(child: Text("Ingresar código",style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1), fontSize: 27),),),
+            Center(child: Text("Ingresar código",style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1), fontSize: 22),),),
           ],
         ),
         
-        SizedBox(height: 60),
+        SizedBox(height: 30),
         Container(
-          constraints: BoxConstraints(
-            maxWidth: 430,
-            maxHeight: 210,
-          ),
-          child: Image.asset('assets/images/verification.png'),
-        ),
-        SizedBox(height: 60),
+              constraints: BoxConstraints(
+                maxWidth: 240,
+                maxHeight: 240,
+              ),
+              child: Lottie.asset('assets/videos/FxfwM1KqES.json')
+            ),
+        SizedBox(height: 40),
 
         Text(
           'Ingresa el código de verificación',
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 21,
           )
         ),
         SizedBox(height: 15),
-        Center(
-          child: Text(
-            'Te enviamos un código de verificación a tu correo electrónico',
-            style: TextStyle(
-              fontWeight: FontWeight.normal,
-              fontSize: 13,
-            )
-          ),
+        Text(
+          'Te enviamos un código de verificación a tu correo electrónico',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: 13,
+          )
         ),
           SizedBox(height: 5),
           Center(
