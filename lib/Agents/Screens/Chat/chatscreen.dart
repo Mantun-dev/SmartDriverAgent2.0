@@ -9,18 +9,16 @@ import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/helpers/base_client.dart';
 import 'package:flutter_auth/helpers/res_apis.dart';
 import 'package:flutter_auth/providers/chat.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+
 import 'package:flutter_svg/svg.dart';
 
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:quickalert/quickalert.dart';
-import 'package:quickalert/widgets/quickalert_dialog.dart';
+
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:provider/provider.dart';
 
-import '../../../components/AppBarPosterior.dart';
-import '../../../components/AppBarSuperior.dart';
 import '../../../components/backgroundB.dart';
 import '../../models/message_chat.dart';
 
@@ -34,9 +32,6 @@ import '../Profile/profile_screen.dart';
 import '../Welcome/welcome_screen.dart';
 import 'listchats.dart';
 import 'socketChat.dart';
-
-import 'package:http/http.dart' as http;
-import 'dart:convert' show json;
 
 class ChatScreen extends StatefulWidget {
   final String nombre;
@@ -58,9 +53,6 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  int? counter;
-  String? tripIdTologin;
-  String? driverId;
   // final _socketResponse = StreamController<dynamic>();
   // Stream<dynamic> get getResponse => _socketResponse.stream;
   IO.Socket? socket;
@@ -374,184 +366,10 @@ class _ChatScreenState extends State<ChatScreen> {
                         : Center(child: CircularProgressIndicator()
                       ),
                     ),
-                    menuInferior(context, 3)
                   ],
                 ),
               ),
     );
-  }
-
-  void getCounterNotification(String? tripId, String? agentId)async{
-    
-    http.Response response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/salas/agenteId/$agentId'));
-    final resp = json.decode(response.body);
-
-    if (resp['salas'].isNotEmpty) {      
-      if (mounted) {
-        setState(() {      
-          counter = resp['salas'].length;
-        });  
-      }
-    }else{
-      counter = 0;
-    }
-  }
-
-  AppBar menuInferior(BuildContext context, item) {
-    return AppBar(
-    backgroundColor: Color.fromRGBO(255, 255, 255, 1),
-    elevation: 10,
-    iconTheme: IconThemeData(size: 25),
-    automaticallyImplyLeading: false, // Ocultar el ícono del Drawer
-    actions: <Widget>[
-      Expanded(
-        child: item==0?IconButton(
-          icon: Icon(
-            Icons.home_outlined,
-            color: Color.fromRGBO(40, 93, 169, 1),
-            size: 35,
-          ),
-          onPressed: null,
-        ):IconButton(
-          icon: Icon(
-            Icons.home_outlined,
-            color: Color.fromRGBO(158, 158, 158, 1),
-            size: 35,
-          ),
-          onPressed: () {
-            desconectar();
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) {
-                  return HomeScreen();
-                })
-              );
-          },
-        ),
-      ),
-
-      Padding(
-        padding: const EdgeInsets.only(top:5, left: 20, right: 20),
-        child: Stack(
-          children: [
-            IconButton(
-              icon: item==2?Icon(
-                FontAwesomeIcons.bell,
-                color: Color.fromRGBO(40, 93, 169, 1),
-              ):Icon(
-                FontAwesomeIcons.bell,
-                color: Color.fromRGBO(158, 158, 158, 1),
-              ),
-              onPressed: item==2?null:() {
-                setState(() {
-                  item=2;
-                });
-              },
-            ),
-            Container(
-              width: 65,
-              height: 35,
-              alignment: Alignment.topRight,
-              margin: EdgeInsets.only(top: 5),
-              child: Container(
-                height: 15,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.transparent,
-                    border: Border.all(color: Color(0xffc32c37), width: 1.5)),
-                child: Padding(
-                  padding: const EdgeInsets.all(0.0),
-                  child: Center(
-                    child: Text(
-                      '0',
-                      style: TextStyle(fontSize: 10, color: Color(0xffc32c37), fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-                ],
-              ),
-      ),
-
-      Padding(
-        padding: const EdgeInsets.only(top:5, left: 20,),
-        child: Stack(
-          children: [
-            IconButton(
-              icon: item==3?Icon(
-                FlutterIcons.message1_ant,
-                color: Color.fromRGBO(40, 93, 169, 1),
-              ):Icon(
-                FlutterIcons.message1_ant,
-                color: Color.fromRGBO(158, 158, 158, 1),
-              ),
-              onPressed: item==3?null:() {
-                desconectar();
-                setState(() {
-                  fetchProfile().then((value) {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return ChatsList(
-                        id: '${value.agentId}',
-                        rol: 'agente',
-                        nombre: '${value.agentFullname}',
-                      );
-                    }));
-                  });
-                });
-              },
-            ),
-            Container(
-              width: 75,
-              height: 35,
-              alignment: Alignment.topRight,
-              margin: EdgeInsets.only(top: 5),
-              child: Container(
-                height: 15,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.transparent,
-                    border: Border.all(color: Color(0xffc32c37), width: 1.5)),
-                child: Padding(
-                  padding: const EdgeInsets.all(0.0),
-                  child: Center(
-                    child: Text(
-                      counter!=null?'$counter':'0',
-                      style: TextStyle(fontSize: 10, color: Color(0xffc32c37), fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-                ],
-              ),
-      ),
-
-      Expanded(
-        child: item==1?IconButton(
-          icon: Icon(
-            FontAwesomeIcons.userCircle,
-            color: Color.fromRGBO(40, 93, 169, 1),
-          ),
-          onPressed: null,
-        ):IconButton(
-          icon: Icon(
-            FontAwesomeIcons.userCircle,
-            color: Color.fromRGBO(158, 158, 158, 1),
-          ),
-          onPressed: () {
-            desconectar();
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) {
-                  return ProfilePage();
-                })
-              );
-          },
-        ),
-      ),
-    ],
-  );
   }
 
   Column body(bool fecha(dynamic fechaBs), String hoy_ayer(dynamic fechaBs), BuildContext context) {
