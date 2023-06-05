@@ -30,19 +30,7 @@ class _AppBarPosterior extends State<AppBarPosterior> {
   @override
   void initState() {
     super.initState();
-
-    fetchTrips().then((value){
-      if (value.trips.isNotEmpty) {         
-        for (var i = 0; i < value.trips.length; i++) {                  
-            tripIdTologin =  value.trips[i].tripId.toString(); 
-            driverId = value.trips[i].driverId.toString();            
-            fetchProfile().then((val){      
-              getCounterNotification(value.trips[i].tripId.toString(), val.agentId.toString());
-   
-            });
-        }
-      }
-    });
+    getData();
   }
 
   @override
@@ -201,19 +189,15 @@ class _AppBarPosterior extends State<AppBarPosterior> {
     );
   }
 
-  void getCounterNotification(String? tripId, String? agentId)async{
-    
-    http.Response response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/salas/agenteId/$agentId'));
-    final resp = json.decode(response.body);
+  void getData() async{
+    http.Response response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/salas/agenteId/${prefs.usuarioId}'));
+    var resp = json.decode(response.body);
 
-    if (resp['salas'].isNotEmpty) {      
-      if (mounted) {
-        setState(() {      
-          counter = resp['salas'].length;
-        });  
-      }
-    }else{
-      counter = 0;
+    print("https://apichat.smtdriver.com/api/salas/agenteId/${prefs.usuarioId}");
+    var listaChats = resp['salas'] as List<dynamic>;
+
+    if(mounted){
+      setState(() {counter= listaChats.length;});
     }
   }
 
