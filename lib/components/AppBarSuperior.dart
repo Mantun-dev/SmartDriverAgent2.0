@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/Screens/Profile/profile_screen.dart';
+import 'package:flutter_auth/components/progress_indicator.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -71,7 +72,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
           ),
         ):Padding(
           padding: const EdgeInsets.all(8.0),
-          child: menu(size),
+          child: menu(size, context),
         ),
 
         if(item==0)
@@ -195,14 +196,14 @@ class _AppBarSuperior extends State<AppBarSuperior> {
           ),
         ):Padding(
           padding: const EdgeInsets.all(8.0),
-          child: menu(size),
+          child: menu(size, context),
         )
         
       ],
     );
   }
 
-  Container menu(size) {
+  Container menu(size, contextP) {
     return Container(
       width: 45,
       decoration: BoxDecoration(
@@ -256,9 +257,10 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: GestureDetector(
                                 onTap: () {
+                                  Navigator.pop(context);
                                   Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) {
+                                    contextP,
+                                    MaterialPageRoute(builder: (contextP) {
                                       return ProfilePage();
                                     })
                                   );
@@ -306,7 +308,8 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  Navigator.pop(context);
+                                  Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
                                   return DetailScreen(plantilla: plantilla[0]);
                                 }));
                                 },
@@ -352,7 +355,8 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  Navigator.pop(context);
+                                  Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
                                   return DetailScreenHistoryTrip(plantilla: plantilla[1]);
                                 }));
                                 },
@@ -398,7 +402,8 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  Navigator.pop(context);
+                                  Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
                                   return DetailScreenQr(plantilla: plantilla[2]);
                                 }));
                                 },
@@ -444,7 +449,9 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  Navigator.pop(context);
+
+                                  Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
                                   return DetailScreenChanges(plantilla: plantilla[3]);
                                 }));
                                 },
@@ -588,22 +595,29 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                               confirmBtnTextStyle: TextStyle(fontSize: 15, color: Colors.white),
                                               cancelBtnTextStyle:TextStyle(color: Colors.red, fontSize: 15, fontWeight:FontWeight.bold ), 
                                               onConfirmBtnTap:() {
+                                                LoadingIndicatorDialog().show(context);
+
                                                 fetchDeleteSession();
                                                 prefs.remove();
                                                 prefs.removeData();
-                                                QuickAlert.show(
-                                                  context: context,
-                                                  type: QuickAlertType.success,
-                                                  text: "¡Gracias por usar Smart Driver!",
-                                                );
+                                                
                                                 new Future.delayed(new Duration(seconds: 2), () {
-                                                  Navigator.of(context).pushAndRemoveUntil(
+                                                  LoadingIndicatorDialog().dismiss();
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                  Navigator.of(contextP).pushAndRemoveUntil(
                                                       MaterialPageRoute(
-                                                          builder: (BuildContext context) => WelcomeScreen()),
+                                                          builder: (BuildContext contextP) => WelcomeScreen()),
                                                       (Route<dynamic> route) => false);
+                                                      QuickAlert.show(
+                                                        context: context,
+                                                        type: QuickAlertType.success,
+                                                        text: "¡Gracias por usar Smart Driver!",
+                                                      );
                                                 });
                                               },
                                               onCancelBtnTap: (() {
+                                                Navigator.pop(context);
                                                 Navigator.pop(context);
                                                 /*QuickAlert.show(
                                                   context: context,

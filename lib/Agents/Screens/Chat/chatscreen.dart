@@ -20,6 +20,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:provider/provider.dart';
 
 import '../../../components/backgroundB.dart';
+import '../../../components/progress_indicator.dart';
 import '../../models/message_chat.dart';
 
 import '../../models/network.dart';
@@ -353,7 +354,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: menu(size),
+                        child: menu(size, context),
                       )
                     ],
                   ),
@@ -607,7 +608,7 @@ class _ChatScreenState extends State<ChatScreen> {
               );
   }
 
-  Container menu(size) {
+  Container menu(size, contextP) {
     return Container(
       width: 45,
       decoration: BoxDecoration(
@@ -661,10 +662,11 @@ class _ChatScreenState extends State<ChatScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: GestureDetector(
                                 onTap: () {
+                                  Navigator.pop(context);
                                   desconectar();
                                   Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) {
+                                    contextP,
+                                    MaterialPageRoute(builder: (contextP) {
                                       return ProfilePage();
                                     })
                                   );
@@ -712,8 +714,9 @@ class _ChatScreenState extends State<ChatScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: GestureDetector(
                                 onTap: () {
+                                  Navigator.pop(context);
                                   desconectar();
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
                                   return DetailScreen(plantilla: plantilla[0]);
                                 }));
                                 },
@@ -759,8 +762,9 @@ class _ChatScreenState extends State<ChatScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: GestureDetector(
                                 onTap: () {
+                                  Navigator.pop(context);
                                   desconectar();
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
                                   return DetailScreenHistoryTrip(plantilla: plantilla[1]);
                                 }));
                                 },
@@ -806,8 +810,9 @@ class _ChatScreenState extends State<ChatScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: GestureDetector(
                                 onTap: () {
+                                  Navigator.pop(context);
                                   desconectar();
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
                                   return DetailScreenQr(plantilla: plantilla[2]);
                                 }));
                                 },
@@ -853,8 +858,9 @@ class _ChatScreenState extends State<ChatScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: GestureDetector(
                                 onTap: () {
+                                  Navigator.pop(context);
                                   desconectar();
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                  Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
                                   return DetailScreenChanges(plantilla: plantilla[3]);
                                 }));
                                 },
@@ -998,23 +1004,31 @@ class _ChatScreenState extends State<ChatScreen> {
                                               confirmBtnTextStyle: TextStyle(fontSize: 15, color: Colors.white),
                                               cancelBtnTextStyle:TextStyle(color: Colors.red, fontSize: 15, fontWeight:FontWeight.bold ), 
                                               onConfirmBtnTap:() {
+                                                LoadingIndicatorDialog().show(context);
+                                                
                                                 desconectar();
                                                 fetchDeleteSession();
                                                 prefs.remove();
                                                 prefs.removeData();
-                                                QuickAlert.show(
+                                                
+                                                new Future.delayed(new Duration(seconds: 2), () {
+                                                  LoadingIndicatorDialog().dismiss();
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                  Navigator.of(contextP).pushAndRemoveUntil(
+                                                      MaterialPageRoute(
+                                                          builder: (BuildContext contextP) => WelcomeScreen()),
+                                                      (Route<dynamic> route) => false);
+                                                  QuickAlert.show(
                                                   context: context,
                                                   type: QuickAlertType.success,
                                                   text: "¡Gracias por usar Smart Driver!",
                                                 );
-                                                new Future.delayed(new Duration(seconds: 2), () {
-                                                  Navigator.of(context).pushAndRemoveUntil(
-                                                      MaterialPageRoute(
-                                                          builder: (BuildContext context) => WelcomeScreen()),
-                                                      (Route<dynamic> route) => false);
                                                 });
+
                                               },
                                               onCancelBtnTap: (() {
+                                                Navigator.pop(context);
                                                 Navigator.pop(context);
                                                 /*QuickAlert.show(
                                                   context: context,
