@@ -63,9 +63,6 @@ Future<TripsList> fetchTrips() async {
 
   if (response.statusCode == 200) {
     final trip = TripsList.fromJson(json.decode(response.body));
-    for (var i = 0; i < trip.trips.length; i++) {
-      //print(trip.trips[i].btnCancelTrip);
-    }
     return trip;
   } else {
     throw Exception('Failed to load Data');

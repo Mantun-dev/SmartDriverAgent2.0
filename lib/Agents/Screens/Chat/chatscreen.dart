@@ -307,21 +307,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       //aquí está el icono de las notificaciones
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: 45,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 0.5,
-                            ),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
+                        child: GestureDetector(
+                          onTap: () {
                               desconectar();
                               fetchProfile().then((value) {
                                 Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -333,6 +320,22 @@ class _ChatScreenState extends State<ChatScreen> {
                                 }));
                               });
                             },
+                          child: Container(
+                            width: 45,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 0.5,
+                              ),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: SvgPicture.asset(
+                                "assets/icons/flecha_atras_oscuro.svg",
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                         ),
                       ),

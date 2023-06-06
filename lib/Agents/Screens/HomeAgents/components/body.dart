@@ -44,6 +44,7 @@ class _BodyState extends State<Body> {
   String ip2 = "https://admin.smtdriver.com";
   String? msgtoShow;
   int? display;
+  Future<List<dynamic>>? historial;
 
   PackageInfo _packageInfo = PackageInfo(
     appName: 'Unknown',
@@ -79,6 +80,24 @@ class _BodyState extends State<Body> {
     getMessage();
 
     item = fetchRefres();
+    historial = getLast5();
+  }
+
+  Future<List<dynamic>> getLast5() async {
+    Map data = {
+        "agentUser": prefs.nombreUsuario,
+        "getTopFive": 1.toString() 
+    };
+    http.Response response =
+        await http.post(Uri.parse('$ip/api/history'), body: data);
+
+    if (response.statusCode == 200) {
+      final trip = json.decode(response.body);
+
+      return trip;
+    } else {
+      throw Exception('Failed to load Data');
+    }
   }
 
   Future<void> _initPackageInfo() async {
@@ -360,190 +379,200 @@ class _BodyState extends State<Body> {
             },
           ),
 
-            SizedBox(height: 50),
+            FutureBuilder(
+              future: historial,
+              builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+                if (snapshot.hasData) {
+                  List<dynamic> plantilla2 = snapshot.data!;
+                    return Column(
+                      children: [
+                        if(snapshot.data!.length>0)
+                          SizedBox(height: 50),
 
-            FutureBuilder<DataAgent>(
-              future: item,
-              builder: (BuildContext context, abc) {
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 25.0, left: 25, bottom:10),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'Últimos viajes',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold
-                              )
-                            ),
-                          ),
-
-                          GestureDetector(
-                            onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                return DetailScreenHistoryTrip(plantilla: plantilla[1]);
-                                }
-                              ));
-                            },
-                            child: Text(
-                              'Ver historial',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold
-                              )
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: List.generate(plantilla.length, (index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Container(
-                              width: 240,
-                              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Color.fromRGBO(238, 238, 238, 1),
-                                  width: 2
+                        if(snapshot.data!.length>0)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 25.0, left: 25, bottom: 10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'Últimos viajes',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20)),
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 5),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 15,
-                                          height: 15,
-                                          child: SvgPicture.asset(
-                                            "assets/icons/Numeral.svg",
-                                            color: Color.fromRGBO(40, 93, 169, 1),
-                                          ),
-                                        ),
-                                        Text(
-                                          ' Viaje: ',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 1,
-                                    color: Color.fromRGBO(158, 158, 158, 1),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 18,
-                                          height: 18,
-                                          child: SvgPicture.asset(
-                                            "assets/icons/calendar-note-svgrepo-com.svg",
-                                            color: Color.fromRGBO(40, 93, 169, 1),
-                                          ),
-                                        ),
-                                        Text(
-                                          ' Fecha: ',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 1,
-                                    color: Color.fromRGBO(158, 158, 158, 1),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 18,
-                                          height: 18,
-                                          child: SvgPicture.asset(
-                                            "assets/icons/warning-circle-svgrepo-com.svg",
-                                            color: Color.fromRGBO(40, 93, 169, 1),
-                                          ),
-                                        ),
-                                        Text(
-                                          ' Tipo: ',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 1,
-                                    color: Color.fromRGBO(158, 158, 158, 1),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 15,
-                                          height: 15,
-                                          child: SvgPicture.asset(
-                                            "assets/icons/hora.svg",
-                                            color: Color.fromRGBO(40, 93, 169, 1),
-                                          ),
-                                        ),
-                                        Text(
-                                          ' Abordó: ',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 1,
-                                    color: Color.fromRGBO(158, 158, 158, 1),
-                                  ),
-                                  SizedBox(height: 5),
-                                ],
                               ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                    return DetailScreenHistoryTrip(plantilla: plantilla[1]);
+                                  }));
+                                },
+                                child: Text(
+                                  'Ver historial',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
 
-                            ),
-                          );
-                        }),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: List.generate(plantilla2.length, (index) {
+                            var trip = plantilla2[index];
+                            return Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Container(
+                                width: 240,
+                                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Color.fromRGBO(238, 238, 238, 1),
+                                    width: 2,
+                                  ),
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 5),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 15,
+                                            height: 15,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/Numeral.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(
+                                            ' Viaje: ${trip["tripId"]}',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 1,
+                                      color: Color.fromRGBO(158, 158, 158, 1),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 18,
+                                            height: 18,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/calendar-note-svgrepo-com.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(
+                                            ' Fecha: ${trip["tripDate"]}',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 1,
+                                      color: Color.fromRGBO(158, 158, 158, 1),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 18,
+                                            height: 18,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/warning-circle-svgrepo-com.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(
+                                            ' Tipo: ${trip["tripType"]}',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 1,
+                                      color: Color.fromRGBO(158, 158, 158, 1),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 15,
+                                            height: 15,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/hora.svg",
+                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                            ),
+                                          ),
+                                          Text(
+                                            ' Abordó: ${trip["traveled"]}',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 1,
+                                      color: Color.fromRGBO(158, 158, 158, 1),
+                                    ),
+                                    SizedBox(height: 5),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
                       ),
-                    ),
-                  ],
-                );
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('');
+                } else {
+                  return CircularProgressIndicator();
+                }
               },
             ),
+
       
           ],
         ),

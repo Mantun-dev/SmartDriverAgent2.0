@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
@@ -43,55 +44,71 @@ class _AppBarPosterior extends State<AppBarPosterior> {
       automaticallyImplyLeading: false, // Ocultar el ícono del Drawer
       actions: <Widget>[
         Expanded(
-          child: item==0?IconButton(
-            icon: Icon(
-              Icons.home_outlined,
-              color: Color.fromRGBO(40, 93, 169, 1),
-              size: 35,
-            ),
-            onPressed: null,
-          ):IconButton(
-            icon: Icon(
-              Icons.home_outlined,
-              color: Color.fromRGBO(158, 158, 158, 1),
-              size: 35,
-            ),
-            onPressed: () {
-              Navigator.push(
+          child: item==0?Container(
+              width: 60,
+              height: 60,
+              child: SvgPicture.asset(
+                "assets/icons/inicio.svg",
+                color: Color.fromRGBO(40, 93, 169, 1),
+              ),
+            ):GestureDetector(
+              onTap: () {
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {
                     return HomeScreen();
                   })
                 );
-            },
-          ),
-        ),
-
-        Padding(
-          padding: const EdgeInsets.only(top:5, left: 20, right: 20),
-          child: Stack(
-            children: [
-              IconButton(
-                icon: item==2?Icon(
-                  FontAwesomeIcons.bell,
-                  color: Color.fromRGBO(40, 93, 169, 1),
-                ):Icon(
-                  FontAwesomeIcons.bell,
+              },
+              child: Container(
+                width: 60,
+                height: 60,
+                child: SvgPicture.asset(
+                  "assets/icons/inicio.svg",
                   color: Color.fromRGBO(158, 158, 158, 1),
                 ),
-                onPressed: item==2?null: () {
-                  setState(() {
-                    item=2;
-                  });
-                },
               ),
-              Container(
+            ),
+        ),
+
+        Stack(
+          children: [
+            item==2?Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Container(
+              width: 65,
+              height: 65,
+              child: SvgPicture.asset(
+                "assets/icons/notificacion.svg",
+                color: Color.fromRGBO(40, 93, 169, 1),
+              ),
+                        ),
+            ):GestureDetector(
+            onTap: item==2?null:() {
+              setState(() {
+                  item=2;
+                });
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Container(
                 width: 65,
-                height: 35,
-                alignment: Alignment.topRight,
-                margin: EdgeInsets.only(top: 5),
+                height: 65,
+                child: SvgPicture.asset(
+                  "assets/icons/notificacion.svg",
+                  color: Color.fromRGBO(158, 158, 158, 1),
+                ),
+              ),
+            ),
+          ),
+            Positioned(
+              top: 10,
+              right: 26,
+              child: Container(
+                width: 15,
+                height: 20,
                 child: Container(
-                  height: 15,
+                  
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.transparent,
@@ -107,43 +124,50 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                   ),
                 ),
               ),
-                  ],
-                ),
-        ),
-
-        Padding(
-          padding: const EdgeInsets.only(top:5, left: 20,),
-          child: Stack(
-            children: [
-              IconButton(
-                icon: item==3?Icon(
-                  FlutterIcons.message1_ant,
-                  color: Color.fromRGBO(40, 93, 169, 1),
-                ):Icon(
-                  FlutterIcons.message1_ant,
-                  color: Color.fromRGBO(158, 158, 158, 1),
-                ),
-                onPressed: item==3?null:() {
-                  setState(() {
-                    fetchProfile().then((value) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return ChatsList(
-                          id: '${value.agentId}',
-                          rol: 'agente',
-                          nombre: '${value.agentFullname}',
-                        );
-                      }));
-                    });
-                  });
-                },
+            ),
+                ],
               ),
-              Container(
-                width: 75,
-                height: 35,
-                alignment: Alignment.topRight,
-                margin: EdgeInsets.only(top: 5),
+
+        Stack(
+          children: [
+            item==3?Container(
+            width:70,
+            height: 70,
+            child: SvgPicture.asset(
+              "assets/icons/chats.svg",
+              color: Color.fromRGBO(40, 93, 169, 1),
+            ),
+          ):GestureDetector(
+            onTap: item==3?null:() {
+                setState(() {
+                  fetchProfile().then((value) {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return ChatsList(
+                        id: '${value.agentId}',
+                        rol: 'agente',
+                        nombre: '${value.agentFullname}',
+                      );
+                    }));
+                  });
+                });
+              },
+            child: Container(
+              width: 70,
+              height: 70,
+              child: SvgPicture.asset(
+                "assets/icons/chats.svg",
+                color: Color.fromRGBO(158, 158, 158, 1),
+              ),
+            ),
+          ),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: Container(
+                width: 15,
+                height: 20,
                 child: Container(
-                  height: 15,
+                  
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.transparent,
@@ -152,38 +176,43 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                     padding: const EdgeInsets.all(0.0),
                     child: Center(
                       child: Text(
-                        counter!=null?'$counter':'0',
-                        style: TextStyle(fontSize: 10, color: Color(0xffc32c37), fontWeight: FontWeight.bold),
-                      ),
+                      counter!=null?'$counter':'0',
+                      style: TextStyle(fontSize: 10, color: Color(0xffc32c37), fontWeight: FontWeight.bold),
+                    ),
                     ),
                   ),
                 ),
               ),
-                  ],
-                ),
-        ),
+            ),
+                ],
+              ),
 
         Expanded(
-          child: item==1?IconButton(
-            icon: Icon(
-              FontAwesomeIcons.userCircle,
-              color: Color.fromRGBO(40, 93, 169, 1),
-            ),
-            onPressed: null,
-          ):IconButton(
-            icon: Icon(
-              FontAwesomeIcons.userCircle,
-              color: Color.fromRGBO(158, 158, 158, 1),
-            ),
-            onPressed: () {
-              Navigator.push(
+          child: item==1?Container(
+              width: 60,
+              height: 60,
+              child: SvgPicture.asset(
+                "assets/icons/usuario2.svg",
+                color: Color.fromRGBO(40, 93, 169, 1),
+              ),
+            ):GestureDetector(
+              onTap: () {
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {
                     return ProfilePage();
                   })
                 );
-            },
-          ),
+              },
+              child: Container(
+                width: 60,
+                height: 60,
+                child: SvgPicture.asset(
+                  "assets/icons/usuario2.svg",
+                  color: Color.fromRGBO(158, 158, 158, 1),
+                ),
+              ),
+            ),
         ),
       ],
     );
@@ -193,7 +222,7 @@ class _AppBarPosterior extends State<AppBarPosterior> {
     http.Response response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/salas/agenteId/${prefs.usuarioId}'));
     var resp = json.decode(response.body);
 
-    print("https://apichat.smtdriver.com/api/salas/agenteId/${prefs.usuarioId}");
+    print(response.body);
     var listaChats = resp['salas'] as List<dynamic>;
 
     if(mounted){

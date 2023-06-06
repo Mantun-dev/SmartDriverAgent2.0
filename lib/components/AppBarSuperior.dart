@@ -46,28 +46,31 @@ class _AppBarSuperior extends State<AppBarSuperior> {
 
         item!=0?Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Container(
-            width: 45,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.white,
-                width: 0.5,
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return HomeScreen();
+                  })
+                );
+            },
+            child: Container(
+              width: 45,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.white,
+                  width: 0.5,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
               ),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SvgPicture.asset(
+                  "assets/icons/flecha_atras_oscuro.svg",
+                  color: Colors.white,
+                ),
               ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) {
-                      return HomeScreen();
-                    })
-                  );
-              },
             ),
           ),
         ):Padding(
@@ -171,29 +174,51 @@ class _AppBarSuperior extends State<AppBarSuperior> {
             ),
           ),
 
-        item==0?Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            width: 45,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.white,
-                width: 0.5,
+        item==0?Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: 40,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 0.5,
+                  ),
+                borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return ProfilePage();
+                      })
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: SvgPicture.asset(
+                      "assets/icons/usuario.svg",
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ),
-            borderRadius: BorderRadius.circular(10.0),
             ),
-            child: IconButton(
-              icon: Icon(Icons.person_outline),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return ProfilePage();
-                  })
-                );
-              },
-            ),
-          ),
+            Positioned(
+                top: 5,
+                right: 5,
+                child: Container(
+                  width: 10,
+                  height: 10,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color.fromRGBO(0, 255, 85, 1),
+                          border: Border.all(color: Colors.black, width: 0.5),
+                    )),
+              ),
+          ],
         ):Padding(
           padding: const EdgeInsets.all(8.0),
           child: menu(size, context),
