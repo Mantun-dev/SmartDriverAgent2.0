@@ -454,8 +454,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                   child: Row(
                                     children: [
                                       Container(
-                                        width: 15,
-                                        height: 15,
+                                        width: 18,
+                                        height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/Numeral.svg",
                                           color: Color.fromRGBO(40, 93, 169, 1),
@@ -494,7 +494,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         width: 18,
                                         height: 18,
                                         child: SvgPicture.asset(
-                                          "assets/icons/calendar-note-svgrepo-com.svg",
+                                          "assets/icons/calendar2.svg",
                                           color: Color.fromRGBO(40, 93, 169, 1),
                                         ),
                                       ),
@@ -528,8 +528,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                   child: Row(
                                     children: [
                                       Container(
-                                        width: 15,
-                                        height: 15,
+                                        width: 18,
+                                        height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/hora.svg",
                                           color: Color.fromRGBO(40, 93, 169, 1),
@@ -604,8 +604,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                   child: Row(
                                     children: [
                                       Container(
-                                        width: 15,
-                                        height: 15,
+                                        width: 18,
+                                        height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/telefono_num.svg",
                                           color: Color.fromRGBO(40, 93, 169, 1),
@@ -642,8 +642,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                   child: Row(
                                     children: [
                                       Container(
-                                        width: 15,
-                                        height: 15,
+                                        width: 18,
+                                        height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/Casa.svg",
                                           color: Color.fromRGBO(40, 93, 169, 1),
@@ -680,8 +680,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                     child: Row(
                                       children: [
                                         Container(
-                                          width: 15,
-                                          height: 15,
+                                          width: 18,
+                                          height: 18,
                                           child: SvgPicture.asset(
                                             "assets/icons/warning.svg",
                                             color: Color.fromRGBO(40, 93, 169, 1),
@@ -726,8 +726,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         Row(
                                           children: [
                                             Container(
-                                              width: 15,
-                                              height: 15,
+                                              width: 18,
+                                              height: 18,
                                               child: SvgPicture.asset(
                                                 "assets/icons/hora.svg",
                                                 color: Color.fromRGBO(40, 93, 169, 1),
@@ -964,8 +964,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                     child: Row(
                                       children: [
                                         Container(
-                                          width: 15,
-                                          height: 15,
+                                          width: 18,
+                                          height: 18,
                                           child: SvgPicture.asset(
                                             "assets/icons/hora.svg",
                                             color: Color.fromRGBO(40, 93, 169, 1),
@@ -1005,8 +1005,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         Row(
                                           children: [
                                             Container(
-                                              width: 15,
-                                              height: 15,
+                                              width: 18,
+                                              height: 18,
                                               child: SvgPicture.asset(
                                                 "assets/icons/hora.svg",
                                                 color: Color.fromRGBO(40, 93, 169, 1),
@@ -1052,8 +1052,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                     child: Row(
                                       children: [
                                         Container(
-                                          width: 15,
-                                          height: 15,
+                                          width: 18,
+                                          height: 18,
                                           child: SvgPicture.asset(
                                             "assets/icons/hora.svg",
                                             color: Color.fromRGBO(40, 93, 169, 1),
@@ -1235,8 +1235,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         Row(
                                           children: [
                                             Container(
-                                          width: 15,
-                                          height: 15,
+                                          width: 18,
+                                          height: 18,
                                           child: SvgPicture.asset(
                                             "assets/icons/cronometro.svg",
                                             color: Color.fromRGBO(40, 93, 169, 1),
@@ -1275,60 +1275,107 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 );
                               }):
                                 ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
-                              itemCount: abc.data?.trips.length,
-                              itemBuilder: (context, index) {
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  physics: ClampingScrollPhysics(),
+                                  itemCount: abc.data?.trips.length,
+                                  itemBuilder: (context, index) {
                                 return Padding(
-                                  padding: const EdgeInsets.only(top: 5),
-                                  child: ExpansionTile(
-                                    tilePadding: const EdgeInsets.only(right: 5, left: 10),
-                                    title: Column(
-                                      children: [
-                                        Row(
+                                  padding: const EdgeInsets.only(top:10),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8.0), // Establece un radio de esquinas redondeadas de 8.0
+                                      border: Border.all(color: Color.fromRGBO(196, 196, 196, 1)), // Establece el color del borde
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 2, left: 2),
+                                      child: ExpansionTile(
+                                        tilePadding: const EdgeInsets.only(right: 5, left: 10),
+                                        title: Column(
                                           children: [
-                                            Container(
-                                              width: 15,
-                                              height: 15,
-                                              child: SvgPicture.asset(
-                                                "assets/icons/Numeral.svg",
-                                                color: Color.fromRGBO(40, 93, 169, 1),
-                                              ),
+                                            SizedBox(height: 8),
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  width: 18,
+                                                  height: 18,
+                                                  child: SvgPicture.asset(
+                                                    "assets/icons/Numeral.svg",
+                                                    color: Color.fromRGBO(40, 93, 169, 1),
+                                                  ),
+                                                ),
+                                                SizedBox(width: 5),
+                                                Text(
+                                                  'Viaje: ',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '${abc.data?.trips[index].tripId}',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.normal,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            SizedBox(width: 5),
-                                            Text(
-                                              'Viaje: ',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            Text(
-                                              '${abc.data?.trips[index].tripId}',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.normal,
-                                              ),
+                                            SizedBox(height: 20),
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  width: 18,
+                                                  height: 18,
+                                                  child: SvgPicture.asset(
+                                                    "assets/icons/calendar2.svg",
+                                                    color: Color.fromRGBO(40, 93, 169, 1),
+                                                  ),
+                                                ),
+                                                SizedBox(width: 5),
+                                                Text(
+                                                  'Fecha: ',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '${abc.data?.trips[index].fecha}',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.normal,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
-                                        SizedBox(height: 5),
-                                        Row(
+                                        children: [
+                                      Container(
+                                        height: 1,
+                                        color: Color.fromRGBO(196, 196, 196, 1),
+                                      ),    
+                                      SizedBox(height: 20),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                        child: Row(
                                           children: [
                                             Container(
                                               width: 18,
                                               height: 18,
                                               child: SvgPicture.asset(
-                                                "assets/icons/calendar-note-svgrepo-com.svg",
+                                                "assets/icons/hora.svg",
                                                 color: Color.fromRGBO(40, 93, 169, 1),
                                               ),
                                             ),
                                             SizedBox(width: 5),
                                             Text(
-                                              'Fecha: ',
+                                              'Hora: ',
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 color: Colors.black,
@@ -1336,504 +1383,515 @@ class _NextTripScreenState extends State<NextTripScreen>
                                               ),
                                             ),
                                             Text(
-                                              '${abc.data?.trips[index].fecha}',
+                                              '${abc.data?.trips[index].horaEntrada}',
                                               style: TextStyle(
+                                                fontSize: 14,
                                                 color: Colors.black,
-                                                fontSize: 15,
                                                 fontWeight: FontWeight.normal,
                                               ),
                                             ),
                                           ],
                                         ),
-                                      ],
-                                    ),
-                                    children: [
-                                      
-                                  SizedBox(height: 20),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 15,
-                                          height: 15,
-                                          child: SvgPicture.asset(
-                                            "assets/icons/hora.svg",
-                                            color: Color.fromRGBO(40, 93, 169, 1),
-                                          ),
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          'Hora: ',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        Text(
-                                          '${abc.data?.trips[index].horaEntrada}',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 1,
-                                    color: Color.fromRGBO(196, 196, 196, 1),
-                                  ),
-                                    
-                                   SizedBox(height: 20),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 15,
-                                          height: 15,
-                                          child: SvgPicture.asset(
-                                            "assets/icons/motorista.svg",
-                                            color: Color.fromRGBO(40, 93, 169, 1),
-                                          ),
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          'Motorista: ',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        Text(
-                                          '${abc.data?.trips[index].conductor}',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 1,
-                                    color: Color.fromRGBO(196, 196, 196, 1),
-                                  ),
-                                    
-                                   SizedBox(height: 20),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 15,
-                                          height: 15,
-                                          child: SvgPicture.asset(
-                                            "assets/icons/telefono_num.svg",
-                                            color: Color.fromRGBO(40, 93, 169, 1),
-                                          ),
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          'Teléfono: ',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        Text(
-                                          '${abc.data?.trips[index].telefono}',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 1,
-                                    color: Color.fromRGBO(196, 196, 196, 1),
-                                  ),
-                                    
-                                   SizedBox(height: 20),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 15,
-                                          height: 15,
-                                          child: SvgPicture.asset(
-                                            "assets/icons/Casa.svg",
-                                            color: Color.fromRGBO(40, 93, 169, 1),
-                                          ),
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          'Dirección: ',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        Text(
-                                          '${abc.data?.trips[index].direccion}',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 1,
-                                    color: Color.fromRGBO(196, 196, 196, 1),
-                                  ),
-                                    
-                                   SizedBox(height: 20),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 15,
-                                            height: 15,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/warning.svg",
-                                              color: Color.fromRGBO(40, 93, 169, 1),
-                                            ),
-                                          ),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            'Acceso autorizado: ',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                          Flexible(
-                                            child: Text(
-                                              '${abc.data?.trips[index].neighborhoodReferencePoint}',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
                                       ),
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      color: Color.fromRGBO(158, 158, 158, 1),
-                                    ),
-                                      
-                                    SizedBox(height: 20),
-                                
-                                  //validación de mostrar si la condición está empty mostrar texto de necesita confirmación
-                                  if ('${abc.data?.trips[index].condition}' ==
-                                      'empty') ...{
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                width: 15,
-                                                height: 15,
-                                                child: SvgPicture.asset(
-                                                  "assets/icons/hora.svg",
-                                                  color: Color.fromRGBO(40, 93, 169, 1),
-                                                ),
-                                              ),
-                                              SizedBox(width: 5),
-                                              Text(
-                                                'Hora de encuentro: ',
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left:16),
-                                            child: Text(
-                                              'Necesita confirmación para poder asignarle una hora de encuentro',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                      Container(
+                                        height: 1,
+                                        color: Color.fromRGBO(196, 196, 196, 1),
                                       ),
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      color: Color.fromRGBO(158, 158, 158, 1),
-                                    ),
-                                      
-                                    SizedBox(height: 20),
-                                    Row(
-                                      children: [   
-                                        Expanded(
-                                          child: OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                              side: BorderSide(color: Colors.black),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(12.0),
-                                              ),
-                                              backgroundColor: Colors.transparent,
-                                            ),
-                                            onPressed: () {
-                                               showGeneralDialog(
-                                                      barrierColor: Colors.black.withOpacity(0.5),
-                                                      transitionBuilder: (context, a1, a2, widget) {
-                                                        return Transform.scale(
-                                                          scale: a1.value,
-                                                          child: Opacity(
-                                                            opacity: a1.value,
-                                                            child: AlertDialog(
-                                                              backgroundColor: Colors.transparent,
-                                                              shape: RoundedRectangleBorder(
-                                                                borderRadius: BorderRadius.circular(16.0),
-                                                              ),
-                                                              content: Container(
-                                                                decoration: BoxDecoration(
-                                                                  color: Colors.white,
-                                                                  borderRadius: BorderRadius.circular(16.0),
-                                                                ),
-                                                                child: Column(
-                                                                  mainAxisSize: MainAxisSize.min,
-                                                                  children: [
-                                                                    Container(
-                                                                      decoration: BoxDecoration(
-                                                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                                                        borderRadius: BorderRadius.only(
-                                                                          topLeft: Radius.circular(16.0),
-                                                                          topRight: Radius.circular(16.0),
-                                                                        ),
-                                                                      ),
-                                                                      child: Padding(
-                                                                        padding: const EdgeInsets.all(20.0),
-                                                                        child: Text(
-                                                                          'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
-                                                                          textAlign: TextAlign.center,
-                                                                          style: TextStyle(
-                                                                            color: Colors.white,
-                                                                            fontWeight: FontWeight.normal,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: const EdgeInsets.all(20.0),
-                                                                      child: TextField(
-                                                                        controller: message,
-                                                                        maxLines: null, // Permite que el texto se ajuste automáticamente a varias líneas
-                                                                        textAlignVertical: TextAlignVertical.top, // Alinea el texto al principio del TextField
-                                                                        decoration: InputDecoration(
-                                                                          labelText: 'Escriba aquí',
-                                                                          labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
-                                                                          border: OutlineInputBorder( // Establece un borde al TextField
-                                                                            borderRadius: BorderRadius.circular(12.0),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    SizedBox(height: 16),
-                                                                    Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                      children: [
-                                                                        OutlinedButton(
-                                                                          style: OutlinedButton.styleFrom(
-                                                                            padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                            foregroundColor: Colors.white,
-                                                                            side: BorderSide(color: Colors.black),
-                                                                            shape: RoundedRectangleBorder(
-                                                                              borderRadius: BorderRadius.circular(12.0),
-                                                                            ),
-                                                                          ),
-                                                                          onPressed: () {
-                                                                            Navigator.pop(context);
-                                                                          },
-                                                                          child: Text(
-                                                                            'Cancelar',
-                                                                            style: TextStyle(color: Colors.black),
-                                                                          ),
-                                                                        ),
-                                
-                                                                        OutlinedButton(
-                                                                          style: OutlinedButton.styleFrom(
-                                                                            padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                            backgroundColor: Color.fromRGBO(40, 93, 169, 1),
-                                                                            shape: RoundedRectangleBorder(
-                                                                              borderRadius: BorderRadius.circular(12.0),
-                                                                            ),
-                                                                          ),
-                                                                          onPressed: () {
-                                                                            ChatApis().confirmOrCancel('RECHAZADO');
-                                                                            fetchCancel(
-                                                                              prefs.nombreUsuario,
-                                                                              '${abc.data?.trips[index].tripId}',
-                                                                              conditionC,
-                                                                              message.text,
-                                                                            );
-                                                                            Navigator.pop(context);
-                                                                          },
-                                                                          child: Text(
-                                                                            'Enviar',
-                                                                            style: TextStyle(color: Colors.white),
-                                                                          ),
-                                                                        ),
-                                                                        
-                                                                      ],
-                                                                    ),
-                                                                    SizedBox(height: 12)
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                
-                                                          ),
-                                                        );
-                                                      },
-                                                      transitionDuration: Duration(milliseconds: 200),
-                                                      barrierDismissible: true,
-                                                      barrierLabel: '',
-                                                      context: context,
-                                                      pageBuilder: (context, animation1, animation2) {
-                                                        return widget;
-                                                      },
-                                                    );
-                                            },
-                                            child: Text(
-                                              'Cancelar',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                
-                                        ),
-                                        SizedBox(width: 10),
-                                        Expanded(
-                                          child: OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(12.0),
-                                              ),
-                                              backgroundColor: Color.fromRGBO(40, 93, 169, 1),
-                                            ),
-                                            onPressed: () => {
-                                              ChatApis().confirmOrCancel('CONFIRMADO'),
-                                              fetchConfirm(
-                                                prefs.nombreUsuario,
-                                                '${abc.data?.trips[index].tripId}',
-                                                condition,comment
-                                              ),
-                                            },
-                                            child: Text(
-                                              'Confirmar',
-                                               style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(height: 20),
-                                    //validación de condition in canceled
-                                  },
-                                  if ('${abc.data?.trips[index].condition}' ==
-                                      'Canceled') ...{
-                                    if ('${abc.data?.trips[index].commentDriver}' ==
-                                        'No confirmó') ...{
-                                      ListTile(
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                        title: Text('Viaje cancelado: ',
-                                            style: TextStyle(color: Colors.white)),
-                                        subtitle: Text('No confirmó a tiempo',
-                                            style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 15.0)),
-                                        leading: Icon(Icons.timer,
-                                            color: GradiantV1, size: 35),
-                                      ),
-                                    } else ...{
+                                        
+                                       SizedBox(height: 20),
                                       Padding(
-                                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 15,
-                                            height: 15,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/hora.svg",
-                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 18,
+                                              height: 18,
+                                              child: SvgPicture.asset(
+                                                "assets/icons/motorista.svg",
+                                                color: Color.fromRGBO(40, 93, 169, 1),
+                                              ),
                                             ),
-                                          ),
-                                          SizedBox(width: 5),
-                                          Flexible(
-                                            child: Text(
-                                              'Se ha notificado al motorista que usted no necesitará el transporte',
+                                            SizedBox(width: 5),
+                                            Text(
+                                              'Motorista: ',
                                               style: TextStyle(
                                                 fontSize: 14,
-                                                color: Colors.red,
+                                                color: Colors.black,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                            Text(
+                                              '${abc.data?.trips[index].conductor}',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      color: Color.fromRGBO(158, 158, 158, 1),
-                                    ),
-                                      
-                                    SizedBox(height: 20),
-                                    },
-                                    //validación de horaConductor in empty
-                                  },
-                                  if ('${abc.data?.trips[index].horaConductor}' ==
-                                      'empty') ...{
-                                    if ('${abc.data?.trips[index].condition}' ==
-                                        'Confirmed') ...{
+                                      Container(
+                                        height: 1,
+                                        color: Color.fromRGBO(196, 196, 196, 1),
+                                      ),
+                                        
+                                       SizedBox(height: 20),
                                       Padding(
-                                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                      child: Column(
-                                        children: [
-                                          Row(
+                                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 18,
+                                              height: 18,
+                                              child: SvgPicture.asset(
+                                                "assets/icons/telefono_num.svg",
+                                                color: Color.fromRGBO(40, 93, 169, 1),
+                                              ),
+                                            ),
+                                            SizedBox(width: 5),
+                                            Text(
+                                              'Teléfono: ',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            Text(
+                                              '${abc.data?.trips[index].telefono}',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 1,
+                                        color: Color.fromRGBO(196, 196, 196, 1),
+                                      ),
+                                        
+                                       SizedBox(height: 20),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 18,
+                                              height: 18,
+                                              child: SvgPicture.asset(
+                                                "assets/icons/Casa.svg",
+                                                color: Color.fromRGBO(40, 93, 169, 1),
+                                              ),
+                                            ),
+                                            SizedBox(width: 5),
+                                            Text(
+                                              'Dirección: ',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            Text(
+                                              '${abc.data?.trips[index].direccion}',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 1,
+                                        color: Color.fromRGBO(196, 196, 196, 1),
+                                      ),
+                                        
+                                       SizedBox(height: 20),
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                          child: Row(
                                             children: [
                                               Container(
-                                                width: 15,
-                                                height: 15,
+                                                width: 18,
+                                                height: 18,
+                                                child: SvgPicture.asset(
+                                                  "assets/icons/warning.svg",
+                                                  color: Color.fromRGBO(40, 93, 169, 1),
+                                                ),
+                                              ),
+                                              SizedBox(width: 5),
+                                              Text(
+                                                'Acceso autorizado: ',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              Flexible(
+                                                child: Text(
+                                                  '${abc.data?.trips[index].neighborhoodReferencePoint}',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.normal,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 1,
+                                          color: Color.fromRGBO(158, 158, 158, 1),
+                                        ),
+                                          
+                                        SizedBox(height: 20),
+                                      
+                                      //validación de mostrar si la condición está empty mostrar texto de necesita confirmación
+                                      if ('${abc.data?.trips[index].condition}' ==
+                                          'empty') ...{
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    width: 18,
+                                                    height: 18,
+                                                    child: SvgPicture.asset(
+                                                      "assets/icons/hora.svg",
+                                                      color: Color.fromRGBO(40, 93, 169, 1),
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 5),
+                                                  Text(
+                                                    'Hora de encuentro: ',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left:16),
+                                                child: Text(
+                                                  'Necesita confirmación para poder asignarle una hora de encuentro',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.normal,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 1,
+                                          color: Color.fromRGBO(158, 158, 158, 1),
+                                        ),
+                                          
+                                        SizedBox(height: 20),
+                                        Row(
+                                          children: [   
+                                            Expanded(
+                                              child: OutlinedButton(
+                                                style: OutlinedButton.styleFrom(
+                                                  side: BorderSide(color: Colors.black),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(12.0),
+                                                  ),
+                                                  backgroundColor: Colors.transparent,
+                                                ),
+                                                onPressed: () {
+                                                   showGeneralDialog(
+                                                          barrierColor: Colors.black.withOpacity(0.5),
+                                                          transitionBuilder: (context, a1, a2, widget) {
+                                                            return Transform.scale(
+                                                              scale: a1.value,
+                                                              child: Opacity(
+                                                                opacity: a1.value,
+                                                                child: AlertDialog(
+                                                                  backgroundColor: Colors.transparent,
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(16.0),
+                                                                  ),
+                                                                  content: Container(
+                                                                    decoration: BoxDecoration(
+                                                                      color: Colors.white,
+                                                                      borderRadius: BorderRadius.circular(16.0),
+                                                                    ),
+                                                                    child: Column(
+                                                                      mainAxisSize: MainAxisSize.min,
+                                                                      children: [
+                                                                        Container(
+                                                                          decoration: BoxDecoration(
+                                                                            color: Color.fromRGBO(40, 93, 169, 1),
+                                                                            borderRadius: BorderRadius.only(
+                                                                              topLeft: Radius.circular(16.0),
+                                                                              topRight: Radius.circular(16.0),
+                                                                            ),
+                                                                          ),
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.all(20.0),
+                                                                            child: Text(
+                                                                              'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
+                                                                              textAlign: TextAlign.center,
+                                                                              style: TextStyle(
+                                                                                color: Colors.white,
+                                                                                fontWeight: FontWeight.normal,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        Padding(
+                                                                          padding: const EdgeInsets.all(20.0),
+                                                                          child: TextField(
+                                                                            controller: message,
+                                                                            maxLines: null, // Permite que el texto se ajuste automáticamente a varias líneas
+                                                                            textAlignVertical: TextAlignVertical.top, // Alinea el texto al principio del TextField
+                                                                            decoration: InputDecoration(
+                                                                              labelText: 'Escriba aquí',
+                                                                              labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
+                                                                              border: OutlineInputBorder( // Establece un borde al TextField
+                                                                                borderRadius: BorderRadius.circular(12.0),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        SizedBox(height: 16),
+                                                                        Row(
+                                                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                          children: [
+                                                                            OutlinedButton(
+                                                                              style: OutlinedButton.styleFrom(
+                                                                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                                foregroundColor: Colors.white,
+                                                                                side: BorderSide(color: Colors.black),
+                                                                                shape: RoundedRectangleBorder(
+                                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                                                ),
+                                                                              ),
+                                                                              onPressed: () {
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              child: Text(
+                                                                                'Cancelar',
+                                                                                style: TextStyle(color: Colors.black),
+                                                                              ),
+                                                                            ),
+                                      
+                                                                            OutlinedButton(
+                                                                              style: OutlinedButton.styleFrom(
+                                                                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                                backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                                                shape: RoundedRectangleBorder(
+                                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                                                ),
+                                                                              ),
+                                                                              onPressed: () {
+                                                                                ChatApis().confirmOrCancel('RECHAZADO');
+                                                                                fetchCancel(
+                                                                                  prefs.nombreUsuario,
+                                                                                  '${abc.data?.trips[index].tripId}',
+                                                                                  conditionC,
+                                                                                  message.text,
+                                                                                );
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              child: Text(
+                                                                                'Enviar',
+                                                                                style: TextStyle(color: Colors.white),
+                                                                              ),
+                                                                            ),
+                                                                            
+                                                                          ],
+                                                                        ),
+                                                                        SizedBox(height: 12)
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                      
+                                                              ),
+                                                            );
+                                                          },
+                                                          transitionDuration: Duration(milliseconds: 200),
+                                                          barrierDismissible: true,
+                                                          barrierLabel: '',
+                                                          context: context,
+                                                          pageBuilder: (context, animation1, animation2) {
+                                                            return widget;
+                                                          },
+                                                        );
+                                                },
+                                                child: Text(
+                                                  'Cancelar',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.normal,
+                                                  ),
+                                                ),
+                                              ),
+                                      
+                                            ),
+                                            SizedBox(width: 10),
+                                            Expanded(
+                                              child: OutlinedButton(
+                                                style: OutlinedButton.styleFrom(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(12.0),
+                                                  ),
+                                                  backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                ),
+                                                onPressed: () => {
+                                                  ChatApis().confirmOrCancel('CONFIRMADO'),
+                                                  fetchConfirm(
+                                                    prefs.nombreUsuario,
+                                                    '${abc.data?.trips[index].tripId}',
+                                                    condition,comment
+                                                  ),
+                                                },
+                                                child: Text(
+                                                  'Confirmar',
+                                                   style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.normal,
+                                                  ),
+                                                ),
+                                              ),
+                                      
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 20),
+                                        //validación de condition in canceled
+                                      },
+                                      if ('${abc.data?.trips[index].condition}' ==
+                                          'Canceled') ...{
+                                        if ('${abc.data?.trips[index].commentDriver}' ==
+                                            'No confirmó') ...{
+                                          ListTile(
+                                            contentPadding:
+                                                EdgeInsets.fromLTRB(5, 5, 10, 0),
+                                            title: Text('Viaje cancelado: ',
+                                                style: TextStyle(color: Colors.white)),
+                                            subtitle: Text('No confirmó a tiempo',
+                                                style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.normal,
+                                                    fontSize: 15.0)),
+                                            leading: Icon(Icons.timer,
+                                                color: GradiantV1, size: 35),
+                                          ),
+                                        } else ...{
+                                          Padding(
+                                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: 18,
+                                                height: 18,
+                                                child: SvgPicture.asset(
+                                                  "assets/icons/hora.svg",
+                                                  color: Color.fromRGBO(40, 93, 169, 1),
+                                                ),
+                                              ),
+                                              SizedBox(width: 5),
+                                              Flexible(
+                                                child: Text(
+                                                  'Se ha notificado al motorista que usted no necesitará el transporte',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 1,
+                                          color: Color.fromRGBO(158, 158, 158, 1),
+                                        ),
+                                          
+                                        SizedBox(height: 20),
+                                        },
+                                        //validación de horaConductor in empty
+                                      },
+                                      if ('${abc.data?.trips[index].horaConductor}' ==
+                                          'empty') ...{
+                                        if ('${abc.data?.trips[index].condition}' ==
+                                            'Confirmed') ...{
+                                          Padding(
+                                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    width: 18,
+                                                    height: 18,
+                                                    child: SvgPicture.asset(
+                                                      "assets/icons/hora.svg",
+                                                      color: Color.fromRGBO(40, 93, 169, 1),
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 5),
+                                                  Text(
+                                                    'Hora de encuentro: ',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left:16),
+                                                child: Text(
+                                                  'Viaje confirmado, espere a que el motorista asigne la hora a la que pasará por usted',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.green,
+                                                    fontWeight: FontWeight.normal,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 1,
+                                          color: Color.fromRGBO(196, 196, 196, 1),
+                                        ),
+                                          
+                                        SizedBox(height: 20),
+                                        },
+                                      },
+                                      if ('${abc.data?.trips[index].horaConductor}' !=
+                                          'empty') ...{
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: 18,
+                                                height: 18,
                                                 child: SvgPicture.asset(
                                                   "assets/icons/hora.svg",
                                                   color: Color.fromRGBO(40, 93, 169, 1),
@@ -1848,257 +1906,214 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               ),
+                                              Text(
+                                               '${abc.data?.trips[index].horaConductor}',
+                                                style: TextStyle(
+                                                 fontSize: 14,
+                                                  color: Color.fromRGBO(40, 169, 83, 1),
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
                                             ],
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left:16),
-                                            child: Text(
-                                              'Viaje confirmado, espere a que el motorista asigne la hora a la que pasará por usted',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.green,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      color: Color.fromRGBO(158, 158, 158, 1),
-                                    ),
-                                      
-                                    SizedBox(height: 20),
-                                    },
-                                  },
-                                  if ('${abc.data?.trips[index].horaConductor}' !=
-                                      'empty') ...{
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 15,
-                                            height: 15,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/hora.svg",
-                                              color: Color.fromRGBO(40, 93, 169, 1),
-                                            ),
-                                          ),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            'Hora de encuentro: ',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                          Text(
-                                           '${abc.data?.trips[index].horaConductor}',
-                                            style: TextStyle(
-                                             fontSize: 14,
-                                              color: Color.fromRGBO(40, 169, 83, 1),
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      color: Color.fromRGBO(158, 158, 158, 1),
-                                    ),
-                                      
-                                    SizedBox(height: 20),
-                                  },
-                                  if ('${abc.data?.trips[index].condition}' ==
-                                      'Confirmed') ...{
-                                    if (abc.data?.trips[index].companyId == 1 ||
-                                        abc.data?.trips[index].companyId == 7 ||
-                                        abc.data?.trips[index].companyId == 3 ||
-                                        abc.data?.trips[index].companyId == 5 ||
-                                        abc.data?.trips[index].companyId == 9 ||
-                                        abc.data?.trips[index].companyId == 11 ||
-                                        abc.data?.trips[index].companyId == 12) ...{
-                                      if (abc.data?.trips[index].btnCancelTrip ==
-                                          true) ...{
-                                        TextButton(
-                                          style: TextButton.styleFrom(
-                                              foregroundColor: Colors.white,
-                                              backgroundColor: Colors.red),
-                                          child: Text('Cancelar viaje'),
-                                          onPressed: () => {
-                                            showGeneralDialog(
-                                                barrierColor:
-                                                    Colors.black.withOpacity(0.5),
-                                                transitionBuilder:
-                                                    (context, a1, a2, widget) {
-                                                  return Transform.scale(
-                                                    scale: a1.value,
-                                                    child: Opacity(
-                                                      opacity: a1.value,
-                                                      child: AlertDialog(
-                                                              backgroundColor: Colors.transparent,
-                                                              shape: RoundedRectangleBorder(
-                                                                borderRadius: BorderRadius.circular(16.0),
-                                                              ),
-                                                              content: Container(
-                                                                decoration: BoxDecoration(
-                                                                  color: Colors.white,
-                                                                  borderRadius: BorderRadius.circular(16.0),
-                                                                ),
-                                                                child: Column(
-                                                                  mainAxisSize: MainAxisSize.min,
-                                                                  children: [
-                                                                    Container(
-                                                                      decoration: BoxDecoration(
-                                                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                                                        borderRadius: BorderRadius.only(
-                                                                          topLeft: Radius.circular(16.0),
-                                                                          topRight: Radius.circular(16.0),
-                                                                        ),
-                                                                      ),
-                                                                      child: Padding(
-                                                                        padding: const EdgeInsets.all(20.0),
-                                                                        child: Text(
-                                                                          'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
-                                                                          textAlign: TextAlign.center,
-                                                                          style: TextStyle(
-                                                                            color: Colors.white,
-                                                                            fontWeight: FontWeight.normal,
-                                                                          ),
-                                                                        ),
-                                                                      ),
+                                        ),
+                                        Container(
+                                          height: 1,
+                                          color: Color.fromRGBO(158, 158, 158, 1),
+                                        ),
+                                          
+                                        SizedBox(height: 20),
+                                      },
+                                      if ('${abc.data?.trips[index].condition}' ==
+                                          'Confirmed') ...{
+                                        if (abc.data?.trips[index].companyId == 1 ||
+                                            abc.data?.trips[index].companyId == 7 ||
+                                            abc.data?.trips[index].companyId == 3 ||
+                                            abc.data?.trips[index].companyId == 5 ||
+                                            abc.data?.trips[index].companyId == 9 ||
+                                            abc.data?.trips[index].companyId == 11 ||
+                                            abc.data?.trips[index].companyId == 12) ...{
+                                          if (abc.data?.trips[index].btnCancelTrip ==
+                                              true) ...{
+                                            TextButton(
+                                              style: TextButton.styleFrom(
+                                                  foregroundColor: Colors.white,
+                                                  backgroundColor: Colors.red),
+                                              child: Text('Cancelar viaje'),
+                                              onPressed: () => {
+                                                showGeneralDialog(
+                                                    barrierColor:
+                                                        Colors.black.withOpacity(0.5),
+                                                    transitionBuilder:
+                                                        (context, a1, a2, widget) {
+                                                      return Transform.scale(
+                                                        scale: a1.value,
+                                                        child: Opacity(
+                                                          opacity: a1.value,
+                                                          child: AlertDialog(
+                                                                  backgroundColor: Colors.transparent,
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(16.0),
+                                                                  ),
+                                                                  content: Container(
+                                                                    decoration: BoxDecoration(
+                                                                      color: Colors.white,
+                                                                      borderRadius: BorderRadius.circular(16.0),
                                                                     ),
-                                                                    Padding(
-                                                                      padding: const EdgeInsets.all(20.0),
-                                                                      child: TextField(
-                                                                        controller: message,
-                                                                        maxLines: null, // Permite que el texto se ajuste automáticamente a varias líneas
-                                                                        textAlignVertical: TextAlignVertical.top, // Alinea el texto al principio del TextField
-                                                                        decoration: InputDecoration(
-                                                                          labelText: 'Escriba aquí',
-                                                                          labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
-                                                                          border: OutlineInputBorder( // Establece un borde al TextField
-                                                                            borderRadius: BorderRadius.circular(12.0),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    SizedBox(height: 16),
-                                                                    Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                    child: Column(
+                                                                      mainAxisSize: MainAxisSize.min,
                                                                       children: [
-                                                                        OutlinedButton(
-                                                                          style: OutlinedButton.styleFrom(
-                                                                            padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                            foregroundColor: Colors.white,
-                                                                            side: BorderSide(color: Colors.black),
-                                                                            shape: RoundedRectangleBorder(
-                                                                              borderRadius: BorderRadius.circular(12.0),
+                                                                        Container(
+                                                                          decoration: BoxDecoration(
+                                                                            color: Color.fromRGBO(40, 93, 169, 1),
+                                                                            borderRadius: BorderRadius.only(
+                                                                              topLeft: Radius.circular(16.0),
+                                                                              topRight: Radius.circular(16.0),
                                                                             ),
                                                                           ),
-                                                                          onPressed: () {
-                                                                            Navigator.pop(context);
-                                                                          },
-                                                                          child: Text(
-                                                                            'Cancelar',
-                                                                            style: TextStyle(color: Colors.black),
-                                                                          ),
-                                                                        ),
-                                
-                                                                        OutlinedButton(
-                                                                          style: OutlinedButton.styleFrom(
-                                                                            padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                            backgroundColor: Color.fromRGBO(40, 93, 169, 1),
-                                                                            shape: RoundedRectangleBorder(
-                                                                              borderRadius: BorderRadius.circular(12.0),
+                                                                          child: Padding(
+                                                                            padding: const EdgeInsets.all(20.0),
+                                                                            child: Text(
+                                                                              'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
+                                                                              textAlign: TextAlign.center,
+                                                                              style: TextStyle(
+                                                                                color: Colors.white,
+                                                                                fontWeight: FontWeight.normal,
+                                                                              ),
                                                                             ),
                                                                           ),
-                                                                          onPressed: () {
-                                                                            ChatApis().confirmOrCancel('RECHAZADO');
-                                                                            fetchCancel(
-                                                                              prefs.nombreUsuario,
-                                                                              '${abc.data?.trips[index].tripId}',
-                                                                              conditionC,
-                                                                              message.text,
-                                                                            );
-                                                                            Navigator.pop(context);
-                                                                          },
-                                                                          child: Text(
-                                                                            'Enviar',
-                                                                            style: TextStyle(color: Colors.white),
+                                                                        ),
+                                                                        Padding(
+                                                                          padding: const EdgeInsets.all(20.0),
+                                                                          child: TextField(
+                                                                            controller: message,
+                                                                            maxLines: null, // Permite que el texto se ajuste automáticamente a varias líneas
+                                                                            textAlignVertical: TextAlignVertical.top, // Alinea el texto al principio del TextField
+                                                                            decoration: InputDecoration(
+                                                                              labelText: 'Escriba aquí',
+                                                                              labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
+                                                                              border: OutlineInputBorder( // Establece un borde al TextField
+                                                                                borderRadius: BorderRadius.circular(12.0),
+                                                                              ),
+                                                                            ),
                                                                           ),
                                                                         ),
-                                                                        
+                                                                        SizedBox(height: 16),
+                                                                        Row(
+                                                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                          children: [
+                                                                            OutlinedButton(
+                                                                              style: OutlinedButton.styleFrom(
+                                                                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                                foregroundColor: Colors.white,
+                                                                                side: BorderSide(color: Colors.black),
+                                                                                shape: RoundedRectangleBorder(
+                                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                                                ),
+                                                                              ),
+                                                                              onPressed: () {
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              child: Text(
+                                                                                'Cancelar',
+                                                                                style: TextStyle(color: Colors.black),
+                                                                              ),
+                                                                            ),
+                                      
+                                                                            OutlinedButton(
+                                                                              style: OutlinedButton.styleFrom(
+                                                                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                                backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                                                shape: RoundedRectangleBorder(
+                                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                                                ),
+                                                                              ),
+                                                                              onPressed: () {
+                                                                                ChatApis().confirmOrCancel('RECHAZADO');
+                                                                                fetchCancel(
+                                                                                  prefs.nombreUsuario,
+                                                                                  '${abc.data?.trips[index].tripId}',
+                                                                                  conditionC,
+                                                                                  message.text,
+                                                                                );
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              child: Text(
+                                                                                'Enviar',
+                                                                                style: TextStyle(color: Colors.white),
+                                                                              ),
+                                                                            ),
+                                                                            
+                                                                          ],
+                                                                        ),
+                                                                        SizedBox(height: 12)
                                                                       ],
                                                                     ),
-                                                                    SizedBox(height: 12)
-                                                                  ],
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ),
-                                                    ),
-                                                  );
-                                                },
-                                                transitionDuration:
-                                                    Duration(milliseconds: 200),
-                                                barrierDismissible: true,
-                                                barrierLabel: '',
-                                                context: context,
-                                                pageBuilder: (context, animation1,
-                                                    animation2) {
-                                                  return widget;
-                                                }),
-                                          },
-                                        ),
-                                      } else ...{
-                                        Padding(
-                                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                      child: Column(
-                                        children: [
-                                          Row(
+                                                        ),
+                                                      );
+                                                    },
+                                                    transitionDuration:
+                                                        Duration(milliseconds: 200),
+                                                    barrierDismissible: true,
+                                                    barrierLabel: '',
+                                                    context: context,
+                                                    pageBuilder: (context, animation1,
+                                                        animation2) {
+                                                      return widget;
+                                                    }),
+                                              },
+                                            ),
+                                          } else ...{
+                                            Padding(
+                                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                          child: Column(
                                             children: [
-                                              Container(
-                                            width: 15,
-                                            height: 15,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/cronometro.svg",
-                                              color: Color.fromRGBO(40, 93, 169, 1),
-                                            ),
-                                          ),
-                                          SizedBox(width: 5),
-                                          Text(
-                                            'Viaje: ',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                width: 18,
+                                                height: 18,
+                                                child: SvgPicture.asset(
+                                                  "assets/icons/cronometro.svg",
+                                                  color: Color.fromRGBO(40, 93, 169, 1),
+                                                ),
+                                              ),
+                                              SizedBox(width: 5),
+                                              Text(
+                                                'Viaje: ',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                                ],
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left:16),
+                                                child: Text(
+                                                  'Su tiempo para cancelar el viaje ha expirado',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.normal,
+                                                  ),
+                                                ),
+                                              ),
                                             ],
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left:16),
-                                            child: Text(
-                                              'Su tiempo para cancelar el viaje ha expirado',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
+                                        ),
+                                          }
+                                        }
+                                      } else
+                                        ...{},
+                                        
+                                        SizedBox(height: 8),
                                         ],
                                       ),
                                     ),
-                                      }
-                                    }
-                                  } else
-                                    ...{},
-                                    ],
                                   ),
                                 );
                               }),

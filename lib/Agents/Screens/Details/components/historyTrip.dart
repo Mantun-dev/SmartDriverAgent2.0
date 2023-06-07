@@ -4,6 +4,7 @@ import 'package:flutter_auth/Agents/Screens/Details/components/loader.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/models/historyTrips.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../constants.dart';
 import 'package:intl/intl.dart';
@@ -57,46 +58,41 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
         if (abc.connectionState == ConnectionState.done) {
           //validación arreglo vacio
           if (abc.data!.length == 0) {
-            return Container(
-                  decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                        blurStyle: BlurStyle.normal,
-                        color: Colors.white.withOpacity(0.2),
-                        blurRadius: 30,
-                        spreadRadius: -13,
-                        offset: Offset(-15, -6)),
-                    BoxShadow(
-                        blurStyle: BlurStyle.normal,
-                        color: Colors.black.withOpacity(0.6),
-                        blurRadius: 18,
-                        spreadRadius: -15,
-                        offset: Offset(18, 5)),
-                  ], borderRadius: BorderRadius.circular(15)),
-                  child: Card(
-                    elevation: 10,
-                    color: backgroundColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: EdgeInsets.symmetric(vertical: 15),
+            return Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Container(
+                    width: 240,
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color.fromRGBO(238, 238, 238, 1),
+                        width: 2
+                      ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)),
                     child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        ListTile(
-                          leading: Icon(
-                            Icons.bus_alert,
-                            size: 50,
-                            color: Colors.white,
+                      children: [
+                        SizedBox(height: 5),
+                         Text('Agentes',
+                          style: TextStyle(
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                              fontWeight: FontWeight.normal,
+                              fontSize: 20.0)),
+                        SizedBox(height: 10),
+                        Center(
+                          child: Text(
+                            'No hay viajes realizados',
+                        
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                          title: Text('Agentes',
-                              style: TextStyle(
-                                  color: thirdColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.0)),
-                          subtitle: Text('No hay viajes realizados',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 15.0)),
+                        ),
+                        Container(
+                          height: 1,
+                          color: Color.fromRGBO(158, 158, 158, 1),
                         ),
                       ],
                     ),
@@ -104,162 +100,414 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                 );
           } else {
             //retorno de ListView builder
-            return ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                //tamaño del arreglo por parte del future builder
-                itemCount: abc.data!.length,
-                itemBuilder: (context, index) {
-                  //retorno de card con datos ingresados
-                  return Container(
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(
-                          blurStyle: BlurStyle.normal,
-                          color: Colors.white.withOpacity(0.2),
-                          blurRadius: 30,
-                          spreadRadius: -8,
-                          offset: Offset(-15, -6)),
-                      BoxShadow(
-                          blurStyle: BlurStyle.normal,
-                          color: Colors.black.withOpacity(0.6),
-                          blurRadius: 30,
-                          spreadRadius: -15,
-                          offset: Offset(18, 5)),
-                    ], borderRadius: BorderRadius.circular(15)),
-                    child: Card(
-                      color: backgroundColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      margin: EdgeInsets.all(1.0),
-                      elevation: 2,
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
+            return Padding(
+              padding: const EdgeInsets.all(20.0),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Color.fromRGBO(238, 238, 238, 1),
+                                      width: 2
+                                    ),
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20)),
+                child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    //tamaño del arreglo por parte del future builder
+                    itemCount: abc.data!.length,
+                    itemBuilder: (context, index) {
+                      //retorno de card con datos ingresados
+                      return Padding(
+                        padding: const EdgeInsets.only(top:10),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0), // Establece un radio de esquinas redondeadas de 8.0
+                            border: Border.all(color: Color.fromRGBO(196, 196, 196, 1)), // Establece el color del borde
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 2, left: 2),
                             child: ExpansionTile(
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  ListTile(
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                    title: Text(
-                                      'Fecha: ',
-                                      style: TextStyle(
-                                          color: secondColor,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    subtitle: Text(
-                                      '${abc.data![index].fecha}',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 15),
-                                    ),
-                                    leading: Icon(
-                                      Icons.calendar_today,
-                                      color: Colors.white,
-                                      size: 50,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              trailing: SizedBox(),
+                              tilePadding: const EdgeInsets.only(right: 5, left: 10),
+                                        title: Column(
+                                          children: [
+                                            SizedBox(height: 8),
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  width: 15,
+                                                  height: 15,
+                                                  child: SvgPicture.asset(
+                                                    "assets/icons/Numeral.svg",
+                                                    color: Color.fromRGBO(40, 93, 169, 1),
+                                                  ),
+                                                ),
+                                                SizedBox(width: 5),
+                                                Text(
+                                                  'Viaje: ',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '${abc.data![index].tripId}',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.normal,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 20),
+                                            Row(
+                                              children: [
+                                                Container(
+                                                  width: 18,
+                                                  height: 18,
+                                                  child: SvgPicture.asset(
+                                                    "assets/icons/calendar2.svg",
+                                                    color: Color.fromRGBO(40, 93, 169, 1),
+                                                  ),
+                                                ),
+                                                SizedBox(width: 5),
+                                                Text(
+                                                  'Fecha: ',
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '${abc.data![index].fecha}',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.normal,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                               children: [
                                 Container(
-                                  margin: EdgeInsets.only(left: 15),
-                                  child: Column(
+                                  height: 1,
+                                  color: Color.fromRGBO(196, 196, 196, 1),
+                                ),    
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
                                     children: [
-                                      if (abc.data![index].hora == null) ...{
-                                        ListTile(
-                                          contentPadding:
-                                              EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                          title: Text('Hora de encuentro: ',
-                                      style: TextStyle(
-                                          color: secondColor,                                          
-                                          fontWeight: FontWeight.bold)),
-                                          subtitle: Text(''),
-                                          leading: Icon(Icons.timer,
-                                              color: kColorAppBar),
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/warning-circle-svgrepo-com.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
                                         ),
-                                      } else ...{
-                                        ListTile(
-                                          contentPadding:
-                                              EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                          title: Text('Hora de encuentro: ',
-                                      style: TextStyle(
-                                          color: Colors.white)),
-                                          subtitle:
-                                              Text('${abc.data![index].hora}',style: TextStyle(
-                                          color: Colors.white)),
-                                          leading: Icon(Icons.timer,
-                                               color: GradiantV1, size: 35),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Estado: ',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
                                         ),
-                                      },
-                                      ListTile(
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                        title: Text('Motorista: ',style: TextStyle(
-                                          color: Colors.white)),
-                                        subtitle: Text(
-                                            '${abc.data![index].conductor}',style: TextStyle(
-                                          color: Colors.white)),
-                                        leading: Icon(Icons.card_travel,
-                                            color: GradiantV1, size: 35),
                                       ),
-                                      ListTile(
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                        title: Text('Teléfono: ',style: TextStyle(
-                                          color: Colors.white)),
-                                        subtitle: TextButton(
-                                            onPressed: () => launchUrl(Uri.parse(
-                                                'tel://${abc.data![index].telefono}')),
-                                            child: Container(
-                                                margin:
-                                                    EdgeInsets.only(right: 100),
-                                                child: Text(
-                                                    '${abc.data![index].telefono}',
-                                                    style: TextStyle(
-                                                        color: Colors.blue[500],
-                                                        fontSize: 14)))),
-                                        leading: Icon(Icons.phone,
-                                            color: GradiantV1, size: 35),
-                                      ),
-                                      ListTile(
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                        title: Text('Dirección: ',style: TextStyle(
-                                          color: Colors.white)),
-                                        subtitle: Text(
-                                            '${abc.data![index].direccion}',style: TextStyle(
-                                          color: Colors.white)),
-                                        leading: Icon(Icons.directions,
-                                           color: GradiantV1, size: 35),
-                                      ),
-                                      ListTile(
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                        title: Text('Estado: ',style: TextStyle(
-                                          color: Colors.white)),
-                                        subtitle:
-                                            Text('${abc.data![index].estado}',style: TextStyle(
-                                          color: Colors.white)),
-                                        leading: Icon(Icons.verified_user,                                            
-                                           color: GradiantV1, size: 35),
+                                      Text(
+                                        '${abc.data![index].estado}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.normal,
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: 20.0),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(196, 196, 196, 1),
+                                ),
+                                        
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/hora.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Hora de entrada: ',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${abc.data![index].horaEntrada}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(196, 196, 196, 1),
+                                ),
+                                        
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/hora.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Hora de salida : ',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Text(
+                                        '???',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(196, 196, 196, 1),
+                                ),
+                                        
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/motorista.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Motorista : ',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${abc.data![index].conductor}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(196, 196, 196, 1),
+                                ),
+                                        
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/telefono_num.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Teléfono: ',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${abc.data![index].telefono}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(196, 196, 196, 1),
+                                ),
+                                        
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/Casa.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Dirección: ',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${abc.data![index].direccion}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(196, 196, 196, 1),
+                                ),
+                                        
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/warning.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Acceso autorizado: ',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Text(
+                                        '???',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(196, 196, 196, 1),
+                                ),
+                                        
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/hora.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Hora de encuentro: ',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      Text(
+                                        '${abc.data![index].hora}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                          
+                                SizedBox(height: 8),
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  );
-                });
+                        ),
+                      );
+                    }),
+              ),
+            );
           }
         } else {
           return ColorLoader3();
