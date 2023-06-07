@@ -24,14 +24,7 @@ class _DescriptionState extends State<Description> {
   bool radioShowAndHide = true;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        children: [
-          _processCards(context),
-        ],
-      ),
-    );
+    return _processCards(context);
   }
 
   Widget _processCards(BuildContext context) {
@@ -50,16 +43,12 @@ class _DescriptionState extends State<Description> {
             },
           },
           _mostrarPrimerventana(),
-          SizedBox(height: 50),
         ] else if (widget.plantilla.id == 2) ...[
           _mostrarSegundaVentana(),
-          SizedBox(height: 50.0),
         ] else if (widget.plantilla.id == 3) ...[
           _mostrarCuartaVentana(),
-          SizedBox(height: 100.0),
         ] else if (widget.plantilla.id == 4) ...[
           _mostrarTerceraVentana(),
-          SizedBox(height: 20.0),
         ]
       ],
     );
