@@ -22,8 +22,10 @@ import 'dart:convert' show json;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../main.dart';
+import '../../Chat/listchats.dart';
 import '../../Details/details_screen_changes.dart';
 import '../../Details/details_screen_qr.dart';
+import '../../Profile/profile_screen.dart';
 
 class Body extends StatefulWidget {
   //declaración de la clase data agen y su variable item
@@ -45,6 +47,41 @@ class _BodyState extends State<Body> {
   String? msgtoShow;
   int? display;
   Future<List<dynamic>>? historial;
+  bool isMenuOpen = false;
+  TextEditingController buscarText = TextEditingController();
+  FocusNode _focusNode = FocusNode();
+  List<dynamic> ventanas = [
+  {
+    'nombre': 'Próximos viajes',
+    'icono': 'assets/icons/proximo_viaje.svg',
+  },
+  {
+    'nombre': 'Historial de viajes',
+    'icono': 'assets/icons/historial_de_viaje.svg',
+  },
+  {
+    'nombre': 'Generar código QR',
+    'icono': 'assets/icons/QR.svg',
+  },
+  {
+    'nombre': 'Solicitud de cambios',
+    'icono': 'assets/icons/solicitud_de_cambio.svg',
+  },
+  {
+    'nombre': 'Notificaciones',
+    'icono': 'assets/icons/notificacion.svg',
+  },
+  {
+    'nombre': 'Chats',
+    'icono': 'assets/icons/chats.svg',
+  },
+  {
+    'nombre': 'Perfil',
+    'icono': 'assets/icons/usuario2.svg',
+  },
+];
+
+  List<dynamic>? ventanas2;
 
   PackageInfo _packageInfo = PackageInfo(
     appName: 'Unknown',
@@ -58,6 +95,8 @@ class _BodyState extends State<Body> {
   void initState() {
     super.initState();
     _value = 0;
+    _focusNode.addListener(_onFocusChange);
+    ventanas2=ventanas;
     //realización callback para mostrar cuentas en agentes
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -81,6 +120,128 @@ class _BodyState extends State<Body> {
 
     item = fetchRefres();
     historial = getLast5();
+  }
+
+  void _onFocusChange() {
+    if (_focusNode.hasFocus) {
+      // TextField está en foco
+      isMenuOpen=true;
+    } else {
+      // TextField ya no está en foco
+      isMenuOpen=false;
+    }
+    setState(() { });
+  }
+
+  Container menu(size, contextP) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(30.0),
+          bottomRight: Radius.circular(30.0),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: ventanas2!.asMap().entries.map((entry) {
+              int index = entry.key;
+              dynamic ventana = entry.value;
+              String nombre = ventana['nombre'];
+              String icono = ventana['icono'];
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      rutas(index);
+                    },
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 25,
+                              height: 25,
+                              child: SvgPicture.asset(
+                                icono,
+                                color: Color.fromRGBO(40, 93, 169, 1),
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              nombre,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.normal,
+                                decoration: TextDecoration.none,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 12)
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void rutas(int i){
+    switch (i) {
+      case 0:
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return DetailScreen(plantilla: plantilla[0]);
+          }
+        ));
+        break;
+      case 1:
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return DetailScreen(plantilla: plantilla[1]);
+          }
+        ));
+        break;
+      case 2:
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return DetailScreen(plantilla: plantilla[2]);
+          }
+        ));
+        break;
+      case 3:
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return DetailScreen(plantilla: plantilla[3]);
+          }
+        ));
+        break;
+      case 4:
+        
+        break;
+      case 5:
+        fetchProfile().then((value) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+             return ChatsList(id: '${value.agentId}',rol: 'agente',nombre: '${value.agentFullname}',);
+          }));
+        });
+        break;
+      case 6:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return ProfilePage();
+          })
+        );
+        break;
+    }
   }
 
   Future<List<dynamic>> getLast5() async {
@@ -233,348 +394,385 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     RateMyApp();
-    return Container(
-      height: size.height,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 25.0),
-              child: Text(
-                'Hola, ${prefs.nombreUsuarioFull}',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4!
-                    .copyWith(fontWeight: FontWeight.normal, color: Color.fromRGBO(255, 255, 255, 1), fontSize: 20),
-              ),
-            ),
-      
-            SizedBox(height: 25),      
-      
-            Padding(
-              padding: const EdgeInsets.only(right: 12, left: 12),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search, color: Colors.grey),
-                    hintText: 'Buscar',
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-            ),
-      
-            SizedBox(height: 15),            
-            if (display == 1)... {                        
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _focusNode.unfocus();
+        });
+      },
+      child: Container(
+        height: size.height,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: backgroundColor2,
-                    borderRadius: BorderRadius.circular(15)
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text('🔺$msgtoShow',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
-                  ),
+                padding: EdgeInsets.only(top: 25.0),
+                child: Text(
+                  'Hola, ${prefs.nombreUsuarioFull}',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4!
+                      .copyWith(fontWeight: FontWeight.normal, color: Color.fromRGBO(255, 255, 255, 1), fontSize: 20),
                 ),
-              )
-            },                                          
-            // Padding(
-            //   padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
-            //   child: Container(
-            //     decoration: BoxDecoration(
-            //       color: backgroundColor2,
-            //       borderRadius: BorderRadius.circular(15)
-            //     ),
-            //     child: Padding(
-            //       padding: const EdgeInsets.all(10.0),
-            //       child: Text('Tiene viaje(s) donde confirmó y no salió a tomar el transporte. Si esto ocurre por 3ra vez, el sistema le dará de baja y no será agendado para el servicio de transporte. Deberá justificar el caso enviando un ticket solicitando el uso de transporte.',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
-            //     ),
-            //   ),
-            // ),
-            
-            //future builder para hacer la validación que aparezcan 3 o las 4 cards
-            // las que necesarias a mostrar
-            FutureBuilder<DataAgent>(
-            future: item,
-            builder: (BuildContext context, abc) {
-              if (abc.connectionState == ConnectionState.done) {
-                //validación
-                if (abc.data!.companyId != 7) {
-                  return GridView.count(
-                    crossAxisCount: 2,
-                    shrinkWrap: true,
-                    //todas las cards
-                    children: List.generate(plantilla.length, (index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 8.0, left: 8, bottom: 8),
-                        child: ItemCard(
-                          plantilla: plantilla[index],
-                          press: () {
-                            setState(() {
-                              if (plantilla[index] == plantilla[0]) {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return DetailScreen(plantilla: plantilla[index]);
-                                }));
-                              } else if (plantilla[index] == plantilla[1]) {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return DetailScreenHistoryTrip(plantilla: plantilla[index]);
-                                }));
-                              } else if (plantilla[index] == plantilla[2]) {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return DetailScreenQr(plantilla: plantilla[index]);
-                                }));
-                              } else if (plantilla[index] == plantilla[3]) {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return DetailScreenChanges(plantilla: plantilla[index]);
-                                }));
-                              }
-                            });
-                          },
+              ),
+        
+              SizedBox(height: 25),      
+        
+              Padding(
+                padding: const EdgeInsets.only(right: 12, left: 12),
+                child: Stack(
+                  children: [
+                    if(isMenuOpen==true && ventanas2!.length>0)
+                      Padding(
+                        padding: const EdgeInsets.only(top:40.0),
+                        child: menu(size, context),
+                      ),
+    
+                    Material(
+                      color: Colors.transparent,
+                      elevation: 2,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                      );
-                    }),
-                  );
-                } else {
-                  return GridView.count(
-                    crossAxisCount: 2,
-                    shrinkWrap: true,
-                    //todas las cards
-                    children: List.generate(plantilla.length, (index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: ItemCard(
-                          plantilla: plantilla[index],
-                          press: () {
-                            setState(() {
-                              if (plantilla[index] == plantilla[0]) {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return DetailScreen(plantilla: plantilla[0]);
-                                }));
-                              } else if (plantilla[index] == plantilla[1]) {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return DetailScreenHistoryTrip(plantilla: plantilla[1]);
-                                }));
-                              } else if (plantilla[index] == plantilla[2]) {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return DetailScreenQr(plantilla: plantilla[2]);
-                                }));
-                              }
-                            });
+                        child: TextField(
+                          controller: buscarText,
+                          onChanged: (value) {
+
+                            if(value.isEmpty)
+                              ventanas2=ventanas;
+                            else
+                              ventanas2=ventanas.where((ventana) {
+                                String nombre = ventana['nombre'].toString().toLowerCase();
+                                return nombre.contains(value.toLowerCase());
+                              }).toList();
+
+                            setState(() {});
                           },
+                          focusNode: _focusNode,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search, color: Colors.grey),
+                            hintText: 'Buscar',
+                            border: InputBorder.none,
+                          ),
                         ),
-                      );
-                    }),
-                  );
-                }
-              } else {
-                return Text('');
-              }
-            },
-          ),
-
-            FutureBuilder(
-              future: historial,
-              builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-                if (snapshot.hasData) {
-                  List<dynamic> plantilla2 = snapshot.data!;
-                    return Column(
-                      children: [
-                        if(snapshot.data!.length>0)
-                          SizedBox(height: 50),
-
-                        if(snapshot.data!.length>0)
-                        Padding(
-                          padding: const EdgeInsets.only(right: 25.0, left: 25, bottom: 10),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  'Últimos viajes',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
+                      ),
+                    ),
+                    
+                  ],
+                ),
+              ),
+              
+        
+              SizedBox(height: 15),            
+              if (display == 1)... {                        
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: backgroundColor2,
+                      borderRadius: BorderRadius.circular(15)
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text('🔺$msgtoShow',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                )
+              },                                          
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //       color: backgroundColor2,
+              //       borderRadius: BorderRadius.circular(15)
+              //     ),
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(10.0),
+              //       child: Text('Tiene viaje(s) donde confirmó y no salió a tomar el transporte. Si esto ocurre por 3ra vez, el sistema le dará de baja y no será agendado para el servicio de transporte. Deberá justificar el caso enviando un ticket solicitando el uso de transporte.',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+              //     ),
+              //   ),
+              // ),
+              
+              //future builder para hacer la validación que aparezcan 3 o las 4 cards
+              // las que necesarias a mostrar
+              FutureBuilder<DataAgent>(
+              future: item,
+              builder: (BuildContext context, abc) {
+                if (abc.connectionState == ConnectionState.done) {
+                  //validación
+                  if (abc.data!.companyId != 7) {
+                    return GridView.count(
+                      crossAxisCount: 2,
+                      shrinkWrap: true,
+                      //todas las cards
+                      children: List.generate(plantilla.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8.0, left: 8, bottom: 8),
+                          child: ItemCard(
+                            plantilla: plantilla[index],
+                            press: () {
+                              setState(() {
+                                if (plantilla[index] == plantilla[0]) {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                    return DetailScreen(plantilla: plantilla[index]);
+                                  }));
+                                } else if (plantilla[index] == plantilla[1]) {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                    return DetailScreenHistoryTrip(plantilla: plantilla[index]);
+                                  }));
+                                } else if (plantilla[index] == plantilla[2]) {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                    return DetailScreenQr(plantilla: plantilla[index]);
+                                  }));
+                                } else if (plantilla[index] == plantilla[3]) {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                    return DetailScreenChanges(plantilla: plantilla[index]);
+                                  }));
+                                }
+                              });
+                            },
+                          ),
+                        );
+                      }),
+                    );
+                  } else {
+                    return GridView.count(
+                      crossAxisCount: 2,
+                      shrinkWrap: true,
+                      //todas las cards
+                      children: List.generate(plantilla.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: ItemCard(
+                            plantilla: plantilla[index],
+                            press: () {
+                              setState(() {
+                                if (plantilla[index] == plantilla[0]) {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                    return DetailScreen(plantilla: plantilla[0]);
+                                  }));
+                                } else if (plantilla[index] == plantilla[1]) {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                                     return DetailScreenHistoryTrip(plantilla: plantilla[1]);
                                   }));
-                                },
-                                child: Text(
-                                  'Ver historial',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
+                                } else if (plantilla[index] == plantilla[2]) {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                    return DetailScreenQr(plantilla: plantilla[2]);
+                                  }));
+                                }
+                              });
+                            },
                           ),
-                        ),
-
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: List.generate(plantilla2.length, (index) {
-                            var trip = plantilla2[index];
-                            return Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Container(
-                                width: 240,
-                                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Color.fromRGBO(238, 238, 238, 1),
-                                    width: 2,
-                                  ),
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Column(
-                                  children: [
-                                    SizedBox(height: 5),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 15,
-                                            height: 15,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/Numeral.svg",
-                                              color: Color.fromRGBO(40, 93, 169, 1),
-                                            ),
-                                          ),
-                                          Text(
-                                            ' Viaje: ${trip["tripId"]}',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      color: Color.fromRGBO(158, 158, 158, 1),
-                                    ),
-                                    SizedBox(height: 8),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/calendar-note-svgrepo-com.svg",
-                                              color: Color.fromRGBO(40, 93, 169, 1),
-                                            ),
-                                          ),
-                                          Text(
-                                            ' Fecha: ${trip["tripDate"]}',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      color: Color.fromRGBO(158, 158, 158, 1),
-                                    ),
-                                    SizedBox(height: 8),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/warning-circle-svgrepo-com.svg",
-                                              color: Color.fromRGBO(40, 93, 169, 1),
-                                            ),
-                                          ),
-                                          Text(
-                                            ' Tipo: ${trip["tripType"]}',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      color: Color.fromRGBO(158, 158, 158, 1),
-                                    ),
-                                    SizedBox(height: 8),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 15,
-                                            height: 15,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/hora.svg",
-                                              color: Color.fromRGBO(40, 93, 169, 1),
-                                            ),
-                                          ),
-                                          Text(
-                                            ' Abordó: ${trip["traveled"]}',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 1,
-                                      color: Color.fromRGBO(158, 158, 158, 1),
-                                    ),
-                                    SizedBox(height: 5),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
-                        ),
-                      ),
-                    ],
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('');
+                        );
+                      }),
+                    );
+                  }
                 } else {
-                  return CircularProgressIndicator();
+                  return Text('');
                 }
               },
             ),
-
       
-          ],
+              FutureBuilder(
+                future: historial,
+                builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+                  if (snapshot.hasData) {
+                    List<dynamic> plantilla2 = snapshot.data!;
+                      return Column(
+                        children: [
+                          if(snapshot.data!.length>0)
+                            SizedBox(height: 50),
+      
+                          if(snapshot.data!.length>0)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 25.0, left: 25, bottom: 10),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    'Últimos viajes',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                      return DetailScreenHistoryTrip(plantilla: plantilla[1]);
+                                    }));
+                                  },
+                                  child: Text(
+                                    'Ver historial',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+      
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: List.generate(plantilla2.length, (index) {
+                              var trip = plantilla2[index];
+                              return Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Container(
+                                  width: 240,
+                                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Color.fromRGBO(238, 238, 238, 1),
+                                      width: 2,
+                                    ),
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(height: 5),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 15,
+                                              height: 15,
+                                              child: SvgPicture.asset(
+                                                "assets/icons/Numeral.svg",
+                                                color: Color.fromRGBO(40, 93, 169, 1),
+                                              ),
+                                            ),
+                                            Text(
+                                              ' Viaje: ${trip["tripId"]}',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 1,
+                                        color: Color.fromRGBO(158, 158, 158, 1),
+                                      ),
+                                      SizedBox(height: 8),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 18,
+                                              height: 18,
+                                              child: SvgPicture.asset(
+                                                "assets/icons/calendar-note-svgrepo-com.svg",
+                                                color: Color.fromRGBO(40, 93, 169, 1),
+                                              ),
+                                            ),
+                                            Text(
+                                              ' Fecha: ${trip["tripDate"]}',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 1,
+                                        color: Color.fromRGBO(158, 158, 158, 1),
+                                      ),
+                                      SizedBox(height: 8),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 18,
+                                              height: 18,
+                                              child: SvgPicture.asset(
+                                                "assets/icons/warning-circle-svgrepo-com.svg",
+                                                color: Color.fromRGBO(40, 93, 169, 1),
+                                              ),
+                                            ),
+                                            Text(
+                                              ' Tipo: ${trip["tripType"]}',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 1,
+                                        color: Color.fromRGBO(158, 158, 158, 1),
+                                      ),
+                                      SizedBox(height: 8),
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 15,
+                                              height: 15,
+                                              child: SvgPicture.asset(
+                                                "assets/icons/hora.svg",
+                                                color: Color.fromRGBO(40, 93, 169, 1),
+                                              ),
+                                            ),
+                                            Text(
+                                              ' Abordó: ${trip["traveled"]}',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 1,
+                                        color: Color.fromRGBO(158, 158, 158, 1),
+                                      ),
+                                      SizedBox(height: 5),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                      ],
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('');
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                },
+              ),
+      
+        
+            ],
+          ),
         ),
       ),
     );

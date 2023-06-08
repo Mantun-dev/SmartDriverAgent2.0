@@ -44,14 +44,29 @@ class _AppBarPosterior extends State<AppBarPosterior> {
       automaticallyImplyLeading: false, // Ocultar el ícono del Drawer
       actions: <Widget>[
         Expanded(
-          child: item==0?Container(
-              width: 60,
-              height: 60,
-              child: SvgPicture.asset(
-                "assets/icons/inicio.svg",
-                color: Color.fromRGBO(40, 93, 169, 1),
-              ),
-            ):GestureDetector(
+          child: item==0?Padding(
+            padding: const EdgeInsets.only(top:10),
+            child: Column(
+              children: [
+                Container(
+                    width: 30,
+                    height: 30,
+                    child: SvgPicture.asset(
+                      "assets/icons/inicio.svg",
+                      color: Color.fromRGBO(40, 93, 169, 1),
+                    ),
+                  ),
+
+                  Text(
+                    "Perfil",
+                    style: TextStyle(
+                      color: Color.fromRGBO(40, 93, 169, 1),
+                      fontSize: 9
+                    ),
+                  )
+              ],
+            ),
+          ):GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
@@ -60,12 +75,26 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                   })
                 );
               },
-              child: Container(
-                width: 60,
-                height: 60,
-                child: SvgPicture.asset(
-                  "assets/icons/inicio.svg",
-                  color: Color.fromRGBO(158, 158, 158, 1),
+              child: Padding(
+                padding: const EdgeInsets.only(top:10),
+                child: Column(
+                  children: [
+                    Container(
+                      width: 30,
+                      height: 30,
+                      child: SvgPicture.asset(
+                        "assets/icons/inicio.svg",
+                        color: Color.fromRGBO(158, 158, 158, 1),
+                      ),
+                    ),
+                    Text(
+                    "Inicio",
+                    style: TextStyle(
+                      color: Color.fromRGBO(158, 158, 158, 1),
+                      fontSize: 9
+                    ),
+                  )
+                  ],
                 ),
               ),
             ),
@@ -74,15 +103,26 @@ class _AppBarPosterior extends State<AppBarPosterior> {
         Stack(
           children: [
             item==2?Padding(
-              padding: const EdgeInsets.all(14.0),
-              child: Container(
-              width: 65,
-              height: 65,
-              child: SvgPicture.asset(
-                "assets/icons/notificacion.svg",
-                color: Color.fromRGBO(40, 93, 169, 1),
+              padding: const EdgeInsets.only(top:10),
+              child: Column(
+                children: [
+                  Container(
+                  width: 28,
+                  height: 28,
+                  child: SvgPicture.asset(
+                    "assets/icons/notificacion.svg",
+                    color: Color.fromRGBO(40, 93, 169, 1),
+                  ),
+                            ),
+                            Text(
+                    "Notificaciones",
+                    style: TextStyle(
+                      color: Color.fromRGBO(40, 93, 169, 1),
+                      fontSize: 9
+                    ),
+                  )
+                ],
               ),
-                        ),
             ):GestureDetector(
             onTap: item==2?null:() {
               setState(() {
@@ -90,20 +130,32 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                 });
             },
             child: Padding(
-              padding: const EdgeInsets.all(14.0),
-              child: Container(
-                width: 65,
-                height: 65,
-                child: SvgPicture.asset(
-                  "assets/icons/notificacion.svg",
-                  color: Color.fromRGBO(158, 158, 158, 1),
-                ),
+              padding: const EdgeInsets.only(top:10),
+              child: Column(
+                children: [
+                  Container(
+                    width: 28,
+                    height: 28,
+                    child: SvgPicture.asset(
+                      "assets/icons/notificacion.svg",
+                      color: Color.fromRGBO(158, 158, 158, 1),
+                    ),
+                  ),
+
+                  Text(
+                    "Notificaciones",
+                    style: TextStyle(
+                      color: Color.fromRGBO(158, 158, 158, 1),
+                      fontSize: 9
+                    ),
+                  )
+                ],
               ),
             ),
           ),
             Positioned(
-              top: 10,
-              right: 26,
+              top: 5,
+              right: 8,
               child: Container(
                 width: 15,
                 height: 20,
@@ -113,31 +165,47 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                       shape: BoxShape.circle,
                       color: Colors.transparent,
                       border: Border.all(color: Color(0xffc32c37), width: 1.5)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(0.0),
-                    child: Center(
-                      child: Text(
+                  child: Center(
+                    child:   Text(
                         '0',
                         style: TextStyle(fontSize: 10, color: Color(0xffc32c37), fontWeight: FontWeight.bold),
                       ),
-                    ),
                   ),
                 ),
               ),
             ),
-                ],
-              ),
+            ],
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(right: 25, left: 25),
+            child: SizedBox(),
+          ),
 
         Stack(
           children: [
-            item==3?Container(
-            width:70,
-            height: 70,
-            child: SvgPicture.asset(
-              "assets/icons/chats.svg",
-              color: Color.fromRGBO(40, 93, 169, 1),
-            ),
-          ):GestureDetector(
+            item==3?Padding(
+              padding: const EdgeInsets.only(top:10, right: 10),
+              child: Column(
+                children: [
+                  Container(
+                  width: 28,
+                  height: 28,
+                  child: SvgPicture.asset(
+                    "assets/icons/chats.svg",
+                    color: Color.fromRGBO(40, 93, 169, 1),
+                  ),
+                            ),
+                            Text(
+                    "Chats",
+                    style: TextStyle(
+                      color: Color.fromRGBO(40, 93, 169, 1),
+                      fontSize: 9
+                    ),
+                  )
+                ],
+              ),
+            ):GestureDetector(
             onTap: item==3?null:() {
                 setState(() {
                   fetchProfile().then((value) {
@@ -151,18 +219,33 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                   });
                 });
               },
-            child: Container(
-              width: 70,
-              height: 70,
-              child: SvgPicture.asset(
-                "assets/icons/chats.svg",
-                color: Color.fromRGBO(158, 158, 158, 1),
+            child: Padding(
+              padding: const EdgeInsets.only(top:10, right: 10),
+              child: Column(
+                children: [
+                  Container(
+                    width: 28,
+                    height: 28,
+                    child: SvgPicture.asset(
+                      "assets/icons/chats.svg",
+                      color: Color.fromRGBO(158, 158, 158, 1),
+                    ),
+                  ),
+
+                  Text(
+                    "Chats",
+                    style: TextStyle(
+                      color: Color.fromRGBO(158, 158, 158, 1),
+                      fontSize: 9
+                    ),
+                  )
+                ],
               ),
             ),
           ),
             Positioned(
-              top: 10,
-              right: 10,
+              top: 5,
+              right: 0,
               child: Container(
                 width: 15,
                 height: 20,
@@ -172,14 +255,11 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                       shape: BoxShape.circle,
                       color: Colors.transparent,
                       border: Border.all(color: Color(0xffc32c37), width: 1.5)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(0.0),
-                    child: Center(
-                      child: Text(
-                      counter!=null?'$counter':'0',
-                      style: TextStyle(fontSize: 10, color: Color(0xffc32c37), fontWeight: FontWeight.bold),
-                    ),
-                    ),
+                  child: Center(
+                    child:  Text(
+                    counter!=null?'$counter':'0',
+                    style: TextStyle(fontSize: 10, color: Color(0xffc32c37), fontWeight: FontWeight.bold),
+                  ),
                   ),
                 ),
               ),
@@ -188,14 +268,29 @@ class _AppBarPosterior extends State<AppBarPosterior> {
               ),
 
         Expanded(
-          child: item==1?Container(
-              width: 60,
-              height: 60,
-              child: SvgPicture.asset(
-                "assets/icons/usuario2.svg",
-                color: Color.fromRGBO(40, 93, 169, 1),
-              ),
-            ):GestureDetector(
+          child: item==1?Padding(
+            padding: const EdgeInsets.only(top:10),
+            child: Column(
+              children: [
+                Container(
+                    width: 30,
+                    height: 30,
+                    child: SvgPicture.asset(
+                      "assets/icons/usuario2.svg",
+                      color: Color.fromRGBO(40, 93, 169, 1),
+                    ),
+                  ),
+
+                  Text(
+                    "Perfil",
+                    style: TextStyle(
+                      color: Color.fromRGBO(40, 93, 169, 1),
+                      fontSize: 9
+                    ),
+                  )
+              ],
+            ),
+          ):GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
@@ -204,12 +299,26 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                   })
                 );
               },
-              child: Container(
-                width: 60,
-                height: 60,
-                child: SvgPicture.asset(
-                  "assets/icons/usuario2.svg",
-                  color: Color.fromRGBO(158, 158, 158, 1),
+              child: Padding(
+                padding: const EdgeInsets.only(top:10),
+                child: Column(
+                  children: [
+                    Container(
+                      width: 30,
+                      height: 30,
+                      child: SvgPicture.asset(
+                        "assets/icons/usuario2.svg",
+                        color: Color.fromRGBO(158, 158, 158, 1),
+                      ),
+                    ),
+                    Text(
+                    "Perfil",
+                    style: TextStyle(
+                      color: Color.fromRGBO(158, 158, 158, 1),
+                      fontSize: 9
+                    ),
+                  )
+                  ],
                 ),
               ),
             ),
