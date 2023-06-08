@@ -331,7 +331,6 @@ class _AppBarPosterior extends State<AppBarPosterior> {
     http.Response response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/salas/agenteId/${prefs.usuarioId}'));
     var resp = json.decode(response.body);
 
-    print(response.body);
     var listaChats = resp['salas'] as List<dynamic>;
 
     if(mounted){

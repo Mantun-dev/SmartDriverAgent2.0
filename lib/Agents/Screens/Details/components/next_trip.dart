@@ -121,7 +121,6 @@ class _NextTripScreenState extends State<NextTripScreen>
   Future<TripsList> fetchTripsButton() async {
     http.Response response =
         await http.get(Uri.parse('$ip/api/trips/${prefs.nombreUsuario}'));
-    print(response.body);
     if (response.statusCode == 200) {
       final trip = TripsList.fromJson(json.decode(response.body));
       for (var i = 0; i < trip.trips.length; i++) {
@@ -424,7 +423,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                           decoration: BoxDecoration(
                                             border: Border.all(
                                               color: Color.fromRGBO(40, 93, 169, 1),
-                                              width: 0.5,
+                                              width: 1,
                                             ),
                                             borderRadius: BorderRadius.circular(5.0),
                                           ),

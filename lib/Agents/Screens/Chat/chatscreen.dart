@@ -948,7 +948,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ),
                               ),
                             ),
-                            */
+                            
                             SizedBox(height: 12),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 2),
@@ -993,6 +993,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ),
                               ),
                             ),
+                            */
                             SizedBox(height: 12),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 2),
