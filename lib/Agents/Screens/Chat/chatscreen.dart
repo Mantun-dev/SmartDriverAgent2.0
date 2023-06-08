@@ -904,7 +904,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 12),      
+                            /*SizedBox(height: 12),      
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: GestureDetector(
@@ -948,6 +948,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ),
                               ),
                             ),
+                            */
                             SizedBox(height: 12),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 2),

@@ -54,30 +54,37 @@ class _BodyState extends State<Body> {
   {
     'nombre': 'Próximos viajes',
     'icono': 'assets/icons/proximo_viaje.svg',
+    'ruta': 0,
   },
   {
     'nombre': 'Historial de viajes',
     'icono': 'assets/icons/historial_de_viaje.svg',
+    'ruta': 1,
   },
   {
     'nombre': 'Generar código QR',
     'icono': 'assets/icons/QR.svg',
+    'ruta': 2,
   },
   {
     'nombre': 'Solicitud de cambios',
     'icono': 'assets/icons/solicitud_de_cambio.svg',
+    'ruta': 3,
   },
   {
     'nombre': 'Notificaciones',
     'icono': 'assets/icons/notificacion.svg',
+    'ruta': 4,
   },
   {
     'nombre': 'Chats',
     'icono': 'assets/icons/chats.svg',
+    'ruta': 5,
   },
   {
     'nombre': 'Perfil',
     'icono': 'assets/icons/usuario2.svg',
+    'ruta': 6,
   },
 ];
 
@@ -148,10 +155,10 @@ class _BodyState extends State<Body> {
           padding: const EdgeInsets.only(top: 20.0),
           child: Column(
             children: ventanas2!.asMap().entries.map((entry) {
-              int index = entry.key;
               dynamic ventana = entry.value;
               String nombre = ventana['nombre'];
               String icono = ventana['icono'];
+              int index = ventana['ruta'];
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2),
                 child: Expanded(

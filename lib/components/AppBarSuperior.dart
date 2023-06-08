@@ -517,7 +517,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 12),      
+                            /*SizedBox(height: 12),      
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: GestureDetector(
@@ -605,6 +605,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                 ),
                               ),
                             ),
+                            */
                             SizedBox(height: 12),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 2),
