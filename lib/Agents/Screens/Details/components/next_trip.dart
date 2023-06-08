@@ -52,6 +52,8 @@ class _NextTripScreenState extends State<NextTripScreen>
 
   TextEditingController message = new TextEditingController();
 
+  bool viajesProceso=true;
+
   //variables para rating
   late double rating1;
   late double rating2;
@@ -342,7 +344,223 @@ class _NextTripScreenState extends State<NextTripScreen>
   Widget build(BuildContext context) {
     return Column(
       children: [
-        FutureBuilder<TripsList>(
+      Card(
+      elevation: 5,
+      color: const Color.fromRGBO(87, 94, 113, 1) ,
+      shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                margin: const EdgeInsets.all(20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [                             
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.transparent,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          viajesProceso=true;
+                        });
+                      },
+                      child: const Text('Viajes en Proceso',
+                          style: TextStyle(
+                              color: Colors.white)),
+                    ),
+                  
+                  ElevatedButton(
+                        
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.transparent,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            viajesProceso=false;
+                          });
+                        },
+                        child: const Text('No confirmados',
+                            style: TextStyle(
+                            color: Colors.white,
+                          )),
+                    )
+                  ],
+                ),
+              ),
+      viajesProceso==false?
+        Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: Column(
+            children: [
+              Card(
+                elevation: 10,
+                color: backgroundColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Nos gustaría saber si necesitarás transporte de salida:',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15.0,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Hora de salida:',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15.0,
+                          ),
+                        ),
+                      ),
+
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center, // Centra los elementos horizontalmente
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                // Lógica cuando se presiona el botón "Sí"
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.green, // Color de fondo verde
+                              ),
+                              child: Text(
+                                'Sí',
+                                style: TextStyle(
+                                  color: Colors.white, // Color del texto
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 20), // Espacio entre los botones
+                            TextButton(
+                              onPressed: () {
+                                // Lógica cuando se presiona el botón "No"
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.red, // Color de fondo verde
+                              ),
+                              child: Text(
+                                'No',
+                                style: TextStyle(
+                                  color: Colors.white, // Color del texto
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+
+                    ],
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 20),
+
+              Card(
+                elevation: 10,
+                color: backgroundColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Nos gustaria saber si necesitaras transporte de entrada:',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15.0,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Hora de encuentro:',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15.0,
+                          ),
+                        ),
+                      ),
+
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center, // Centra los elementos horizontalmente
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                // Lógica cuando se presiona el botón "Sí"
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.green, // Color de fondo verde
+                              ),
+                              child: Text(
+                                'Sí',
+                                style: TextStyle(
+                                  color: Colors.white, // Color del texto
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 20), // Espacio entre los botones
+                            TextButton(
+                              onPressed: () {
+                                // Lógica cuando se presiona el botón "No"
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.red, // Color de fondo verde
+                              ),
+                              child: Text(
+                                'No',
+                                style: TextStyle(
+                                  color: Colors.white, // Color del texto
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+
+    :FutureBuilder<TripsList>(
           future: item,
           builder: (context, abc) {
             if (abc.connectionState == ConnectionState.done) {
