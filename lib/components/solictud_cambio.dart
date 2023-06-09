@@ -25,8 +25,8 @@ class SolicitudCambio extends StatelessWidget {
                 profile != null ? '¿Es su informacion incorrecta?' : "",
                 textAlign: TextAlign.left,
                 style: TextStyle(
-                  fontSize: 14,
-                  color: GradiantV_1,
+                  fontSize: 12,
+                  color: Colors.black,
                 ),
               ),
             ),
@@ -38,9 +38,10 @@ class SolicitudCambio extends StatelessWidget {
               child: Text(
                 profile != null ? "\tSolicita cambio aquí." : "",
                 textAlign: TextAlign.left,
+                
                 style: TextStyle(
-                  fontSize: 14,
-                  color: GradiantV_1,
+                  fontSize: 12,
+                  color: Color.fromRGBO(40, 93, 169, 1),
                   fontWeight: FontWeight.bold,
                 ),
               ),
