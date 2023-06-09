@@ -19,6 +19,7 @@ import 'package:flutter_auth/Agents/models/tripAgent.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/constants.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
 import 'package:quickalert/quickalert.dart';
@@ -401,14 +402,27 @@ class _NextTripScreenState extends State<NextTripScreen>
             children: [
               Align(
                 alignment: Alignment.center,
-                child: Text(
-                  "Nos gustaría saber si necesitarás transporte" ,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 15.0,
-                  ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 18,
+                      height: 18,
+                       child: SvgPicture.asset(
+                        "assets/icons/advertencia.svg",
+                        color: GradiantV1,
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      "Nos gustaría saber si necesitarás transporte" ,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 15.0,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Card(
@@ -425,69 +439,134 @@ class _NextTripScreenState extends State<NextTripScreen>
                       SizedBox(height: 5),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Fecha:',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15.0,
-                          ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 18,
+                              height: 18,
+                              child: SvgPicture.asset(
+                                "assets/icons/calendar-note-svgrepo-com.svg",
+                                color: GradiantV1,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              'Fecha:',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15.0,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(height: 5),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Transporte para:',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15.0,
-                          ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 18,
+                              height: 18,
+                              child: SvgPicture.asset(
+                                "assets/icons/advertencia.svg",
+                                color: GradiantV1,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              'Transporte para:',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15.0,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
 
                       SizedBox(height: 5),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Hora de salida:',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15.0,
-                          ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 18,
+                              height: 18,
+                              child: SvgPicture.asset(
+                                "assets/icons/hora.svg",
+                                color: GradiantV1,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              'Hora de salida:',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15.0,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
 
                       SizedBox(height: 5),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Dirección',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15.0,
-                          ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 18,
+                              height: 18,
+                              child: SvgPicture.asset(
+                                "assets/icons/Casa.svg",
+                                color: GradiantV1,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              'Dirección',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15.0,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(height: 10),
 
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Acceso autorizado:',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15.0,
-                          ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 18,
+                              height: 18,
+                              child: SvgPicture.asset(
+                                "assets/icons/warning.svg",
+                                color: GradiantV1,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              'Acceso autorizado:',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15.0,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(height: 10),
