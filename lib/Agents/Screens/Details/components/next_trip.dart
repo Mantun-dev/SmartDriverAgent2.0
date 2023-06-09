@@ -367,7 +367,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                           viajesProceso=true;
                         });
                       },
-                      child: const Text('Viajes en Proceso',
+                      child: const Text('Viajes programados',
                           style: TextStyle(
                               color: Colors.white)),
                     ),
@@ -386,7 +386,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                             viajesProceso=false;
                           });
                         },
-                        child: const Text('No confirmados',
+                        child: const Text('Solicitudes',
                             style: TextStyle(
                             color: Colors.white,
                           )),
@@ -399,6 +399,18 @@ class _NextTripScreenState extends State<NextTripScreen>
           padding: const EdgeInsets.all(14.0),
           child: Column(
             children: [
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Nos gustaría saber si necesitarás transporte" ,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 15.0,
+                  ),
+                ),
+              ),
               Card(
                 elevation: 10,
                 color: backgroundColor,
@@ -409,10 +421,12 @@ class _NextTripScreenState extends State<NextTripScreen>
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
+
+                      SizedBox(height: 5),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Nos gustaría saber si necesitarás transporte de salida:',
+                          'Fecha:',
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             color: Colors.white,
@@ -421,7 +435,21 @@ class _NextTripScreenState extends State<NextTripScreen>
                           ),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 5),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Transporte para:',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15.0,
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: 5),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -435,64 +463,11 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ),
                       ),
 
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center, // Centra los elementos horizontalmente
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                // Lógica cuando se presiona el botón "Sí"
-                              },
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.green, // Color de fondo verde
-                              ),
-                              child: Text(
-                                'Sí',
-                                style: TextStyle(
-                                  color: Colors.white, // Color del texto
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 20), // Espacio entre los botones
-                            TextButton(
-                              onPressed: () {
-                                // Lógica cuando se presiona el botón "No"
-                              },
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.red, // Color de fondo verde
-                              ),
-                              child: Text(
-                                'No',
-                                style: TextStyle(
-                                  color: Colors.white, // Color del texto
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-
-                    ],
-                  ),
-                ),
-              ),
-
-              SizedBox(height: 20),
-
-              Card(
-                elevation: 10,
-                color: backgroundColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
+                      SizedBox(height: 5),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Nos gustaria saber si necesitaras transporte de entrada:',
+                          'Dirección',
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             color: Colors.white,
@@ -502,10 +477,11 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ),
                       ),
                       SizedBox(height: 10),
+
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Hora de encuentro:',
+                          'Acceso autorizado:',
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             color: Colors.white,
@@ -514,7 +490,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                           ),
                         ),
                       ),
-
+                      SizedBox(height: 10),
                       Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center, // Centra los elementos horizontalmente
