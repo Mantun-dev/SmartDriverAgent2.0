@@ -436,7 +436,6 @@ class _NextTripScreenState extends State<NextTripScreen>
                   child: Column(
                     children: [
 
-                      SizedBox(height: 5),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Row(
@@ -462,7 +461,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                           ],
                         ),
                       ),
-                      SizedBox(height: 5),
+                      SizedBox(height: 10),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Row(
@@ -489,7 +488,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ),
                       ),
 
-                      SizedBox(height: 5),
+                      SizedBox(height: 10),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Row(
@@ -504,7 +503,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                             ),
                             SizedBox(width: 5),
                             Text(
-                              'Hora de salida:',
+                              'Hora:',
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 color: Colors.white,
@@ -516,7 +515,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ),
                       ),
 
-                      SizedBox(height: 5),
+                      SizedBox(height: 10),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Row(
@@ -531,7 +530,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                             ),
                             SizedBox(width: 5),
                             Text(
-                              'Dirección',
+                              'Dirección:',
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 color: Colors.white,
