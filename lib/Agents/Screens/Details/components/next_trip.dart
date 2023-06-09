@@ -43,7 +43,7 @@ class _NextTripScreenState extends State<NextTripScreen>
   //variables globales para cada función
   late Future<TripsList> item;
   late Future<DataAgent> itemx;
-  late Future<dynamic> item2;
+  late Future<List<dynamic>> item2;
   final prefs = new PreferenciasUsuario();
   //variable para comentario
   String comment = ' ';
@@ -110,14 +110,21 @@ class _NextTripScreenState extends State<NextTripScreen>
     BackButtonInterceptor.add(myInterceptor);
   }
 
-  Future<dynamic> getSolicitudes() async {
+  Future<List<dynamic>> getSolicitudes() async {
     Map data = {
-      "agentId ": prefs.nombreUsuario
+      "agentId": prefs.usuarioId.toString()
     };
-    print(data);
-    http.Response response = await http.post(Uri.parse('$ip/transportationRequests'), body: data);
-    
+
+    http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/transportationRequests'), body: data);
     print(response.body);
+
+    var dataR = json.decode(response.body);
+
+    if (dataR["ok"] == true) {
+      return dataR["requests"]; // Retornar la lista de la propiedad "data"
+    } else {
+      return []; // Retorna una lista vacía
+    }
   }
 
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -437,191 +444,43 @@ class _NextTripScreenState extends State<NextTripScreen>
                   ],
                 ),
               ),
-              Card(
-                elevation: 10,
-                color: backgroundColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 18,
-                              height: 18,
-                              child: SvgPicture.asset(
-                                "assets/icons/calendar-note-svgrepo-com.svg",
-                                color: GradiantV1,
-                              ),
-                            ),
-                            SizedBox(width: 5),
-                            Text(
-                              'Fecha:',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15.0,
-                              ),
-                            ),
-                          ],
+              FutureBuilder<List<dynamic>>(
+                future: item2,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error al cargar los datos');
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Card(
+                      elevation: 10,
+                      color: backgroundColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Text(
+                          'No hay solicitudes de viajes',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15.0,
+                          ),
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 18,
-                              height: 18,
-                              child: SvgPicture.asset(
-                                "assets/icons/advertencia.svg",
-                                color: GradiantV1,
-                              ),
-                            ),
-                            SizedBox(width: 5),
-                            Text(
-                              'Transporte para:',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15.0,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: 10),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 18,
-                              height: 18,
-                              child: SvgPicture.asset(
-                                "assets/icons/hora.svg",
-                                color: GradiantV1,
-                              ),
-                            ),
-                            SizedBox(width: 5),
-                            Text(
-                              'Hora:',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15.0,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      SizedBox(height: 10),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 18,
-                              height: 18,
-                              child: SvgPicture.asset(
-                                "assets/icons/Casa.svg",
-                                color: GradiantV1,
-                              ),
-                            ),
-                            SizedBox(width: 5),
-                            Text(
-                              'Dirección:',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15.0,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 10),
-
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 18,
-                              height: 18,
-                              child: SvgPicture.asset(
-                                "assets/icons/warning.svg",
-                                color: GradiantV1,
-                              ),
-                            ),
-                            SizedBox(width: 5),
-                            Text(
-                              'Acceso autorizado:',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15.0,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center, // Centra los elementos horizontalmente
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                // Lógica cuando se presiona el botón "Sí"
-                              },
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.green, // Color de fondo verde
-                              ),
-                              child: Text(
-                                'Sí',
-                                style: TextStyle(
-                                  color: Colors.white, // Color del texto
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 20), // Espacio entre los botones
-                            TextButton(
-                              onPressed: () {
-                                // Lógica cuando se presiona el botón "No"
-                              },
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.red, // Color de fondo verde
-                              ),
-                              child: Text(
-                                'No',
-                                style: TextStyle(
-                                  color: Colors.white, // Color del texto
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-
-                    ],
-                  ),
-                ),
+                    );
+                  } else {
+                    return Column(
+                      children: List.generate(snapshot.data!.length, (index) {
+                        Map<String, dynamic> tripData = snapshot.data![index];
+                        return buildTripCard(tripData);
+                      }),
+                    );
+                  }
+                },
               ),
+
             ],
           ),
         )
@@ -1318,6 +1177,362 @@ class _NextTripScreenState extends State<NextTripScreen>
               ),
             ));
   }
+
+Widget buildTripCard(Map<String, dynamic> tripData) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom:10),
+    child: Card(
+      elevation: 10,
+      color: backgroundColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Row(
+                children: [
+                  Container(
+                    width: 18,
+                    height: 18,
+                    child: SvgPicture.asset(
+                      "assets/icons/calendar-note-svgrepo-com.svg",
+                      color: GradiantV1,
+                    ),
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    'Fecha: ${tripData["dateToTravel"]}',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Row(
+                children: [
+                  Container(
+                    width: 18,
+                    height: 18,
+                    child: SvgPicture.asset(
+                      "assets/icons/advertencia.svg",
+                      color: GradiantV1,
+                    ),
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    'Transporte para: ${tripData["tripType"]}',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Row(
+                children: [
+                  Container(
+                    width: 18,
+                    height: 18,
+                    child: SvgPicture.asset(
+                      "assets/icons/hora.svg",
+                      color: GradiantV1,
+                    ),
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    'Hora: ${tripData["hour"]}',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Row(
+                children: [
+                  Container(
+                    width: 18,
+                    height: 18,
+                    child: SvgPicture.asset(
+                      "assets/icons/Casa.svg",
+                      color: GradiantV1,
+                    ),
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    'Dirección: ${tripData["agentAddress"]}',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Row(
+                children: [
+                  Container(
+                    width: 18,
+                    height: 18,
+                    child: SvgPicture.asset(
+                      "assets/icons/warning.svg",
+                      color: GradiantV1,
+                    ),
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    'Acceso autorizado: ${tripData["authorizedAccess"]}',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            if (tripData["confirmation"] == true)
+              Row(
+                  children: [
+                    Container(
+                      width: 18,
+                      height: 18,
+                       child: SvgPicture.asset(
+                        "assets/icons/advertencia.svg",
+                        color: GradiantV1,
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    Flexible(
+                      child: Text(
+                        '¡Solicitud confirmada! Te notificaremos cuando tengas el viaje programado',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+            if (tripData["confirmation"] == false)
+              Row(
+                  children: [
+                    Container(
+                      width: 18,
+                      height: 18,
+                       child: SvgPicture.asset(
+                        "assets/icons/advertencia.svg",
+                        color: GradiantV1,
+                      ),
+                    ),
+                    SizedBox(width: 5),
+                    Flexible(
+                      child: Text(
+                        'Solicitud cancelada con éxito',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+            if (tripData["confirmation"] != true && tripData["confirmation"] != false)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () async{
+                      Map data = {
+                      "agentForTravelId":tripData["agentForTravelId"].toString(), 
+                      "confirmation": "1",
+                      "agentComment": "null"
+                    };
+
+                    http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/confirmTransportation'), body: data);
+                    print(response.body);
+
+                    var dataR = json.decode(response.body);
+
+                    if(dataR["ok"]==true){
+                      QuickAlert.show(
+                        context: context,
+                        title: "Enviado",
+                        text: dataR["message"],
+                        type: QuickAlertType.success
+                      );
+                    }else{
+                      QuickAlert.show(
+                        context: context,
+                        title: "Error",
+                        text: dataR["message"],
+                        type: QuickAlertType.error
+                      );
+                    }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                    ),
+                    child: Text(
+                      'Sí',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          String comment = '';
+
+                          return AlertDialog(
+                            backgroundColor: backgroundColor,
+                            title: Text('Nos encantaría conocer tu razón', style: TextStyle(color: Colors.white),),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                TextField(
+                                  maxLines: null,
+                                  onChanged: (value) {
+                                    comment = value;
+                                  },
+                                  style: TextStyle(
+                                    color: Colors.white, // Establece el color del texto en blanco
+                                  ),
+                                  decoration: InputDecoration(
+                                    hintText: 'Ingresa tu comentario aquí',
+                                    hintStyle: TextStyle(
+                                      color: Colors.white54, // Establece el color del texto de sugerencia en blanco
+                                    ),
+                                    // Otros atributos de decoración
+                                  ),
+                                ),
+
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // Cierra la ventana emergente sin realizar ninguna acción
+                                },
+                                child: Text('Cerrar', style: TextStyle(color: Colors.white),),
+                              ),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  if (comment.isEmpty) {
+                                  Navigator.of(context).pop(); 
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          backgroundColor: backgroundColor,
+                                          title: Text('Comentario requerido', style: TextStyle(color: Colors.white)),
+                                          content: Text('Debes ingresar un comentario antes de enviar.', style: TextStyle(color: Colors.white)),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop(); 
+                                              },
+                                              child: Text('Aceptar', style: TextStyle(color: Colors.white)),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    Map data = {
+                                      "agentForTravelId":tripData["agentForTravelId"].toString(), 
+                                      "confirmation": "0",
+                                      "agentComment": comment
+                                    };
+                                    print(data);
+                                    http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/confirmTransportation'), body: data);
+                                    print(response.body);
+
+                                    var dataR = json.decode(response.body);
+
+                                    if(dataR["ok"]==true){
+                                      QuickAlert.show(
+                                        context: context,
+                                        title: "Enviado",
+                                        text: dataR["message"],
+                                        type: QuickAlertType.success
+                                      );
+                                    }else{
+                                      QuickAlert.show(
+                                        context: context,
+                                        title: "Error",
+                                        text: dataR["message"],
+                                        type: QuickAlertType.error
+                                      );
+                                    }
+
+                                  }
+                                },
+                                child: Text('Enviar'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.red,
+                    ),
+                    child: Text(
+                      'No',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+
 
 //función para el valor de rating 1
   void onChanged1(double value) async {

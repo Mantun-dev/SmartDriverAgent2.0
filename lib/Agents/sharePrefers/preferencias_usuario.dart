@@ -42,6 +42,15 @@ class PreferenciasUsuario {
     _prefs.setString('nombreUsuarioFull', value);
   }
 
+  // GET y SET del usuarioId
+  int get usuarioId {
+    return _prefs.getInt('usuarioId') ?? -1;
+  }
+
+  set usuarioId(int value) {
+    _prefs.setInt('usuarioId', value);
+  }
+
   // GET y SET del nombreUsuario
   String get emailUsuario {
     return _prefs.getString('emailUsuario') ?? '';
