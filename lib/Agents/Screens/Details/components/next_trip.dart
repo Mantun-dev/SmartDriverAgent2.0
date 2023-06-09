@@ -43,6 +43,7 @@ class _NextTripScreenState extends State<NextTripScreen>
   //variables globales para cada función
   late Future<TripsList> item;
   late Future<DataAgent> itemx;
+  late Future<dynamic> item2;
   final prefs = new PreferenciasUsuario();
   //variable para comentario
   String comment = ' ';
@@ -85,6 +86,7 @@ class _NextTripScreenState extends State<NextTripScreen>
     super.initState();
     item = fetchTrips();
     itemx = fetchRefres();
+    item2=getSolicitudes();
     //función callback para mostrar automáticamente el mensaje de alerta de rating
     SchedulerBinding.instance.addPostFrameCallback((_) {
       // if (mounted) {
@@ -106,6 +108,16 @@ class _NextTripScreenState extends State<NextTripScreen>
 
     //inicializador del botón de android para manejarlo manual
     BackButtonInterceptor.add(myInterceptor);
+  }
+
+  Future<dynamic> getSolicitudes() async {
+    Map data = {
+      "agentId ": prefs.nombreUsuario
+    };
+    print(data);
+    http.Response response = await http.post(Uri.parse('$ip/transportationRequests'), body: data);
+    
+    print(response.body);
   }
 
   void didChangeAppLifecycleState(AppLifecycleState state) {
