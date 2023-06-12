@@ -1272,7 +1272,7 @@ Widget buildTripCard(Map<String, dynamic> tripData) {
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.bold,
                       fontSize: 15.0,
                     ),
                   ),
