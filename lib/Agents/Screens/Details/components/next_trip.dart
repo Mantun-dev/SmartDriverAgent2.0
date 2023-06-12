@@ -1309,13 +1309,15 @@ Widget buildTripCard(Map<String, dynamic> tripData) {
                     ),
                   ),
                   SizedBox(width: 5),
-                  Text(
-                    'Acceso autorizado: ${tripData["authorizedAccess"]}',
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 15.0,
+                  Flexible(
+                    child: Text(
+                      'Acceso autorizado: ${tripData["authorizedAccess"]}',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 15.0,
+                      ),
                     ),
                   ),
                 ],
