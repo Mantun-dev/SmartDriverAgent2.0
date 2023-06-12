@@ -444,6 +444,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                   ],
                 ),
               ),
+              SizedBox(height: 5),
               FutureBuilder<List<dynamic>>(
                 future: item2,
                 builder: (context, snapshot) {
