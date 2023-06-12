@@ -9,6 +9,8 @@ import 'package:flutter_auth/Agents/models/ticketHistory.dart';
 import 'package:flutter_auth/components/AppBarSuperior.dart';
 import 'package:flutter_auth/constants.dart';
 
+import '../../../../components/AppBarPosterior.dart';
+import '../../../../components/backgroundB.dart';
 import '../../../../components/menu_lateral.dart';
 
 void main() {
@@ -38,53 +40,51 @@ class _DataTableExample extends State<HistoryTicketScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-          drawer: MenuLateral(),
-          appBar: AppBar(
-            backgroundColor: backgroundColor,
-            elevation: 20,
-            title: Center(child: Text('')),
-            iconTheme: IconThemeData(color: Colors.white),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return HomeScreen();
-                  }));
-                },
-              ),
-              SizedBox(width: kDefaultPadding / 2)
-            ],
-          ),
-          body: Background(
-            child: ListView(children: <Widget>[
-              SizedBox(height: 20.0),
-              Center(
-                  child: Text(
-                'Tickets pendientes',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: kCardColor2),
-              )),
-              _ticketPendant(),
-              SizedBox(height: 20.0),
-              Center(
-                  child: Text(
-                'Tickets procesados',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: kCardColor2),
-              )),
-              _ticketProcess(),
-              SizedBox(height: 50)
-            ]),
-          )),
+    return BackgroundBody(
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+                  appBar: PreferredSize(
+                    preferredSize: Size.fromHeight(56),
+                    child: AppBarSuperior(item: 7,)
+                  ),
+                  body: Column(
+                    children: [
+                      Expanded(
+                        child: cuerpo(),
+                      ),
+                      AppBarPosterior(item:-1),
+                    ],
+                  ),
+                ),
+      ),
     );
+  }
+
+  ListView cuerpo() {
+    return ListView(children: <Widget>[
+          SizedBox(height: 20.0),
+          Center(
+              child: Text(
+            'Tickets pendientes',
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: kCardColor2),
+          )),
+          _ticketPendant(),
+          SizedBox(height: 20.0),
+          Center(
+              child: Text(
+            'Tickets procesados',
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: kCardColor2),
+          )),
+          _ticketProcess(),
+          SizedBox(height: 50)
+        ]);
   }
 
   Widget _ticketPendant() {

@@ -48,12 +48,19 @@ class _AppBarSuperior extends State<AppBarSuperior> {
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
             onTap: () {
-              Navigator.push(
+              if(item==7){
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return DetailScreenChanges(plantilla: plantilla[3]);
+                }));
+              }
+              else{
+                Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {
                     return HomeScreen();
                   })
                 );
+              }
             },
             child: Container(
               width: 45,
@@ -165,6 +172,20 @@ class _AppBarSuperior extends State<AppBarSuperior> {
             child: Center(
               child: Text(
                 "Salas",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 21
+                ),
+              ),
+            ),
+          ),
+
+          if(item==7)
+          Expanded(
+            child: Center(
+              child: Text(
+                "Tus tickets",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.normal,
