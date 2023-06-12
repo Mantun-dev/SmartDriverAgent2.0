@@ -78,6 +78,9 @@ class _NextTripScreenState extends State<NextTripScreen>
   String rating55 = "5";
   String rating66 = "6";
 
+  int totalSolicitudes = 0;
+  int totalViajes = 0;
+
   String ip = "https://smtdriver.com";
   final tripId = 0;
   final StreamSocket streamSocket = StreamSocket(host: '192.168.1.3:3010');
@@ -87,6 +90,7 @@ class _NextTripScreenState extends State<NextTripScreen>
     item = fetchTrips();
     itemx = fetchRefres();
     item2=getSolicitudes();
+    obtenerLongitud();
     //función callback para mostrar automáticamente el mensaje de alerta de rating
     SchedulerBinding.instance.addPostFrameCallback((_) {
       // if (mounted) {
@@ -116,16 +120,26 @@ class _NextTripScreenState extends State<NextTripScreen>
     };
 
     http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/transportationRequests'), body: data);
-    print(response.body);
 
     var dataR = json.decode(response.body);
 
     if (dataR["ok"] == true) {
+      setState(() {
+        totalSolicitudes = dataR["requests"].length;
+      });
       return dataR["requests"]; // Retornar la lista de la propiedad "data"
     } else {
       return []; // Retorna una lista vacía
     }
   }
+
+  void obtenerLongitud() async {
+    TripsList tripsList = await item;
+    setState(() {
+      totalViajes = tripsList.trips.length;
+    });
+  }
+
 
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // setState(() {
@@ -374,26 +388,52 @@ class _NextTripScreenState extends State<NextTripScreen>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [                             
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                    Stack(
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.transparent,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              viajesProceso = true;
+                            });
+                          },
+                          child: const Text(
+                            'Viajes programados',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          viajesProceso=true;
-                        });
-                      },
-                      child: const Text('Viajes programados',
-                          style: TextStyle(
-                              color: Colors.white)),
+                        Positioned(
+                          right: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Text(
+                              totalViajes.toString(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+
                   
-                  ElevatedButton(
-                        
+                  Stack(
+                    children: [
+                      ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: Colors.transparent,
                           elevation: 0,
@@ -403,14 +443,36 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ),
                         onPressed: () {
                           setState(() {
-                            viajesProceso=false;
+                            viajesProceso = false;
                           });
                         },
-                        child: const Text('Solicitudes',
-                            style: TextStyle(
+                        child: Text(
+                          'Solicitudes',
+                          style: TextStyle(
                             color: Colors.white,
-                          )),
-                    )
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 0,
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            totalSolicitudes.toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+
                   ],
                 ),
               ),
