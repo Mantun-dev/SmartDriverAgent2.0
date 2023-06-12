@@ -80,7 +80,6 @@ class _BodyState extends State<Body> {
         prefs.emailUsuario = si.agentEmail!;
         prefs.companyId = si.companyId.toString();
         prefs.passwordUsuario = agentPassword;
-        prefs.usuarioId = si.agentId!;
         prefs.nombreUsuario = agentUser;
         prefs.tokenAndroid = claro.data![0].token!;
         Navigator.of(context).pushAndRemoveUntil(

@@ -47,6 +47,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         }
       }
     });
+    fetchProfile().then((val){      
+      prefs.usuarioId = val.agentId!;
+    });
     SchedulerBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
