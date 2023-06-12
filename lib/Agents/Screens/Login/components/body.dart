@@ -80,7 +80,6 @@ class _BodyState extends State<Body> {
         prefs.companyId = si.companyId.toString();
         prefs.passwordUsuario = agentPassword;
         prefs.nombreUsuario = agentUser;
-        prefs.usuarioId = si.agentId!;
         prefs.tokenAndroid = claro.data![0].token!;
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => HomeScreen()),

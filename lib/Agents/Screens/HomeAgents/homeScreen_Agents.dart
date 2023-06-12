@@ -42,6 +42,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         });
       }
     });
+
+    fetchProfile().then((val){      
+      prefs.usuarioId = val.agentId!;
+    });
   }
     void didChangeAppLifecycleState(AppLifecycleState state) {
     // setState(() {
