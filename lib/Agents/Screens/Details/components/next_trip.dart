@@ -2648,17 +2648,19 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       var dataR = json.decode(response.body);
                       
                                       if (dataR["ok"] == true) {
+                                                 
+                                        LoadingIndicatorDialog().dismiss();
+                                          if(mounted){
+                                            QuickAlert.show(
+                                            context: context,
+                                            title: "Enviado",
+                                            text: dataR["message"],
+                                            type: QuickAlertType.success,
+                                          );
+                                        }
                                         setState(() {
                                           item2=getSolicitudes();
                                         });
-                                                    
-                                        LoadingIndicatorDialog().dismiss();
-                                        QuickAlert.show(
-                                          context: context,
-                                          title: "Enviado",
-                                          text: dataR["message"],
-                                          type: QuickAlertType.success,
-                                        );
                                       } else {
                                         LoadingIndicatorDialog().dismiss();
                                         QuickAlert.show(
