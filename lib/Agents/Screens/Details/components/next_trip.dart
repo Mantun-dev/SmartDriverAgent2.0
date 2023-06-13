@@ -26,6 +26,7 @@ import 'package:quickalert/quickalert.dart';
 //import 'package:sweetalert/sweetalert.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../components/ConfirmationDialog.dart';
 import '../../../../components/progress_indicator.dart';
 
 class NextTripScreen extends StatefulWidget {
@@ -47,7 +48,7 @@ class _NextTripScreenState extends State<NextTripScreen>
   late Future<DataAgent> itemx;
   final prefs = new PreferenciasUsuario();
   //variable para comentario
-  String comment = ' ';
+  String comment = '';
 
   //variables para las condiciones
   String condition = 'Confirmed';
@@ -117,6 +118,7 @@ class _NextTripScreenState extends State<NextTripScreen>
   }
 
   Future<List<dynamic>> getSolicitudes() async {
+    totalSolicitudes=0;
     Map data = {
       "agentId": prefs.usuarioId.toString()
     };
@@ -126,9 +128,13 @@ class _NextTripScreenState extends State<NextTripScreen>
     var dataR = json.decode(response.body);
 
     if (dataR["ok"] == true) {
-      setState(() {
-        totalSolicitudes = dataR["requests"].length;
-      });
+      for(var i = 0; i<dataR["requests"].length;i++){
+        if(dataR["requests"][i]["confirmation"]==null){
+          totalSolicitudes++;
+        }
+      }
+      print(totalSolicitudes);
+      setState(() {});
       return dataR["requests"]; // Retornar la lista de la propiedad "data"
     } else {
       return []; // Retorna una lista vacía
@@ -496,9 +502,9 @@ class _NextTripScreenState extends State<NextTripScreen>
               ),             
             viajesProceso==false?
               Container(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 14.0, left: 14, right: 14),
+                  padding: const EdgeInsets.only(bottom: 14.0),
                   child: Column(
                     children: [
                       Align(
@@ -2587,105 +2593,167 @@ class _NextTripScreenState extends State<NextTripScreen>
                   children: [
                     InkWell(
                       onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            String comment = '';
-                      
-                            return AlertDialog(
-                              backgroundColor: backgroundColor,
-                              title: Text('Nos encantaría conocer tu razón', style: TextStyle(color: Colors.white)),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  TextField(
-                                    maxLines: null,
-                                    onChanged: (value) {
-                                      comment = value;
-                                    },
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                    decoration: InputDecoration(
-                                      hintText: 'Ingresa tu comentario aquí',
-                                      hintStyle: TextStyle(
-                                        color: Colors.white54,
-                                      ),
-                                      // Otros atributos de decoración
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('Cerrar', style: TextStyle(color: Colors.white)),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    if (comment.isEmpty) {
-                                      Navigator.of(context).pop();
-                                      QuickAlert.show(
-                                        context: context,
-                                        title: "Comentario Requerido",
-                                        text: "Debes ingresar un comentario antes de enviar",
-                                        type: QuickAlertType.error
-                                      );          
-                                    } else {
-                                      
-                                      LoadingIndicatorDialog().show(context);
-                                      Map data = {
-                                        "agentForTravelId": tripData["agentForTravelId"].toString(),
-                                        "confirmation": "0",
-                                        "agentComment": comment
-                                      };
-                                      print(data);
-                                      http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/confirmTransportation'), body: data);
-                                      print(response.body);
-                      
-                                      var dataR = json.decode(response.body);
+                        showGeneralDialog(
+                                            barrierColor: Colors.black.withOpacity(0.5),
+                                            transitionBuilder: (context, a1, a2, widget) {
+                                              return Transform.scale(
+                                                scale: a1.value,
+                                                child: Opacity(
+                                                  opacity: a1.value,
+                                                  child: AlertDialog(
+                                                    backgroundColor: Colors.transparent,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(16.0),
+                                                    ),
+                                                    content: Container(
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius: BorderRadius.circular(16.0),
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        children: [
+                                                          Container(
+                                                            decoration: BoxDecoration(
+                                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                                              borderRadius: BorderRadius.only(
+                                                                topLeft: Radius.circular(16.0),
+                                                                topRight: Radius.circular(16.0),
+                                                              ),
+                                                            ),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(20.0),
+                                                              child: Text(
+                                                                'Nos encantaría conocer tu razón',
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontWeight: FontWeight.normal,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.all(20.0),
+                                                            child: TextField(
+                                                              onChanged: (value) => comment=value,
+                                                              maxLines: null, // Permite que el texto se ajuste automáticamente a varias líneas
+                                                              textAlignVertical: TextAlignVertical.top, // Alinea el texto al principio del TextField
+                                                              decoration: InputDecoration(
+                                                                labelText: 'Escriba aquí',
+                                                                labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
+                                                                border: OutlineInputBorder( // Establece un borde al TextField
+                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          SizedBox(height: 16),
+                                                          Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                            children: [
+                                                              OutlinedButton(
+                                                                style: OutlinedButton.styleFrom(
+                                                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                  foregroundColor: Colors.white,
+                                                                  side: BorderSide(color: Colors.black),
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(12.0),
+                                                                  ),
+                                                                ),
+                                                                onPressed: () {
+                                                                  Navigator.pop(context);
+                                                                },
+                                                                child: Text(
+                                                                  'Cancelar',
+                                                                  style: TextStyle(color: Colors.black),
+                                                                ),
+                                                              ),
+                
+                                                              OutlinedButton(
+                                                                style: OutlinedButton.styleFrom(
+                                                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                  backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(12.0),
+                                                                  ),
+                                                                ),
+                                                                onPressed: () async{
+                                                                  if (comment.isEmpty || comment=='') {
+                                                                    Navigator.of(context).pop();
+                                                                    QuickAlert.show(
+                                                                      context: context,
+                                                                      title: "Comentario Requerido",
+                                                                      text: "Debes ingresar un comentario antes de enviar",
+                                                                      type: QuickAlertType.error
+                                                                    );  
+                                                                    return;        
+                                                                  } else {
+                                                                    
+                                                                    LoadingIndicatorDialog().show(context);
+                                                                    Map data = {
+                                                                      "agentForTravelId": tripData["agentForTravelId"].toString(),
+                                                                      "confirmation": "0",
+                                                                      "agentComment": comment
+                                                                    };
+                                                                    print(data);
+                                                                    http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/confirmTransportation'), body: data);
+                                                                    print(response.body);
+                                                    
+                                                                    var dataR = json.decode(response.body);
 
-                                      
-                                      if (dataR["ok"] == true) {
-                                          LoadingIndicatorDialog().dismiss();    
-                                          Navigator.of(context).pop();   
-                                          QuickAlert.show(
+                                                                    
+                                                                    if (dataR["ok"] == true) {
+                                                                        LoadingIndicatorDialog().dismiss();    
+                                                                        Navigator.of(context).pop();   
+                                                                        QuickAlert.show(
+                                                                          context: context,
+                                                                          title: "Enviado",
+                                                                          text: dataR["message"],
+                                                                          type: QuickAlertType.success,
+                                                                        );
+                                                                      setState(() {
+                                                                        comment = '';
+                                                                        item2=getSolicitudes();
+                                                                      });
+                                                                    } else {
+                                                                      LoadingIndicatorDialog().dismiss();
+                                                                      Navigator.of(context).pop();
+                                                                      QuickAlert.show(
+                                                                        context: context,
+                                                                        title: "Error",
+                                                                        text: dataR["message"],
+                                                                        type: QuickAlertType.error,
+                                                                      );
+                                                                    }
+                                                                    
+                                                                  }
+                                                                },
+                                                                child: Text(
+                                                                  'Enviar',
+                                                                  style: TextStyle(color: Colors.white),
+                                                                ),
+                                                              ),
+                                                              
+                                                            ],
+                                                          ),
+                                                          SizedBox(height: 12)
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                
+                                                ),
+                                              );
+                                            },
+                                            transitionDuration: Duration(milliseconds: 200),
+                                            barrierDismissible: true,
+                                            barrierLabel: '',
                                             context: context,
-                                            title: "Enviado",
-                                            text: dataR["message"],
-                                            type: QuickAlertType.success,
+                                            pageBuilder: (context, animation1, animation2) {
+                                              return widget;
+                                            },
                                           );
-                                        setState(() {
-                                          item2=getSolicitudes();
-                                        });
-                                      } else {
-                                        LoadingIndicatorDialog().dismiss();
-                                        Navigator.of(context).pop();
-                                        QuickAlert.show(
-                                          context: context,
-                                          title: "Error",
-                                          text: dataR["message"],
-                                          type: QuickAlertType.error,
-                                        );
-                                      }
-                                      
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.transparent,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      side: BorderSide(color: Colors.black),
-                                    ),
-                                  ),
-                                  child: Text('Enviar'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -2707,40 +2775,57 @@ class _NextTripScreenState extends State<NextTripScreen>
                     SizedBox(width: 30),
                     InkWell(
                       onTap: () async{
+                        final ConfirmationLoadingDialog loadingDialog = ConfirmationLoadingDialog();
+                        ConfirmationDialog confirmationDialog = ConfirmationDialog();
+                        confirmationDialog.show(
+                          context,
+                          title: '¿Desea confirmar la solicitud?',
+                          type: "0",
+                          onConfirm: () async {
+                            loadingDialog.show(context);
 
-                        LoadingIndicatorDialog().show(context);
-                                                
-                                                Map data = {
-                                                  "agentForTravelId":tripData["agentForTravelId"].toString(), 
-                                                  "confirmation": "1",
-                                                  "agentComment": "null"
-                                                  };
-                                  
-                                                  http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/confirmTransportation'), body: data);
-                                                  print(response.body);
-                                  
-                                                  var dataR = json.decode(response.body);
-                                  
-                                                  if(dataR["ok"]==true){
-                                                    setState(() {
-                                                      item2=getSolicitudes();
-                                                    });
-                                                    LoadingIndicatorDialog().dismiss();
-                                                    QuickAlert.show(
-                                                      context: context,
-                                                      title: "Enviado",
-                                                      text: dataR["message"],
-                                                      type: QuickAlertType.success
-                                                    );
-                                                  }else{
-                                                    LoadingIndicatorDialog().dismiss();
-                                                    QuickAlert.show(
-                                                      context: context,
-                                                      title: "Error",
-                                                      text: dataR["message"],
-                                                      type: QuickAlertType.error
-                                                    );
-                                                  }
+                            Map data = {
+                              "agentForTravelId": tripData["agentForTravelId"].toString(),
+                              "confirmation": "1",
+                              "agentComment": "null",
+                            };
+
+                            http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/confirmTransportation'), body: data);
+                            print(response.body);
+
+                            var dataR = json.decode(response.body);
+
+                            if (dataR["ok"] == true) {
+                              setState(() {
+                                item2 = getSolicitudes();
+                              });
+                              loadingDialog.dismiss();
+                              confirmationDialog.dismiss();
+                              QuickAlert.show(
+                                context: context,
+                                title: "Enviado",
+                                text: dataR["message"],
+                                type: QuickAlertType.success,
+                              );
+                            } else {
+                              loadingDialog.dismiss();
+                              confirmationDialog.dismiss();
+                              QuickAlert.show(
+                                context: context,
+                                title: "Error",
+                                text: dataR["message"],
+                                type: QuickAlertType.error,
+                              );
+                            }
+                            
+                          },
+                          onCancel: () {
+
+                          },
+                        );
+
+
+                      
                       },
                       child: Container(
                         decoration: BoxDecoration(
