@@ -2634,7 +2634,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         type: QuickAlertType.error
                                       );          
                                     } else {
-                                      Navigator.of(context).pop();
+                                      
                                       LoadingIndicatorDialog().show(context);
                                       Map data = {
                                         "agentForTravelId": tripData["agentForTravelId"].toString(),
@@ -2646,23 +2646,23 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       print(response.body);
                       
                                       var dataR = json.decode(response.body);
-                      
+
+                                      
                                       if (dataR["ok"] == true) {
-                                                 
-                                        LoadingIndicatorDialog().dismiss();
-                                          if(mounted){
-                                            QuickAlert.show(
+                                          LoadingIndicatorDialog().dismiss();    
+                                          Navigator.of(context).pop();   
+                                          QuickAlert.show(
                                             context: context,
                                             title: "Enviado",
                                             text: dataR["message"],
                                             type: QuickAlertType.success,
                                           );
-                                        }
                                         setState(() {
                                           item2=getSolicitudes();
                                         });
                                       } else {
                                         LoadingIndicatorDialog().dismiss();
+                                        Navigator.of(context).pop();
                                         QuickAlert.show(
                                           context: context,
                                           title: "Error",
@@ -2670,6 +2670,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                           type: QuickAlertType.error,
                                         );
                                       }
+                                      
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
