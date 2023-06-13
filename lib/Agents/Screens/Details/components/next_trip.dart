@@ -1460,6 +1460,10 @@ Widget buildTripCard(Map<String, dynamic> tripData) {
                         text: dataR["message"],
                         type: QuickAlertType.success
                       );
+
+                      setState(() {
+                        item2=getSolicitudes();
+                      });
                     }else{
                       QuickAlert.show(
                         context: context,
@@ -1552,14 +1556,19 @@ Widget buildTripCard(Map<String, dynamic> tripData) {
                                     print(response.body);
 
                                     var dataR = json.decode(response.body);
-
+                                    Navigator.pop(context);
                                     if(dataR["ok"]==true){
+                                      
                                       QuickAlert.show(
                                         context: context,
                                         title: "Enviado",
                                         text: dataR["message"],
                                         type: QuickAlertType.success
                                       );
+
+                                      setState(() {
+                                          item2=getSolicitudes();
+                                      });
                                     }else{
                                       QuickAlert.show(
                                         context: context,
