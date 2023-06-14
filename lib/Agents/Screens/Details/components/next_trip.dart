@@ -390,102 +390,97 @@ class _NextTripScreenState extends State<NextTripScreen>
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                 margin: const EdgeInsets.all(20),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Stack(
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: viajesProceso ? backgroundColor : Colors.transparent,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                viajesProceso = true;
-                              });
-                            },
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Viajes programados',
-                                  style: TextStyle(
-                                    color: Colors.white
-                                  ),
-                                ),
-                
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 5),
-                                    padding: const EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: viajesProceso ? Colors.white: Colors.red,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Text(
-                                      totalViajes.toString(),
-                                      style: TextStyle(
-                                        color: !viajesProceso ? Colors.white: Colors.black,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 10,
-                                      ),
-                                    ),
-                                  ),
-                              ],
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: viajesProceso ? backgroundColor : Colors.transparent,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                        ],
-                      ),
-                      const SizedBox(width: 20),
-                      Stack(
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: viajesProceso ? Colors.transparent : backgroundColor,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                          onPressed: () {
+                            setState(() {
+                              viajesProceso = true;
+                            });
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                'Viajes programados',
+                                style: TextStyle(
+                                  color: Colors.white
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                viajesProceso = false;
-                              });
-                            },
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Solicitudes',
-                                  style: TextStyle(
-                                    color:Colors.white,
+                                      
+                                Container(
+                                  margin: const EdgeInsets.only(left: 5),
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: viajesProceso ? Colors.white: Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Text(
+                                    totalViajes.toString(),
+                                    style: TextStyle(
+                                      color: !viajesProceso ? Colors.white: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 10,
+                                    ),
                                   ),
                                 ),
-                
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 5),
-                                    padding: const EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: !viajesProceso ? Colors.white: Colors.red,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Text(
-                                      totalSolicitudes.toString(),
-                                      style: TextStyle(
-                                        color: viajesProceso ? Colors.white: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10,
-                                      ),
-                                    ),
-                                  ),
-                              ],
+                            ],
+                          ),
+                        ),
+                  
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: viajesProceso ? Colors.transparent : backgroundColor,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                          onPressed: () {
+                            setState(() {
+                              viajesProceso = false;
+                            });
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                'Solicitudes',
+                                style: TextStyle(
+                                  color:Colors.white,
+                                ),
+                              ),
+                                      
+                                Container(
+                                  margin: const EdgeInsets.only(left: 5),
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: !viajesProceso ? Colors.white: Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Text(
+                                    totalSolicitudes.toString(),
+                                    style: TextStyle(
+                                      color: viajesProceso ? Colors.white: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                ),
               ),
       viajesProceso==false?
         Padding(
@@ -505,13 +500,15 @@ class _NextTripScreenState extends State<NextTripScreen>
                       ),
                     ),
                     SizedBox(width: 5),
-                    Text(
-                      "Nos gustaría saber si necesitarás transporte" ,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15.0,
+                    Flexible(
+                      child: Text(
+                        "Nos gustaría saber si necesitarás transporte" ,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15.0,
+                        ),
                       ),
                     ),
                   ],
