@@ -2504,6 +2504,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                     ],
                   ),
               if (tripData["confirmation"] != true && tripData["confirmation"] != false)
+                tripData["systemComment"]==null?
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -2763,7 +2764,31 @@ class _NextTripScreenState extends State<NextTripScreen>
 
                   
                   ],
-                ),
+                ) :
+                Row(
+                    children: [
+                      Container(
+                        width: 18,
+                        height: 18,
+                         child: SvgPicture.asset(
+                          "assets/icons/advertencia.svg",
+                          color: Color.fromRGBO(40, 93, 169, 1),
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Flexible(
+                        child: Text(
+                          'El tiempo de confirmación ha expirado',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
             ],
           ),
         ),
