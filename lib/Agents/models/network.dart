@@ -63,6 +63,7 @@ Future<TripsList> fetchTrips() async {
 
   if (response.statusCode == 200) {
     final trip = TripsList.fromJson(json.decode(response.body));
+    print('$ip/api/trips/${prefs.nombreUsuario}');
     print(response.body);
     return trip;
   } else {
