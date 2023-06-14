@@ -297,12 +297,14 @@ class _DataTableExample extends State<ProfilePage> {
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      'Acceso autorizado: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
+                                    Flexible(
+                                      child: Text(
+                                        'Acceso autorizado: ',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -327,20 +329,14 @@ class _DataTableExample extends State<ProfilePage> {
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      'No. empleado: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${abc.data!.agentUser}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.normal,
+                                    Flexible(
+                                      child: Text(
+                                        'No. empleado: ${abc.data!.agentUser}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -364,20 +360,14 @@ class _DataTableExample extends State<ProfilePage> {
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      'Usuario: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${abc.data!.agentUser}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.normal,
+                                    Flexible(
+                                      child: Text(
+                                        'Usuario: ${abc.data!.agentUser}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -401,20 +391,14 @@ class _DataTableExample extends State<ProfilePage> {
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      'Teléfono: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${abc.data!.agentPhone}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.normal,
+                                    Flexible(
+                                      child: Text(
+                                        'Teléfono: ${abc.data!.agentPhone}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -438,20 +422,14 @@ class _DataTableExample extends State<ProfilePage> {
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      'Email: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${abc.data!.agentEmail}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.normal,
+                                    Flexible(
+                                      child: Text(
+                                        'Email: ${abc.data!.agentEmail}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -483,12 +461,14 @@ class _DataTableExample extends State<ProfilePage> {
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
-                                    Text(
-                                      '${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
+                                    Flexible(
+                                      child: Text(
+                                        '${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -516,20 +496,14 @@ class _DataTableExample extends State<ProfilePage> {
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      'Acceso autorizado: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${abc.data!.neighborhoodReferencePoint}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.normal,
+                                    Flexible(
+                                      child: Text(
+                                        'Acceso autorizado: ${abc.data!.neighborhoodReferencePoint}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -761,20 +735,14 @@ class _DataTableExample extends State<ProfilePage> {
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      'No. empleado: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${abc.data!.agentUser}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.normal,
+                                    Flexible(
+                                      child: Text(
+                                        'No. empleado: ${abc.data!.agentUser}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -831,20 +799,14 @@ class _DataTableExample extends State<ProfilePage> {
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      'Cuenta: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${abc.data!.countName}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.normal,
+                                    Flexible(
+                                      child: Text(
+                                        'Cuenta: ${abc.data!.countName}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -869,20 +831,14 @@ class _DataTableExample extends State<ProfilePage> {
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      'Usuario: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${abc.data!.agentUser}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.normal,
+                                    Flexible(
+                                      child: Text(
+                                        'Usuario: ${abc.data!.agentUser}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -906,20 +862,14 @@ class _DataTableExample extends State<ProfilePage> {
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      'Teléfono: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${abc.data!.agentPhone}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.normal,
+                                    Flexible(
+                                      child: Text(
+                                        'Teléfono: ${abc.data!.agentPhone}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -943,20 +893,14 @@ class _DataTableExample extends State<ProfilePage> {
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      'Email: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${abc.data!.agentEmail}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.normal,
+                                    Flexible(
+                                      child: Text(
+                                        'Email: ${abc.data!.agentEmail}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -988,12 +932,14 @@ class _DataTableExample extends State<ProfilePage> {
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
-                                    Text(
-                                      '${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
+                                    Flexible(
+                                      child: Text(
+                                        '${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -1020,20 +966,14 @@ class _DataTableExample extends State<ProfilePage> {
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      'Acceso autorizado: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${abc.data!.neighborhoodReferencePoint}',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.normal,
+                                    Flexible(
+                                      child: Text(
+                                        'Acceso autorizado: ${abc.data!.neighborhoodReferencePoint}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -1223,7 +1163,7 @@ class _DataTableExample extends State<ProfilePage> {
                                               } else {
                                                 return CircularProgressIndicator();
                                               }
-      
+                  
                                               return CircularProgressIndicator();
                                             }))
                                       ]),
@@ -1555,7 +1495,7 @@ class _DataTableExample extends State<ProfilePage> {
                                               } else {
                                                 return CircularProgressIndicator();
                                               }
-      
+                  
                                               return CircularProgressIndicator();
                                             }))
                                       ]),

@@ -122,32 +122,34 @@ class _ChatsListState extends State<ChatsList> {
 
           Padding(
             padding: EdgeInsets.only(top: 16, left: 16, right: 16),
-            child: TextField(
-              onChanged:(value) {
-                listaChats=listaChats2;
-                setState(() {
-
-                  if(value.isNotEmpty){
-                  listaB = listaChats.where((salas) => salas['NombreM'].toString().toLowerCase().contains(value.toLowerCase())).toList();
-                  listaChats = listaB;
-                }
-                      
-                });
-              },
-              decoration: InputDecoration(
-                hintText: "Buscar...",
-                hintStyle: TextStyle(color: Colors.grey.shade600),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: Colors.grey.shade600,
-                  size: 20,
+            child: Material(
+              color: Colors.transparent,
+              elevation: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(241, 239, 239, 1),
+                  borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(color: Color.fromRGBO(241, 239, 239, 1))
                 ),
-                filled: true,
-                fillColor: Colors.grey.shade100,
-                contentPadding: EdgeInsets.all(8),
-                enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: Colors.grey.shade100)),
+                child: TextField(
+                  onChanged:(value) {
+                    listaChats=listaChats2;
+                    setState(() {
+          
+                      if(value.isNotEmpty){
+                        listaB = listaChats.where((salas) => salas['NombreM'].toString().toLowerCase().contains(value.toLowerCase())).toList();
+                        listaChats = listaB;
+                      }
+                        
+                    });
+                  },
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search, color: Color.fromRGBO(40, 93, 169, 1),),
+                    hintText: 'Buscar',
+                    hintStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
+                    border: InputBorder.none,
+                  ),
+                ),
               ),
             ),
           ),

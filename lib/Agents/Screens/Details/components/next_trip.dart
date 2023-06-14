@@ -403,101 +403,103 @@ class _NextTripScreenState extends State<NextTripScreen>
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Stack(
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: viajesProceso ? Color.fromRGBO(40, 93, 169, 1) : Colors.transparent,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              viajesProceso = true;
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              Text(
-                                'Viajes programados',
-                                style: TextStyle(
-                                  color: viajesProceso ? Colors.white: Colors.black,
-                                ),
+                child: Flexible(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Stack(
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: viajesProceso ? Color.fromRGBO(40, 93, 169, 1) : Colors.transparent,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
                               ),
-
-                                Container(
-                                  margin: const EdgeInsets.only(left: 5),
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    color: viajesProceso ? Colors.white: Color.fromRGBO(40, 93, 169, 1),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Text(
-                                    totalViajes.toString(),
-                                    style: TextStyle(
-                                      color: !viajesProceso ? Colors.white: Color.fromRGBO(40, 93, 169, 1),
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 10,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(width: 20),
-                    Stack(
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: viajesProceso ? Colors.transparent : Color.fromRGBO(40, 93, 169, 1),
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
                             ),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              viajesProceso = false;
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              Text(
-                                'Solicitudes',
-                                style: TextStyle(
-                                  color: !viajesProceso ? Colors.white: Colors.black,
-                                ),
-                              ),
-
-                                Container(
-                                  margin: const EdgeInsets.only(left: 5),
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    color: !viajesProceso ? Colors.white: Color.fromRGBO(40, 93, 169, 1),
-                                    shape: BoxShape.circle,
+                            onPressed: () {
+                              setState(() {
+                                viajesProceso = true;
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Viajes programados',
+                                  style: TextStyle(
+                                    color: viajesProceso ? Colors.white: Colors.black,
                                   ),
-                                  child: Text(
-                                    totalSolicitudes.toString(),
-                                    style: TextStyle(
+                                ),
+                
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 5),
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
                                       color: viajesProceso ? Colors.white: Color.fromRGBO(40, 93, 169, 1),
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Text(
+                                      totalViajes.toString(),
+                                      style: TextStyle(
+                                        color: !viajesProceso ? Colors.white: Color.fromRGBO(40, 93, 169, 1),
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 10,
+                                      ),
                                     ),
                                   ),
-                                ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                      const SizedBox(width: 20),
+                      Stack(
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: viajesProceso ? Colors.transparent : Color.fromRGBO(40, 93, 169, 1),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                viajesProceso = false;
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Solicitudes',
+                                  style: TextStyle(
+                                    color: !viajesProceso ? Colors.white: Colors.black,
+                                  ),
+                                ),
+                
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 5),
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: !viajesProceso ? Colors.white: Color.fromRGBO(40, 93, 169, 1),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Text(
+                                      totalSolicitudes.toString(),
+                                      style: TextStyle(
+                                        color: viajesProceso ? Colors.white: Color.fromRGBO(40, 93, 169, 1),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),             
             viajesProceso==false?
@@ -661,20 +663,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 ),
                               ),
                               SizedBox(width: 5),
-                              Text(
-                                'Viaje: ',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Text(
-                                '${abc.data?.trips[index].tripId}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.normal,
+                              Flexible(
+                                child: Text(
+                                  'Viaje: ${abc.data?.trips[index].tripId}',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ],
@@ -698,20 +694,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 ),
                               ),
                               SizedBox(width: 5),
-                              Text(
-                                'Fecha: ',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Text(
-                                '${abc.data?.trips[index].fecha}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.normal,
+                              Flexible(
+                                child: Text(
+                                  'Fecha: ${abc.data?.trips[index].fecha}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ],
@@ -735,20 +725,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 ),
                               ),
                               SizedBox(width: 5),
-                              Text(
-                                'Hora: ',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Text(
-                                '${abc.data?.trips[index].horaEntrada}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
+                              Flexible(
+                                child: Text(
+                                  'Hora: ${abc.data?.trips[index].horaEntrada}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ],
@@ -773,20 +757,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 ),
                               ),
                               SizedBox(width: 5),
-                              Text(
-                                'Motorista: ',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Text(
-                                '${abc.data?.trips[index].conductor}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
+                              Flexible(
+                                child: Text(
+                                  'Motorista: ${abc.data?.trips[index].conductor}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ],
@@ -811,20 +789,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 ),
                               ),
                               SizedBox(width: 5),
-                              Text(
-                                'Teléfono: ',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Text(
-                                '${abc.data?.trips[index].telefono}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
+                              Flexible(
+                                child: Text(
+                                  'Teléfono: ${abc.data?.trips[index].telefono}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ],
@@ -849,20 +821,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 ),
                               ),
                               SizedBox(width: 5),
-                              Text(
-                                'Dirección: ',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              Text(
-                                '${abc.data?.trips[index].direccion}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.normal,
+                              Flexible(
+                                child: Text(
+                                  'Dirección: ${abc.data?.trips[index].direccion}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ],
@@ -887,21 +853,13 @@ class _NextTripScreenState extends State<NextTripScreen>
                                   ),
                                 ),
                                 SizedBox(width: 5),
-                                Text(
-                                  'Acceso autorizado: ',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
                                 Flexible(
                                   child: Text(
-                                    '${abc.data?.trips[index].neighborhoodReferencePoint}',
+                                    'Acceso autorizado: ${abc.data?.trips[index].neighborhoodReferencePoint}',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.normal,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                 ),
@@ -1504,20 +1462,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                           ),
                                         ),
                                         SizedBox(width: 5),
-                                        Text(
-                                          'Viaje: ',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        Text(
-                                          '${abc.data?.trips[index].tripId}',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.normal,
+                                        Flexible(
+                                          child: Text(
+                                            'Viaje: ${abc.data?.trips[index].tripId}',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -1534,20 +1486,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                           ),
                                         ),
                                         SizedBox(width: 5),
-                                        Text(
-                                          'Fecha: ',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        Text(
-                                          '${abc.data?.trips[index].fecha}',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.normal,
+                                        Flexible(
+                                          child: Text(
+                                            'Fecha: ${abc.data?.trips[index].fecha}',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -1573,20 +1519,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      'Hora: ',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${abc.data?.trips[index].horaEntrada}',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.normal,
+                                    Flexible(
+                                      child: Text(
+                                        'Hora: ${abc.data?.trips[index].horaEntrada}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -1611,20 +1551,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      'Motorista: ',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${abc.data?.trips[index].conductor}',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.normal,
+                                    Flexible(
+                                      child: Text(
+                                        'Motorista: ${abc.data?.trips[index].conductor}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -1649,20 +1583,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      'Teléfono: ',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${abc.data?.trips[index].telefono}',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.normal,
+                                    Flexible(
+                                      child: Text(
+                                        'Teléfono: ${abc.data?.trips[index].telefono}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -1687,20 +1615,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Text(
-                                      'Dirección: ',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${abc.data?.trips[index].direccion}',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.normal,
+                                    Flexible(
+                                      child: Text(
+                                        'Dirección: ${abc.data?.trips[index].direccion}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -1725,21 +1647,13 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         ),
                                       ),
                                       SizedBox(width: 5),
-                                      Text(
-                                        'Acceso autorizado: ',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
                                       Flexible(
                                         child: Text(
-                                          '${abc.data?.trips[index].neighborhoodReferencePoint}',
+                                          'Acceso autorizado: ${abc.data?.trips[index].neighborhoodReferencePoint}',
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: Colors.black,
-                                            fontWeight: FontWeight.normal,
+                                            fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                       ),
@@ -2440,25 +2354,27 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ),
                       ),
                       SizedBox(width: 5),
-                      Text.rich(
-                        TextSpan(
-                          text: 'Hora: ',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15.0,
-                          ),
-                          children: <InlineSpan>[
-                            TextSpan(
-                              text: '${tripData["hour"]}',
-                              style: TextStyle(
-                                color: Color.fromRGBO(40, 169, 83, 1),
-                                fontWeight: FontWeight.bold,
-                              ),
+                      Flexible(
+                        child: Text.rich(
+                          TextSpan(
+                            text: 'Hora: ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15.0,
                             ),
-                          ],
+                            children: <InlineSpan>[
+                              TextSpan(
+                                text: '${tripData["hour"]}',
+                                style: TextStyle(
+                                  color: Color.fromRGBO(40, 169, 83, 1),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          textAlign: TextAlign.left,
                         ),
-                        textAlign: TextAlign.left,
                       )
                     ],
                   ),

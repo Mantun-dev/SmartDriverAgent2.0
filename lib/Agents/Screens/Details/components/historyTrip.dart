@@ -144,20 +144,14 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                                   ),
                                                 ),
                                                 SizedBox(width: 5),
-                                                Text(
-                                                  'Viaje: ',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  '${abc.data![index].tripId}',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.normal,
+                                                Flexible(
+                                                  child: Text(
+                                                    'Viaje: ${abc.data![index].tripId}',
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
                                                   ),
                                                 ),
                                               ],
@@ -174,22 +168,17 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                                   ),
                                                 ),
                                                 SizedBox(width: 5),
-                                                Text(
-                                                  'Fecha: ',
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.w500,
+                                                Flexible(
+                                                  child: Text(
+                                                    'Fecha: ${abc.data![index].fecha}',
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.w500,
+                                                    ),
                                                   ),
                                                 ),
-                                                Text(
-                                                  '${abc.data![index].fecha}',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.normal,
-                                                  ),
-                                                ),
+  
                                               ],
                                             ),
                                           ],
@@ -213,22 +202,17 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                         ),
                                       ),
                                       SizedBox(width: 5),
-                                      Text(
-                                        'Estado: ',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
+                                      Flexible(
+                                        child: Text(
+                                          'Estado: ${abc.data![index].estado}',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
                                       ),
-                                      Text(
-                                        '${abc.data![index].estado}',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
+
                                     ],
                                   ),
                                 ),
@@ -289,22 +273,17 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                         ),
                                       ),
                                       SizedBox(width: 5),
-                                      Text(
-                                        'Hora de salida : ',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
+                                      Flexible(
+                                        child: Text(
+                                          'Hora de salida: ???',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
                                       ),
-                                      Text(
-                                        '???',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
+          
                                     ],
                                   ),
                                 ),
@@ -327,22 +306,17 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                         ),
                                       ),
                                       SizedBox(width: 5),
-                                      Text(
-                                        'Motorista : ',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
+                                      Flexible(
+                                        child: Text(
+                                          'Motorista: ${abc.data![index].conductor}',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
                                       ),
-                                      Text(
-                                        '${abc.data![index].conductor}',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
+
                                     ],
                                   ),
                                 ),
@@ -365,20 +339,14 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                         ),
                                       ),
                                       SizedBox(width: 5),
-                                      Text(
-                                        'Teléfono: ',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      Text(
-                                        '${abc.data![index].telefono}',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.normal,
+                                      Flexible(
+                                        child: Text(
+                                          'Teléfono: ${abc.data![index].telefono}',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -403,20 +371,14 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                         ),
                                       ),
                                       SizedBox(width: 5),
-                                      Text(
-                                        'Dirección: ',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      Text(
-                                        '${abc.data![index].direccion}',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.normal,
+                                      Flexible(
+                                        child: Text(
+                                          'Dirección: ${abc.data![index].direccion}',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -441,20 +403,14 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                         ),
                                       ),
                                       SizedBox(width: 5),
-                                      Text(
-                                        'Acceso autorizado: ',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      Text(
-                                        '???',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.normal,
+                                      Flexible(
+                                        child: Text(
+                                          'Acceso autorizado: ???',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -479,22 +435,17 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                         ),
                                       ),
                                       SizedBox(width: 5),
-                                      Text(
-                                        'Hora de encuentro: ',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
+                                      Flexible(
+                                        child: Text(
+                                          'Hora de encuentro: ${abc.data![index].hora}',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
                                       ),
-                                      Text(
-                                        '${abc.data![index].hora}',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
+
                                     ],
                                   ),
                                 ),
