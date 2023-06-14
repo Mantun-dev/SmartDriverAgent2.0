@@ -403,100 +403,93 @@ class _NextTripScreenState extends State<NextTripScreen>
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
-                child: Flexible(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Stack(
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: viajesProceso ? Color.fromRGBO(40, 93, 169, 1) : Colors.transparent,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: viajesProceso ? Color.fromRGBO(40, 93, 169, 1) : Colors.transparent,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            viajesProceso = true;
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              'Viajes programados',
+                              style: TextStyle(
+                                color: viajesProceso ? Colors.white: Colors.black,
                               ),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                viajesProceso = true;
-                              });
-                            },
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Viajes programados',
+                  
+                              Container(
+                                margin: const EdgeInsets.only(left: 5),
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: viajesProceso ? Colors.white: Color.fromRGBO(40, 93, 169, 1),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Text(
+                                  totalViajes.toString(),
                                   style: TextStyle(
-                                    color: viajesProceso ? Colors.white: Colors.black,
+                                    color: !viajesProceso ? Colors.white: Color.fromRGBO(40, 93, 169, 1),
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 10,
                                   ),
                                 ),
-                
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 5),
-                                    padding: const EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: viajesProceso ? Colors.white: Color.fromRGBO(40, 93, 169, 1),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Text(
-                                      totalViajes.toString(),
-                                      style: TextStyle(
-                                        color: !viajesProceso ? Colors.white: Color.fromRGBO(40, 93, 169, 1),
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 10,
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
-                        ],
+                              ),
+                          ],
+                        ),
                       ),
-                      const SizedBox(width: 20),
-                      Stack(
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: viajesProceso ? Colors.transparent : Color.fromRGBO(40, 93, 169, 1),
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                     
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: viajesProceso ? Colors.transparent : Color.fromRGBO(40, 93, 169, 1),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            viajesProceso = false;
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              'Solicitudes',
+                              style: TextStyle(
+                                color: !viajesProceso ? Colors.white: Colors.black,
                               ),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                viajesProceso = false;
-                              });
-                            },
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Solicitudes',
+                  
+                              Container(
+                                margin: const EdgeInsets.only(left: 5),
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: !viajesProceso ? Colors.white: Color.fromRGBO(40, 93, 169, 1),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Text(
+                                  totalSolicitudes.toString(),
                                   style: TextStyle(
-                                    color: !viajesProceso ? Colors.white: Colors.black,
+                                    color: viajesProceso ? Colors.white: Color.fromRGBO(40, 93, 169, 1),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 10,
                                   ),
                                 ),
-                
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 5),
-                                    padding: const EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: !viajesProceso ? Colors.white: Color.fromRGBO(40, 93, 169, 1),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Text(
-                                      totalSolicitudes.toString(),
-                                      style: TextStyle(
-                                        color: viajesProceso ? Colors.white: Color.fromRGBO(40, 93, 169, 1),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10,
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
-                        ],
+                              ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
