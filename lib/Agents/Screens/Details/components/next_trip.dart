@@ -156,7 +156,7 @@ class _NextTripScreenState extends State<NextTripScreen>
   Future<TripsList> fetchTripsButton() async {
     http.Response response =
         await http.get(Uri.parse('$ip/api/trips/${prefs.nombreUsuario}'));
-    print(response.body);
+  
     if (response.statusCode == 200) {
       final trip = TripsList.fromJson(json.decode(response.body));
       for (var i = 0; i < trip.trips.length; i++) {
@@ -314,7 +314,7 @@ class _NextTripScreenState extends State<NextTripScreen>
       'commentPunctualityB': comment5,
       'commentVehicleStatus': comment6,
     };
-    print(data);
+
     //api rating
     http.Response response =
         await http.post(Uri.parse('https://admin.smtdriver.com/registerRating'), body: data);
@@ -386,95 +386,101 @@ class _NextTripScreenState extends State<NextTripScreen>
                     ),
                 margin: const EdgeInsets.all(20),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [                             
-                    Stack(
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.transparent,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              viajesProceso = true;
-                            });
-                          },
-                          child: const Text(
-                            'Viajes programados',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          right: 0,
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Text(
-                              totalViajes.toString(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Stack(
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: viajesProceso ? backgroundColor : Colors.transparent,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                  
-                  Stack(
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.transparent,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            viajesProceso = false;
-                          });
-                        },
-                        child: Text(
-                          'Solicitudes',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        right: 0,
-                        child: Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Text(
-                            totalSolicitudes.toString(),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                            onPressed: () {
+                              setState(() {
+                                viajesProceso = true;
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Viajes programados',
+                                  style: TextStyle(
+                                    color: Colors.white
+                                  ),
+                                ),
+                
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 5),
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: viajesProceso ? Colors.white: Colors.red,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Text(
+                                      totalViajes.toString(),
+                                      style: TextStyle(
+                                        color: !viajesProceso ? Colors.white: Colors.black,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
                           ),
-                        ),
+                        ],
+                      ),
+                      const SizedBox(width: 20),
+                      Stack(
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: viajesProceso ? Colors.transparent : backgroundColor,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                viajesProceso = false;
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Solicitudes',
+                                  style: TextStyle(
+                                    color:Colors.white,
+                                  ),
+                                ),
+                
+                                  Container(
+                                    margin: const EdgeInsets.only(left: 5),
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: !viajesProceso ? Colors.white: Colors.red,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Text(
+                                      totalSolicitudes.toString(),
+                                      style: TextStyle(
+                                        color: viajesProceso ? Colors.white: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
-                  )
-
-                  ],
-                ),
+                  ),
               ),
       viajesProceso==false?
         Padding(
@@ -1449,7 +1455,7 @@ Widget buildTripCard(Map<String, dynamic> tripData) {
                     };
 
                     http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/confirmTransportation'), body: data);
-                    print(response.body);
+                    
 
                     var dataR = json.decode(response.body);
 
@@ -1551,9 +1557,9 @@ Widget buildTripCard(Map<String, dynamic> tripData) {
                                       "confirmation": "0",
                                       "agentComment": comment
                                     };
-                                    print(data);
+                                   
                                     http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/confirmTransportation'), body: data);
-                                    print(response.body);
+                                   
 
                                     var dataR = json.decode(response.body);
                                     Navigator.pop(context);
