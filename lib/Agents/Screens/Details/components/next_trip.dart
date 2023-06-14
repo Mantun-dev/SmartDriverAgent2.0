@@ -1490,7 +1490,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                           child: Text(
                                             'Fecha: ${abc.data?.trips[index].fecha}',
                                             style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: 15,
                                               color: Colors.black,
                                               fontWeight: FontWeight.w500,
                                             ),
@@ -1523,7 +1523,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       child: Text(
                                         'Hora: ${abc.data?.trips[index].horaEntrada}',
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 15,
                                           color: Colors.black,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -1555,7 +1555,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       child: Text(
                                         'Motorista: ${abc.data?.trips[index].conductor}',
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 15,
                                           color: Colors.black,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -1587,7 +1587,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       child: Text(
                                         'Teléfono: ${abc.data?.trips[index].telefono}',
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 15,
                                           color: Colors.black,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -1619,7 +1619,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       child: Text(
                                         'Dirección: ${abc.data?.trips[index].direccion}',
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 15,
                                           color: Colors.black,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -1651,7 +1651,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         child: Text(
                                           'Acceso autorizado: ${abc.data?.trips[index].neighborhoodReferencePoint}',
                                           style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 15,
                                             color: Colors.black,
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -1688,7 +1688,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                           Text(
                                             'Hora de encuentro: ',
                                             style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: 15,
                                               color: Colors.black,
                                               fontWeight: FontWeight.w500,
                                             ),
@@ -1700,7 +1700,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         child: Text(
                                           'Necesita confirmación para poder asignarle una hora de encuentro',
                                           style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 15,
                                             color: Colors.red,
                                             fontWeight: FontWeight.normal,
                                           ),
@@ -1851,7 +1851,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         child: Text(
                                           'Cancelar',
                                           style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 15,
                                             color: Colors.black,
                                             fontWeight: FontWeight.normal,
                                           ),
@@ -1879,7 +1879,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         child: Text(
                                           'Confirmar',
                                            style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 15,
                                             color: Colors.white,
                                             fontWeight: FontWeight.normal,
                                           ),
@@ -1927,7 +1927,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         child: Text(
                                           'Se ha notificado al motorista que usted no necesitará el transporte',
                                           style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 15,
                                             color: Colors.red,
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -1967,7 +1967,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                           Text(
                                             'Hora de encuentro: ',
                                             style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: 15,
                                               color: Colors.black,
                                               fontWeight: FontWeight.w500,
                                             ),
@@ -1979,7 +1979,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         child: Text(
                                           'Viaje confirmado, espere a que el motorista asigne la hora a la que pasará por usted',
                                           style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 15,
                                             color: Colors.green,
                                             fontWeight: FontWeight.normal,
                                           ),
@@ -2014,7 +2014,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       Text(
                                         'Hora de encuentro: ',
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 15,
                                           color: Colors.black,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -2022,7 +2022,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       Text(
                                        '${abc.data?.trips[index].horaConductor}',
                                         style: TextStyle(
-                                         fontSize: 14,
+                                         fontSize: 15,
                                           color: Color.fromRGBO(40, 169, 83, 1),
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -2197,7 +2197,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       Text(
                                         'Viaje: ',
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 15,
                                           color: Colors.black,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -2209,7 +2209,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         child: Text(
                                           'Su tiempo para cancelar el viaje ha expirado',
                                           style: TextStyle(
-                                            fontSize: 14,
+                                            fontSize: 15,
                                             color: Colors.red,
                                             fontWeight: FontWeight.normal,
                                           ),
