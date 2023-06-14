@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/Details/components/body.dart';
-import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/models/dataAgent.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
@@ -9,8 +8,6 @@ import 'package:flutter_auth/components/AppBarSuperior.dart';
 //import 'package:flutter_auth/Drivers/components/menu_lateralDriver.dart';
 import '../../../components/AppBarPosterior.dart';
 import '../../../components/backgroundB.dart';
-import '../../../components/menu_lateral.dart';
-import '../../../constants.dart';
 
 class DetailScreenChanges extends StatefulWidget {
   final Plantilla plantilla;

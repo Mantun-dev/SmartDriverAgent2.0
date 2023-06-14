@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/Details/components/loader.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen_changes.dart';
-import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
-import 'package:flutter_auth/Agents/Screens/Signup/components/background.dart';
 import 'package:flutter_auth/Agents/models/dataAgent.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 //import 'package:flutter_auth/Agents/models/dataAgent.dart';
@@ -15,7 +13,6 @@ import 'package:flutter_auth/components/backgroundB.dart';
 import 'package:flutter_auth/components/solictud_cambio.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../components/AppBarPosterior.dart';
-import '../../../constants.dart';
 
 void main() {
   runApp(ProfilePage());
@@ -47,7 +44,6 @@ class _DataTableExample extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return BackgroundBody(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -71,7 +67,7 @@ class _DataTableExample extends State<ProfilePage> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+
         decoration: BoxDecoration(
           border: Border.all( 
             color: Color.fromRGBO(238, 238, 238, 1),
@@ -88,217 +84,626 @@ class _DataTableExample extends State<ProfilePage> {
                 builder: (BuildContext context, abc) {
                   if (abc.connectionState == ConnectionState.done) {
                     //ingreso de data
-                    return SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start, // Alinea los textos a la izquierda
-                        children: [
-
-                          Center(
-                            child: Stack(
-                              children: [
-                                
-                                Container(
-                                  width: 100,
-                                  height: 100,
-                                  child: SvgPicture.asset(
-                                    "assets/icons/Perfil_Usuario.svg",
-                                    color: Color.fromRGBO(40, 93, 169, 1),
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start, // Alinea los textos a la izquierda
+                          children: [
+                                          
+                            Center(
+                              child: Stack(
+                                children: [
+                                  
+                                  Container(
+                                    width: 100,
+                                    height: 100,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/Perfil_Usuario.svg",
+                                      color: Color.fromRGBO(40, 93, 169, 1),
+                                    ),
                                   ),
-                                ),
-
-                                Positioned(
-                                  top: 0,
-                                  bottom: 0,
-                                  right: 0,
-                                  left: 0,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(25.0),
-                                    child: Container(
-                                      child: SvgPicture.asset(
-                                        "assets/icons/usuario.svg",
-                                        color: Colors.white,
+                                          
+                                  Positioned(
+                                    top: 0,
+                                    bottom: 0,
+                                    right: 0,
+                                    left: 0,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(25.0),
+                                      child: Container(
+                                        child: SvgPicture.asset(
+                                          "assets/icons/usuario.svg",
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                           SizedBox(height: 10),
-                          Center(
-                            child: Text(
-                              '${abc.data!.agentFullname}',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                             SizedBox(height: 10),
+                            Center(
+                              child: Text(
+                                '${abc.data!.agentFullname}',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                          ),
-                          SizedBox(height: 30),
-
-                          if (prefs.companyId == "8") ...{
-                            if (abc.data == null) ...{
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/Numeral.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
+                            ),
+                            SizedBox(height: 30),
+                                          
+                            if (prefs.companyId == "8") ...{
+                              if (abc.data == null) ...{
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/Numeral.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      'No. empleado: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'No. empleado: ',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/usuario.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      'Usuario: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
                                 ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/telefono_num.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/usuario.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      'Teléfono: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Usuario: ',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/correo.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      'Email: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
                                 ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/Casa.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/telefono_num.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      'Dirección: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Teléfono: ',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/warning.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/correo.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Flexible(
-                                      child: Text(
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Email: ',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/Casa.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Dirección: ',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/warning.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          'Acceso autorizado: ',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                              } else ...{
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/Numeral.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          'No. empleado: ${abc.data!.agentUser}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/usuario.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          'Usuario: ${abc.data!.agentUser}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/telefono_num.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          'Teléfono: ${abc.data!.agentPhone}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/correo.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          'Email: ${abc.data!.agentEmail}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/Casa.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Dirección: ',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Text(
+                                          '${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                
+                                if (abc.data!.neighborhoodReferencePoint == null)
+                                  ...{}
+                                else ...{
+                                  Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/warning.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          'Acceso autorizado: ${abc.data!.neighborhoodReferencePoint}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                }
+                              },
+                            } else ...{
+                              if (abc.data == null) ...{
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/Numeral.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'No. empleado: ',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 20,
+                                        height: 20,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/compañia.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Cuenta: ',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/usuario.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Usuario: ',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/telefono_num.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Teléfono: ',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/correo.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Email: ',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/Casa.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Dirección: ',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/warning.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
                                         'Acceso autorizado: ',
                                         style: TextStyle(
                                           color: Colors.black,
@@ -306,688 +711,282 @@ class _DataTableExample extends State<ProfilePage> {
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                            } else ...{
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/Numeral.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Flexible(
-                                      child: Text(
-                                        'No. empleado: ${abc.data!.agentUser}',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
                                 ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/usuario.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Flexible(
-                                      child: Text(
-                                        'Usuario: ${abc.data!.agentUser}',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/telefono_num.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Flexible(
-                                      child: Text(
-                                        'Teléfono: ${abc.data!.agentPhone}',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/correo.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Flexible(
-                                      child: Text(
-                                        'Email: ${abc.data!.agentEmail}',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/Casa.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      'Dirección: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Flexible(
-                                      child: Text(
-                                        '${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              
-                              if (abc.data!.neighborhoodReferencePoint == null)
-                                ...{}
-                              else ...{
+                                SizedBox(height: 20),
+                              } else ...{
                                 Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/warning.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/Numeral.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Flexible(
-                                      child: Text(
-                                        'Acceso autorizado: ${abc.data!.neighborhoodReferencePoint}',
+                                      SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          'No. empleado: ${abc.data!.agentUser}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                if (abc.data!.countName == null)
+                                  ...{
+                                    Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 20,
+                                        height: 20,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/compañia.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Cuenta: ',
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              }
-                            },
-                          } else ...{
-                            if (abc.data == null) ...{
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/Numeral.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      'No. empleado: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
                                 ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/compañia.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      'Cuenta: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/usuario.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      'Usuario: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/telefono_num.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      'Teléfono: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/correo.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      'Email: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/Casa.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      'Dirección: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/warning.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      'Acceso autorizado: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                            } else ...{
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/Numeral.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Flexible(
-                                      child: Text(
-                                        'No. empleado: ${abc.data!.agentUser}',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              if (abc.data!.countName == null)
-                                ...{
+                                SizedBox(height: 20),
+                                  }
+                                else ...{
                                   Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/compañia.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 20,
+                                        height: 20,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/compañia.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      'Cuenta: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
+                                      SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          'Cuenta: ${abc.data!.countName}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                },
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/usuario.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          'Usuario: ${abc.data!.agentUser}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/telefono_num.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          'Teléfono: ${abc.data!.agentPhone}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/correo.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          'Email: ${abc.data!.agentEmail}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/Casa.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'Dirección: ',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: Text(
+                                          '${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
+                                if (abc.data!.neighborhoodReferencePoint == null)
+                                  ...{}
+                                else ...{
+                                  Padding(
+                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/warning.svg",
+                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          'Acceso autorizado: ${abc.data!.neighborhoodReferencePoint}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 1,
+                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                ),
+                                SizedBox(height: 20),
                                 }
-                              else ...{
-                                Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/compañia.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Flexible(
-                                      child: Text(
-                                        'Cuenta: ${abc.data!.countName}',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
                               },
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/usuario.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Flexible(
-                                      child: Text(
-                                        'Usuario: ${abc.data!.agentUser}',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/telefono_num.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Flexible(
-                                      child: Text(
-                                        'Teléfono: ${abc.data!.agentPhone}',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/correo.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Flexible(
-                                      child: Text(
-                                        'Email: ${abc.data!.agentEmail}',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/Casa.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      'Dirección: ',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Flexible(
-                                      child: Text(
-                                        '${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              if (abc.data!.neighborhoodReferencePoint == null)
-                                ...{}
-                              else ...{
-                                Padding(
-                                padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/warning.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Flexible(
-                                      child: Text(
-                                        'Acceso autorizado: ${abc.data!.neighborhoodReferencePoint}',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 1,
-                                color: Color.fromRGBO(158, 158, 158, 1),
-                              ),
-                              SizedBox(height: 20),
-                              }
                             },
-                          },
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   } else {

@@ -9,21 +9,9 @@ import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/providers/chat.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
-import 'Agents/Screens/Chat/listchats.dart';
-import 'Agents/Screens/Profile/profile_screen.dart';
-import 'Agents/models/network.dart';
 import 'Agents/sharePrefers/preferencias_usuario.dart';
-
-import 'package:http/http.dart' as http;
-import 'dart:convert' show json;
-
-import 'components/AppBarPosterior.dart';
-import 'components/AppBarSuperior.dart';
 
 Future<void> main() async {
   //inicialización de clases y variables necesarias para

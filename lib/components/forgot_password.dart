@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../constants.dart';
 
 class ForgotPassword extends StatelessWidget {
   final bool login;

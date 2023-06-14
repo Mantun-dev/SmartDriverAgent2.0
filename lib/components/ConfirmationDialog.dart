@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class ConfirmationLoadingDialog {
   static final ConfirmationLoadingDialog _singleton = ConfirmationLoadingDialog._internal();

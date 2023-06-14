@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
-import 'package:flutter_auth/Agents/Screens/Chat/listchats.dart';
 //import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
 
 import 'package:flutter_auth/Agents/Screens/HomeAgents/components/body.dart';
 import 'package:flutter_auth/Agents/Screens/Login/login_screen.dart';
-import 'package:flutter_auth/Agents/Screens/Profile/profile_screen.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 //import 'package:flutter_auth/Agents/models/profileAgent.dart';
 //import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/components/AppBarSuperior.dart';
-import 'package:flutter_svg/svg.dart';
 //import 'package:http/http.dart' as http;
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../../../components/AppBarPosterior.dart';
 import '../../../components/backgroundH.dart';
-import '../../../constants.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' show json;
 
 class HomeScreen extends StatefulWidget {
     
@@ -86,7 +79,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return BackgroundHome(
       child: SafeArea(
         child: Scaffold(

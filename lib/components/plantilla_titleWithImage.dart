@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
-import 'package:flutter_svg/svg.dart';
 import '../constants.dart';
 
 class PlantillaTitleWithImage extends StatelessWidget {

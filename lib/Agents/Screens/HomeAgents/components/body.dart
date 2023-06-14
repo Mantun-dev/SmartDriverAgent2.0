@@ -21,7 +21,6 @@ import 'dart:convert' show json;
 
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../main.dart';
 import '../../Chat/listchats.dart';
 import '../../Details/details_screen_changes.dart';
 import '../../Details/details_screen_qr.dart';
@@ -419,7 +418,7 @@ class _BodyState extends State<Body> {
                   'Hola, ${prefs.nombreUsuarioFull}',
                   style: Theme.of(context)
                       .textTheme
-                      .headline4!
+                      .headlineMedium!
                       .copyWith(fontWeight: FontWeight.normal, color: Color.fromRGBO(255, 255, 255, 1), fontSize: 20),
                 ),
               ),
@@ -846,7 +845,7 @@ class _BodyState extends State<Body> {
                               '${no['counts'][i]['countName']}',
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle1!
+                                  .titleMedium!
                                   .copyWith(
                                       color: i == no['counts'].length
                                           ? Colors.black38

@@ -1,15 +1,11 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/Agents/Screens/Login/login_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Register/fail_screen.dart';
-import 'package:flutter_auth/Agents/Screens/Signup/components/background.dart';
 import 'package:flutter_auth/Agents/models/register.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
-import 'package:flutter_auth/components/rounded_button.dart';
 
 import 'package:flutter_auth/components/text_field_container.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 import 'dart:convert' show json;
@@ -252,7 +248,7 @@ class _BodyState extends State<Body> {
   }
 
 //Widgets de fields
-  Widget _crearUsuario() {
+  Widget crearUsuario() {
     return TextFieldContainer(
       child: TextField(
         enabled: false,
@@ -274,7 +270,7 @@ class _BodyState extends State<Body> {
     );
   }
 
-  Widget _crearEmail() {
+  Widget crearEmail() {
     return TextFieldContainer(
       child: TextField(
         enabled: false,
@@ -353,7 +349,7 @@ class _BodyState extends State<Body> {
     );
   }
 
-  Widget _crearPassw1() {
+  Widget crearPassw1() {
     return TextFieldContainer(
       child: TextField(
         controller: userPassword1,
@@ -375,7 +371,7 @@ class _BodyState extends State<Body> {
     );
   }
 
-  Widget _crearPassw2() {
+  Widget crearPassw2() {
     return TextFieldContainer(
       child: TextField(
         controller: userPassword2,

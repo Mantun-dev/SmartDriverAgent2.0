@@ -2,30 +2,15 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
 
-import 'package:back_button_interceptor/back_button_interceptor.dart';
-//import 'package:flutter/material.dart';
-
-import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
-import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/constants.dart';
-import 'package:flutter_auth/helpers/base_client.dart';
-import 'package:flutter_auth/helpers/res_apis.dart';
-import 'package:flutter_auth/providers/chat.dart';
-import 'package:flutter_svg/svg.dart';
 
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:provider/provider.dart';
 
 import '../../../components/AppBarPosterior.dart';
 import '../../../components/AppBarSuperior.dart';
 import '../../../components/backgroundB.dart';
-import '../../models/message_chat.dart';
-
 import '../../models/network.dart';
-import '../Profile/profile_screen.dart';
 import 'chatscreen.dart';
-import 'socketChat.dart';
 
 class ChatsList extends StatefulWidget {
   final String nombre;
@@ -83,7 +68,6 @@ class _ChatsListState extends State<ChatsList> {
   @override
   Widget build(BuildContext context) {
     
-    Size size = MediaQuery.of(context).size;
     return BackgroundBody(
       child: Scaffold(
         backgroundColor: Colors.transparent,

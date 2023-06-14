@@ -16,7 +16,7 @@ import '../Agents/models/plantilla.dart';
 
 
 class AppBarSuperior extends StatefulWidget {
-  int? item;
+  final int? item;
 
   AppBarSuperior({this.item});
 

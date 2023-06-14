@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/Welcome/components/body.dart';
-import 'package:flutter_auth/constants.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override

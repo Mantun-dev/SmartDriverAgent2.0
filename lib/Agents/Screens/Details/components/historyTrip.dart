@@ -5,8 +5,6 @@ import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/models/historyTrips.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:url_launcher/url_launcher.dart';
-import '../../../../constants.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 

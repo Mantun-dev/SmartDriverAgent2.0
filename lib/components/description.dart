@@ -5,7 +5,6 @@ import 'package:flutter_auth/Agents/Screens/Details/components/qr_Screen.dart';
 import 'package:flutter_auth/Agents/Screens/Details/components/tickets.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
-import 'package:flutter_auth/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Description extends StatefulWidget {

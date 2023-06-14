@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/Register/components/body.dart';
-import 'package:flutter_auth/constants.dart';
 
 class RegisterScreen extends StatelessWidget {
   @override

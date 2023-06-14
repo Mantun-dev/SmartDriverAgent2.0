@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/constants.dart';
 
 class SolicitudCambio extends StatelessWidget {
   final bool? profile;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/constants.dart';
 
 //aquí está la clase para después traer la api
 class Plantilla {

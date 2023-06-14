@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/Details/components/loader.dart';
 
-import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
-import 'package:flutter_auth/Agents/Screens/Signup/components/background.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/Agents/models/ticketHistory.dart';
@@ -11,7 +9,6 @@ import 'package:flutter_auth/constants.dart';
 
 import '../../../../components/AppBarPosterior.dart';
 import '../../../../components/backgroundB.dart';
-import '../../../../components/menu_lateral.dart';
 
 void main() {
   runApp(HistoryTicketScreen());

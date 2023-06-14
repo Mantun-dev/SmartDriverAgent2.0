@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
 
@@ -12,7 +10,7 @@ import '../Agents/models/network.dart';
 
 
 class AppBarPosterior extends StatefulWidget {
-  int? item;
+  final int? item;
 
   AppBarPosterior({this.item});
 
@@ -36,7 +34,7 @@ class _AppBarPosterior extends State<AppBarPosterior> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+
     return AppBar(
       backgroundColor: Color.fromRGBO(255, 255, 255, 1),
       elevation: 10,

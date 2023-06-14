@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/Agents/Screens/Login/login_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Register/register_screen.dart';
-import 'package:flutter_auth/constants.dart';
 import 'package:lottie/lottie.dart';
 
 import '../Signup/signup_screen.dart';

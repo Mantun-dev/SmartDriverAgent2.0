@@ -233,8 +233,6 @@ class _NextTripScreenState extends State<NextTripScreen>
           title: "Enviado",
           text: 'Su viaje ha sido confirmado',
           type: QuickAlertType.success);
-      final algo =
-          await http.get(Uri.parse('$ip/api/getMaskReminder/${resps.agentId}'));
 
       Map data2 = {"idU": resps.agentId.toString(), "Estado": 'CONFIRMADO'};
       String sendData2 = json.encode(data2);
@@ -410,7 +408,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                     children: [
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: viajesProceso ? Color.fromRGBO(40, 93, 169, 1) : Colors.transparent,
+                          backgroundColor: viajesProceso ? Color.fromRGBO(40, 93, 169, 1) : Colors.transparent,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -452,7 +450,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                      
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: viajesProceso ? Colors.transparent : Color.fromRGBO(40, 93, 169, 1),
+                          backgroundColor: viajesProceso ? Colors.transparent : Color.fromRGBO(40, 93, 169, 1),
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
