@@ -120,7 +120,7 @@ class _NextTripScreenState extends State<NextTripScreen>
       "agentId": prefs.usuarioId.toString()
     };
 
-    http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/transportationRequests'), body: data);
+    http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/requests'), body: data);
 
     var dataR = json.decode(response.body);
 
@@ -1601,7 +1601,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         "agentComment": "null"
                       };
 
-                      http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/confirmTransportation'), body: data);
+                      http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
                       
 
                       var dataR = json.decode(response.body);
@@ -1705,7 +1705,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         "agentComment": comment
                                       };
                                     
-                                      http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/confirmTransportation'), body: data);
+                                      http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
                                     
 
                                       var dataR = json.decode(response.body);
