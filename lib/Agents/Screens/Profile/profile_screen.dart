@@ -65,7 +65,7 @@ class _DataTableExample extends State<ProfilePage> {
 
   Padding body() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(12.0),
       child: Container(
 
         decoration: BoxDecoration(

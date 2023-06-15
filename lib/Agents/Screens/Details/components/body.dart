@@ -17,16 +17,25 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    Size size = MediaQuery.of(context).size;
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
       child: Container(
-        child: Column(
-          children: [
-            Column(
-              children: [
-                Description(plantilla: widget.plantilla),
-              ],
-            ),
-          ],
+        width: size.width,
+        decoration: BoxDecoration(
+          border: Border.all( 
+            color: Color.fromRGBO(238, 238, 238, 1),
+            width: 2
+          ),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20)
+        ),
+        child: SingleChildScrollView(
+          child: Expanded(
+            child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Description(plantilla: widget.plantilla),
+          )),
         ),
       ),
     );

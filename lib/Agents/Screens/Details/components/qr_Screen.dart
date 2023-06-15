@@ -40,62 +40,48 @@ class _QrScannScreenState extends State<QrScannScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        decoration: BoxDecoration(
-          border: Border.all( 
-            color: Color.fromRGBO(238, 238, 238, 1),
-            width: 2
-          ),
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20)
+
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Text(
+            'Muestra este código QR para poder abordar',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 21.0)
+            ),
+        
+        Padding(
+          padding: const EdgeInsets.only(top:20.0, bottom: 2),
+          child: Container(
+              constraints: BoxConstraints(
+                maxWidth: 50,
+                maxHeight: 50,
+              ),
+              child: Lottie.asset('assets/videos/check.json')
+            ),
         ),
-        child: Column(
-          children: [
-            Text(
-              'Muestra este código QR para poder abordar',
+        
+          Padding(
+            padding: const EdgeInsets.only(bottom:20.0),
+            child: Text(
+              'Este es un código único.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 21.0)
-              ),
-    
-          Padding(
-            padding: const EdgeInsets.only(top:20.0, bottom: 2),
-            child: Container(
-                constraints: BoxConstraints(
-                  maxWidth: 50,
-                  maxHeight: 50,
-                ),
-                child: Lottie.asset('assets/videos/check.json')
-              ),
+                fontWeight: FontWeight.normal,
+                fontSize: 20.0
+              )
+            ),
           ),
-    
-            Padding(
-              padding: const EdgeInsets.only(bottom:20.0),
-              child: Text(
-                'Este es un código único.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 20.0
-                )
-              ),
-            ),
-              
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: QrImage(data: prefs.nombreUsuario),
-            ),
-    
-            SizedBox(height: size.height*0.14)
-          ],
-        )
+            
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: QrImage(data: prefs.nombreUsuario),
+          ),
+        ],
       ),
     );
   }

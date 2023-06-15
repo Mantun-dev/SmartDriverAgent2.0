@@ -56,407 +56,380 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
         if (abc.connectionState == ConnectionState.done) {
           //validación arreglo vacio
           if (abc.data!.length == 0) {
-            return Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Container(
-                    width: 240,
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Color.fromRGBO(238, 238, 238, 1),
-                        width: 2
-                      ),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20)),
-                    child: Column(
-                      children: [
-                        SizedBox(height: 5),
-                         Text('Agentes',
-                          style: TextStyle(
-                              color: Color.fromRGBO(40, 93, 169, 1),
-                              fontWeight: FontWeight.normal,
-                              fontSize: 20.0)),
-                        SizedBox(height: 10),
-                        Center(
-                          child: Text(
-                            'No hay viajes realizados',
-                        
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: 1,
-                          color: Color.fromRGBO(158, 158, 158, 1),
-                        ),
-                      ],
+            return Column(
+              children: [
+                SizedBox(height: 5),
+                 Text('Agentes',
+                  style: TextStyle(
+                      color: Color.fromRGBO(40, 93, 169, 1),
+                      fontWeight: FontWeight.normal,
+                      fontSize: 20.0)),
+                SizedBox(height: 10),
+                Center(
+                  child: Text(
+                    'No hay viajes realizados',
+                
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                );
+                ),
+                Container(
+                  height: 1,
+                  color: Color.fromRGBO(158, 158, 158, 1),
+                ),
+              ],
+            );
           } else {
             //retorno de ListView builder
-            return Padding(
-              padding: const EdgeInsets.all(20.0),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Color.fromRGBO(238, 238, 238, 1),
-                                      width: 2
-                                    ),
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20)),
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-                    //tamaño del arreglo por parte del future builder
-                    itemCount: abc.data!.length,
-                    itemBuilder: (context, index) {
-                      //retorno de card con datos ingresados
-                      return Padding(
-                        padding: const EdgeInsets.only(top:10),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0), // Establece un radio de esquinas redondeadas de 8.0
-                            border: Border.all(color: Color.fromRGBO(196, 196, 196, 1)), // Establece el color del borde
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 2, left: 2),
-                            child: ExpansionTile(
-                              tilePadding: const EdgeInsets.only(right: 5, left: 10),
-                                        title: Column(
-                                          children: [
-                                            SizedBox(height: 8),
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  width: 15,
-                                                  height: 15,
-                                                  child: SvgPicture.asset(
-                                                    "assets/icons/Numeral.svg",
-                                                    color: Color.fromRGBO(40, 93, 169, 1),
-                                                  ),
-                                                ),
-                                                SizedBox(width: 5),
-                                                Flexible(
-                                                  child: Text(
-                                                    'Viaje: ${abc.data![index].tripId}',
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 14,
-                                                      fontWeight: FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 20),
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  width: 18,
-                                                  height: 18,
-                                                  child: SvgPicture.asset(
-                                                    "assets/icons/calendar2.svg",
-                                                    color: Color.fromRGBO(40, 93, 169, 1),
-                                                  ),
-                                                ),
-                                                SizedBox(width: 5),
-                                                Flexible(
-                                                  child: Text(
-                                                    'Fecha: ${abc.data![index].fecha}',
-                                                    style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.black,
-                                                      fontWeight: FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-  
-                                              ],
-                                            ),
-                                          ],
-                                        ),
+            return ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            physics: ClampingScrollPhysics(),
+            //tamaño del arreglo por parte del future builder
+            itemCount: abc.data!.length,
+            itemBuilder: (context, index) {
+              //retorno de card con datos ingresados
+              return Padding(
+            padding: const EdgeInsets.only(top:10),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0), // Establece un radio de esquinas redondeadas de 8.0
+                border: Border.all(color: Color.fromRGBO(196, 196, 196, 1)), // Establece el color del borde
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(right: 2, left: 2),
+                child: ExpansionTile(
+                  tilePadding: const EdgeInsets.only(right: 5, left: 10),
+                            title: Column(
                               children: [
-                                Container(
-                                  height: 1,
-                                  color: Color.fromRGBO(196, 196, 196, 1),
-                                ),    
-                                SizedBox(height: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/warning-circle-svgrepo-com.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/Numeral.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                      ),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Flexible(
+                                      child: Text(
+                                        'Viaje: ${abc.data![index].tripId}',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                      SizedBox(width: 5),
-                                      Flexible(
-                                        child: Text(
-                                          'Estado: ${abc.data![index].estado}',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                                Container(
-                                  height: 1,
-                                  color: Color.fromRGBO(196, 196, 196, 1),
-                                ),
-                                        
                                 SizedBox(height: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/hora.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
-                                        ),
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 18,
+                                      height: 18,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/calendar2.svg",
+                                        color: Color.fromRGBO(40, 93, 169, 1),
                                       ),
-                                      SizedBox(width: 5),
-                                      Text(
-                                        'Hora de entrada: ',
+                                    ),
+                                    SizedBox(width: 5),
+                                    Flexible(
+                                      child: Text(
+                                        'Fecha: ${abc.data![index].fecha}',
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: Colors.black,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                      Text(
-                                        '${abc.data![index].horaEntrada}',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+  
+                                  ],
                                 ),
-                                Container(
-                                  height: 1,
-                                  color: Color.fromRGBO(196, 196, 196, 1),
-                                ),
-                                        
-                                SizedBox(height: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/hora.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
-                                        ),
-                                      ),
-                                      SizedBox(width: 5),
-                                      Flexible(
-                                        child: Text(
-                                          'Hora de salida: ???',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-          
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  height: 1,
-                                  color: Color.fromRGBO(196, 196, 196, 1),
-                                ),
-                                        
-                                SizedBox(height: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/motorista.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
-                                        ),
-                                      ),
-                                      SizedBox(width: 5),
-                                      Flexible(
-                                        child: Text(
-                                          'Motorista: ${abc.data![index].conductor}',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  height: 1,
-                                  color: Color.fromRGBO(196, 196, 196, 1),
-                                ),
-                                        
-                                SizedBox(height: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/telefono_num.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
-                                        ),
-                                      ),
-                                      SizedBox(width: 5),
-                                      Flexible(
-                                        child: Text(
-                                          'Teléfono: ${abc.data![index].telefono}',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  height: 1,
-                                  color: Color.fromRGBO(196, 196, 196, 1),
-                                ),
-                                        
-                                SizedBox(height: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/Casa.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
-                                        ),
-                                      ),
-                                      SizedBox(width: 5),
-                                      Flexible(
-                                        child: Text(
-                                          'Dirección: ${abc.data![index].direccion}',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  height: 1,
-                                  color: Color.fromRGBO(196, 196, 196, 1),
-                                ),
-                                        
-                                SizedBox(height: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/warning.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
-                                        ),
-                                      ),
-                                      SizedBox(width: 5),
-                                      Flexible(
-                                        child: Text(
-                                          'Acceso autorizado: ???',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  height: 1,
-                                  color: Color.fromRGBO(196, 196, 196, 1),
-                                ),
-                                        
-                                SizedBox(height: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/hora.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
-                                        ),
-                                      ),
-                                      SizedBox(width: 5),
-                                      Flexible(
-                                        child: Text(
-                                          'Hora de encuentro: ${abc.data![index].hora}',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-
-                                    ],
-                                  ),
-                                ),
-                          
-                                SizedBox(height: 8),
                               ],
                             ),
+                  children: [
+                    Container(
+                      height: 1,
+                      color: Color.fromRGBO(196, 196, 196, 1),
+                    ),    
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 18,
+                            height: 18,
+                            child: SvgPicture.asset(
+                              "assets/icons/warning-circle-svgrepo-com.svg",
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                            ),
                           ),
-                        ),
-                      );
-                    }),
+                          SizedBox(width: 5),
+                          Flexible(
+                            child: Text(
+                              'Estado: ${abc.data![index].estado}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 1,
+                      color: Color.fromRGBO(196, 196, 196, 1),
+                    ),
+                            
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 18,
+                            height: 18,
+                            child: SvgPicture.asset(
+                              "assets/icons/hora.svg",
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                            ),
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            'Hora de entrada: ',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            '${abc.data![index].horaEntrada}',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 1,
+                      color: Color.fromRGBO(196, 196, 196, 1),
+                    ),
+                            
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 18,
+                            height: 18,
+                            child: SvgPicture.asset(
+                              "assets/icons/hora.svg",
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                            ),
+                          ),
+                          SizedBox(width: 5),
+                          Flexible(
+                            child: Text(
+                              'Hora de salida: ???',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+          
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 1,
+                      color: Color.fromRGBO(196, 196, 196, 1),
+                    ),
+                            
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 18,
+                            height: 18,
+                            child: SvgPicture.asset(
+                              "assets/icons/motorista.svg",
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                            ),
+                          ),
+                          SizedBox(width: 5),
+                          Flexible(
+                            child: Text(
+                              'Motorista: ${abc.data![index].conductor}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 1,
+                      color: Color.fromRGBO(196, 196, 196, 1),
+                    ),
+                            
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 18,
+                            height: 18,
+                            child: SvgPicture.asset(
+                              "assets/icons/telefono_num.svg",
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                            ),
+                          ),
+                          SizedBox(width: 5),
+                          Flexible(
+                            child: Text(
+                              'Teléfono: ${abc.data![index].telefono}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 1,
+                      color: Color.fromRGBO(196, 196, 196, 1),
+                    ),
+                            
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 18,
+                            height: 18,
+                            child: SvgPicture.asset(
+                              "assets/icons/Casa.svg",
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                            ),
+                          ),
+                          SizedBox(width: 5),
+                          Flexible(
+                            child: Text(
+                              'Dirección: ${abc.data![index].direccion}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 1,
+                      color: Color.fromRGBO(196, 196, 196, 1),
+                    ),
+                            
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 18,
+                            height: 18,
+                            child: SvgPicture.asset(
+                              "assets/icons/warning.svg",
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                            ),
+                          ),
+                          SizedBox(width: 5),
+                          Flexible(
+                            child: Text(
+                              'Acceso autorizado: ???',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 1,
+                      color: Color.fromRGBO(196, 196, 196, 1),
+                    ),
+                            
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 18,
+                            height: 18,
+                            child: SvgPicture.asset(
+                              "assets/icons/hora.svg",
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                            ),
+                          ),
+                          SizedBox(width: 5),
+                          Flexible(
+                            child: Text(
+                              'Hora de encuentro: ${abc.data![index].hora}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      ),
+                    ),
+              
+                    SizedBox(height: 8),
+                  ],
+                ),
               ),
-            );
+            ),
+              );
+            });
           }
         } else {
           return ColorLoader3();
