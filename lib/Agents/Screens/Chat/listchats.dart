@@ -9,6 +9,7 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import '../../../components/AppBarPosterior.dart';
 import '../../../components/AppBarSuperior.dart';
 import '../../../components/backgroundB.dart';
+import '../../../components/progress_indicator.dart';
 import '../../models/network.dart';
 import 'chatscreen.dart';
 
@@ -37,6 +38,8 @@ class _ChatsListState extends State<ChatsList> {
   String ?id;
   String ?nombre;
   String ?rol;
+
+  bool cargarP = false;
   
   _ChatsListState(String idA, String nombreA, String rolA){
     id= idA;
@@ -46,6 +49,7 @@ class _ChatsListState extends State<ChatsList> {
 
 
   void getData() async{
+    
     http.Response response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/salas/agenteId/$id'));
     var resp = json.decode(response.body);
 
@@ -54,6 +58,7 @@ class _ChatsListState extends State<ChatsList> {
     listaChats2 = listaChats;
 
     if(mounted){
+      cargarP=true;
       setState(() { });
     }
   }
@@ -67,7 +72,7 @@ class _ChatsListState extends State<ChatsList> {
 
   @override
   Widget build(BuildContext context) {
-    
+    Size size = MediaQuery.of(context).size;
     return BackgroundBody(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -81,6 +86,7 @@ class _ChatsListState extends State<ChatsList> {
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Container(
+                          width: size.width,
                           decoration: BoxDecoration(
                             border: Border.all( 
                               color: Color.fromRGBO(238, 238, 238, 1),
@@ -106,7 +112,8 @@ class _ChatsListState extends State<ChatsList> {
       child: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Expanded(
-          child: listaChats != null ? listaChats2.length>0 ? contenido() :
+          child: cargarP!=false?
+          listaChats != null ? listaChats2.length>0 ? contenido() :
           Center(
             child: Text("No hay salas de chat actualmente",
             style: TextStyle(
@@ -122,6 +129,18 @@ class _ChatsListState extends State<ChatsList> {
                 fontSize: 17
               )
             ),
+          ):Column(
+            children: [
+              Text(
+              "Cargando...",
+              style: TextStyle(
+                color: Colors.black, 
+                fontSize: 17
+              )
+            ),
+              SizedBox(height: 10),
+              CircularProgressIndicator(),
+            ],
           ),
         ),
       ),
@@ -132,9 +151,8 @@ class _ChatsListState extends State<ChatsList> {
     return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-    
             Padding(
-              padding: EdgeInsets.only(top: 16, left: 16, right: 16),
+              padding: EdgeInsets.only(top: 12, right: 12, left: 12),
               child: Material(
                 color: Colors.transparent,
                 elevation: 0,
@@ -175,94 +193,103 @@ class _ChatsListState extends State<ChatsList> {
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
     
-                return Padding(
-                  padding: EdgeInsets.only(left: 16, right: 16, top: 2, bottom: 2),
-                  child: Container(
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(
-                          blurStyle: BlurStyle.normal,
-                          color: Colors.white.withOpacity(0.2),
-                          blurRadius: 30,
-                          spreadRadius: -13,
-                          offset: Offset(-15, -6)),
-                      BoxShadow(
-                          blurStyle: BlurStyle.normal,
-                          color: Colors.black.withOpacity(0.6),
-                          blurRadius: 18,
-                          spreadRadius: -15,
-                          offset: Offset(18, 5)
-                      ),
-                    ],
-                   borderRadius: BorderRadius.circular(15)),
-                    child: Card(
-                      elevation: 10,
-                      color: backgroundColor,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        children: [
-                          ListTile(
-                            title: Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
-                              child: Text(listaChats[index]['NombreM'],
-                              style: TextStyle(
-                                color: firstColor
+                return GestureDetector(
+                  onTap: () {
+                    fetchProfile().then((value) {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        return ChatScreen(
+                          id: id!,
+                          rol: rol!,
+                          nombre: '${value.agentFullname}',
+                          sala: '${listaChats[index]['id']}',
+                          driverId: '${listaChats[index]['idM']}'
+                        );
+                      }));
+                    });
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 50,
+                          height: 50,
+                          child: Image.asset(
+                            "assets/images/perfilmotorista.png",
+                          ),
+                        ),
+
+                        SizedBox(width: 10),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                listaChats[index]['NombreM'],
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13,
+                                ),
                               ),
+                              Text(
+                                '# de viaje: ${listaChats[index]['id']}',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Color.fromRGBO(40, 93, 169, 1),
+                                ),
                               ),
-                            ),
-                            subtitle: Padding(
-                              padding: const EdgeInsets.only(top: 10.0),
-                              child: Column(
+                              Row(
                                 children: [
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text('Viaje: ${listaChats[index]['id']}',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey.shade200,
-                                      ),
+                                  Text(
+                                    'Mensajes sin leer:',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Colors.black,
                                     ),
                                   ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text('Mensajes sin leer: ${listaChats[index]['sinLeer']}',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.grey.shade200,
-                                          ),
+                                  if (listaChats[index]['sinLeer'] != 0)
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 5),
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Text(
+                                        '${listaChats[index]['sinLeer']}',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 9,
                                         ),
                                       ),
-                                      IconButton(
-                                        onPressed: () {
-                                          fetchProfile().then((value) {
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                              return ChatScreen(
-                                                id: id!,
-                                                rol: rol!,
-                                                nombre: '${value.agentFullname}',
-                                                sala: '${listaChats[index]['id']}',
-                                                driverId: '${listaChats[index]['idM']}'
-                                              );
-                                            }));
-                                          });
-                                        }, 
-                                        icon: Icon(Icons.message),
-                                        color: thirdColor,
-                                        iconSize: 25,
-                                      )
-                                    ],
-                                  ),
+                                    ),
                                 ],
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+
                   ),
                 );
               },
-            ):Text(''),
+            ):Column(
+            children: [
+              Text(
+              "Cargando...",
+              style: TextStyle(
+                color: Colors.black, 
+                fontSize: 17
+              )
+            ),
+              SizedBox(height: 10),
+              CircularProgressIndicator(),
+            ],
+          ),
     
           ],
         );
