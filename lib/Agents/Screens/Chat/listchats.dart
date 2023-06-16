@@ -230,7 +230,7 @@ class _ChatsListState extends State<ChatsList> {
                     });
                   },
                   child: Padding(
-                    padding: const EdgeInsets.only(bottom:20),
+                    padding: const EdgeInsets.only(top:20),
                     child: Stack(
                       children: [
                         Container(
@@ -243,58 +243,72 @@ class _ChatsListState extends State<ChatsList> {
                   
                         Positioned(
                           left: 60,
-                          top: 0,
-                          child: Text(
-                            listaChats[index]['NombreM'],
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 60,
-                          child: Text(
-                            '# de viaje: ${listaChats[index]['id']}',
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: Color.fromRGBO(40, 93, 169, 1),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 60,
-                          bottom: 0,
-                          child: Text(
-                            'Mensajes sin leer:',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        if (listaChats[index]['sinLeer'] != 0)
-                          Positioned(
-                            right: 0,
-                            bottom: 0,
-                            child: Container(
-                              margin: const EdgeInsets.only(left: 5),
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                color: Color.fromRGBO(40, 93, 169, 1),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Text(
-                                '${listaChats[index]['sinLeer']}',
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                listaChats[index]['NombreM'],
                                 style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 9,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13,
                                 ),
                               ),
-                            ),
+                              Text(
+                                '# de viaje: ${listaChats[index]['id']}',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Color.fromRGBO(40, 93, 169, 1),
+                                ),
+                              ),
+                            ],
                           ),
+                        ),
+
+                        Positioned(
+                          left: 60,
+                          bottom: 5,
+                          child: Text(
+                                  'Mensajes sin leer:',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                        ),
+                              if (listaChats[index]['sinLeer'] != 0)
+                                Positioned(
+                                  right: 0,
+                                  bottom: 5,
+                                  child: Container(
+                                    margin: const EdgeInsets.only(left: 5),
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Color.fromRGBO(40, 93, 169, 1),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Text(
+                                      '${listaChats[index]['sinLeer']}',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 9,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                        Positioned(
+                          right: 0,
+                          child: Text(
+                                  '5:00 pm',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: listaChats[index]['sinLeer'] != 0?Color.fromRGBO(40, 93, 169, 1)
+                                          :Color.fromRGBO(158, 158, 158, 1),
+                                  ),
+                                ),
+                        ),
                       ],
                     ),
                   ),
