@@ -2,13 +2,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
 
-import 'package:flutter_auth/constants.dart';
-
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 import '../../../components/AppBarPosterior.dart';
 import '../../../components/AppBarSuperior.dart';
 import '../../../components/backgroundB.dart';
+
 import '../../../components/progress_indicator.dart';
 import '../../models/network.dart';
 import 'chatscreen.dart';
@@ -49,7 +48,6 @@ class _ChatsListState extends State<ChatsList> {
 
 
   void getData() async{
-    
     http.Response response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/salas/agenteId/$id'));
     var resp = json.decode(response.body);
 
@@ -58,6 +56,23 @@ class _ChatsListState extends State<ChatsList> {
     listaChats2 = listaChats;
 
     if(mounted){
+      cargarP=true;
+      setState(() { });
+    }
+  }
+
+  void refresh() async{
+    
+    LoadingIndicatorDialog().show(context);
+    http.Response response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/salas/agenteId/$id'));
+    var resp = json.decode(response.body);
+
+    listaChats = resp['salas'] as List<dynamic>;
+
+    listaChats2 = listaChats;
+
+    if(mounted){
+      LoadingIndicatorDialog().dismiss();
       cargarP=true;
       setState(() { });
     }
@@ -151,38 +166,45 @@ class _ChatsListState extends State<ChatsList> {
     return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 12, right: 12, left: 12),
-              child: Material(
-                color: Colors.transparent,
-                elevation: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(241, 239, 239, 1),
-                    borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(color: Color.fromRGBO(241, 239, 239, 1))
-                  ),
-                  child: TextField(
-                    onChanged:(value) {
-                      listaChats=listaChats2;
-                      setState(() {
-            
-                        if(value.isNotEmpty){
-                          listaB = listaChats.where((salas) => salas['NombreM'].toString().toLowerCase().contains(value.toLowerCase())).toList();
-                          listaChats = listaB;
-                        }
-                          
-                      });
-                    },
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search, color: Color.fromRGBO(40, 93, 169, 1),),
-                      hintText: 'Buscar',
-                      hintStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
-                      border: InputBorder.none,
+            Container(
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(241, 239, 239, 1),
+                borderRadius: BorderRadius.circular(10.0),
+                border: Border.all(color: Color.fromRGBO(241, 239, 239, 1))
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      onChanged:(value) {
+                        listaChats=listaChats2;
+                        setState(() {
+                              
+                          if(value.isNotEmpty){
+                            listaB = listaChats.where((salas) => salas['NombreM'].toString().toLowerCase().contains(value.toLowerCase())).toList();
+                            listaChats = listaB;
+                          }
+                            
+                        });
+                      },
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.search, color: Color.fromRGBO(40, 93, 169, 1),),
+                        hintText: 'Buscar',
+                        hintStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
+                        border: InputBorder.none,
+                      ),
                     ),
                   ),
-                ),
-              ),
+
+                  IconButton(
+                    icon: Icon(Icons.refresh),
+                    color: Color.fromRGBO(40, 93, 169, 1),
+                    onPressed: () {
+                      refresh();
+                    },
+                  )
+                ],
+              )
             ),
     
             listaChats != null ?
@@ -208,8 +230,8 @@ class _ChatsListState extends State<ChatsList> {
                     });
                   },
                   child: Padding(
-                    padding: EdgeInsets.all(12),
-                    child: Row(
+                    padding: const EdgeInsets.only(bottom:20),
+                    child: Stack(
                       children: [
                         Container(
                           width: 50,
@@ -218,62 +240,63 @@ class _ChatsListState extends State<ChatsList> {
                             "assets/images/perfilmotorista.png",
                           ),
                         ),
-
-                        SizedBox(width: 10),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                listaChats[index]['NombreM'],
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                ),
-                              ),
-                              Text(
-                                '# de viaje: ${listaChats[index]['id']}',
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Color.fromRGBO(40, 93, 169, 1),
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    'Mensajes sin leer:',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  if (listaChats[index]['sinLeer'] != 0)
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 5),
-                                      padding: const EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Text(
-                                        '${listaChats[index]['sinLeer']}',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 9,
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ],
+                  
+                        Positioned(
+                          left: 60,
+                          top: 0,
+                          child: Text(
+                            listaChats[index]['NombreM'],
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
                           ),
                         ),
+                        Positioned(
+                          left: 60,
+                          child: Text(
+                            '# de viaje: ${listaChats[index]['id']}',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 60,
+                          bottom: 0,
+                          child: Text(
+                            'Mensajes sin leer:',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        if (listaChats[index]['sinLeer'] != 0)
+                          Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: Container(
+                              margin: const EdgeInsets.only(left: 5),
+                              padding: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: Color.fromRGBO(40, 93, 169, 1),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Text(
+                                '${listaChats[index]['sinLeer']}',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 9,
+                                ),
+                              ),
+                            ),
+                          ),
                       ],
                     ),
-
                   ),
                 );
               },
