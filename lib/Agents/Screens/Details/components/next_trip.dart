@@ -889,200 +889,219 @@ class _NextTripScreenState extends State<NextTripScreen>
                     ),
                       
                     SizedBox(height: 20),
-                    Row(
-                      children: [   
-                        Expanded(
-                          child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: Colors.black),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                        child: Row(
+                        children: [   
+                          Expanded(
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                side: BorderSide(color: Colors.black),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                backgroundColor: Colors.transparent,
                               ),
-                              backgroundColor: Colors.transparent,
-                            ),
-                            onPressed: () {
-                               showGeneralDialog(
-                                      barrierColor: Colors.black.withOpacity(0.5),
-                                      transitionBuilder: (context, a1, a2, widget) {
-                                        return Transform.scale(
-                                          scale: a1.value,
-                                          child: Opacity(
-                                            opacity: a1.value,
-                                            child: AlertDialog(
-                                              backgroundColor: Colors.transparent,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(16.0),
-                                              ),
-                                              content: Container(
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
+                              onPressed: () {
+                                showGeneralDialog(
+                                        barrierColor: Colors.black.withOpacity(0.5),
+                                        transitionBuilder: (context, a1, a2, widget) {
+                                          return Transform.scale(
+                                            scale: a1.value,
+                                            child: Opacity(
+                                              opacity: a1.value,
+                                              child: AlertDialog(
+                                                backgroundColor: Colors.transparent,
+                                                shape: RoundedRectangleBorder(
                                                   borderRadius: BorderRadius.circular(16.0),
                                                 ),
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: [
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                                        borderRadius: BorderRadius.only(
-                                                          topLeft: Radius.circular(16.0),
-                                                          topRight: Radius.circular(16.0),
+                                                content: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.circular(16.0),
+                                                  ),
+                                                  child: Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    children: [
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                                          borderRadius: BorderRadius.only(
+                                                            topLeft: Radius.circular(16.0),
+                                                            topRight: Radius.circular(16.0),
+                                                          ),
+                                                        ),
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.all(20.0),
+                                                          child: Text(
+                                                            'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
+                                                            textAlign: TextAlign.center,
+                                                            style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontWeight: FontWeight.normal,
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
-                                                      child: Padding(
+                                                      Padding(
                                                         padding: const EdgeInsets.all(20.0),
-                                                        child: Text(
-                                                          'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
-                                                          textAlign: TextAlign.center,
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight: FontWeight.normal,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(20.0),
-                                                      child: TextField(
-                                                        controller: message,
-                                                        maxLines: null, // Permite que el texto se ajuste automáticamente a varias líneas
-                                                        textAlignVertical: TextAlignVertical.top, // Alinea el texto al principio del TextField
-                                                        decoration: InputDecoration(
-                                                          labelText: 'Escriba aquí',
-                                                          labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
-                                                          border: OutlineInputBorder( // Establece un borde al TextField
-                                                            borderRadius: BorderRadius.circular(12.0),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 16),
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                      children: [
-                                                        OutlinedButton(
-                                                          style: OutlinedButton.styleFrom(
-                                                            padding: EdgeInsets.symmetric(horizontal: 20),
-                                                            foregroundColor: Colors.white,
-                                                            side: BorderSide(color: Colors.black),
-                                                            shape: RoundedRectangleBorder(
+                                                        child: TextField(
+                                                          controller: message,
+                                                          maxLines: null, // Permite que el texto se ajuste automáticamente a varias líneas
+                                                          textAlignVertical: TextAlignVertical.top, // Alinea el texto al principio del TextField
+                                                          decoration: InputDecoration(
+                                                            labelText: 'Escriba aquí',
+                                                            labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
+                                                            border: OutlineInputBorder( // Establece un borde al TextField
                                                               borderRadius: BorderRadius.circular(12.0),
                                                             ),
                                                           ),
-                                                          onPressed: () {
-                                                            Navigator.pop(context);
-                                                          },
-                                                          child: Text(
-                                                            'Cancelar',
-                                                            style: TextStyle(color: Colors.black),
-                                                          ),
                                                         ),
-                          
-                                                        OutlinedButton(
-                                                          style: OutlinedButton.styleFrom(
-                                                            padding: EdgeInsets.symmetric(horizontal: 20),
-                                                            backgroundColor: Color.fromRGBO(40, 93, 169, 1),
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(12.0),
+                                                      ),
+                                                      SizedBox(height: 16),
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                        children: [
+                                                          OutlinedButton(
+                                                            style: OutlinedButton.styleFrom(
+                                                              padding: EdgeInsets.symmetric(horizontal: 20),
+                                                              foregroundColor: Colors.white,
+                                                              side: BorderSide(color: Colors.black),
+                                                              shape: RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.circular(12.0),
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              Navigator.pop(context);
+                                                            },
+                                                            child: Text(
+                                                              'Cancelar',
+                                                              style: TextStyle(color: Colors.black),
                                                             ),
                                                           ),
-                                                          onPressed: () {
-                                                            ChatApis().confirmOrCancel('RECHAZADO');
-                                                            fetchCancel(
-                                                              prefs.nombreUsuario,
-                                                              '${abc.data?.trips[index].tripId}',
-                                                              conditionC,
-                                                              message.text,
-                                                            );
-                                                            Navigator.pop(context);
-                                                          },
-                                                          child: Text(
-                                                            'Enviar',
-                                                            style: TextStyle(color: Colors.white),
+                            
+                                                          OutlinedButton(
+                                                            style: OutlinedButton.styleFrom(
+                                                              padding: EdgeInsets.symmetric(horizontal: 20),
+                                                              backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                              shape: RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.circular(12.0),
+                                                              ),
+                                                            ),
+                                                            onPressed: () {
+                                                              ChatApis().confirmOrCancel('RECHAZADO');
+                                                              fetchCancel(
+                                                                prefs.nombreUsuario,
+                                                                '${abc.data?.trips[index].tripId}',
+                                                                conditionC,
+                                                                message.text,
+                                                              );
+                                                              Navigator.pop(context);
+                                                            },
+                                                            child: Text(
+                                                              'Enviar',
+                                                              style: TextStyle(color: Colors.white),
+                                                            ),
                                                           ),
-                                                        ),
-                                                        
-                                                      ],
-                                                    ),
-                                                    SizedBox(height: 12)
-                                                  ],
+                                                          
+                                                        ],
+                                                      ),
+                                                      SizedBox(height: 12)
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
+                            
                                             ),
-                          
-                                          ),
-                                        );
-                                      },
-                                      transitionDuration: Duration(milliseconds: 200),
-                                      barrierDismissible: true,
-                                      barrierLabel: '',
-                                      context: context,
-                                      pageBuilder: (context, animation1, animation2) {
-                                        return widget;
-                                      },
-                                    );
-                            },
-                            child: Text(
-                              'Cancelar',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.normal,
+                                          );
+                                        },
+                                        transitionDuration: Duration(milliseconds: 200),
+                                        barrierDismissible: true,
+                                        barrierLabel: '',
+                                        context: context,
+                                        pageBuilder: (context, animation1, animation2) {
+                                          return widget;
+                                        },
+                                      );
+                              },
+                              child: Text(
+                                'Cancelar',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.normal,
+                                ),
                               ),
                             ),
+                            
                           ),
-                          
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                backgroundColor: Color.fromRGBO(40, 93, 169, 1),
                               ),
-                              backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                              onPressed: () => {
+                                ChatApis().confirmOrCancel('CONFIRMADO'),
+                                fetchConfirm(
+                                  prefs.nombreUsuario,
+                                  '${abc.data?.trips[index].tripId}',
+                                  condition,comment
+                                ),
+                              },
+                              child: Text(
+                                'Confirmar',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
                             ),
-                            onPressed: () => {
-                              ChatApis().confirmOrCancel('CONFIRMADO'),
-                              fetchConfirm(
-                                prefs.nombreUsuario,
-                                '${abc.data?.trips[index].tripId}',
-                                condition,comment
-                              ),
-                            },
-                            child: Text(
-                              'Confirmar',
-                               style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
+                            
                           ),
-                          
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    SizedBox(height: 20),
                     //validación de condition in canceled
                       },
                       if ('${abc.data?.trips[index].condition}' ==
                       'Canceled') ...{
                     if ('${abc.data?.trips[index].commentDriver}' ==
                         'No confirmó') ...{
-                      ListTile(
-                        contentPadding:
-                            EdgeInsets.fromLTRB(5, 5, 10, 0),
-                        title: Text('Viaje cancelado: ',
-                            style: TextStyle(color: Colors.white)),
-                        subtitle: Text('No confirmó a tiempo',
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15.0)),
-                        leading: Icon(Icons.timer,
-                            color: GradiantV1, size: 35),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 18,
+                              height: 18,
+                              child: SvgPicture.asset(
+                                "assets/icons/hora.svg",
+                                color: Color.fromRGBO(40, 93, 169, 1),
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Flexible(
+                              child: Text(
+                                'No confirmó a tiempo',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
+                    Container(
+                      height: 1,
+                      color: Color.fromRGBO(196, 196, 196, 1),
+                    ),
                     } else ...{
                       Padding(
                       padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
@@ -1687,199 +1706,214 @@ class _NextTripScreenState extends State<NextTripScreen>
                           ),
                             
                           SizedBox(height: 20),
-                          Row(
-                            children: [   
-                              Expanded(
-                                child: OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(color: Colors.black),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12.0),
+                          Padding(
+                             padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                            child: Row(
+                              children: [   
+                                Expanded(
+                                  child: OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide(color: Colors.black),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12.0),
+                                      ),
+                                      backgroundColor: Colors.transparent,
                                     ),
-                                    backgroundColor: Colors.transparent,
-                                  ),
-                                  onPressed: () {
-                                     showGeneralDialog(
-                                            barrierColor: Colors.black.withOpacity(0.5),
-                                            transitionBuilder: (context, a1, a2, widget) {
-                                              return Transform.scale(
-                                                scale: a1.value,
-                                                child: Opacity(
-                                                  opacity: a1.value,
-                                                  child: AlertDialog(
-                                                    backgroundColor: Colors.transparent,
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius: BorderRadius.circular(16.0),
-                                                    ),
-                                                    content: Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
+                                    onPressed: () {
+                                      showGeneralDialog(
+                                              barrierColor: Colors.black.withOpacity(0.5),
+                                              transitionBuilder: (context, a1, a2, widget) {
+                                                return Transform.scale(
+                                                  scale: a1.value,
+                                                  child: Opacity(
+                                                    opacity: a1.value,
+                                                    child: AlertDialog(
+                                                      backgroundColor: Colors.transparent,
+                                                      shape: RoundedRectangleBorder(
                                                         borderRadius: BorderRadius.circular(16.0),
                                                       ),
-                                                      child: Column(
-                                                        mainAxisSize: MainAxisSize.min,
-                                                        children: [
-                                                          Container(
-                                                            decoration: BoxDecoration(
-                                                              color: Color.fromRGBO(40, 93, 169, 1),
-                                                              borderRadius: BorderRadius.only(
-                                                                topLeft: Radius.circular(16.0),
-                                                                topRight: Radius.circular(16.0),
+                                                      content: Container(
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          borderRadius: BorderRadius.circular(16.0),
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisSize: MainAxisSize.min,
+                                                          children: [
+                                                            Container(
+                                                              decoration: BoxDecoration(
+                                                                color: Color.fromRGBO(40, 93, 169, 1),
+                                                                borderRadius: BorderRadius.only(
+                                                                  topLeft: Radius.circular(16.0),
+                                                                  topRight: Radius.circular(16.0),
+                                                                ),
+                                                              ),
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.all(20.0),
+                                                                child: Text(
+                                                                  'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
+                                                                  textAlign: TextAlign.center,
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontWeight: FontWeight.normal,
+                                                                  ),
+                                                                ),
                                                               ),
                                                             ),
-                                                            child: Padding(
+                                                            Padding(
                                                               padding: const EdgeInsets.all(20.0),
-                                                              child: Text(
-                                                                'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
-                                                                textAlign: TextAlign.center,
-                                                                style: TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontWeight: FontWeight.normal,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding: const EdgeInsets.all(20.0),
-                                                            child: TextField(
-                                                              controller: message,
-                                                              maxLines: null, // Permite que el texto se ajuste automáticamente a varias líneas
-                                                              textAlignVertical: TextAlignVertical.top, // Alinea el texto al principio del TextField
-                                                              decoration: InputDecoration(
-                                                                labelText: 'Escriba aquí',
-                                                                labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
-                                                                border: OutlineInputBorder( // Establece un borde al TextField
-                                                                  borderRadius: BorderRadius.circular(12.0),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          SizedBox(height: 16),
-                                                          Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                            children: [
-                                                              OutlinedButton(
-                                                                style: OutlinedButton.styleFrom(
-                                                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                  foregroundColor: Colors.white,
-                                                                  side: BorderSide(color: Colors.black),
-                                                                  shape: RoundedRectangleBorder(
+                                                              child: TextField(
+                                                                controller: message,
+                                                                maxLines: null, // Permite que el texto se ajuste automáticamente a varias líneas
+                                                                textAlignVertical: TextAlignVertical.top, // Alinea el texto al principio del TextField
+                                                                decoration: InputDecoration(
+                                                                  labelText: 'Escriba aquí',
+                                                                  labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
+                                                                  border: OutlineInputBorder( // Establece un borde al TextField
                                                                     borderRadius: BorderRadius.circular(12.0),
                                                                   ),
                                                                 ),
-                                                                onPressed: () {
-                                                                  Navigator.pop(context);
-                                                                },
-                                                                child: Text(
-                                                                  'Cancelar',
-                                                                  style: TextStyle(color: Colors.black),
-                                                                ),
                                                               ),
-                        
-                                                              OutlinedButton(
-                                                                style: OutlinedButton.styleFrom(
-                                                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                  backgroundColor: Color.fromRGBO(40, 93, 169, 1),
-                                                                  shape: RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(12.0),
+                                                            ),
+                                                            SizedBox(height: 16),
+                                                            Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                              children: [
+                                                                OutlinedButton(
+                                                                  style: OutlinedButton.styleFrom(
+                                                                    padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                    foregroundColor: Colors.white,
+                                                                    side: BorderSide(color: Colors.black),
+                                                                    shape: RoundedRectangleBorder(
+                                                                      borderRadius: BorderRadius.circular(12.0),
+                                                                    ),
+                                                                  ),
+                                                                  onPressed: () {
+                                                                    Navigator.pop(context);
+                                                                  },
+                                                                  child: Text(
+                                                                    'Cancelar',
+                                                                    style: TextStyle(color: Colors.black),
                                                                   ),
                                                                 ),
-                                                                onPressed: () {
-                                                                  ChatApis().confirmOrCancel('RECHAZADO');
-                                                                  fetchCancel(
-                                                                    prefs.nombreUsuario,
-                                                                    '${abc.data?.trips[index].tripId}',
-                                                                    conditionC,
-                                                                    message.text,
-                                                                  );
-                                                                  Navigator.pop(context);
-                                                                },
-                                                                child: Text(
-                                                                  'Enviar',
-                                                                  style: TextStyle(color: Colors.white),
+                          
+                                                                OutlinedButton(
+                                                                  style: OutlinedButton.styleFrom(
+                                                                    padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                    backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                                    shape: RoundedRectangleBorder(
+                                                                      borderRadius: BorderRadius.circular(12.0),
+                                                                    ),
+                                                                  ),
+                                                                  onPressed: () {
+                                                                    ChatApis().confirmOrCancel('RECHAZADO');
+                                                                    fetchCancel(
+                                                                      prefs.nombreUsuario,
+                                                                      '${abc.data?.trips[index].tripId}',
+                                                                      conditionC,
+                                                                      message.text,
+                                                                    );
+                                                                    Navigator.pop(context);
+                                                                  },
+                                                                  child: Text(
+                                                                    'Enviar',
+                                                                    style: TextStyle(color: Colors.white),
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              
-                                                            ],
-                                                          ),
-                                                          SizedBox(height: 12)
-                                                        ],
+                                                                
+                                                              ],
+                                                            ),
+                                                            SizedBox(height: 12)
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
+                          
                                                   ),
-                        
-                                                ),
-                                              );
-                                            },
-                                            transitionDuration: Duration(milliseconds: 200),
-                                            barrierDismissible: true,
-                                            barrierLabel: '',
-                                            context: context,
-                                            pageBuilder: (context, animation1, animation2) {
-                                              return widget;
-                                            },
-                                          );
-                                  },
-                                  child: Text(
-                                    'Cancelar',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
+                                                );
+                                              },
+                                              transitionDuration: Duration(milliseconds: 200),
+                                              barrierDismissible: true,
+                                              barrierLabel: '',
+                                              context: context,
+                                              pageBuilder: (context, animation1, animation2) {
+                                                return widget;
+                                              },
+                                            );
+                                    },
+                                    child: Text(
+                                      'Cancelar',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.normal,
+                                      ),
                                     ),
                                   ),
+                          
                                 ),
-                        
-                              ),
-                              SizedBox(width: 10),
-                              Expanded(
-                                child: OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12.0),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12.0),
+                                      ),
+                                      backgroundColor: Color.fromRGBO(40, 93, 169, 1),
                                     ),
-                                    backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                    onPressed: () => {
+                                      ChatApis().confirmOrCancel('CONFIRMADO'),
+                                      fetchConfirm(
+                                        prefs.nombreUsuario,
+                                        '${abc.data?.trips[index].tripId}',
+                                        condition,comment
+                                      ),
+                                    },
+                                    child: Text(
+                                      'Confirmar',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
                                   ),
-                                  onPressed: () => {
-                                    ChatApis().confirmOrCancel('CONFIRMADO'),
-                                    fetchConfirm(
-                                      prefs.nombreUsuario,
-                                      '${abc.data?.trips[index].tripId}',
-                                      condition,comment
-                                    ),
-                                  },
-                                  child: Text(
-                                    'Confirmar',
-                                     style: TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
+                          
                                 ),
-                        
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                          SizedBox(height: 20),
                           //validación de condition in canceled
                         },
                         if ('${abc.data?.trips[index].condition}' ==
                             'Canceled') ...{
                           if ('${abc.data?.trips[index].commentDriver}' ==
                               'No confirmó') ...{
-                            ListTile(
-                              contentPadding:
-                                  EdgeInsets.fromLTRB(5, 5, 10, 0),
-                              title: Text('Viaje cancelado: ',
-                                  style: TextStyle(color: Colors.white)),
-                              subtitle: Text('No confirmó a tiempo',
-                                  style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 15.0)),
-                              leading: Icon(Icons.timer,
-                                  color: GradiantV1, size: 35),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 18,
+                                    height: 18,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/hora.svg",
+                                      color: Color.fromRGBO(40, 93, 169, 1),
+                                    ),
+                                  ),
+                                  SizedBox(width: 5),
+                                  Flexible(
+                                    child: Text(
+                                      'No confirmó a tiempo',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           } else ...{
                             Padding(
