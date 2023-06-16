@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
 
@@ -268,8 +269,29 @@ class _ChatsListState extends State<ChatsList> {
                         Positioned(
                           left: 60,
                           bottom: 5,
-                          child: Text(
-                                  'Mensajes sin leer:',
+                          child: listaChats[index]['esAgente'] == true ?
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/ignorado.svg",
+                                        color: listaChats[index]['Leido'] == true?Color.fromRGBO(40, 93, 169, 1)
+                                          :Color.fromRGBO(158, 158, 158, 1),
+                                      ),
+                                    ),
+                                    Text(
+                                      ' Tu: ${listaChats[index]['UltimoM']}',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ):
+                                Text(
+                                  '${listaChats[index]['UltimoM']}',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Colors.black,
@@ -301,7 +323,7 @@ class _ChatsListState extends State<ChatsList> {
                         Positioned(
                           right: 0,
                           child: Text(
-                                  '5:00 pm',
+                                  '${listaChats[index]['TiempoUltimoM']}',
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: listaChats[index]['sinLeer'] != 0?Color.fromRGBO(40, 93, 169, 1)
