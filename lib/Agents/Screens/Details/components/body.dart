@@ -18,7 +18,7 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Padding(
+    return widget.plantilla.id!=4?Padding(
       padding: const EdgeInsets.all(12.0),
       child: Container(
         width: size.width,
@@ -38,6 +38,6 @@ class _BodyState extends State<Body> {
           )),
         ),
       ),
-    );
+    ):Description(plantilla: widget.plantilla);
   }
 }

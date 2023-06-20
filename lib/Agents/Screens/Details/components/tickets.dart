@@ -8,12 +8,14 @@ import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/models/dataAgentMessage.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
+import 'package:flutter_auth/components/linea.dart';
 import 'package:flutter_auth/constants.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
 //import 'package:sweetalert/sweetalert.dart';
 import 'package:quickalert/quickalert.dart';
+import '../../../../components/progress_indicator.dart';
 import '../../../../components/rounded_button.dart';
 
 class TicketScreen extends StatefulWidget {
@@ -24,6 +26,9 @@ class TicketScreen extends StatefulWidget {
 }
 
 class _TicketScreenState extends State<TicketScreen> {
+  TextEditingController ticketIssue = new TextEditingController();
+  TextEditingController ticketMessage = new TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -51,12 +56,10 @@ class _TicketScreenState extends State<TicketScreen> {
   Widget build(BuildContext context) {
     //declaración de variables
     final prefs = new PreferenciasUsuario();
-    TextEditingController ticketIssue = new TextEditingController();
-    TextEditingController ticketMessage = new TextEditingController();
 
     //función envío de ticket
-    Future<dynamic> fetchTicket(
-        String agentUser, String ticketIssue, String ticketMessage) async {
+    Future<dynamic> fetchTicket(String agentUser, String ticketIssue, String ticketMessage) async {
+      LoadingIndicatorDialog().show(context);
       //<List<Map<String,dynamic>>>
       String ip = "https://smtdriver.com";
       Map data = {
@@ -78,15 +81,21 @@ class _TicketScreenState extends State<TicketScreen> {
       //   Navigator.pop(context);
       // }
 
+      LoadingIndicatorDialog().dismiss();
       if (response.statusCode == 200 && no.ok == true) {
-        Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (_) => HomeScreen()))
-            .then((_) => TicketScreen());
-            QuickAlert.show(
-        context: context,
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return HomeScreen();
+          })
+        );
+
+        QuickAlert.show(
+          context: context,
           title: "Ticket enviado",
           text: no.message,
-          type: QuickAlertType.success);
+          type: QuickAlertType.success
+        );
       }  
       if (no.ok != true) {
         QuickAlert.show(
@@ -103,170 +112,191 @@ class _TicketScreenState extends State<TicketScreen> {
       }
       return DataAgents.fromJson(json.decode(response.body));
     }
-
-    return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(boxShadow: [
-            BoxShadow(
-                blurStyle: BlurStyle.normal,
-                color: Colors.white.withOpacity(0.2),
-                blurRadius: 30,
-                spreadRadius: -13,
-                offset: Offset(-15, -5)),
-            BoxShadow(
-                blurStyle: BlurStyle.normal,
-                color: Colors.black.withOpacity(0.6),
-                blurRadius: 18,
-                spreadRadius: -15,
-                offset: Offset(18, 5)),
-          ], borderRadius: BorderRadius.circular(15)),
-          child: RoundedButton(
-            text: "Tickets anteriores",
-            color: backgroundColor,
-            textColor: thirdColor,
-            press: () => {
-              Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (_) => HistoryTicketScreen()))
-                  .then((_) => HomeScreen()),
-            },
+    Size size = MediaQuery.of(context).size;
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(right: 10.0, left: 10, bottom: 12, top: 12),
+        child: Container(
+          width: size.width,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20)
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                
+                Padding(
+                  padding: const EdgeInsets.only(right:52, left: 52, top: 20),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5, right: 5),
+                        child: TextField(
+                          style: TextStyle(color: Colors.black),
+                          controller: ticketIssue,
+                          autofocus: false,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            labelText: 'Asunto',
+                            labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                            ),
+                            prefixIcon: Icon(
+                              Icons.title,
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                              size: 30,
+                            ),
+                            
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 1,
+                        color: Color.fromRGBO(158, 158, 158, 1),
+                      ),
+                    ],
+                  ),
+                ), 
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20, bottom: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ClipRect(
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            widthFactor: 0.5,
+                            child: Container(
+                              width: 60,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color.fromRGBO(40, 93, 169, 1),
+                              ),
+                            ),
+                          ),
+                        ),
+                                  
+                        DotWidget(
+                          dashColor: Colors.black, 
+                          dashHeight: 1, 
+                          dashWidth: 15
+                        ),
+                                  
+                        ClipRect(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            widthFactor: 0.5,
+                            child: Container(
+                              width: 60,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color.fromRGBO(40, 93, 169, 1),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 40.0, left: 52, right: 52),
+                  child: TextField(
+                    style: TextStyle(color: Colors.black),
+                    controller: ticketMessage,
+                    minLines: 6,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    decoration: InputDecoration(
+                      labelText: 'Mensaje',
+                      labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
+                      prefixIcon: Icon(
+                        Icons.message,
+                        color: Color.fromRGBO(40, 93, 169, 1),
+                        size: 30,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(vertical: 80.0), // Ajusta el padding vertical
+                    ),
+                  ),
+                ),
+                
+                
+                 
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 20, left: 20),
+                    child: TextButton(
+                      onPressed: () async {
+                
+                        if(ticketMessage.text.isEmpty || ticketIssue.text.isEmpty){
+                          QuickAlert.show(
+                            context: context,
+                            title: "Alerta",
+                            text: 'El mensaje o asunto no puede estar vacio',
+                            type: QuickAlertType.error
+                          );
+                          return;
+                        }
+                        
+                        //función envío de ticket
+                        await fetchTicket(prefs.nombreUsuario, ticketIssue.text,ticketMessage.text);
+                      },
+                      child: Text(
+                        "Enviar",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                
+                SizedBox(height: size.height*0.09),
+                
+                Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 20, left: 20),
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HistoryTicketScreen())).then((_) => HomeScreen());
+                          },
+                          child: Text(
+                            "Tickets anteriores",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+              ],
+            ),
           ),
         ),
-        Container(
-          decoration: BoxDecoration(boxShadow: [
-            BoxShadow(
-                blurStyle: BlurStyle.normal,
-                color: Colors.white.withOpacity(0.2),
-                blurRadius: 30,
-                spreadRadius: -13,
-                offset: Offset(-15, 0)),
-            BoxShadow(
-                blurStyle: BlurStyle.normal,
-                color: Colors.black.withOpacity(0.6),
-                blurRadius: 18,
-                spreadRadius: -15,
-                offset: Offset(18, 5)),
-          ], borderRadius: BorderRadius.circular(15)),
-          child: Card(
-              color: backgroundColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              margin: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
-              elevation: 10,
-              child: Container(
-                decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(10)),
-                margin: EdgeInsets.symmetric(horizontal: 15.0),
-                height: 410,
-                width: 300,
-                child: Column(children: [
-                  SizedBox(height: 20),
-                  Text('Envie su solicitud cambio:',
-                      style: TextStyle(
-                          color: fourthColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0)),
-                  SizedBox(height: 25),
-                  Container(
-                    decoration: BoxDecoration(
-                        border: const GradientBoxBorder(
-                          gradient:
-                              LinearGradient(colors: [GradiantV2, GradiantV1]),
-                          width: 4,
-                        ),
-                        borderRadius: BorderRadius.circular(45)),
-                    child: TextField(
-                      style: TextStyle(color: Colors.white),
-                      controller: ticketIssue,
-                      autofocus: false,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Asunto',
-                        labelStyle: TextStyle(color: Colors.white),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        prefixIcon: Icon(
-                          Icons.title,
-                          color: thirdColor,
-                          size: 30,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    decoration: BoxDecoration(
-                        border: const GradientBoxBorder(
-                          gradient:
-                              LinearGradient(colors: [GradiantV2, GradiantV1]),
-                          width: 4,
-                        ),
-                        borderRadius: BorderRadius.circular(25)),
-                    child: TextField(
-                      style: TextStyle(color: Colors.white),
-                      controller: ticketMessage,
-                      minLines: 6,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        labelText: 'Mensaje',
-                        labelStyle: TextStyle(color: Colors.white),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        prefixIcon: Icon(
-                          Icons.message,
-                          color: thirdColor,
-                          size: 30,
-                        ),
-                      ),
-                    ),
-                  ),
-                  //SizedBox(height: 10),
-                  Container(
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(
-                          blurStyle: BlurStyle.normal,
-                          color: Colors.white.withOpacity(0.2),
-                          blurRadius: 30,
-                          spreadRadius: -13,
-                          offset: Offset(-15, -5)),
-                      BoxShadow(
-                          blurStyle: BlurStyle.normal,
-                          color: Colors.black.withOpacity(0.6),
-                          blurRadius: 18,
-                          spreadRadius: -15,
-                          offset: Offset(18, 5)),
-                    ], borderRadius: BorderRadius.circular(15)),
-                    child: RoundedButton(
-                      text: "ENVIAR",
-                      color: backgroundColor,
-                      textColor: thirdColor,
-                      press: () async {
-                        //función envío de ticket
-                        showGeneralDialog(
-                            context: context,
-                            transitionBuilder: (context, a1, a2, widget) {
-                              return Center(child: ColorLoader3());
-                            },
-                            transitionDuration: Duration(milliseconds: 200),
-                            barrierDismissible: false,
-                            barrierLabel: '',
-                            pageBuilder: (context, animation1, animation2) {
-                              return widget;
-                            });
-                        await fetchTicket(prefs.nombreUsuario, ticketIssue.text,
-                            ticketMessage.text);
-                      },
-                    ),
-                  ),
-                ]),
-              )),
-        ),
-      ],
+      ),
     );
   }
 }

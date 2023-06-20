@@ -230,13 +230,14 @@ class _ChatScreenState extends State<ChatScreen> {
   //   }
   // }
 
-  Color _textColor(BuildContext context) {
+  /*Color _textColor(BuildContext context) {
     if (NeumorphicTheme.isUsingDark(context)) {
       return Colors.white;
     } else {
       return Colors.black;
     }
   }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -375,6 +376,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Column body(bool fecha(dynamic fechaBs), String hoyayer(dynamic fechaBs), BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Column(
                 children: [
                   Expanded(
@@ -396,80 +398,99 @@ class _ChatScreenState extends State<ChatScreen> {
                                       ? WrapAlignment.end
                                       : WrapAlignment.start,
                               children: [
-                                Center(
-                                  child: fecha('${message.mes}/${message.dia}/${message.ao}')==true 
-                                  ?Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Card(
-                                      color: Color.fromRGBO(40, 93, 169, 1),
-                                      child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(hoyayer('${message.mes}/${message.dia}/${message.ao}'), style: TextStyle(color: Colors.white, fontSize: 17)),
+                                if(fecha('${message.mes}/${message.dia}/${message.ao}')==true )
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 35, bottom: 35, left: 8, right: 8),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            height: 1,
+                                            color: Color.fromRGBO(158, 158, 158, 1),
+                                          ),
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text(hoyayer('${message.mes}/${message.dia}/${message.ao}'), style: TextStyle(color: Color.fromRGBO(158, 158, 158, 1), fontSize: 17)),
+                                        SizedBox(width: 10),
+                                        Expanded(
+                                          child: Container(
+                                            height: 1,
+                                            color: Color.fromRGBO(158, 158, 158, 1),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+  
+                                Container(
+                                  width: size.width/2,
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(8.0),
+                                        topRight: message.user == widget.nombre.toUpperCase()?Radius.zero:Radius.circular(8.0),
+                                        bottomLeft:  message.user == widget.nombre.toUpperCase()? Radius.circular(8.0):Radius.zero,
+                                        bottomRight: Radius.circular(8.0),
                                       ),
                                     ),
-                                  ) : null,
-                                ),
-                                Card(
-                                  color: message.user ==
-                                          widget.nombre.toUpperCase()
-                                      ? Color.fromRGBO(40, 93, 169, 1)
-                                      : Colors.white,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment: message.user ==
-                                              widget.nombre.toUpperCase()
-                                          ? CrossAxisAlignment.end
-                                          : CrossAxisAlignment.start,
-                                      children: [
-                                        if (message.mensaje != null) ...{
-                                          Text(
-                                            message.mensaje!,
-                                            style: TextStyle(
-                                                color: message.user ==
-                                                    widget.nombre.toUpperCase()
-                                                ? Colors.white
-                                                : Colors.black,
-                                                fontSize: 17),
-                                          ),
-                                          Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              if (message.user ==
-                                                  widget.nombre.toUpperCase())
-                                                Text(
-                                                  message.hora,
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 12),
+                                    color: message.user == widget.nombre.toUpperCase()
+                                        ? Color.fromRGBO(40, 93, 169, 1)
+                                        : Colors.white,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          if (message.mensaje != null) ...{
+                                            Text(
+                                              message.mensaje!,
+                                              style: TextStyle(
+                                                  color: message.user ==
+                                                      widget.nombre.toUpperCase()
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                                  fontSize: 17),
+                                            ),
+                                            Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Expanded(child: SizedBox()),
+                                                if (message.user ==
+                                                    widget.nombre.toUpperCase())
+                                                  Text(
+                                                    message.hora,
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 8),
+                                                  ),
+                                                if (message.user !=
+                                                    widget.nombre.toUpperCase())
+                                                  Text(
+                                                    message.hora,
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 10),
+                                                  ),
+                                                SizedBox(
+                                                  width: 5,
                                                 ),
-                                              if (message.user !=
-                                                  widget.nombre.toUpperCase())
-                                                Text(
-                                                  message.hora,
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 12),
-                                                ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              if (message.user ==
-                                                  widget.nombre.toUpperCase())
-                                                Icon(
-                                                  message.leido == true
-                                                      ? Icons.done_all
-                                                      : Icons.done,
-                                                  size: 15,
-                                                  color: message.leido == true
-                                                      ? Color.fromRGBO(0, 255, 255, 1)
-                                                      : Colors.grey,
-                                                )
-                                            ],
-                                          ),
-                                        },
-                                      ],
+                                                if (message.user ==
+                                                    widget.nombre.toUpperCase())
+                                                  Icon(
+                                                    message.leido == true
+                                                        ? Icons.done_all
+                                                        : Icons.done,
+                                                    size: 16,
+                                                    color: message.leido == true
+                                                        ? Color.fromRGBO(0, 255, 255, 1)
+                                                        : Colors.grey,
+                                                  )
+                                              ],
+                                            ),
+                                          },
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 )
@@ -593,46 +614,46 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      color: chatFirst,
+                      color: Colors.white,
                     ),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
                     ),
                     child: SafeArea(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              margin: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: backgroundColor2,
-                              ),
+                      child: Container(
+                        margin: EdgeInsets.only(top: 15, bottom: 15),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color.fromRGBO(241, 239, 239, 1)
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
                               child: TextField(
-                                style: TextStyle(color: Colors.white),
+                                style: TextStyle(color: Colors.black),
                                 controller: _messageInputController,
-                                decoration: const InputDecoration(
-                                  hintStyle: TextStyle(color: Colors.white),
+                                decoration: InputDecoration(
+                                  hintStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
                                   contentPadding: EdgeInsets.only(left: 10),
                                   hintText: 'Escriba su mensaje aquí...',
                                   border: InputBorder.none,
                                 ),
                               ),
                             ),
-                          ),
-                          IconButton(
-                            color: chatSecond,
-                            onPressed: () {
-                              if (_messageInputController.text
-                                  .trim()
-                                  .isNotEmpty) {
-                                _sendMessage(
-                                    _messageInputController.text.trim());
-                              }
-                            },
-                            icon: const Icon(Icons.send),
-                          )
-                        ],
+                            IconButton(
+                              color: chatSecond,
+                              onPressed: () {
+                                if (_messageInputController.text
+                                    .trim()
+                                    .isNotEmpty) {
+                                  _sendMessage(
+                                      _messageInputController.text.trim());
+                                }
+                              },
+                              icon: const Icon(Icons.send, color: Color.fromRGBO(40, 93, 169, 1),),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
