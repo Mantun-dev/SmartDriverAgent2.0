@@ -3,20 +3,16 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/Details/components/historyTicket.dart';
-import 'package:flutter_auth/Agents/Screens/Details/components/loader.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/models/dataAgentMessage.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
-import 'package:flutter_auth/components/linea.dart';
-import 'package:flutter_auth/constants.dart';
-import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
 //import 'package:sweetalert/sweetalert.dart';
 import 'package:quickalert/quickalert.dart';
 import '../../../../components/progress_indicator.dart';
-import '../../../../components/rounded_button.dart';
+import 'package:dotted_line/dotted_line.dart';
 
 class TicketScreen extends StatefulWidget {
   const TicketScreen({Key? key, Plantilla? plantilla}) : super(key: key);
@@ -179,11 +175,7 @@ class _TicketScreenState extends State<TicketScreen> {
                           ),
                         ),
                                   
-                        DotWidget(
-                          dashColor: Colors.black, 
-                          dashHeight: 1, 
-                          dashWidth: 15
-                        ),
+                        Expanded(child: DottedLine(dashLength:12, dashGapLength:10)),
                                   
                         ClipRect(
                           child: Align(

@@ -2922,38 +2922,9 @@ class _NextTripScreenState extends State<NextTripScreen>
       //print(getData['tripId']);
       if (getData['tripId'] != 0 && responsex.body.isNotEmpty) {
         showAlertDialogRatingOld();       
-      }
+      }  
     }
-    //final resp1 = Rating.fromJson(json.decode(responsex.body));
-    //print(getData[0]);
-    
-    // if (response.body.isNotEmpty && getData[0]['tripId'].toString()!='0') {
-    //   //validación para mostrar alerta
-    //   // if (mounted) {        
-    //   // }
-    //     //showAlertDialogRating(resp, getData[0]['tripId'].toString(), getData[0]['driverFullname'].toString());
-    // }
-  }
 
-
-//creación de alerta
-  showAlertDialogRating(dynamic data, String tripId, String nameDriver) async {
-    
-    showGeneralDialog(
-
-        barrierColor: Colors.black.withOpacity(0.5),
-        transitionBuilder: (context, a1, a2, widget) {
-          //final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
-          return Transform.scale(scale: a1.value, child: encuestaP1(data, context, widget, tripId, nameDriver));
-        },
-        transitionDuration: Duration(milliseconds: 200),
-        barrierDismissible: false,
-        barrierLabel: '',
-        context: context,
-        pageBuilder: (context, animation1, animation2) {
-          return widget;
-        }
-    );
   }
 
   //creación de alerta
@@ -2963,97 +2934,113 @@ class _NextTripScreenState extends State<NextTripScreen>
     final resp = DataAgent.fromJson(json.decode(responses.body));
     http.Response response = await http.get(Uri.parse('$ip/api/ratingTrip/${resp.agentId}'));
     final resp1 = Rating.fromJson(json.decode(response.body));
-    showGeneralDialog(barrierColor: Colors.black.withOpacity(0.5),transitionBuilder: (context, a1, a2, widget) {
+
+    showGeneralDialog(
+      barrierColor: Colors.black.withOpacity(0.5),
+      transitionBuilder: (context, a1, a2, widget) {
       final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
+      
       return Transform(transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
         child: Opacity(opacity: a1.value,
           child: AlertDialog(shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
-            backgroundColor: backgroundColor,
-            title: Center(child: Text('😄 ¿Cómo calificaría su último viaje con\n${resp1.driverFullname}? 😁 ', style: TextStyle(color: Colors.white),)), 
+            backgroundColor: Colors.white,
+            title: Text(
+              '¿Cómo calificaría su último viaje con\n${resp1.driverFullname}?',
+              textAlign: TextAlign.center, 
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold, 
+                fontSize: 16
+              )
+            ), 
             content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState){
-              return Container(height: 300,width: 500,
-              color: backgroundColor,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      //creación reacciones para conducción
-                      Divider(),
-                      SizedBox(height: 10.0),
-                      Text('Conducción', style: TextStyle(color: Colors.white),),
-                      SizedBox(height: 5.0),
-                      RatingBar.builder(initialRating: 0,itemCount: 5,
-                        itemBuilder: (context, index) {
-                          switch (index) {
-                              case 0:
-                                return Icon(Icons.sentiment_very_dissatisfied,color: Colors.red);
-                              case 1:
-                                return Icon(Icons.sentiment_dissatisfied,color: Colors.redAccent);
-                              case 2:
-                                return Icon(Icons.sentiment_neutral,color: Colors.amber);
-                              case 3:
-                                return Icon(Icons.sentiment_satisfied,color: Colors.lightGreen);
-                              case 4:
-                                return Icon(Icons.sentiment_very_satisfied,color: Colors.green);
-                          }
-                          return SizedBox();
-                        },
-                        onRatingUpdate: (rating1) {
-                          onChanged1(rating1);                          
-                        },
-                      ),
-                      Divider(),
-                      SizedBox(height: 10.0),
-                      //creación reacciones para amabilidad
-                      Text('Amabilidad del motorista', style: TextStyle(color: Colors.white),),
-                      SizedBox(height: 5.0),
-                      RatingBar.builder(initialRating: 0,itemCount: 5,
-                        itemBuilder: (context, index) {
-                          switch (index) {
-                              case 0:
-                                return Icon(Icons.sentiment_very_dissatisfied,color: Colors.red);
-                              case 1:
-                                return Icon(Icons.sentiment_dissatisfied,color: Colors.redAccent);
-                              case 2:
-                                return Icon(Icons.sentiment_neutral,color: Colors.amber);
-                              case 3:
-                                return Icon(Icons.sentiment_satisfied,color: Colors.lightGreen,);
-                              case 4:
-                                return Icon(Icons.sentiment_very_satisfied,color: Colors.green);
-                          }
-                          return SizedBox();
-                        },
-                        onRatingUpdate: (rating2) {
-                          onChanged2(rating2);                          
-                        },
-                      ),
-                      Divider(),
-                      SizedBox(height: 10.0),
-                      //creación reacciones para condiciones
-                      Text('Condiciones del vehículo', style: TextStyle(color: Colors.white),),
-                      SizedBox(height: 5.0),
-                      RatingBar.builder(initialRating: 0,itemCount: 5,
-                        itemBuilder: (context, index) {
-                          switch (index) {
-                              case 0:
-                                return Icon(Icons.sentiment_very_dissatisfied,color: Colors.red);
-                              case 1:
-                                return Icon(Icons.sentiment_dissatisfied,color: Colors.redAccent);
-                              case 2:
-                                return Icon(Icons.sentiment_neutral,color: Colors.amber);
-                              case 3:
-                                return Icon(Icons.sentiment_satisfied,color: Colors.lightGreen);
-                              case 4:
-                                return Icon(Icons.sentiment_very_satisfied,color: Colors.green);
-                          }
-                          return SizedBox();
-                        },                              
-                        onRatingUpdate: (rating3) {
-                          onChanged3(rating3);                          
-                        },
-                      ),
-                    ]
-                          ),
+              return SingleChildScrollView(
+                child: Container(height: 300,width: 500,
+                color: Colors.transparent,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        //creación reacciones para conducción
+              
+                        SizedBox(height: 10.0),
+                        Text('Conducción', style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1))),
+                        SizedBox(height: 5.0),
+                        RatingBar.builder(
+                          initialRating: 0,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            switch (index) {
+                                case 0:
+                                  return Icon(Icons.sentiment_very_dissatisfied,color: Colors.red);
+                                case 1:
+                                  return Icon(Icons.sentiment_dissatisfied,color: Colors.redAccent);
+                                case 2:
+                                  return Icon(Icons.sentiment_neutral,color: Colors.amber);
+                                case 3:
+                                  return Icon(Icons.sentiment_satisfied,color: Colors.lightGreen);
+                                case 4:
+                                  return Icon(Icons.sentiment_very_satisfied,color: Colors.green);
+                            }
+                            return SizedBox();
+                          },
+                          onRatingUpdate: (rating1) {
+                            onChanged1(rating1);                          
+                          },
+                        ),
+               
+                        SizedBox(height: 40.0),
+                        //creación reacciones para amabilidad
+                        Text('Amabilidad del motorista', style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1)),),
+                        SizedBox(height: 5.0),
+                        RatingBar.builder(initialRating: 0,itemCount: 5,
+                          itemBuilder: (context, index) {
+                            switch (index) {
+                                case 0:
+                                  return Icon(Icons.sentiment_very_dissatisfied,color: Colors.red);
+                                case 1:
+                                  return Icon(Icons.sentiment_dissatisfied,color: Colors.redAccent);
+                                case 2:
+                                  return Icon(Icons.sentiment_neutral,color: Colors.amber);
+                                case 3:
+                                  return Icon(Icons.sentiment_satisfied,color: Colors.lightGreen,);
+                                case 4:
+                                  return Icon(Icons.sentiment_very_satisfied,color: Colors.green);
+                            }
+                            return SizedBox();
+                          },
+                          onRatingUpdate: (rating2) {
+                            onChanged2(rating2);                          
+                          },
+                        ),
+                 
+                        SizedBox(height: 40.0),
+                        //creación reacciones para condiciones
+                        Text('Condiciones del vehículo', style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1)),),
+                        SizedBox(height: 5.0),
+                        RatingBar.builder(initialRating: 0,itemCount: 5,
+                          itemBuilder: (context, index) {
+                            switch (index) {
+                                case 0:
+                                  return Icon(Icons.sentiment_very_dissatisfied,color: Colors.red);
+                                case 1:
+                                  return Icon(Icons.sentiment_dissatisfied,color: Colors.redAccent);
+                                case 2:
+                                  return Icon(Icons.sentiment_neutral,color: Colors.amber);
+                                case 3:
+                                  return Icon(Icons.sentiment_satisfied,color: Colors.lightGreen);
+                                case 4:
+                                  return Icon(Icons.sentiment_very_satisfied,color: Colors.green);
+                            }
+                            return SizedBox();
+                          },                              
+                          onRatingUpdate: (rating3) {
+                            onChanged3(rating3);                          
+                          },
+                        ),
+                      ]
+                            ),
+                  ),
                 ),
               );
             }
@@ -3063,32 +3050,72 @@ class _NextTripScreenState extends State<NextTripScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   //SizedBox(width: 15.0), 
-                  ButtonTheme(minWidth: 60.0,child: TextButton(style: TextButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: secondColor),
-                    onPressed: () => {
-                      //fetch skip Rating
-                      fetchSkipRating2(resp.agentId.toString(), resp1.tripId.toString(), rating1.toInt(), rating2.toInt(), rating3.toInt(), message.text),
-                      Navigator.pop(context),                              
-                    },
-                    child: Text('Omitir'),                              
-                  )),  
+                  ButtonTheme(
+                    minWidth: 60.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0), // Ajusta el radio según tus preferencias
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color.fromRGBO(40, 93, 169, 1),
+                        onPrimary: Colors.white,
+                      ),
+                      onPressed: () {
+                        // Acción al presionar el botón
+                        fetchSkipRating2(
+                          resp.agentId.toString(),
+                          resp1.tripId.toString(),
+                          rating1.toInt(),
+                          rating2.toInt(),
+                          rating3.toInt(),
+                          message.text,
+                        );
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Omitir',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+ 
                   //SizedBox(width: 5.0),                                   
-                  ButtonTheme(minWidth: 60.0,child: TextButton(style: TextButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: kgray),
-                    onPressed: () => {
-                      Navigator.pop(context),
-                    },
-                    child: Text('Ahora no'),                              
-                  )),
+                  ButtonTheme(
+                    minWidth: 60.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0), // Ajusta el radio según tus preferencias
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color.fromRGBO(40, 93, 169, 1),
+                        onPrimary: Colors.white,
+                      ),
+                      onPressed: () {
+                        // Acción al presionar el botón
+                         Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Ahora no',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+
                   //SizedBox(width: 5.0),                                   
-                  ButtonTheme(minWidth: 60.0,child: TextButton(style: TextButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: GradiantV1),
-                    onPressed: () => {
-                      Navigator.pop(context),
-                      showGeneralDialog(barrierColor: Colors.black.withOpacity(0.5),
+                  ButtonTheme(
+                    minWidth: 60.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0), // Ajusta el radio según tus preferencias
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color.fromRGBO(40, 93, 169, 1),
+                        onPrimary: Colors.white,
+                      ),
+                      onPressed: () => {
+                        Navigator.pop(context),
+                        showGeneralDialog(
+                          barrierColor: Colors.black.withOpacity(0.5),
                           transitionBuilder: (context, a1, a2, widget) {
                             return Transform.scale(scale: a1.value,
                               child: Opacity(opacity: a1.value,
@@ -3103,13 +3130,13 @@ class _NextTripScreenState extends State<NextTripScreen>
                                     Center(
                                       child: TextButton(style: TextButton.styleFrom(
                                             foregroundColor: Colors.white,
-                                            backgroundColor: GradiantV1),
+                                            backgroundColor: Color.fromRGBO(40, 93, 169, 1)),
                                         onPressed: () => {
                                           //fetch skip rating
                                           fetchSkipRating2(resp.agentId.toString(), resp1.tripId.toString(), rating1.toInt(), rating2.toInt(), rating3.toInt(), message.text),
                                           Navigator.pop(context),
                                         },
-                                        child: Text('Enviar'),                                                  
+                                        child: Text('Enviar', style: TextStyle(fontWeight: FontWeight.bold)),                                                    
                                       ),
                                     ),
                                     //SizedBox(width: 70.0),
@@ -3118,15 +3145,19 @@ class _NextTripScreenState extends State<NextTripScreen>
                               ),
                             );
                           },
-                        transitionDuration: Duration(milliseconds: 200),
-                        barrierDismissible: false,
-                        barrierLabel: '',
-                        context: context,
-                        pageBuilder: (context, animation1, animation2) {
-                        return Text('');}),
+                          transitionDuration: Duration(milliseconds: 200),
+                          barrierDismissible: false,
+                          barrierLabel: '',
+                          context: context,
+                          pageBuilder: (context, animation1, animation2) {
+                          return Text('');}
+                        ),
                       },
-                    child: Text('Enviar'),                              
-                  ),
+                      child: Text(
+                        'Enviar',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
                     
                 ],
@@ -3144,556 +3175,6 @@ class _NextTripScreenState extends State<NextTripScreen>
       context: context,
       pageBuilder: (context, animation1, animation2) {
       return Text('');});      
-  }
-
-  AlertDialog encuestaP3(DataAgent resp, BuildContext context, Widget widget, String tripId, String driverFullname) {
-    return AlertDialog(
-          //scrollable: true,
-          backgroundColor: backgroundColor,
-          shape: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16.0)),
-          title: Center(
-              child: Text(
-            '😄 ¿Cómo calificaría su último viaje con $driverFullname? 😁 ',
-            style: TextStyle(color: Colors.white),
-          )),
-          content: SizedBox(
-            height: 900,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                 SizedBox(height: 10.0),
-                  //creación reacciones para condiciones
-                  Text('4. El motorista actual de su viaje cumple puntual con la llegadas a las instalaciones de su empresa.',style: TextStyle(color: Colors.white)),
-                  SizedBox(height: 5.0),
-                  RatingBar.builder(
-                    initialRating: 0,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      switch (index) {
-              case 0:
-                return Icon(Icons.sentiment_very_dissatisfied,
-                    color: Colors.red);
-              case 1:
-                return Icon(Icons.sentiment_dissatisfied,
-                    color: Colors.redAccent);
-              case 2:
-                return Icon(Icons.sentiment_neutral,
-                    color: Colors.amber);
-              case 3:
-                return Icon(Icons.sentiment_satisfied,
-                    color: Colors.lightGreen);
-              case 4:
-                return Icon(Icons.sentiment_very_satisfied,
-                    color: Colors.green);
-                      }
-                      return SizedBox();
-                    },
-                    onRatingUpdate: (rating4) {
-                      onChanged4(rating4);
-                    },
-                  ),
-                  SizedBox(height: 10.0),
-                  TextField(
-                    style: TextStyle(color: Colors.white),
-                    controller: comentario4,
-                    decoration: const InputDecoration(
-              filled: true,
-              fillColor: Color.fromARGB(96, 0, 0, 0),
-              hintStyle: TextStyle(color: Colors.white),
-              contentPadding: EdgeInsets.all(1),
-              hintText: 'Escriba un comentario...',
-              border: InputBorder.none,
-                    ),
-                    maxLines: 5,
-                  ),
-                  SizedBox(height: 10.0),
-                  //creación reacciones para condiciones
-                  Text('5. En caso de tener entrada, el motorista actual de su viaje, pasa a la hora acordada en la plataforma.',style: TextStyle(color: Colors.white)),
-                  SizedBox(height: 5.0),
-                  RatingBar.builder(
-                    initialRating: 0,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      switch (index) {
-              case 0:
-                return Icon(Icons.sentiment_very_dissatisfied,
-                    color: Colors.red);
-              case 1:
-                return Icon(Icons.sentiment_dissatisfied,
-                    color: Colors.redAccent);
-              case 2:
-                return Icon(Icons.sentiment_neutral,
-                    color: Colors.amber);
-              case 3:
-                return Icon(Icons.sentiment_satisfied,
-                    color: Colors.lightGreen);
-              case 4:
-                return Icon(Icons.sentiment_very_satisfied,
-                    color: Colors.green);
-                      }
-                      return SizedBox();
-                    },
-                    onRatingUpdate: (rating5) {
-                      onChanged5(rating5);
-                    },
-                  ),
-                  SizedBox(height: 10.0),
-                  TextField(
-                    style: TextStyle(color: Colors.white),
-                    controller: comentario5,
-                    decoration: const InputDecoration(
-              filled: true,
-              fillColor: Color.fromARGB(96, 0, 0, 0),
-              hintStyle: TextStyle(color: Colors.white),
-              contentPadding: EdgeInsets.all(1),
-              hintText: 'Escriba un comentario...',
-              border: InputBorder.none,
-                    ),
-                    maxLines: 5,
-                  ),
-                  SizedBox(height: 10.0),
-                  //creación reacciones para condiciones
-                  Text('6. ¿Considera que la unidad actual de su viaje, está en buenas condiciones y limpia ?',style: TextStyle(color: Colors.white)),
-                  SizedBox(height: 5.0),
-                  RatingBar.builder(
-                    initialRating: 0,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      switch (index) {
-              case 0:
-                return Icon(Icons.sentiment_very_dissatisfied,
-                    color: Colors.red);
-              case 1:
-                return Icon(Icons.sentiment_dissatisfied,
-                    color: Colors.redAccent);
-              case 2:
-                return Icon(Icons.sentiment_neutral,
-                    color: Colors.amber);
-              case 3:
-                return Icon(Icons.sentiment_satisfied,
-                    color: Colors.lightGreen);
-              case 4:
-                return Icon(Icons.sentiment_very_satisfied,
-                    color: Colors.green);
-                      }
-                      return SizedBox();
-                    },
-                    onRatingUpdate: (rating6) {
-                      onChanged6(rating6);
-                    },
-                ),
-                SizedBox(height: 10.0),
-                TextField(
-                  style: TextStyle(color: Colors.white),
-                  controller: comentario6,
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromARGB(96, 0, 0, 0),
-                    hintStyle: TextStyle(color: Colors.white),
-                    contentPadding: EdgeInsets.all(1),
-                    hintText: 'Escriba un comentario...',
-                    border: InputBorder.none,
-                  ),
-                  maxLines: 5,
-                ),
-                ],
-              ),
-            ),
-          ),
-          actions: <Widget>[  
-            botones(resp, context, widget, tripId),
-            SizedBox(width: 15.0),
-          ],
-        );
-  }
-
-  AlertDialog encuestaP2(DataAgent resp, BuildContext context, Widget widget, String tripId, String driverFullname) {
-    
-    return AlertDialog(
-          //scrollable: true,
-          backgroundColor: backgroundColor,
-          shape: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16.0)),
-          title: Center(
-              child: Text(
-            '😄 ¿Cómo calificaría su último viaje con $driverFullname? 😁 ',
-            style: TextStyle(color: Colors.white),
-          )),
-          content: SizedBox(
-            height: 900,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: 10.0),
-                  Text('Califica en la escala del 1 al 5 , siendo 1 muy malo y 5 excelente\n',style: TextStyle(color: Colors.white)),
-                  Text('1. ¿Cual es el nivel de satisfacción con el trato recibido por el motorista que brinda tu transporte actualmente?',style: TextStyle(color: Colors.white)),
-                  SizedBox(height: 5.0),
-                  RatingBar.builder(
-                    initialRating: 0,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      switch (index) {
-                        case 0:
-                          return Icon(Icons.sentiment_very_dissatisfied,
-                              color: Colors.red);
-                        case 1:
-                          return Icon(Icons.sentiment_dissatisfied,
-                              color: Colors.redAccent);
-                        case 2:
-                          return Icon(Icons.sentiment_neutral,
-                              color: Colors.amber);
-                        case 3:
-                          return Icon(Icons.sentiment_satisfied,
-                              color: Colors.lightGreen);
-                        case 4:
-                          return Icon(Icons.sentiment_very_satisfied,
-                              color: Colors.green);
-                      }
-                      return SizedBox();
-                    },
-                    onRatingUpdate: (rating1) {
-                      onChanged1(rating1);
-                    },
-                  ),
-                  SizedBox(height: 10.0),
-                  TextField(
-                    style: TextStyle(color: Colors.white),
-                    controller: comentario1,
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: Color.fromARGB(96, 0, 0, 0),
-                      hintStyle: TextStyle(color: Colors.white),
-                      contentPadding: EdgeInsets.all(1),
-                      hintText: 'Escriba un comentario...',
-                      border: InputBorder.none,
-                    ),
-                    maxLines: 5,
-                  ),
-                  SizedBox(height: 10.0),
-                //creación reacciones para amabilidad
-                Text('2.¿El motorista que te brinda tu transporte está siempre atento y no utiliza el celular al conducir?',style: TextStyle(color: Colors.white)),
-                SizedBox(height: 5.0),
-                RatingBar.builder(
-                  initialRating: 0,
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    switch (index) {
-                      case 0:
-                        return Icon(Icons.sentiment_very_dissatisfied,
-                            color: Colors.red);
-                      case 1:
-                        return Icon(Icons.sentiment_dissatisfied,
-                            color: Colors.redAccent);
-                      case 2:
-                        return Icon(Icons.sentiment_neutral,
-                            color: Colors.amber);
-                      case 3:
-                        return Icon(
-                          Icons.sentiment_satisfied,
-                          color: Colors.lightGreen,
-                        );
-                      case 4:
-                        return Icon(Icons.sentiment_very_satisfied,
-                            color: Colors.green);
-                    }
-                    return SizedBox();
-                  },
-                  onRatingUpdate: (rating2) {
-                    onChanged2(rating2);
-                  },
-                ),
-                SizedBox(height: 10.0),
-                  TextField(
-                    style: TextStyle(color: Colors.white),
-                    controller: comentario2,
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: Color.fromARGB(96, 0, 0, 0),
-                      hintStyle: TextStyle(color: Colors.white),
-                      contentPadding: EdgeInsets.all(1),
-                      hintText: 'Escriba un comentario...',
-                      border: InputBorder.none,
-                    ),
-                    maxLines: 5,
-                  ),
-                SizedBox(height: 10.0),
-                  //creación reacciones para condiciones
-                  Text('3. El motorista que brinda tu transporte, es prudente en el manejo de la unidad y cuidadoso con los tumulos y agujeros de la calles durante su recorrido.',style: TextStyle(color: Colors.white)),
-                  SizedBox(height: 5.0),
-                  RatingBar.builder(
-                    initialRating: 0,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      switch (index) {
-                        case 0:
-                          return Icon(Icons.sentiment_very_dissatisfied,
-                              color: Colors.red);
-                        case 1:
-                          return Icon(Icons.sentiment_dissatisfied,
-                              color: Colors.redAccent);
-                        case 2:
-                          return Icon(Icons.sentiment_neutral,
-                              color: Colors.amber);
-                        case 3:
-                          return Icon(Icons.sentiment_satisfied,
-                              color: Colors.lightGreen);
-                        case 4:
-                          return Icon(Icons.sentiment_very_satisfied,
-                              color: Colors.green);
-                      }
-                      return SizedBox();
-                    },
-                    onRatingUpdate: (rating3) {
-                      onChanged3(rating3);
-                    },
-                  ),
-                  SizedBox(height: 10.0),
-                  TextField(
-                    style: TextStyle(color: Colors.white),
-                    controller: comentario3,
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: Color.fromARGB(96, 0, 0, 0),
-                      hintStyle: TextStyle(color: Colors.white),
-                      contentPadding: EdgeInsets.all(1),
-                      hintText: 'Escriba un comentario...',
-                      border: InputBorder.none,
-                    ),
-                    maxLines: 5,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          actions: <Widget>[  
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ButtonTheme(
-                  minWidth: 60.0,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: secondColor),
-                    onPressed: () => {
-                      QuickAlert.show(
-                        context: context,
-                        title: "Está seguro que desea omitir la encuesta?",          
-                        type: QuickAlertType.success,
-                        confirmBtnText: 'Confirmar',
-                        cancelBtnText: 'Cancelar',
-                        showCancelBtn: true,  
-                        confirmBtnTextStyle: TextStyle(fontSize: 15, color: Colors.white),
-                        cancelBtnTextStyle:TextStyle(color: Colors.red, fontSize: 15, fontWeight:FontWeight.bold ), 
-                        onConfirmBtnTap:() {
-                          fetchSkipRating(resp.agentId.toString(),'',0,0,0,0,0,0,'','','','','','',true);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        },
-                        onCancelBtnTap: (() {
-                          Navigator.pop(context);
-                        })
-                      ),
-                        
-                    },
-                  child: Text('Omitir'),
-                  )
-                ),
-                ButtonTheme(
-                  minWidth: 60.0,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: kgray),
-                    onPressed: () => {                           
-                      if(rating1 != 0 && rating2 !=0 && rating3 != 0)...{
-                      Navigator.pop(context),
-                      showGeneralDialog(
-                        barrierColor: Colors.black.withOpacity(0.5),
-                        transitionBuilder: (context, a1, a2, widget) {
-                          return Transform.scale(
-                            scale: a1.value,
-                            child: Opacity(
-                              opacity: a1.value,
-                              child: Transform.scale(scale: a1.value, child: encuestaP3(resp, context, widget, tripId, driverFullname)),
-                            ),
-                          );
-                        },
-                        transitionDuration: Duration(milliseconds: 220),
-                        barrierDismissible: false,
-                        barrierLabel: '',
-                        context: context,
-                        pageBuilder: (context, animation1, animation2) {
-                          return widget;
-                        }
-                      )                      
-                      }else...{
-                        if(rating1== 0){
-                          QuickAlert.show(
-                            context: context,
-                            title: 'Pendiente',
-                            confirmBtnText: "Aceptar",
-                            text: 'Hace falta que califique la pregunta $rating11, los comentarios son opcionales.',
-                            type: QuickAlertType.info
-                          ),
-                        }else if(rating2== 0){
-                          QuickAlert.show(
-                            context: context,
-                            title: 'Pendiente',
-                            confirmBtnText: "Aceptar",
-                            text: 'Hace falta que califique la pregunta $rating22, los comentarios son opcionales.',
-                            type: QuickAlertType.info
-                          ),
-                        }else if(rating3== 0){
-                          QuickAlert.show(
-                            context: context,
-                            title: 'Pendiente',
-                            confirmBtnText: "Aceptar",
-                            text: 'Hace falta que califique la pregunta $rating33, los comentarios son opcionales.',
-                            type: QuickAlertType.info
-                          ),
-                        }                     
-                      }
-
-                    },
-                  child: Text('Siguiente'),
-                  )
-                ),
-              ],
-            ),
-            SizedBox(width: 15.0),
-          ],
-        );
-  }
-
-  AlertDialog encuestaP1(DataAgent resp, BuildContext context, Widget widget, String tripId, String driverFullname) {
-    return AlertDialog(
-      //scrollable: true,
-      backgroundColor: backgroundColor,
-      shape: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16.0)),
-      title: Center(
-        child: Text(
-          '😄 ¡Responde y gana por calificarnos! 😁',
-          style: TextStyle(color: Colors.white, fontSize: 22),
-        )
-      ),
-      content: SizedBox(
-        height: 500,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 10.0),
-              Text(
-                textAlign: TextAlign.justify,
-                'Gracias por viajar con nosotros, queremos seguir mejorando y tu opinion es muy importante. Le agradeceremos unos minutos para compartirnos tu experiencia con la siguiente encuesta.\n\nSi calificas cada uno de los puntos durante todos tus viajes cuando utilizas el transporte durante 5 días seguidos, estarás participando en un sorteo por cualquiera de los regalos 🎁 que te mostraremos en el siguiente enlance: ',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20
-                ) 
-              ),
-        
-              SizedBox(height: 10.0),
-              ButtonTheme(
-                    minWidth: 60.0,
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color.fromARGB(157, 0, 247, 255)),
-                      onPressed: () => launchUrl(Uri.parse('https://giveaway.smtdriver.com/')),
-                    child: Text(
-                      'Ver Premios 🎁', 
-                      style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20
-                      ) 
-                    ),
-                    )
-                  ),
-        
-              SizedBox(height: 10.0),
-        
-              Text(
-                textAlign: TextAlign.justify,
-                'Toda información que brindes es totalmente confidencial.',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20
-                ) 
-              ),
-            ],
-          ),
-        ),
-      ),
-      actions: <Widget>[  
-        Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ButtonTheme(
-                  minWidth: 60.0,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: secondColor),
-                    onPressed: () => {
-                      QuickAlert.show(
-                        context: context,
-                        title: "Está seguro que desea omitir la encuesta?",          
-                        type: QuickAlertType.success,
-                        confirmBtnText: 'Confirmar',
-                        cancelBtnText: 'Cancelar',
-                        showCancelBtn: true,  
-                        confirmBtnTextStyle: TextStyle(fontSize: 15, color: Colors.white),
-                        cancelBtnTextStyle:TextStyle(color: Colors.red, fontSize: 15, fontWeight:FontWeight.bold ), 
-                        onConfirmBtnTap:() {
-                          fetchSkipRating(resp.agentId.toString(),'',0,0,0,0,0,0,'','','','','','',true);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        },
-                        onCancelBtnTap: (() {
-                          Navigator.pop(context);
-                        })
-                      ),
-                    },
-                  child: Text('Omitir'),
-                  )
-                ),
-                ButtonTheme(
-                  minWidth: 60.0,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: kgray),
-                    onPressed: () => {
-                      Navigator.pop(context),
-                      showGeneralDialog(
-                          barrierColor: Colors.black.withOpacity(0.5),
-                          transitionBuilder: (context, a1, a2, widget) {
-                            return Transform.scale(
-                              scale: a1.value,
-                              child: Opacity(
-                                opacity: a1.value,
-                                child: Transform.scale(scale: a1.value, child: encuestaP2(resp, context, widget, tripId, driverFullname)),
-                              ),
-                            );
-                          },
-                          transitionDuration: Duration(milliseconds: 220),
-                          barrierDismissible: false,
-                          barrierLabel: '',
-                          context: context,
-                          pageBuilder: (context, animation1, animation2) {
-                            return widget;
-                          })
-                    },
-                  child: Text('Siguiente'),
-                  )
-                ),
-              ],
-            ),
-        SizedBox(width: 15.0),
-      ],
-    );
   }
 
   Row botones(DataAgent resp, BuildContext context, Widget widget, String tripId) {
