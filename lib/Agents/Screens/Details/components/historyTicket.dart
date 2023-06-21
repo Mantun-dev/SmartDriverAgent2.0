@@ -6,7 +6,6 @@ import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/Agents/models/ticketHistory.dart';
 import 'package:flutter_auth/components/AppBarSuperior.dart';
-import 'package:flutter_auth/constants.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../components/AppBarPosterior.dart';
@@ -29,6 +28,7 @@ class HistoryTicketScreen extends StatefulWidget {
 class _DataTableExample extends State<HistoryTicketScreen> {
   // variable con instancia
   Future<TripsList6>? item;
+  TripsList6? itemFiltro;
   bool ticketsP=true;
   int totalPendientes = 0;
   int totalProcesados = 0;
@@ -38,11 +38,11 @@ class _DataTableExample extends State<HistoryTicketScreen> {
     super.initState();
     //asignación de variable al fetch desde ticket story en network
     item = fetchTicketStory();
+    getLista(item!);
   }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return BackgroundBody(
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -62,8 +62,14 @@ class _DataTableExample extends State<HistoryTicketScreen> {
     );
   }
 
+  void getLista(Future<TripsList6> _item)async{
+    
+    itemFiltro = await _item;
+
+    setState(() { });
+  }
+
   Widget cuerpo() {
-    Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Container(
@@ -202,8 +208,34 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                           children: [
                             Expanded(
                               child: TextField(
-                                onChanged:(value) {
-                                  
+                                onChanged:(value) async {
+                                 itemFiltro = await fetchTicketStory();
+
+                                 if(ticketsP==true)
+                                    if (value.isEmpty) {
+                                      print('vacio');
+                                      itemFiltro = await fetchTicketStory();
+                                    } else {
+                                      itemFiltro?.trips[0].pendant = itemFiltro?.trips[0].pendant?.where((ticket) =>
+                                        ticket.ticketDatetime.contains(value) ||
+                                        ticket.ticketId.toString().contains(value) ||
+                                        ticket.ticketIssue.contains(value)
+                                      ).toList();
+                                    }
+                                  else
+                                  if (value.isEmpty) {
+                                      print('vacio');
+                                      itemFiltro = await fetchTicketStory();
+                                    } else {
+                                      itemFiltro?.trips[1].closed = itemFiltro?.trips[1].closed?.where((ticket) =>
+                                        ticket.ticketDatetime!.contains(value) ||
+                                        ticket.ticketId!.toString().contains(value) ||
+                                        ticket.ticketIssue!.contains(value)
+                                      ).toList();
+                                    }
+                                    setState(() {
+                                      
+                                    });
                                 },
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(Icons.search, color: Color.fromRGBO(40, 93, 169, 1),),
@@ -234,7 +266,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
   Widget _ticketPendant() {
     //construcción de future builder para mostrar data
     return FutureBuilder<TripsList6>(
-      future: item,
+      future: itemFiltro==null ? item : Future.value(itemFiltro),
       builder: (BuildContext context, abc) {
         if (abc.connectionState == ConnectionState.done) {
           //validación de arreglo vacio
@@ -261,7 +293,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
           );
           } else {
             return FutureBuilder<TripsList6>(
-              future: item,
+              future: itemFiltro==null ? item : Future.value(itemFiltro),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 return ListView.builder(
                     scrollDirection: Axis.vertical,
@@ -457,7 +489,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
   Widget _ticketProcess() {
     //Future builder para la data
     return FutureBuilder<TripsList6>(
-      future: item,
+      future: itemFiltro==null ? item : Future.value(itemFiltro),
       builder: (BuildContext context, abc) {
         if (abc.connectionState == ConnectionState.done) {
           //validación de arreglo vacio
@@ -484,7 +516,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
           );
           } else {
             return FutureBuilder<TripsList6>(
-              future: item,
+              future: itemFiltro==null ? item : Future.value(itemFiltro),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 //retorna el ListView builder para la data dinámica
                 return ListView.builder(

@@ -24,7 +24,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
 import 'package:quickalert/quickalert.dart';
 //import 'package:sweetalert/sweetalert.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../components/ConfirmationDialog.dart';
 import '../../../../components/progress_indicator.dart';
@@ -3046,8 +3045,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                     ),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Color.fromRGBO(40, 93, 169, 1),
-                        onPrimary: Colors.white,
+                        backgroundColor : Color.fromRGBO(40, 93, 169, 1),
+                        foregroundColor : Colors.white,
                       ),
                       onPressed: () {
                         // Acción al presionar el botón
@@ -3076,8 +3075,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                     ),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Color.fromRGBO(40, 93, 169, 1),
-                        onPrimary: Colors.white,
+                        backgroundColor : Color.fromRGBO(40, 93, 169, 1),
+                        foregroundColor : Colors.white,
                       ),
                       onPressed: () {
                         // Acción al presionar el botón
@@ -3098,8 +3097,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                     ),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Color.fromRGBO(40, 93, 169, 1),
-                        onPrimary: Colors.white,
+                        backgroundColor : Color.fromRGBO(40, 93, 169, 1),
+                        foregroundColor : Colors.white,
                       ),
                       onPressed: () => {
                         Navigator.pop(context),
