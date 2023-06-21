@@ -78,151 +78,154 @@ class _DataTableExample extends State<HistoryTicketScreen> {
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          child: ListView(children: <Widget>[
-              
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color.fromRGBO(241, 239, 239, 1),
-                    borderRadius: BorderRadius.circular(15.0),
-                  ),
-                  child: Center(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: ticketsP ? Color.fromRGBO(40, 93, 169, 1) : Colors.transparent,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                ticketsP = true;
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 10, right: 10),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Pendientes',
-                                    style: TextStyle(
-                                      color: ticketsP ? Colors.white : Colors.black,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 5),
-                                    padding: const EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: ticketsP ? Colors.white : Color.fromRGBO(40, 93, 169, 1),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Text(
-                                      totalPendientes.toString(),
-                                      style: TextStyle(
-                                        color: !ticketsP ? Colors.white : Color.fromRGBO(40, 93, 169, 1),
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 10,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                      
-                          SizedBox(width: 10),
-
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: ticketsP ? Colors.transparent : Color.fromRGBO(40, 93, 169, 1),
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                ticketsP = false;
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 10, right: 10),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Procesados',
-                                    style: TextStyle(
-                                      color: !ticketsP ? Colors.white : Colors.black,
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 5),
-                                    padding: const EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: !ticketsP ? Colors.white : Color.fromRGBO(40, 93, 169, 1),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Text(
-                                      totalProcesados.toString(),
-                                      style: TextStyle(
-                                        color: ticketsP ? Colors.white : Color.fromRGBO(40, 93, 169, 1),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          
-                        ],
-                      ),
-                    ),
-                  ),
-                ),  
-              
-                Padding(
-                  padding: const EdgeInsets.only(top: 22, bottom: 22),
-                  child: Container(
-                      decoration: BoxDecoration(
-                        color: const Color.fromRGBO(241, 239, 239, 1),
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(color: const Color.fromRGBO(241, 239, 239, 1),)
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              onChanged:(value) {
-                                
-                              },
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.search, color: Color.fromRGBO(40, 93, 169, 1),),
-                                hintText: 'Buscar',
-                                hintStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
-                                border: InputBorder.none,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    ),
-                ), 
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
                 
-                if(ticketsP==true)
-                  _ticketPendant(),
-              
-                if(ticketsP==false)
-                  _ticketProcess(),
-                SizedBox(height: 50)
-              ]),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(241, 239, 239, 1),
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: Center(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: ticketsP ? Color.fromRGBO(40, 93, 169, 1) : Colors.transparent,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  ticketsP = true;
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10, right: 10),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Pendientes',
+                                      style: TextStyle(
+                                        color: ticketsP ? Colors.white : Colors.black,
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 5),
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: ticketsP ? Colors.white : Color.fromRGBO(40, 93, 169, 1),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Text(
+                                        totalPendientes.toString(),
+                                        style: TextStyle(
+                                          color: !ticketsP ? Colors.white : Color.fromRGBO(40, 93, 169, 1),
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        
+                            SizedBox(width: 10),
+          
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: ticketsP ? Colors.transparent : Color.fromRGBO(40, 93, 169, 1),
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  ticketsP = false;
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10, right: 10),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Procesados',
+                                      style: TextStyle(
+                                        color: !ticketsP ? Colors.white : Colors.black,
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 5),
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: !ticketsP ? Colors.white : Color.fromRGBO(40, 93, 169, 1),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Text(
+                                        totalProcesados.toString(),
+                                        style: TextStyle(
+                                          color: ticketsP ? Colors.white : Color.fromRGBO(40, 93, 169, 1),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),  
+                
+                  Padding(
+                    padding: const EdgeInsets.only(top: 22, bottom: 22),
+                    child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color.fromRGBO(241, 239, 239, 1),
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(color: const Color.fromRGBO(241, 239, 239, 1),)
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                onChanged:(value) {
+                                  
+                                },
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.search, color: Color.fromRGBO(40, 93, 169, 1),),
+                                  hintText: 'Buscar',
+                                  hintStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      ),
+                  ), 
+                  
+                  if(ticketsP==true)
+                    _ticketPendant(),
+                
+                  if(ticketsP==false)
+                    _ticketProcess(),
+                  SizedBox(height: 50)
+                ]),
+          ),
         ),
       ),
     );
@@ -302,13 +305,15 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                               ),
                                             ),
                                             SizedBox(width: 5),
-                                            Text(
-                                              'Fecha: ${abc.data!.trips[0].pendant![index].ticketDatetime}',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 12.0,
+                                            Flexible(
+                                              child: Text(
+                                                'Fecha: ${abc.data!.trips[0].pendant![index].ticketDatetime}',
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 12.0,
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -316,13 +321,15 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                       ),
                               
                                       SizedBox(width: 5),
-                                      Text(
-                                        '# Ticket: ${abc.data!.trips[0].pendant![index].ticketId}',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          color: Color.fromRGBO(40, 93, 169, 1),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12.0,
+                                      Flexible(
+                                        child: Text(
+                                          '# Ticket: ${abc.data!.trips[0].pendant![index].ticketId}',
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            color: Color.fromRGBO(40, 93, 169, 1),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12.0,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -521,13 +528,15 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                               ),
                                             ),
                                             SizedBox(width: 5),
-                                            Text(
-                                              'Fecha: ${abc.data!.trips[1].closed![index].ticketDatetime}',
-                                              textAlign: TextAlign.left,
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 12.0,
+                                            Flexible(
+                                              child: Text(
+                                                'Fecha: ${abc.data!.trips[1].closed![index].ticketDatetime}',
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 12.0,
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -535,13 +544,15 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                       ),
                               
                                       SizedBox(width: 5),
-                                      Text(
-                                        '# Ticket: ${abc.data!.trips[1].closed![index].ticketId}',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          color: Color.fromRGBO(40, 93, 169, 1),
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12.0,
+                                      Flexible(
+                                        child: Text(
+                                          '# Ticket: ${abc.data!.trips[1].closed![index].ticketId}',
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            color: Color.fromRGBO(40, 93, 169, 1),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12.0,
+                                          ),
                                         ),
                                       ),
                                     ],
