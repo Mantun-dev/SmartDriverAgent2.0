@@ -48,7 +48,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
         backgroundColor: Colors.transparent,
                 appBar: PreferredSize(
                   preferredSize: Size.fromHeight(56),
-                  child: AppBarSuperior(item: 1,)
+                  child: AppBarSuperior(item: 7)
                 ),
                 body: Column(
                   children: [
