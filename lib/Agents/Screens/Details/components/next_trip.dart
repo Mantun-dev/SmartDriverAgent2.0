@@ -45,6 +45,7 @@ class _NextTripScreenState extends State<NextTripScreen>
   //variables globales para cada función
   late Future<TripsList> item;
   late Future<DataAgent> itemx;
+  var mensajeAlerta;
   final prefs = new PreferenciasUsuario();
   //variable para comentario
   String comment = '';
@@ -93,6 +94,7 @@ class _NextTripScreenState extends State<NextTripScreen>
     itemx = fetchRefres();
     item2=getSolicitudes();
     obtenerLongitud();
+    getMensajeAlerta();
     //función callback para mostrar automáticamente el mensaje de alerta de rating
     SchedulerBinding.instance.addPostFrameCallback((_) {
       // if (mounted) {
@@ -138,6 +140,26 @@ class _NextTripScreenState extends State<NextTripScreen>
     } else {
       return []; // Retorna una lista vacía
     }
+  }
+
+  void getMensajeAlerta() async {
+    totalSolicitudes=0;
+    Map data = {
+      "agentId": prefs.usuarioId.toString()
+    };
+
+    http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/alerts/confirmation'), body: data);
+
+    var dataR = json.decode(response.body);
+
+    if (dataR["ok"] == true) {
+
+      mensajeAlerta=dataR['message'];
+
+    } else {
+      mensajeAlerta='';
+    }
+    setState(() {});
   }
 
   void obtenerLongitud() async {
@@ -527,6 +549,18 @@ class _NextTripScreenState extends State<NextTripScreen>
                               color: Color.fromRGBO(40, 93, 169, 1),
                             ),
                           ),
+                          SizedBox(height: 5),
+
+                          Text(
+                                    mensajeAlerta,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0,
+                                    ),
+                                  ),
+
                           SizedBox(height: 5),
                           Text(
                             "Nos gustaría saber si necesitarás transporte" ,
