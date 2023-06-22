@@ -132,7 +132,7 @@ class _NextTripScreenState extends State<NextTripScreen>
           totalSolicitudes++;
         }
       }
-      print(totalSolicitudes);
+
       setState(() {});
       return dataR["requests"]; // Retornar la lista de la propiedad "data"
     } else {
@@ -1608,8 +1608,9 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ],
                       ),
 
-                      /*SizedBox(height: 10),
-
+                      SizedBox(height: 10),
+                      
+                      if(tripData["hideCancelButton"]!=1)
                       TextButton(
                       onPressed: () {
                         showDialog(
@@ -1722,7 +1723,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                           color: Colors.white,
                         ),
                       ),
-                    ),*/
+                    ),
                   ],
                 ),
               if (tripData["confirmation"] == false)
