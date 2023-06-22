@@ -2505,6 +2505,124 @@ class _NextTripScreenState extends State<NextTripScreen>
                           ),
                         ),
                       ),
+
+                      
+                      SizedBox(height: 10),
+                      
+                      if(tripData["hideCancelButton"]!=1)
+                      TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            String comment = '';
+
+                            return AlertDialog(
+                              backgroundColor: backgroundColor,
+                              title: Text('Nos encantaría conocer tu razón', style: TextStyle(color: Colors.white),),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextField(
+                                    maxLines: null,
+                                    onChanged: (value) {
+                                      comment = value;
+                                    },
+                                    style: TextStyle(
+                                      color: Colors.white, // Establece el color del texto en blanco
+                                    ),
+                                    decoration: InputDecoration(
+                                      hintText: 'Ingresa tu comentario aquí',
+                                      hintStyle: TextStyle(
+                                        color: Colors.white54, // Establece el color del texto de sugerencia en blanco
+                                      ),
+                                      // Otros atributos de decoración
+                                    ),
+                                  ),
+
+                                ],
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); // Cierra la ventana emergente sin realizar ninguna acción
+                                  },
+                                  child: Text('Cerrar', style: TextStyle(color: Colors.white),),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    if (comment.isEmpty) {
+                                    Navigator.of(context).pop(); 
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            backgroundColor: backgroundColor,
+                                            title: Text('Comentario requerido', style: TextStyle(color: Colors.white)),
+                                            content: Text('Debes ingresar un comentario antes de enviar.', style: TextStyle(color: Colors.white)),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop(); 
+                                                },
+                                                child: Text('Aceptar', style: TextStyle(color: Colors.white)),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      Map data = {
+                                        "agentForTravelId":tripData["agentForTravelId"].toString(), 
+                                        "confirmation": "0",
+                                        "agentComment": comment
+                                      };
+                                    
+                                      http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
+                                    
+
+                                      var dataR = json.decode(response.body);
+                                      Navigator.pop(context);
+                                      if(dataR["ok"]==true){
+                                        
+                                        QuickAlert.show(
+                                          context: context,
+                                          title: "Enviado",
+                                          text: dataR["message"],
+                                          type: QuickAlertType.success
+                                        );
+
+                                        setState(() {
+                                            item2=getSolicitudes();
+                                        });
+                                      }else{
+                                        QuickAlert.show(
+                                          context: context,
+                                          title: "Error",
+                                          text: dataR["message"],
+                                          type: QuickAlertType.error
+                                        );
+                                      }
+
+                                    }
+                                  },
+                                  child: Text('Enviar'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.red,
+                      ),
+                      child: Text(
+                        'Cancelar',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                     ],
                   ),
               if (tripData["confirmation"] == false)
