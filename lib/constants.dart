@@ -26,3 +26,4 @@ const GradiantV1 = Color(0xFF9580FF);
 const GradiantV2 = Color(0xFFFF80BF);
 const GradiantV_1 = Color(0xFFFF9580);
 const GradiantV_2 = Color(0xFFFFFF80);
+

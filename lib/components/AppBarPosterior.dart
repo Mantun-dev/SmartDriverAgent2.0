@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
 
 import '../Agents/Screens/Chat/listchats.dart';
+import '../Agents/Screens/Notifications/notification.dart';
 import '../Agents/Screens/Profile/profile_screen.dart';
 import '../Agents/models/network.dart';
 
@@ -123,9 +124,12 @@ class _AppBarPosterior extends State<AppBarPosterior> {
               ),
             ):GestureDetector(
             onTap: item==2?null:() {
-              setState(() {
-                  item=2;
-                });
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return NotificationPage();
+                  })
+                );
             },
             child: Padding(
               padding: const EdgeInsets.only(top:10),

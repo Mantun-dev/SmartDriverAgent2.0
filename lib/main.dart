@@ -70,10 +70,7 @@ class _MyAppState extends State<MyApp> {
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'Smart Driver',
-        theme: ThemeData(
-          primaryColor: kPrimaryColor,
-          scaffoldBackgroundColor: Color.fromRGBO(248, 248, 248, 1),
-        ),
+        theme: tema(),
         //home: prefs.nombreUsuario ==null?WelcomeScreen():HomeScreen(),
         initialRoute: prefs.nombreUsuario == null || prefs.nombreUsuario == ""
             ? 'login'
@@ -82,6 +79,19 @@ class _MyAppState extends State<MyApp> {
           'login': (BuildContext context) => UpgradeAlert(child: SplashView()),
           'home': (BuildContext context) => UpgradeAlert(child: HomeScreen(),),
         },
+      ),
+    );
+  }
+
+  ThemeData tema() {
+    return ThemeData(
+      primaryColor: Colors.blue,
+      fontFamily: 'Roboto',
+      textTheme: TextTheme(
+      
+        displayLarge : TextStyle(fontSize: 24.0, color: Colors.black), 
+        bodyLarge : TextStyle(fontSize: 16.0, color: Colors.grey), 
+
       ),
     );
   }
