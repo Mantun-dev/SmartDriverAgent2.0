@@ -1608,10 +1608,10 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ],
                       ),
                       
-                      if(tripData["hideCancelButton"]!=1)
+                      if(tripData["hideCancelButton"]!=true)
                       SizedBox(height: 10),
                       
-                      if(tripData["hideCancelButton"]!=1)
+                      if(tripData["hideCancelButton"]!=true)
                       TextButton(
                       onPressed: () {
                         showDialog(
