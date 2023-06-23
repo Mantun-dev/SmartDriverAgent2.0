@@ -143,7 +143,7 @@ class _NextTripScreenState extends State<NextTripScreen>
   }
 
   void getMensajeAlerta() async {
-    totalSolicitudes=0;
+
     Map data = {
       "agentId": prefs.usuarioId.toString()
     };
