@@ -2483,31 +2483,35 @@ class _NextTripScreenState extends State<NextTripScreen>
               ),
               SizedBox(height: 10),
               if (tripData["confirmation"] == true)
-                Row(
-                    children: [
-                      Container(
-                        width: 18,
-                        height: 18,
-                         child: SvgPicture.asset(
-                          "assets/icons/advertencia.svg",
-                          color: Color.fromRGBO(40, 93, 169, 1),
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Flexible(
-                        child: Text(
-                          '¡Solicitud confirmada! Te notificaremos cuando tengas el viaje programado',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15.0,
+                Column(
+                  children: [
+                    Row(
+                        children: [
+                          Container(
+                            width: 18,
+                            height: 18,
+                             child: SvgPicture.asset(
+                              "assets/icons/advertencia.svg",
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                            ),
                           ),
-                        ),
+                          SizedBox(width: 5),
+                          Flexible(
+                            child: Text(
+                              '¡Solicitud confirmada! Te notificaremos cuando tengas el viaje programado',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15.0,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
 
-                      
-                      SizedBox(height: 10),
+                      if(tripData["hideCancelButton"]!=1)
+                        SizedBox(height: 10),
                       
                       if(tripData["hideCancelButton"]!=1)
                       TextButton(
@@ -2623,8 +2627,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ),
                       ),
                     ),
-                    ],
-                  ),
+                  ],
+                ),
               if (tripData["confirmation"] == false)
                 Row(
                     children: [

@@ -72,6 +72,16 @@ class _NotificationPage extends State<NotificationPage> {
           borderRadius: BorderRadius.circular(20)
         ),
 
+        child: Column(
+          children: [
+            Text(
+              'Hoy',
+              style: TextStyle(
+                
+              ),
+            ),
+          ],
+        ),
         
       ),
     );
