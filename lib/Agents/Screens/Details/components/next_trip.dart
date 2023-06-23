@@ -509,15 +509,13 @@ class _NextTripScreenState extends State<NextTripScreen>
 
             Align(
                 alignment: Alignment.center,
-                child: Flexible(
-                  child: Text(
-                    mensajeAlerta,
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15.0,
-                    ),
+                child: Text(
+                  mensajeAlerta,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.0,
                   ),
                 ),
               ),
