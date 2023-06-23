@@ -72,15 +72,76 @@ class _NotificationPage extends State<NotificationPage> {
           borderRadius: BorderRadius.circular(20)
         ),
 
-        child: Column(
-          children: [
-            Text(
-              'Hoy',
-              style: TextStyle(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Hoy',
+                  style: TextStyle(
+                    color: Color.fromRGBO(40, 93, 169, 1),
+                    fontSize: 15
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                SizedBox(height: 10),
+
+                Text(
+                  'Tiene 1 viaje(s) donde confirmó y no salió a tomar el transporte. Si esto ocurre por tercera vez, el sistema le dará de baja y no será agendado para el servicio de transporte. Deberá comunicarse con su supervisor.',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                SizedBox(height: 5),
+
+                Text(
+                  '11:02 AM',
+                  style: TextStyle(
+                    color: Color.fromRGBO(158, 158, 158, 1),
+                    fontSize: 12
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                SizedBox(height: 20),
+
+                //---------------------------------------------
+                Text(
+                  'Ayer',
+                  style: TextStyle(
+                    color: Color.fromRGBO(40, 93, 169, 1),
+                    fontSize: 15
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                SizedBox(height: 10),
+
+                Text(
+                  'Has agregado un nuevo viaje.',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                SizedBox(height: 5),
+
+                Text(
+                  '17:30 PM',
+                  style: TextStyle(
+                    color: Color.fromRGBO(158, 158, 158, 1),
+                    fontSize: 12
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+                SizedBox(height: 20),
                 
-              ),
+              ],
             ),
-          ],
+          ),
         ),
         
       ),
