@@ -132,7 +132,7 @@ class _NextTripScreenState extends State<NextTripScreen>
           totalSolicitudes++;
         }
       }
-
+      print(response.body);
       setState(() {});
       return dataR["requests"]; // Retornar la lista de la propiedad "data"
     } else {
@@ -1607,7 +1607,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                           ),
                         ],
                       ),
-
+                      
+                      if(tripData["hideCancelButton"]!=1)
                       SizedBox(height: 10),
                       
                       if(tripData["hideCancelButton"]!=1)
