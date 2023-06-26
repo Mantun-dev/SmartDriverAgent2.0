@@ -346,12 +346,14 @@ class _ChatScreenState extends State<ChatScreen> {
                           ),
                            SizedBox(width: 5),
                           nameDriver != null ? 
-                            Text(
-                              nameDriver!,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18
+                            Flexible(
+                              child: Text(
+                                nameDriver!,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18
+                                ),
                               ),
                             ) 
                           : Text(''),

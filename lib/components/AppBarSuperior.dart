@@ -305,12 +305,15 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(right: 120, left: 120, top: 15, bottom: 20),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Color.fromRGBO(187, 187, 187, 1),
-                                  borderRadius: BorderRadius.circular(80)
+                              child: GestureDetector(
+                                onTap: () => Navigator.pop(context),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Color.fromRGBO(187, 187, 187, 1),
+                                    borderRadius: BorderRadius.circular(80)
+                                  ),
+                                  height: 6,
                                 ),
-                                height: 6,
                               ),
                             ),
                             Padding(
