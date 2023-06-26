@@ -79,6 +79,13 @@ class _NextTripScreenState extends State<NextTripScreen>
   String rating55 = "5";
   String rating66 = "6";
 
+  String razonCancelar = "";
+
+  bool razon1 = false;
+  bool razon2 = false;
+  bool razon3 = false;
+  bool razon4 = false;
+
   int totalSolicitudes = 0;
   int totalViajes = 0;
 
@@ -132,7 +139,7 @@ class _NextTripScreenState extends State<NextTripScreen>
           totalSolicitudes++;
         }
       }
-      print(response.body);
+
       setState(() {});
       return dataR["requests"]; // Retornar la lista de la propiedad "data"
     } else {
@@ -261,8 +268,6 @@ class _NextTripScreenState extends State<NextTripScreen>
       await http.put(Uri.parse('https://apichat.smtdriver.com/api/salas/$tripId'), body: sendData2, headers: {"Content-Type": "application/json"});
 
       //print(algo.body);
-      showAlertDialog();
-      Navigator.pop(context);
     } else if (response.statusCode == 500) {
       QuickAlert.show(
           context: context,
@@ -296,6 +301,7 @@ class _NextTripScreenState extends State<NextTripScreen>
       String sendData2 = json.encode(data2);
       await http.put(Uri.parse('https://apichat.smtdriver.com/api/salas/$tripId'), body: sendData2, headers: {"Content-Type": "application/json"});
 
+    razonCancelar="";
     //redirección y alertas
     if (response.statusCode == 200) {
       Navigator.pushReplacement(
@@ -973,13 +979,111 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                             child: Text('¿Razón por la cual no hará uso del transporte?',
                                                                                 textAlign: TextAlign.center,
                                                                                 style: TextStyle(color: Colors.white))),
-                                                                        content: TextField(
-                                                                          controller: message,
-                                                                          decoration: InputDecoration(
-                                                                            labelText: 'Escriba aquí',
-                                                                            labelStyle: TextStyle(color: Colors.white),
-                                                                          ),
-                                                                          style: TextStyle(color: Colors.white),
+                                                                                content: StatefulBuilder(
+                                                                                  builder: (context, setState) {
+                                                                                    return SingleChildScrollView(
+                                                                                      child: Column(
+                                                                                        children: [
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              Checkbox(
+                                                                                                value: razon1,
+                                                                                                onChanged: (value) {
+                                                                                                  if(razon1==true)
+                                                                                                    return;
+                                                                                                  setState(() {
+
+                                                                                                    razonCancelar = "Trabajo desde casa";
+
+                                                                                                    razon1 = !razon1;
+                                                                                                    razon2 = false;
+                                                                                                    razon3 = false;
+                                                                                                    razon4 = false;
+                                                                                                  });
+                                                                                                },
+                                                                                              ),
+                                                                                              Text(
+                                                                                                " Trabajo desde casa",
+                                                                                                style: TextStyle(color: Colors.white),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                          SizedBox(height: 5),
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              Checkbox(
+                                                                                                value: razon2,
+                                                                                                onChanged: (value) {
+                                                                                                  if(razon2==true)
+                                                                                                    return;
+                                                                                                  setState(() {
+                                                                                                    razonCancelar = "Incapacidad";
+
+                                                                                                    razon1 = false;
+                                                                                                    razon2 = !razon2;
+                                                                                                    razon3 = false;
+                                                                                                    razon4 = false;
+                                                                                                  });
+                                                                                                },
+                                                                                              ),
+                                                                                              Text(
+                                                                                                " Incapacidad",
+                                                                                                style: TextStyle(color: Colors.white),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                          SizedBox(height: 5),
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              Checkbox(
+                                                                                                value: razon3,
+                                                                                                onChanged: (value) {
+                                                                                                  if(razon3==true)
+                                                                                                    return;
+                                                                                                  setState((){
+                                                                                                    razonCancelar = "Vacaciones";
+
+                                                                                                    razon1 = false;
+                                                                                                    razon2 = false;
+                                                                                                    razon3 = !razon3;
+                                                                                                    razon4 = false;
+                                                                                                  });
+                                                                                                },
+                                                                                              ),
+                                                                                              Text(
+                                                                                                " Vacaciones",
+                                                                                                style: TextStyle(color: Colors.white),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                          SizedBox(height: 5),
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              Checkbox(
+                                                                                                value: razon4,
+                                                                                                onChanged: (value) {
+                                                                                                  if(razon4==true)
+                                                                                                    return;
+                                                                                                  setState((){
+                                                                                                    razonCancelar = "Motivo personal";
+
+                                                                                                    razon1 = false;
+                                                                                                    razon2 = false;
+                                                                                                    razon3 = false;
+                                                                                                    razon4 = !razon4;
+                                                                                                  });
+                                                                                                },
+                                                                                              ),
+                                                                                              Text(
+                                                                                                " Motivo personal",
+                                                                                                style: TextStyle(color: Colors.white),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    );
+                                                                          },
                                                                         ),
 
                                                                         actions: [
@@ -989,12 +1093,23 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                             children: [
                                                                               TextButton(
                                                                                 style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: firstColor),
-                                                                                onPressed: () => {
-                                                                                  ChatApis().confirmOrCancel('RECHAZADO'),
+                                                                                onPressed: () {
+
+                                                                                  if(razonCancelar.isEmpty){
+                                                                                    QuickAlert.show(
+                                                                                      context: context,
+                                                                                      title: "Alerta",
+                                                                                      text: 'Debe de seleccioanr una opcion',
+                                                                                      type: QuickAlertType.error
+                                                                                    );
+                                                                                    return;
+                                                                                  };
+                                                                                  
+                                                                                  ChatApis().confirmOrCancel('RECHAZADO');
 
                                                                                   //función fetch cancel
-                                                                                  fetchCancel(prefs.nombreUsuario, '${abc.data?.trips[index].tripId}', conditionC, message.text),
-                                                                                  Navigator.pop(context),
+                                                                                  fetchCancel(prefs.nombreUsuario, '${abc.data?.trips[index].tripId}', conditionC, razonCancelar);
+                                                                                  Navigator.pop(context);
                                                                                 },
                                                                                 child: Text('Enviar', style: TextStyle(color: Colors.black)),
                                                                               ),
@@ -1192,106 +1307,164 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                     child: Opacity(
                                                       opacity: a1.value,
                                                       child: AlertDialog(
-                                                              backgroundColor: Colors.transparent,
-                                                              shape: RoundedRectangleBorder(
-                                                                borderRadius: BorderRadius.circular(16.0),
-                                                              ),
-                                                              content: Container(
-                                                                decoration: BoxDecoration(
-                                                                  color: Colors.white,
-                                                                  borderRadius: BorderRadius.circular(16.0),
-                                                                ),
-                                                                child: Column(
-                                                                  mainAxisSize: MainAxisSize.min,
-                                                                  children: [
-                                                                    Container(
-                                                                      decoration: BoxDecoration(
-                                                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                                                        borderRadius: BorderRadius.only(
-                                                                          topLeft: Radius.circular(16.0),
-                                                                          topRight: Radius.circular(16.0),
-                                                                        ),
-                                                                      ),
-                                                                      child: Padding(
-                                                                        padding: const EdgeInsets.all(20.0),
-                                                                        child: Text(
-                                                                          'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
-                                                                          textAlign: TextAlign.center,
-                                                                          style: TextStyle(
-                                                                            color: Colors.white,
-                                                                            fontWeight: FontWeight.normal,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: const EdgeInsets.all(20.0),
-                                                                      child: TextField(
-                                                                        controller: message,
-                                                                        maxLines: null, // Permite que el texto se ajuste automáticamente a varias líneas
-                                                                        textAlignVertical: TextAlignVertical.top, // Alinea el texto al principio del TextField
-                                                                        decoration: InputDecoration(
-                                                                          labelText: 'Escriba aquí',
-                                                                          labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
-                                                                          border: OutlineInputBorder( // Establece un borde al TextField
-                                                                            borderRadius: BorderRadius.circular(12.0),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    SizedBox(height: 16),
-                                                                    Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                                      children: [
-                                                                        OutlinedButton(
-                                                                          style: OutlinedButton.styleFrom(
-                                                                            padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                            foregroundColor: Colors.white,
-                                                                            side: BorderSide(color: Colors.black),
-                                                                            shape: RoundedRectangleBorder(
-                                                                              borderRadius: BorderRadius.circular(12.0),
-                                                                            ),
-                                                                          ),
-                                                                          onPressed: () {
-                                                                            Navigator.pop(context);
+                                                                        backgroundColor:
+                                                                            backgroundColor,
+                                                                        shape: OutlineInputBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(16.0)),
+                                                                        title: Center(
+                                                                            child: Text('¿Razón por la cual no hará uso del transporte?',
+                                                                                textAlign: TextAlign.center,
+                                                                                style: TextStyle(color: Colors.white))),
+                                                                                content: StatefulBuilder(
+                                                                                  builder: (context, setState) {
+                                                                                    return SingleChildScrollView(
+                                                                                      child: Column(
+                                                                                        children: [
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              Checkbox(
+                                                                                                value: razon1,
+                                                                                                onChanged: (value) {
+                                                                                                  if(razon1==true)
+                                                                                                    return;
+
+                                                                                                  setState(() {
+
+                                                                                                    razonCancelar = "Trabajo desde casa";
+
+                                                                                                    razon1 = !razon1;
+                                                                                                    razon2 = false;
+                                                                                                    razon3 = false;
+                                                                                                    razon4 = false;
+                                                                                                  });
+                                                                                                },
+                                                                                              ),
+                                                                                              Text(
+                                                                                                " Trabajo desde casa",
+                                                                                                style: TextStyle(color: Colors.white),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                          SizedBox(height: 5),
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              Checkbox(
+                                                                                                value: razon2,
+                                                                                                onChanged: (value) {
+                                                                                                  if(razon2==true)
+                                                                                                    return;
+
+                                                                                                  setState(() {
+                                                                                                    razonCancelar = "Incapacidad";
+
+                                                                                                    razon1 = false;
+                                                                                                    razon2 = !razon2;
+                                                                                                    razon3 = false;
+                                                                                                    razon4 = false;
+                                                                                                  });
+                                                                                                },
+                                                                                              ),
+                                                                                              Text(
+                                                                                                " Incapacidad",
+                                                                                                style: TextStyle(color: Colors.white),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                          SizedBox(height: 5),
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              Checkbox(
+                                                                                                value: razon3,
+                                                                                                onChanged: (value) {
+                                                                                                  if(razon3==true)
+                                                                                                    return;
+
+                                                                                                  setState((){
+                                                                                                    razonCancelar = "Vacaciones";
+
+                                                                                                    razon1 = false;
+                                                                                                    razon2 = false;
+                                                                                                    razon3 = !razon3;
+                                                                                                    razon4 = false;
+                                                                                                  });
+                                                                                                },
+                                                                                              ),
+                                                                                              Text(
+                                                                                                " Vacaciones",
+                                                                                                style: TextStyle(color: Colors.white),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                          SizedBox(height: 5),
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              Checkbox(
+                                                                                                value: razon4,
+                                                                                                onChanged: (value) {
+
+                                                                                                  if(razon4==true)
+                                                                                                    return;
+                                                                                                  setState((){
+                                                                                                    razonCancelar = "Motivo personal";
+
+                                                                                                    razon1 = false;
+                                                                                                    razon2 = false;
+                                                                                                    razon3 = false;
+                                                                                                    razon4 = !razon4;
+                                                                                                  });
+                                                                                                },
+                                                                                              ),
+                                                                                              Text(
+                                                                                                " Motivo personal",
+                                                                                                style: TextStyle(color: Colors.white),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    );
                                                                           },
-                                                                          child: Text(
-                                                                            'Cancelar',
-                                                                            style: TextStyle(color: Colors.black),
-                                                                          ),
                                                                         ),
-                                  
-                                                                        OutlinedButton(
-                                                                          style: OutlinedButton.styleFrom(
-                                                                            padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                            backgroundColor: Color.fromRGBO(40, 93, 169, 1),
-                                                                            shape: RoundedRectangleBorder(
-                                                                              borderRadius: BorderRadius.circular(12.0),
-                                                                            ),
+
+                                                                        actions: [
+                                                                          Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceAround,
+                                                                            children: [
+                                                                              TextButton(
+                                                                                style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: firstColor),
+                                                                                onPressed: () {
+
+                                                                                  if(razonCancelar.isEmpty){
+                                                                                    QuickAlert.show(
+                                                                                      context: context,
+                                                                                      title: "Alerta",
+                                                                                      text: 'Debe de seleccioanr una opcion',
+                                                                                      type: QuickAlertType.error
+                                                                                    );
+                                                                                    return;
+                                                                                  };
+
+                                                                                  ChatApis().confirmOrCancel('RECHAZADO');
+
+                                                                                  //función fetch cancel
+                                                                                  fetchCancel(prefs.nombreUsuario, '${abc.data?.trips[index].tripId}', conditionC, razonCancelar);
+                                                                                  Navigator.pop(context);
+                                                                                },
+                                                                                child: Text('Enviar', style: TextStyle(color: Colors.black)),
+                                                                              ),
+                                                                              TextButton(
+                                                                                style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: GradiantV_1),
+                                                                                onPressed: () => {
+                                                                                  Navigator.pop(context),
+                                                                                },
+                                                                                child: Text('Cerrar', style: TextStyle(color: Colors.black)),
+                                                                              ),
+                                                                            ],
                                                                           ),
-                                                                          onPressed: () {
-                                                                            ChatApis().confirmOrCancel('RECHAZADO');
-                                                                            fetchCancel(
-                                                                              prefs.nombreUsuario,
-                                                                              '${abc.data?.trips[index].tripId}',
-                                                                              conditionC,
-                                                                              message.text,
-                                                                            );
-                                                                            Navigator.pop(context);
-                                                                          },
-                                                                          child: Text(
-                                                                            'Enviar',
-                                                                            style: TextStyle(color: Colors.white),
-                                                                          ),
-                                                                        ),
-                                                                        
-                                                                      ],
-                                                                    ),
-                                                                    SizedBox(height: 12)
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
+                                                                        ],
+                                                                      ),
                                                     ),
                                                   );
                                                 },
@@ -1378,9 +1551,12 @@ class _NextTripScreenState extends State<NextTripScreen>
     final resp1 = Mask.fromJson(json.decode(response.body));
     //validacion si fué visto la alerta
     //print(resp1.viewed);
-    if (resp1.viewed != null) {
+    
+    if(mounted){
+      if (resp1.viewed != null) {
       await http
           .get(Uri.parse('$ip/api/markAsViewedMaskReminder/${resp.agentId}'));
+    }
     }
   }
 
@@ -1619,28 +1795,115 @@ class _NextTripScreenState extends State<NextTripScreen>
                             return AlertDialog(
                               backgroundColor: backgroundColor,
                               title: Text('Nos encantaría conocer tu razón', style: TextStyle(color: Colors.white),),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  TextField(
-                                    maxLines: null,
-                                    onChanged: (value) {
-                                      comment = value;
-                                    },
-                                    style: TextStyle(
-                                      color: Colors.white, // Establece el color del texto en blanco
-                                    ),
-                                    decoration: InputDecoration(
-                                      hintText: 'Ingresa tu comentario aquí',
-                                      hintStyle: TextStyle(
-                                        color: Colors.white54, // Establece el color del texto de sugerencia en blanco
-                                      ),
-                                      // Otros atributos de decoración
-                                    ),
-                                  ),
+                              content: StatefulBuilder(
+                                builder: (context, setState) {
+                                  return SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                              value: razon1,
+                                              onChanged: (value) {
+                                                if(razon1==true)
+                                                  return;
 
-                                ],
+                                                setState(() {
+                                                  razonCancelar = "Trabajo desde casa";
+                                                  razon1 = !razon1;
+                                                  razon2 = false;
+                                                  razon3 = false;
+                                                  razon4 = false;
+                                                  });
+                                                },
+                                              ),
+                                              Text(
+                                                " Trabajo desde casa",
+                                                style: TextStyle(color: Colors.white),
+                                              ),
+                                            ],
+                                                                                          ),
+                                                                                          SizedBox(height: 5),
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              Checkbox(
+                                                                                                value: razon2,
+                                                                                                onChanged: (value) {
+                                                                                                  if(razon2==true)
+                                                                                                    return;
+
+                                                                                                  setState(() {
+                                                                                                    razonCancelar = "Incapacidad";
+
+                                                                                                    razon1 = false;
+                                                                                                    razon2 = !razon2;
+                                                                                                    razon3 = false;
+                                                                                                    razon4 = false;
+                                                                                                  });
+                                                                                                },
+                                                                                              ),
+                                                                                              Text(
+                                                                                                " Incapacidad",
+                                                                                                style: TextStyle(color: Colors.white),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                          SizedBox(height: 5),
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              Checkbox(
+                                                                                                value: razon3,
+                                                                                                onChanged: (value) {
+                                                                                                  if(razon3==true)
+                                                                                                    return;
+
+                                                                                                  setState((){
+                                                                                                    razonCancelar = "Vacaciones";
+
+                                                                                                    razon1 = false;
+                                                                                                    razon2 = false;
+                                                                                                    razon3 = !razon3;
+                                                                                                    razon4 = false;
+                                                                                                  });
+                                                                                                },
+                                                                                              ),
+                                                                                              Text(
+                                                                                                " Vacaciones",
+                                                                                                style: TextStyle(color: Colors.white),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                          SizedBox(height: 5),
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              Checkbox(
+                                                                                                value: razon4,
+                                                                                                onChanged: (value) {
+                                                                                                  if(razon4==true)
+                                                                                                    return;
+
+                                                                                                  setState((){
+                                                                                                    razonCancelar = "Motivo personal";
+
+                                                                                                    razon1 = false;
+                                                                                                    razon2 = false;
+                                                                                                    razon3 = false;
+                                                                                                    razon4 = !razon4;
+                                                                                                  });
+                                                                                                },
+                                                                                              ),
+                                                                                              Text(
+                                                                                                " Motivo personal",
+                                                                                                style: TextStyle(color: Colors.white),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    );
+                                }
                               ),
+                              
                               actions: [
                                 TextButton(
                                   onPressed: () {
@@ -1650,7 +1913,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 ),
                                 ElevatedButton(
                                   onPressed: () async {
-                                    if (comment.isEmpty) {
+                                    if (razonCancelar.isEmpty) {
                                     Navigator.of(context).pop(); 
                                       showDialog(
                                         context: context,
@@ -1674,7 +1937,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       Map data = {
                                         "agentForTravelId":tripData["agentForTravelId"].toString(), 
                                         "confirmation": "0",
-                                        "agentComment": comment
+                                        "agentComment": razonCancelar
                                       };
                                     
                                       http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
@@ -1692,6 +1955,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         );
 
                                         setState(() {
+                                            razonCancelar="";
                                             item2=getSolicitudes();
                                         });
                                       }else{
@@ -1808,28 +2072,103 @@ class _NextTripScreenState extends State<NextTripScreen>
                             return AlertDialog(
                               backgroundColor: backgroundColor,
                               title: Text('Nos encantaría conocer tu razón', style: TextStyle(color: Colors.white),),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  TextField(
-                                    maxLines: null,
-                                    onChanged: (value) {
-                                      comment = value;
-                                    },
-                                    style: TextStyle(
-                                      color: Colors.white, // Establece el color del texto en blanco
-                                    ),
-                                    decoration: InputDecoration(
-                                      hintText: 'Ingresa tu comentario aquí',
-                                      hintStyle: TextStyle(
-                                        color: Colors.white54, // Establece el color del texto de sugerencia en blanco
-                                      ),
-                                      // Otros atributos de decoración
-                                    ),
-                                  ),
+                              content: StatefulBuilder(
+                                builder: (context, setState) {
+                                  return SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Checkbox(
+                                              value: razon1,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  razonCancelar = "Trabajo desde casa";
+                                                  razon1 = !razon1;
+                                                  razon2 = false;
+                                                  razon3 = false;
+                                                  razon4 = false;
+                                                  });
+                                                },
+                                              ),
+                                              Text(
+                                                " Trabajo desde casa",
+                                                style: TextStyle(color: Colors.white),
+                                              ),
+                                            ],
+                                                                                          ),
+                                                                                          SizedBox(height: 5),
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              Checkbox(
+                                                                                                value: razon2,
+                                                                                                onChanged: (value) {
+                                                                                                  setState(() {
+                                                                                                    razonCancelar = "Incapacidad";
 
-                                ],
+                                                                                                    razon1 = false;
+                                                                                                    razon2 = !razon2;
+                                                                                                    razon3 = false;
+                                                                                                    razon4 = false;
+                                                                                                  });
+                                                                                                },
+                                                                                              ),
+                                                                                              Text(
+                                                                                                " Incapacidad",
+                                                                                                style: TextStyle(color: Colors.white),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                          SizedBox(height: 5),
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              Checkbox(
+                                                                                                value: razon3,
+                                                                                                onChanged: (value) {
+                                                                                                  setState((){
+                                                                                                    razonCancelar = "Vacaciones";
+
+                                                                                                    razon1 = false;
+                                                                                                    razon2 = false;
+                                                                                                    razon3 = !razon3;
+                                                                                                    razon4 = false;
+                                                                                                  });
+                                                                                                },
+                                                                                              ),
+                                                                                              Text(
+                                                                                                " Vacaciones",
+                                                                                                style: TextStyle(color: Colors.white),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                          SizedBox(height: 5),
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              Checkbox(
+                                                                                                value: razon4,
+                                                                                                onChanged: (value) {
+                                                                                                  setState((){
+                                                                                                    razonCancelar = "Motivo personal";
+
+                                                                                                    razon1 = false;
+                                                                                                    razon2 = false;
+                                                                                                    razon3 = false;
+                                                                                                    razon4 = !razon4;
+                                                                                                  });
+                                                                                                },
+                                                                                              ),
+                                                                                              Text(
+                                                                                                " Motivo personal",
+                                                                                                style: TextStyle(color: Colors.white),
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    );
+                                }
                               ),
+                              
                               actions: [
                                 TextButton(
                                   onPressed: () {
@@ -1839,7 +2178,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 ),
                                 ElevatedButton(
                                   onPressed: () async {
-                                    if (comment.isEmpty) {
+                                    if (razonCancelar.isEmpty) {
                                     Navigator.of(context).pop(); 
                                       showDialog(
                                         context: context,
@@ -1863,7 +2202,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       Map data = {
                                         "agentForTravelId":tripData["agentForTravelId"].toString(), 
                                         "confirmation": "0",
-                                        "agentComment": comment
+                                        "agentComment": razonCancelar
                                       };
                                     
                                       http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
@@ -1881,6 +2220,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         );
 
                                         setState(() {
+                                            razonCancelar="";
                                             item2=getSolicitudes();
                                         });
                                       }else{
