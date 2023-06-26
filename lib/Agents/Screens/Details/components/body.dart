@@ -31,11 +31,10 @@ class _BodyState extends State<Body> {
           borderRadius: BorderRadius.circular(20)
         ),
         child: SingleChildScrollView(
-          child: Expanded(
-            child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Description(plantilla: widget.plantilla),
-          )),
+          child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Description(plantilla: widget.plantilla),
+          ),
         ),
       ),
     ):Description(plantilla: widget.plantilla);
