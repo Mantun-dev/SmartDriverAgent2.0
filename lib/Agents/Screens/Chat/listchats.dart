@@ -111,7 +111,7 @@ class _ChatsListState extends State<ChatsList> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(20)
                           ),
-                          child: body()
+                          child: SingleChildScrollView(child: body())
                         ),
                       )
                     ),
@@ -125,40 +125,35 @@ class _ChatsListState extends State<ChatsList> {
   Widget body() {
     return Padding(
       padding: const EdgeInsets.all(12.0),
-      child: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Expanded(
-          child: cargarP!=false?
-          listaChats != null ? listaChats2.length>0 ? contenido() :
-          Center(
-            child: Text("No hay salas de chat actualmente",
-            style: TextStyle(
-              color: Colors.black, 
-              fontSize: 17)
-            ),
-          ) : 
-          Center(
-            child: Text(
-              "No hay salas de chat actualmente",
-              style: TextStyle(
-                color: Colors.black, 
-                fontSize: 17
-              )
-            ),
-          ):Column(
-            children: [
-              Text(
-              "Cargando...",
-              style: TextStyle(
-                color: Colors.black, 
-                fontSize: 17
-              )
-            ),
-              SizedBox(height: 10),
-              CircularProgressIndicator(),
-            ],
-          ),
+      child: cargarP!=false?
+      listaChats != null ? listaChats2.length>0 ? contenido() :
+      Center(
+        child: Text("No hay salas de chat actualmente",
+        style: TextStyle(
+          color: Colors.black, 
+          fontSize: 17)
         ),
+      ) : 
+      Center(
+        child: Text(
+          "No hay salas de chat actualmente",
+          style: TextStyle(
+            color: Colors.black, 
+            fontSize: 17
+          )
+        ),
+      ):Column(
+        children: [
+          Text(
+          "Cargando...",
+          style: TextStyle(
+            color: Colors.black, 
+            fontSize: 17
+          )
+        ),
+          SizedBox(height: 10),
+          CircularProgressIndicator(),
+        ],
       ),
     );
   }
