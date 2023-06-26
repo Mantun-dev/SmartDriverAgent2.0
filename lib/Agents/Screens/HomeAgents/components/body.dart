@@ -160,39 +160,37 @@ class _BodyState extends State<Body> {
               int index = ventana['ruta'];
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2),
-                child: Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      rutas(index);
-                    },
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              width: 25,
-                              height: 25,
-                              child: SvgPicture.asset(
-                                icono,
-                                color: Color.fromRGBO(40, 93, 169, 1),
-                              ),
+                child: GestureDetector(
+                  onTap: () {
+                    rutas(index);
+                  },
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            width: 25,
+                            height: 25,
+                            child: SvgPicture.asset(
+                              icono,
+                              color: Color.fromRGBO(40, 93, 169, 1),
                             ),
-                            SizedBox(width: 5),
-                            Text(
-                              nombre,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal,
-                                decoration: TextDecoration.none,
-                                fontFamily: 'Roboto',
-                              ),
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            nombre,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              decoration: TextDecoration.none,
+                              fontFamily: 'Roboto',
                             ),
-                          ],
-                        ),
-                        SizedBox(height: 12)
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12)
+                    ],
                   ),
                 ),
               );
