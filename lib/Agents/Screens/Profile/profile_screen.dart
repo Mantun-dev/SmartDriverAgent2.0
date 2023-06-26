@@ -76,7 +76,8 @@ class _DataTableExample extends State<ProfilePage> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(20)
         ),
-        child: ListView(children: <Widget>[
+        child: ListView(
+          children: [
               SizedBox(height: 20.0),
               //future builder para Profile
               FutureBuilder<Profile>(
@@ -1700,21 +1701,40 @@ class _DataTableExample extends State<ProfilePage> {
                   }
                 },
               ),
+
               FutureBuilder<DataAgent>(
                   future: itemx,
                   builder: (context, abc) {
                     if (abc.connectionState == ConnectionState.done) {
                       if (abc.data!.companyId != 7) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 10),
-                          child: SolicitudCambio(
-                            press: () {
+                        return Center(
+                          child: GestureDetector(
+                            onTap: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
                                 return DetailScreenChanges(plantilla: plantilla[3]);
                               }));
                             },
+                            child: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "¿Tu información es incorrecta? ",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: "Solicita cambio aquí",
+                                    style: TextStyle(
+                                      color: Color.fromRGBO(40, 93, 169, 1),
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         );
                       } else {
@@ -1724,9 +1744,11 @@ class _DataTableExample extends State<ProfilePage> {
                       return Text("");
                     }
                     return Text("");
-                  }),
-              SizedBox(height: 50)
-            ]),
+                  }
+                        ),
+            SizedBox(height: 50)
+          ]
+        ),
       ),
     );
   }
