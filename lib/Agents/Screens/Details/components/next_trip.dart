@@ -303,6 +303,7 @@ class _NextTripScreenState extends State<NextTripScreen>
       await http.put(Uri.parse('https://apichat.smtdriver.com/api/salas/$tripId'), body: sendData2, headers: {"Content-Type": "application/json"});
 
     //redirección y alertas
+    razonCancelar="";
     if (response.statusCode == 200) {
       Navigator.pushReplacement(
               context,
@@ -2604,7 +2605,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                         );
 
                                         setState(() {
-                                            item2=getSolicitudes();
+                                          razonCancelar="";
+                                          item2=getSolicitudes();
                                         });
                                       }else{
                                         QuickAlert.show(
@@ -2788,7 +2790,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                           type: QuickAlertType.success,
                                                                         );
                                                                       setState(() {
-                                                                        comment = '';
+                                                                        razonCancelar="";
                                                                         item2=getSolicitudes();
                                                                       });
                                                                     } else {
