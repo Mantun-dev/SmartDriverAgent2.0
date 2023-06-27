@@ -11,21 +11,22 @@ String tripsToJson(List<Trips> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Trips {
-  Trips(
-      {required this.fecha,
-      required this.horaEntrada,
-      required this.horaConductor,
-      required this.direccion,
-      required this.neighborhoodReferencePoint,
-      required this.conductor,
-      required this.telefono,
-      required this.condition,
-      required this.tripId,
-      required this.commentDriver,
-      required this.companyId,
-      required this.btnCancelTrip,
-      required this.driverId
-      });
+  Trips({
+    required this.fecha,
+    required this.horaEntrada,
+    required this.horaConductor,
+    required this.direccion,
+    required this.neighborhoodReferencePoint,
+    required this.conductor,
+    required this.telefono,
+    required this.condition,
+    required this.tripId,
+    required this.commentDriver,
+    required this.companyId,
+    required this.btnCancelTrip,
+    required this.driverId,
+    required this.tripVehicle, // Nuevo campo "tripVehicle"
+  });
 
   String? fecha;
   String? horaEntrada;
@@ -39,22 +40,24 @@ class Trips {
   String? commentDriver;
   int? companyId;
   dynamic btnCancelTrip;
-  dynamic driverId;  
+  dynamic driverId;
+  String? tripVehicle; // Nuevo campo "tripVehicle"
 
   factory Trips.fromJson(Map<String, dynamic> json) => Trips(
-      fecha: json["Fecha"],
-      horaEntrada: json["horaEntrada"],
-      horaConductor: json["horaConductor"],
-      direccion: json["Direccion"],
-      neighborhoodReferencePoint: json["neighborhoodReferencePoint"],
-      conductor: json["Conductor"],
-      telefono: json["Telefono"],
-      condition: json["condition"],
-      tripId: json["tripId"],
-      commentDriver: json["commentDriver"],
-      companyId: json["companyId"],
-      btnCancelTrip: json["btnCancelTrip"],
-      driverId: json["driverId"]
+        fecha: json["Fecha"],
+        horaEntrada: json["horaEntrada"],
+        horaConductor: json["horaConductor"],
+        direccion: json["Direccion"],
+        neighborhoodReferencePoint: json["neighborhoodReferencePoint"],
+        conductor: json["Conductor"],
+        telefono: json["Telefono"],
+        condition: json["condition"],
+        tripId: json["tripId"],
+        commentDriver: json["commentDriver"],
+        companyId: json["companyId"],
+        btnCancelTrip: json["btnCancelTrip"],
+        driverId: json["driverId"],
+        tripVehicle: json["tripVehicle"], // Nuevo campo "tripVehicle"
       );
 
   Map<String, dynamic> toJson() => {
@@ -70,7 +73,8 @@ class Trips {
         "commentDriver": commentDriver,
         "companyId": companyId,
         "btnCancelTrip": btnCancelTrip,
-        "driverId": driverId
+        "driverId": driverId,
+        "tripVehicle": tripVehicle, // Nuevo campo "tripVehicle"
       };
 }
 

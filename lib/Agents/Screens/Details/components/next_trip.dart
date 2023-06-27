@@ -787,6 +787,31 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       ),
                                     ],
                                   ),
+
+                                  SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/motorista.svg",
+                                          color: GradiantV1,
+                                        ),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(
+                                          'Vehiculo: ${abc.data?.trips[index].tripVehicle}',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                     
                                   SizedBox(height: 10),
                                   Row(
