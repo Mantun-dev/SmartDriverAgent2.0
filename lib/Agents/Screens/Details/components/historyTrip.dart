@@ -177,7 +177,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                           SizedBox(width: 5),
                           Flexible(
                             child: Text(
-                              'Estado: ${abc.data![index].estado}',
+                              'Transporte para: ${abc.data![index].estado}',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black,
@@ -193,45 +193,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                       height: 1,
                       color: Color.fromRGBO(196, 196, 196, 1),
                     ),
-                            
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 18,
-                            height: 18,
-                            child: SvgPicture.asset(
-                              "assets/icons/hora.svg",
-                              color: Color.fromRGBO(40, 93, 169, 1),
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            'Hora de entrada: ',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            '${abc.data![index].horaEntrada}',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 1,
-                      color: Color.fromRGBO(196, 196, 196, 1),
-                    ),
-                            
+                                                        
                     SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
@@ -248,7 +210,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                           SizedBox(width: 5),
                           Flexible(
                             child: Text(
-                              'Hora de salida: ???',
+                              'Hora de encuentro: ${abc.data![index].hora}',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black,
@@ -264,72 +226,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                       height: 1,
                       color: Color.fromRGBO(196, 196, 196, 1),
                     ),
-                            
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 18,
-                            height: 18,
-                            child: SvgPicture.asset(
-                              "assets/icons/motorista.svg",
-                              color: Color.fromRGBO(40, 93, 169, 1),
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Flexible(
-                            child: Text(
-                              'Motorista: ${abc.data![index].conductor}',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 1,
-                      color: Color.fromRGBO(196, 196, 196, 1),
-                    ),
-                            
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 18,
-                            height: 18,
-                            child: SvgPicture.asset(
-                              "assets/icons/telefono_num.svg",
-                              color: Color.fromRGBO(40, 93, 169, 1),
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Flexible(
-                            child: Text(
-                              'Teléfono: ${abc.data![index].telefono}',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 1,
-                      color: Color.fromRGBO(196, 196, 196, 1),
-                    ),
-                            
+                                                                    
                     SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
@@ -361,7 +258,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                       height: 1,
                       color: Color.fromRGBO(196, 196, 196, 1),
                     ),
-                            
+
                     SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
@@ -371,46 +268,14 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                             width: 18,
                             height: 18,
                             child: SvgPicture.asset(
-                              "assets/icons/warning.svg",
+                              "assets/icons/motorista.svg",
                               color: Color.fromRGBO(40, 93, 169, 1),
                             ),
                           ),
                           SizedBox(width: 5),
                           Flexible(
                             child: Text(
-                              'Acceso autorizado: ???',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 1,
-                      color: Color.fromRGBO(196, 196, 196, 1),
-                    ),
-                            
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 18,
-                            height: 18,
-                            child: SvgPicture.asset(
-                              "assets/icons/hora.svg",
-                              color: Color.fromRGBO(40, 93, 169, 1),
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Flexible(
-                            child: Text(
-                              'Hora de encuentro: ${abc.data![index].hora}',
+                              'Conductor: ${abc.data![index].conductor}',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black,
@@ -422,7 +287,11 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                         ],
                       ),
                     ),
-              
+                    Container(
+                      height: 1,
+                      color: Color.fromRGBO(196, 196, 196, 1),
+                    ),
+                                                    
                     SizedBox(height: 8),
                   ],
                 ),
