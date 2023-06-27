@@ -948,101 +948,204 @@ class _NextTripScreenState extends State<NextTripScreen>
                                               shape: RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.circular(16.0),
                                               ),
-                                              content: Container(
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius: BorderRadius.circular(16.0),
-                                                ),
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: [
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                                        borderRadius: BorderRadius.only(
-                                                          topLeft: Radius.circular(16.0),
-                                                          topRight: Radius.circular(16.0),
-                                                        ),
-                                                      ),
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(20.0),
-                                                        child: Text(
-                                                          'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
-                                                          textAlign: TextAlign.center,
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight: FontWeight.normal,
-                                                          ),
-                                                        ),
-                                                      ),
+                                              content: StatefulBuilder(
+                                                builder:(context, setState) {
+                                                  return  Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius: BorderRadius.circular(16.0),
                                                     ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(20.0),
-                                                      child: TextField(
-                                                        controller: message,
-                                                        maxLines: null, // Permite que el texto se ajuste automáticamente a varias líneas
-                                                        textAlignVertical: TextAlignVertical.top, // Alinea el texto al principio del TextField
-                                                        decoration: InputDecoration(
-                                                          labelText: 'Escriba aquí',
-                                                          labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
-                                                          border: OutlineInputBorder( // Establece un borde al TextField
-                                                            borderRadius: BorderRadius.circular(12.0),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 16),
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                    child: Column(
+                                                      mainAxisSize: MainAxisSize.min,
                                                       children: [
-                                                        OutlinedButton(
-                                                          style: OutlinedButton.styleFrom(
-                                                            padding: EdgeInsets.symmetric(horizontal: 20),
-                                                            foregroundColor: Colors.white,
-                                                            side: BorderSide(color: Colors.black),
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(12.0),
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            color: Color.fromRGBO(40, 93, 169, 1),
+                                                            borderRadius: BorderRadius.only(
+                                                              topLeft: Radius.circular(16.0),
+                                                              topRight: Radius.circular(16.0),
                                                             ),
                                                           ),
-                                                          onPressed: () {
-                                                            Navigator.pop(context);
-                                                          },
-                                                          child: Text(
-                                                            'Cancelar',
-                                                            style: TextStyle(color: Colors.black),
-                                                          ),
-                                                        ),
-                          
-                                                        OutlinedButton(
-                                                          style: OutlinedButton.styleFrom(
-                                                            padding: EdgeInsets.symmetric(horizontal: 20),
-                                                            backgroundColor: Color.fromRGBO(40, 93, 169, 1),
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(12.0),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.all(20.0),
+                                                            child: Text(
+                                                              'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
+                                                              textAlign: TextAlign.center,
+                                                              style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight.normal,
+                                                              ),
                                                             ),
                                                           ),
-                                                          onPressed: () {
-                                                            ChatApis().confirmOrCancel('RECHAZADO');
-                                                            fetchCancel(
-                                                              prefs.nombreUsuario,
-                                                              '${abc.data?.trips[index].tripId}',
-                                                              conditionC,
-                                                              message.text,
-                                                            );
-                                                            Navigator.pop(context);
-                                                          },
-                                                          child: Text(
-                                                            'Enviar',
-                                                            style: TextStyle(color: Colors.white),
-                                                          ),
                                                         ),
-                                                        
+                                                        Padding(
+                                                            padding: const EdgeInsets.all(20.0),
+                                                            child: Column(
+                                                              children: [
+                                                                Row(
+                                                                  children: [
+                                                                    Checkbox(
+                                                                      value: razon1,
+                                                                      onChanged: (value) {
+                                                                        if(razon1==true)
+                                                                          return;
+
+                                                                        setState(() {
+                                                                          razonCancelar = "Trabajo desde casa";
+                                                                          razon1 = !razon1;
+                                                                          razon2 = false;
+                                                                          razon3 = false;
+                                                                          razon4 = false;
+                                                                        });
+                                                                      },
+                                                                    ),
+                                                                    Text(
+                                                                      " Trabajo desde casa",
+                                                                      style: TextStyle(color: Colors.black),
+                                                                    ),
+                                                                  ]
+                                                                ),
+
+                                                                Row(
+                                                                  children: [
+                                                                    Checkbox(
+                                                                      value: razon2,
+                                                                      onChanged: (value) {
+                                                                        if(razon2==true)
+                                                                          return;
+
+                                                                        setState(() {
+                                                                          razonCancelar = "Incapacidad";
+                                                                          razon1 = false;
+                                                                          razon2 = !razon2;
+                                                                          razon3 = false;
+                                                                          razon4 = false;
+                                                                        });
+                                                                      },
+                                                                    ),
+                                                                    Text(
+                                                                      " Incapacidad",
+                                                                      style: TextStyle(color: Colors.black),
+                                                                    ),
+                                                                  ],
+                                                                ),
+
+                                                                Row(
+                                                                  children: [
+                                                                    Checkbox(
+                                                                      value: razon3,
+                                                                      onChanged: (value) {
+                                                                        if(razon3==true)
+                                                                          return;
+
+                                                                        setState(() {
+                                                                          razonCancelar = "Vacaciones";
+                                                                          razon1 = false;
+                                                                          razon2 = false;
+                                                                          razon3 = !razon3;
+                                                                          razon4 = false;
+                                                                        });
+                                                                      },
+                                                                    ),
+                                                                    Text(
+                                                                      " Vacaciones",
+                                                                      style: TextStyle(color: Colors.black),
+                                                                    ),
+                                                                  ],
+                                                                ),
+
+                                                                Row(
+                                                                  children: [
+                                                                    Checkbox(
+                                                                      value: razon4,
+                                                                      onChanged: (value) {
+                                                                        if(razon4==true)
+                                                                          return;
+
+                                                                        setState(() {
+                                                                          razonCancelar = "Motivo personal";
+                                                                          razon1 = false;
+                                                                          razon2 = false;
+                                                                          razon3 = false;
+                                                                          razon4 = !razon4;
+                                                                        });
+                                                                      },
+                                                                    ),
+                                                                    Text(
+                                                                      " Motivo personal",
+                                                                      style: TextStyle(color: Colors.black),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            )
+                                                          ),
+                                                        SizedBox(height: 16),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                          children: [
+                                                            OutlinedButton(
+                                                              style: OutlinedButton.styleFrom(
+                                                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                foregroundColor: Colors.white,
+                                                                side: BorderSide(color: Colors.black),
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                                ),
+                                                              ),
+                                                              onPressed: () {
+                                                                Navigator.pop(context);
+                                                              },
+                                                              child: Text(
+                                                                'Cancelar',
+                                                                style: TextStyle(color: Colors.black),
+                                                              ),
+                                                            ),
+                              
+                                                            OutlinedButton(
+                                                              style: OutlinedButton.styleFrom(
+                                                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                                ),
+                                                              ),
+                                                              onPressed: () {
+
+                                                                if(razonCancelar.isEmpty){
+                                                                  QuickAlert.show(
+                                                                    context: context,
+                                                                    title: "Alerta",
+                                                                    text: 'Debe de seleccionar un motivo.',
+                                                                    type: QuickAlertType.error
+                                                                  );
+
+                                                                  return;
+                                                                }
+
+                                                                ChatApis().confirmOrCancel('RECHAZADO');
+                                                                fetchCancel(
+                                                                  prefs.nombreUsuario,
+                                                                  '${abc.data?.trips[index].tripId}',
+                                                                  conditionC,
+                                                                  razonCancelar,
+                                                                );
+                                                                Navigator.pop(context);
+                                                              },
+                                                              child: Text(
+                                                                'Enviar',
+                                                                style: TextStyle(color: Colors.white),
+                                                              ),
+                                                            ),
+                                                            
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 12)
                                                       ],
                                                     ),
-                                                    SizedBox(height: 12)
-                                                  ],
-                                                ),
-                                              ),
+                                                  );
+                                                },
+                                              )
                                             ),
                           
                                           ),
@@ -1294,101 +1397,203 @@ class _NextTripScreenState extends State<NextTripScreen>
                                               shape: RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.circular(16.0),
                                               ),
-                                              content: Container(
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius: BorderRadius.circular(16.0),
-                                                ),
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: [
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Color.fromRGBO(40, 93, 169, 1),
-                                                        borderRadius: BorderRadius.only(
-                                                          topLeft: Radius.circular(16.0),
-                                                          topRight: Radius.circular(16.0),
-                                                        ),
-                                                      ),
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(20.0),
-                                                        child: Text(
-                                                          'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
-                                                          textAlign: TextAlign.center,
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight: FontWeight.normal,
-                                                          ),
-                                                        ),
-                                                      ),
+                                              content: StatefulBuilder(
+                                                builder:(context, setState) {
+                                                  return Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius: BorderRadius.circular(16.0),
                                                     ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(20.0),
-                                                      child: TextField(
-                                                        controller: message,
-                                                        maxLines: null, // Permite que el texto se ajuste automáticamente a varias líneas
-                                                        textAlignVertical: TextAlignVertical.top, // Alinea el texto al principio del TextField
-                                                        decoration: InputDecoration(
-                                                          labelText: 'Escriba aquí',
-                                                          labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
-                                                          border: OutlineInputBorder( // Establece un borde al TextField
-                                                            borderRadius: BorderRadius.circular(12.0),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 16),
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                    child: Column(
+                                                      mainAxisSize: MainAxisSize.min,
                                                       children: [
-                                                        OutlinedButton(
-                                                          style: OutlinedButton.styleFrom(
-                                                            padding: EdgeInsets.symmetric(horizontal: 20),
-                                                            foregroundColor: Colors.white,
-                                                            side: BorderSide(color: Colors.black),
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(12.0),
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            color: Color.fromRGBO(40, 93, 169, 1),
+                                                            borderRadius: BorderRadius.only(
+                                                              topLeft: Radius.circular(16.0),
+                                                              topRight: Radius.circular(16.0),
                                                             ),
                                                           ),
-                                                          onPressed: () {
-                                                            Navigator.pop(context);
-                                                          },
-                                                          child: Text(
-                                                            'Cancelar',
-                                                            style: TextStyle(color: Colors.black),
-                                                          ),
-                                                        ),
-                    
-                                                        OutlinedButton(
-                                                          style: OutlinedButton.styleFrom(
-                                                            padding: EdgeInsets.symmetric(horizontal: 20),
-                                                            backgroundColor: Color.fromRGBO(40, 93, 169, 1),
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius.circular(12.0),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.all(20.0),
+                                                            child: Text(
+                                                              'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
+                                                              textAlign: TextAlign.center,
+                                                              style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight.normal,
+                                                              ),
                                                             ),
                                                           ),
-                                                          onPressed: () {
-                                                            ChatApis().confirmOrCancel('RECHAZADO');
-                                                            fetchCancel(
-                                                              prefs.nombreUsuario,
-                                                              '${abc.data?.trips[index].tripId}',
-                                                              conditionC,
-                                                              message.text,
-                                                            );
-                                                            Navigator.pop(context);
-                                                          },
-                                                          child: Text(
-                                                            'Enviar',
-                                                            style: TextStyle(color: Colors.white),
-                                                          ),
                                                         ),
-                                                        
+                                                        Padding(
+                                                                padding: const EdgeInsets.all(20.0),
+                                                                child: Column(
+                                                                  children: [
+                                                                    Row(
+                                                                      children: [
+                                                                        Checkbox(
+                                                                          value: razon1,
+                                                                          onChanged: (value) {
+                                                                            if(razon1==true)
+                                                                              return;
+
+                                                                            setState(() {
+                                                                              razonCancelar = "Trabajo desde casa";
+                                                                              razon1 = !razon1;
+                                                                              razon2 = false;
+                                                                              razon3 = false;
+                                                                              razon4 = false;
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                        Text(
+                                                                          " Trabajo desde casa",
+                                                                          style: TextStyle(color: Colors.black),
+                                                                        ),
+                                                                      ]
+                                                                    ),
+
+                                                                    Row(
+                                                                      children: [
+                                                                        Checkbox(
+                                                                          value: razon2,
+                                                                          onChanged: (value) {
+                                                                            if(razon2==true)
+                                                                              return;
+
+                                                                            setState(() {
+                                                                              razonCancelar = "Incapacidad";
+                                                                              razon1 = false;
+                                                                              razon2 = !razon2;
+                                                                              razon3 = false;
+                                                                              razon4 = false;
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                        Text(
+                                                                          " Incapacidad",
+                                                                          style: TextStyle(color: Colors.black),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+
+                                                                    Row(
+                                                                      children: [
+                                                                        Checkbox(
+                                                                          value: razon3,
+                                                                          onChanged: (value) {
+                                                                            if(razon3==true)
+                                                                              return;
+
+                                                                            setState(() {
+                                                                              razonCancelar = "Vacaciones";
+                                                                              razon1 = false;
+                                                                              razon2 = false;
+                                                                              razon3 = !razon3;
+                                                                              razon4 = false;
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                        Text(
+                                                                          " Vacaciones",
+                                                                          style: TextStyle(color: Colors.black),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+
+                                                                    Row(
+                                                                      children: [
+                                                                        Checkbox(
+                                                                          value: razon4,
+                                                                          onChanged: (value) {
+                                                                            if(razon4==true)
+                                                                              return;
+
+                                                                            setState(() {
+                                                                              razonCancelar = "Motivo personal";
+                                                                              razon1 = false;
+                                                                              razon2 = false;
+                                                                              razon3 = false;
+                                                                              razon4 = !razon4;
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                        Text(
+                                                                          " Motivo personal",
+                                                                          style: TextStyle(color: Colors.black),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                              ),
+                                                        SizedBox(height: 16),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                          children: [
+                                                            OutlinedButton(
+                                                              style: OutlinedButton.styleFrom(
+                                                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                foregroundColor: Colors.white,
+                                                                side: BorderSide(color: Colors.black),
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                                ),
+                                                              ),
+                                                              onPressed: () {
+                                                                Navigator.pop(context);
+                                                              },
+                                                              child: Text(
+                                                                'Cancelar',
+                                                                style: TextStyle(color: Colors.black),
+                                                              ),
+                                                            ),
+                        
+                                                            OutlinedButton(
+                                                              style: OutlinedButton.styleFrom(
+                                                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                                ),
+                                                              ),
+                                                              onPressed: () {
+                                                                if(razonCancelar.isEmpty){
+                                                                  QuickAlert.show(
+                                                                    context: context,
+                                                                    title: "Alerta",
+                                                                    text: 'Debe de seleccionar un motivo.',
+                                                                    type: QuickAlertType.error
+                                                                  );
+
+                                                                  return;
+                                                                }
+
+                                                                ChatApis().confirmOrCancel('RECHAZADO');
+                                                                fetchCancel(
+                                                                  prefs.nombreUsuario,
+                                                                  '${abc.data?.trips[index].tripId}',
+                                                                  conditionC,
+                                                                  razonCancelar,
+                                                                );
+                                                                Navigator.pop(context);
+                                                              },
+                                                              child: Text(
+                                                                'Enviar',
+                                                                style: TextStyle(color: Colors.white),
+                                                              ),
+                                                            ),
+                                                            
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 12)
                                                       ],
                                                     ),
-                                                    SizedBox(height: 12)
-                                                  ],
-                                                ),
-                                              ),
+                                                  );
+                                                },
+                                              )
                                             ),
                                   ),
                                 );
@@ -1765,101 +1970,204 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                     shape: RoundedRectangleBorder(
                                                       borderRadius: BorderRadius.circular(16.0),
                                                     ),
-                                                    content: Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius: BorderRadius.circular(16.0),
-                                                      ),
-                                                      child: Column(
-                                                        mainAxisSize: MainAxisSize.min,
-                                                        children: [
-                                                          Container(
-                                                            decoration: BoxDecoration(
-                                                              color: Color.fromRGBO(40, 93, 169, 1),
-                                                              borderRadius: BorderRadius.only(
-                                                                topLeft: Radius.circular(16.0),
-                                                                topRight: Radius.circular(16.0),
-                                                              ),
-                                                            ),
-                                                            child: Padding(
-                                                              padding: const EdgeInsets.all(20.0),
-                                                              child: Text(
-                                                                'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
-                                                                textAlign: TextAlign.center,
-                                                                style: TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontWeight: FontWeight.normal,
-                                                                ),
-                                                              ),
-                                                            ),
+                                                    content: StatefulBuilder(
+                                                      builder:(context, setState) {
+                                                        return Container(
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius: BorderRadius.circular(16.0),
                                                           ),
-                                                          Padding(
-                                                            padding: const EdgeInsets.all(20.0),
-                                                            child: TextField(
-                                                              controller: message,
-                                                              maxLines: null, // Permite que el texto se ajuste automáticamente a varias líneas
-                                                              textAlignVertical: TextAlignVertical.top, // Alinea el texto al principio del TextField
-                                                              decoration: InputDecoration(
-                                                                labelText: 'Escriba aquí',
-                                                                labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
-                                                                border: OutlineInputBorder( // Establece un borde al TextField
-                                                                  borderRadius: BorderRadius.circular(12.0),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          SizedBox(height: 16),
-                                                          Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                          child: Column(
+                                                            mainAxisSize: MainAxisSize.min,
                                                             children: [
-                                                              OutlinedButton(
-                                                                style: OutlinedButton.styleFrom(
-                                                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                  foregroundColor: Colors.white,
-                                                                  side: BorderSide(color: Colors.black),
-                                                                  shape: RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(12.0),
+                                                              Container(
+                                                                decoration: BoxDecoration(
+                                                                  color: Color.fromRGBO(40, 93, 169, 1),
+                                                                  borderRadius: BorderRadius.only(
+                                                                    topLeft: Radius.circular(16.0),
+                                                                    topRight: Radius.circular(16.0),
                                                                   ),
                                                                 ),
-                                                                onPressed: () {
-                                                                  Navigator.pop(context);
-                                                                },
-                                                                child: Text(
-                                                                  'Cancelar',
-                                                                  style: TextStyle(color: Colors.black),
-                                                                ),
-                                                              ),
-                        
-                                                              OutlinedButton(
-                                                                style: OutlinedButton.styleFrom(
-                                                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                  backgroundColor: Color.fromRGBO(40, 93, 169, 1),
-                                                                  shape: RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(12.0),
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets.all(20.0),
+                                                                  child: Text(
+                                                                    'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontWeight: FontWeight.normal,
+                                                                    ),
                                                                   ),
                                                                 ),
-                                                                onPressed: () {
-                                                                  ChatApis().confirmOrCancel('RECHAZADO');
-                                                                  fetchCancel(
-                                                                    prefs.nombreUsuario,
-                                                                    '${abc.data?.trips[index].tripId}',
-                                                                    conditionC,
-                                                                    message.text,
-                                                                  );
-                                                                  Navigator.pop(context);
-                                                                },
-                                                                child: Text(
-                                                                  'Enviar',
-                                                                  style: TextStyle(color: Colors.white),
-                                                                ),
                                                               ),
-                                                              
+                                                              Padding(
+                                                                padding: const EdgeInsets.all(20.0),
+                                                                child: Column(
+                                                                  children: [
+                                                                    Row(
+                                                                      children: [
+                                                                        Checkbox(
+                                                                          value: razon1,
+                                                                          onChanged: (value) {
+                                                                            if(razon1==true)
+                                                                              return;
+
+                                                                            setState(() {
+                                                                              razonCancelar = "Trabajo desde casa";
+                                                                              razon1 = !razon1;
+                                                                              razon2 = false;
+                                                                              razon3 = false;
+                                                                              razon4 = false;
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                        Text(
+                                                                          " Trabajo desde casa",
+                                                                          style: TextStyle(color: Colors.black),
+                                                                        ),
+                                                                      ]
+                                                                    ),
+
+                                                                    Row(
+                                                                      children: [
+                                                                        Checkbox(
+                                                                          value: razon2,
+                                                                          onChanged: (value) {
+                                                                            if(razon2==true)
+                                                                              return;
+
+                                                                            setState(() {
+                                                                              razonCancelar = "Incapacidad";
+                                                                              razon1 = false;
+                                                                              razon2 = !razon2;
+                                                                              razon3 = false;
+                                                                              razon4 = false;
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                        Text(
+                                                                          " Incapacidad",
+                                                                          style: TextStyle(color: Colors.black),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+
+                                                                    Row(
+                                                                      children: [
+                                                                        Checkbox(
+                                                                          value: razon3,
+                                                                          onChanged: (value) {
+                                                                            if(razon3==true)
+                                                                              return;
+
+                                                                            setState(() {
+                                                                              razonCancelar = "Vacaciones";
+                                                                              razon1 = false;
+                                                                              razon2 = false;
+                                                                              razon3 = !razon3;
+                                                                              razon4 = false;
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                        Text(
+                                                                          " Vacaciones",
+                                                                          style: TextStyle(color: Colors.black),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+
+                                                                    Row(
+                                                                      children: [
+                                                                        Checkbox(
+                                                                          value: razon4,
+                                                                          onChanged: (value) {
+                                                                            if(razon4==true)
+                                                                              return;
+
+                                                                            setState(() {
+                                                                              razonCancelar = "Motivo personal";
+                                                                              razon1 = false;
+                                                                              razon2 = false;
+                                                                              razon3 = false;
+                                                                              razon4 = !razon4;
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                        Text(
+                                                                          " Motivo personal",
+                                                                          style: TextStyle(color: Colors.black),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                              ),
+                                                              SizedBox(height: 16),
+                                                              Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                children: [
+                                                                  OutlinedButton(
+                                                                    style: OutlinedButton.styleFrom(
+                                                                      padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                      foregroundColor: Colors.white,
+                                                                      side: BorderSide(color: Colors.black),
+                                                                      shape: RoundedRectangleBorder(
+                                                                        borderRadius: BorderRadius.circular(12.0),
+                                                                      ),
+                                                                    ),
+                                                                    onPressed: () {
+                                                                      Navigator.pop(context);
+                                                                    },
+                                                                    child: Text(
+                                                                      'Cancelar',
+                                                                      style: TextStyle(color: Colors.black),
+                                                                    ),
+                                                                  ),
+                            
+                                                                  OutlinedButton(
+                                                                    style: OutlinedButton.styleFrom(
+                                                                      padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                      backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                                      shape: RoundedRectangleBorder(
+                                                                        borderRadius: BorderRadius.circular(12.0),
+                                                                      ),
+                                                                    ),
+                                                                    onPressed: () {
+                                                                      if(razonCancelar.isEmpty){
+                                                                        QuickAlert.show(
+                                                                          context: context,
+                                                                          title: "Alerta",
+                                                                          text: 'Debe de seleccionar un motivo.',
+                                                                          type: QuickAlertType.error
+                                                                        );
+
+                                                                        return;
+                                                                      }
+                                                                      
+                                                                      ChatApis().confirmOrCancel('RECHAZADO');
+                                                                      fetchCancel(
+                                                                        prefs.nombreUsuario,
+                                                                        '${abc.data?.trips[index].tripId}',
+                                                                        conditionC,
+                                                                        razonCancelar,
+                                                                      );
+                                                                      Navigator.pop(context);
+                                                                    },
+                                                                    child: Text(
+                                                                      'Enviar',
+                                                                      style: TextStyle(color: Colors.white),
+                                                                    ),
+                                                                  ),
+                                                                  
+                                                                ],
+                                                              ),
+                                                              SizedBox(height: 12)
                                                             ],
                                                           ),
-                                                          SizedBox(height: 12)
-                                                        ],
-                                                      ),
+                                                        );
+                                                      },
                                                     ),
+
                                                   ),
                         
                                                 ),
@@ -2107,101 +2415,203 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius: BorderRadius.circular(16.0),
                                                   ),
-                                                  content: Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius: BorderRadius.circular(16.0),
-                                                    ),
-                                                    child: Column(
-                                                      mainAxisSize: MainAxisSize.min,
-                                                      children: [
-                                                        Container(
-                                                          decoration: BoxDecoration(
-                                                            color: Color.fromRGBO(40, 93, 169, 1),
-                                                            borderRadius: BorderRadius.only(
-                                                              topLeft: Radius.circular(16.0),
-                                                              topRight: Radius.circular(16.0),
-                                                            ),
-                                                          ),
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.all(20.0),
-                                                            child: Text(
-                                                              'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
-                                                              textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                color: Colors.white,
-                                                                fontWeight: FontWeight.normal,
-                                                              ),
-                                                            ),
-                                                          ),
+                                                  content: StatefulBuilder(
+                                                    builder:(context, setState) {
+                                                      return Container(
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          borderRadius: BorderRadius.circular(16.0),
                                                         ),
-                                                        Padding(
-                                                          padding: const EdgeInsets.all(20.0),
-                                                          child: TextField(
-                                                            controller: message,
-                                                            maxLines: null, // Permite que el texto se ajuste automáticamente a varias líneas
-                                                            textAlignVertical: TextAlignVertical.top, // Alinea el texto al principio del TextField
-                                                            decoration: InputDecoration(
-                                                              labelText: 'Escriba aquí',
-                                                              labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
-                                                              border: OutlineInputBorder( // Establece un borde al TextField
-                                                                borderRadius: BorderRadius.circular(12.0),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        SizedBox(height: 16),
-                                                        Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                        child: Column(
+                                                          mainAxisSize: MainAxisSize.min,
                                                           children: [
-                                                            OutlinedButton(
-                                                              style: OutlinedButton.styleFrom(
-                                                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                foregroundColor: Colors.white,
-                                                                side: BorderSide(color: Colors.black),
-                                                                shape: RoundedRectangleBorder(
-                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                            Container(
+                                                              decoration: BoxDecoration(
+                                                                color: Color.fromRGBO(40, 93, 169, 1),
+                                                                borderRadius: BorderRadius.only(
+                                                                  topLeft: Radius.circular(16.0),
+                                                                  topRight: Radius.circular(16.0),
                                                                 ),
                                                               ),
-                                                              onPressed: () {
-                                                                Navigator.pop(context);
-                                                              },
-                                                              child: Text(
-                                                                'Cancelar',
-                                                                style: TextStyle(color: Colors.black),
-                                                              ),
-                                                            ),
-                      
-                                                            OutlinedButton(
-                                                              style: OutlinedButton.styleFrom(
-                                                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                backgroundColor: Color.fromRGBO(40, 93, 169, 1),
-                                                                shape: RoundedRectangleBorder(
-                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.all(20.0),
+                                                                child: Text(
+                                                                  'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
+                                                                  textAlign: TextAlign.center,
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontWeight: FontWeight.normal,
+                                                                  ),
                                                                 ),
                                                               ),
-                                                              onPressed: () {
-                                                                ChatApis().confirmOrCancel('RECHAZADO');
-                                                                fetchCancel(
-                                                                  prefs.nombreUsuario,
-                                                                  '${abc.data?.trips[index].tripId}',
-                                                                  conditionC,
-                                                                  message.text,
-                                                                );
-                                                                Navigator.pop(context);
-                                                              },
-                                                              child: Text(
-                                                                'Enviar',
-                                                                style: TextStyle(color: Colors.white),
-                                                              ),
                                                             ),
-                                                            
+                                                            Padding(
+                                                                padding: const EdgeInsets.all(20.0),
+                                                                child: Column(
+                                                                  children: [
+                                                                    Row(
+                                                                      children: [
+                                                                        Checkbox(
+                                                                          value: razon1,
+                                                                          onChanged: (value) {
+                                                                            if(razon1==true)
+                                                                              return;
+
+                                                                            setState(() {
+                                                                              razonCancelar = "Trabajo desde casa";
+                                                                              razon1 = !razon1;
+                                                                              razon2 = false;
+                                                                              razon3 = false;
+                                                                              razon4 = false;
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                        Text(
+                                                                          " Trabajo desde casa",
+                                                                          style: TextStyle(color: Colors.black),
+                                                                        ),
+                                                                      ]
+                                                                    ),
+
+                                                                    Row(
+                                                                      children: [
+                                                                        Checkbox(
+                                                                          value: razon2,
+                                                                          onChanged: (value) {
+                                                                            if(razon2==true)
+                                                                              return;
+
+                                                                            setState(() {
+                                                                              razonCancelar = "Incapacidad";
+                                                                              razon1 = false;
+                                                                              razon2 = !razon2;
+                                                                              razon3 = false;
+                                                                              razon4 = false;
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                        Text(
+                                                                          " Incapacidad",
+                                                                          style: TextStyle(color: Colors.black),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+
+                                                                    Row(
+                                                                      children: [
+                                                                        Checkbox(
+                                                                          value: razon3,
+                                                                          onChanged: (value) {
+                                                                            if(razon3==true)
+                                                                              return;
+
+                                                                            setState(() {
+                                                                              razonCancelar = "Vacaciones";
+                                                                              razon1 = false;
+                                                                              razon2 = false;
+                                                                              razon3 = !razon3;
+                                                                              razon4 = false;
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                        Text(
+                                                                          " Vacaciones",
+                                                                          style: TextStyle(color: Colors.black),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+
+                                                                    Row(
+                                                                      children: [
+                                                                        Checkbox(
+                                                                          value: razon4,
+                                                                          onChanged: (value) {
+                                                                            if(razon4==true)
+                                                                              return;
+
+                                                                            setState(() {
+                                                                              razonCancelar = "Motivo personal";
+                                                                              razon1 = false;
+                                                                              razon2 = false;
+                                                                              razon3 = false;
+                                                                              razon4 = !razon4;
+                                                                            });
+                                                                          },
+                                                                        ),
+                                                                        Text(
+                                                                          " Motivo personal",
+                                                                          style: TextStyle(color: Colors.black),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                              ),
+                                                            SizedBox(height: 16),
+                                                            Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                              children: [
+                                                                OutlinedButton(
+                                                                  style: OutlinedButton.styleFrom(
+                                                                    padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                    foregroundColor: Colors.white,
+                                                                    side: BorderSide(color: Colors.black),
+                                                                    shape: RoundedRectangleBorder(
+                                                                      borderRadius: BorderRadius.circular(12.0),
+                                                                    ),
+                                                                  ),
+                                                                  onPressed: () {
+                                                                    Navigator.pop(context);
+                                                                  },
+                                                                  child: Text(
+                                                                    'Cancelar',
+                                                                    style: TextStyle(color: Colors.black),
+                                                                  ),
+                                                                ),
+                          
+                                                                OutlinedButton(
+                                                                  style: OutlinedButton.styleFrom(
+                                                                    padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                    backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                                    shape: RoundedRectangleBorder(
+                                                                      borderRadius: BorderRadius.circular(12.0),
+                                                                    ),
+                                                                  ),
+                                                                  onPressed: () {
+                                                                    if(razonCancelar.isEmpty){
+                                                                      QuickAlert.show(
+                                                                        context: context,
+                                                                        title: "Alerta",
+                                                                        text: 'Debe de seleccionar un motivo.',
+                                                                        type: QuickAlertType.error
+                                                                      );
+
+                                                                      return;
+                                                                    }
+
+                                                                    ChatApis().confirmOrCancel('RECHAZADO');
+                                                                    fetchCancel(
+                                                                      prefs.nombreUsuario,
+                                                                      '${abc.data?.trips[index].tripId}',
+                                                                      conditionC,
+                                                                      razonCancelar,
+                                                                    );
+                                                                    Navigator.pop(context);
+                                                                  },
+                                                                  child: Text(
+                                                                    'Enviar',
+                                                                    style: TextStyle(color: Colors.white),
+                                                                  ),
+                                                                ),
+                                                                
+                                                              ],
+                                                            ),
+                                                            SizedBox(height: 12)
                                                           ],
                                                         ),
-                                                        SizedBox(height: 12)
-                                                      ],
-                                                    ),
-                                                  ),
+                                                      );
+                                                    },
+                                                  )
                                                 ),
                                         ),
                                       );
