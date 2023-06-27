@@ -12,6 +12,7 @@ import 'package:flutter_auth/providers/chat.dart';
 import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
 import 'Agents/sharePrefers/preferencias_usuario.dart';
+import 'components/Tema.dart';
 
 Future<void> main() async {
   //inicialización de clases y variables necesarias para
@@ -70,7 +71,8 @@ class _MyAppState extends State<MyApp> {
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'Smart Driver',
-        theme: tema(),
+        theme: appThemeDataLight,
+        darkTheme: appThemeDataDark,
         //home: prefs.nombreUsuario ==null?WelcomeScreen():HomeScreen(),
         initialRoute: prefs.nombreUsuario == null || prefs.nombreUsuario == ""
             ? 'login'
@@ -79,19 +81,6 @@ class _MyAppState extends State<MyApp> {
           'login': (BuildContext context) => UpgradeAlert(child: SplashView()),
           'home': (BuildContext context) => UpgradeAlert(child: HomeScreen(),),
         },
-      ),
-    );
-  }
-
-  ThemeData tema() {
-    return ThemeData(
-      primaryColor: Colors.blue,
-      fontFamily: 'Roboto',
-      textTheme: TextTheme(
-      
-        displayLarge : TextStyle(fontSize: 24.0, color: Colors.black), 
-        bodyLarge : TextStyle(fontSize: 16.0, color: Colors.grey), 
-
       ),
     );
   }
