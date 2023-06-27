@@ -775,6 +775,38 @@ class _NextTripScreenState extends State<NextTripScreen>
                   height: 1,
                   color: Color.fromRGBO(158, 158, 158, 1),
                     ),
+
+                    SizedBox(height: 20),
+                    Padding(
+                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 15,
+                        height: 15,
+                        child: SvgPicture.asset(
+                          "assets/icons/motorista.svg",
+                          color: Color.fromRGBO(40, 93, 169, 1),
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Flexible(
+                        child: Text(
+                          'Vehiculo: ${abc.data?.trips[index].tripVehicle}',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                    ),
+                    Container(
+                  height: 1,
+                  color: Color.fromRGBO(158, 158, 158, 1),
+                    ),
                   
                      SizedBox(height: 20),
                     Padding(
@@ -1802,6 +1834,38 @@ class _NextTripScreenState extends State<NextTripScreen>
                         color: Color.fromRGBO(196, 196, 196, 1),
                       ),
                         
+                    SizedBox(height: 20),
+                    Padding(
+                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 15,
+                        height: 15,
+                        child: SvgPicture.asset(
+                          "assets/icons/motorista.svg",
+                          color: Color.fromRGBO(40, 93, 169, 1),
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Flexible(
+                        child: Text(
+                          'Vehiculo: ${abc.data?.trips[index].tripVehicle}',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                    ),
+                    Container(
+                  height: 1,
+                  color: Color.fromRGBO(158, 158, 158, 1),
+                    ),
+
                        SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),

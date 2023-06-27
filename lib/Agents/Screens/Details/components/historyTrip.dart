@@ -177,7 +177,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                           SizedBox(width: 5),
                           Flexible(
                             child: Text(
-                              'Transporte para: ${abc.data![index].estado}',
+                              'Transporte para: ${abc.data![index].tipo}',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black,

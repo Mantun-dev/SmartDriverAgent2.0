@@ -13,6 +13,7 @@ String storyToJson(List<Story> data) =>
 class Story {
   Story({
     this.fecha,
+    this.tipo,
     this.horaEntrada,
     this.hora,
     this.estado,
@@ -24,6 +25,7 @@ class Story {
   });
 
   String? fecha;
+  String? tipo; // Nuevo campo "Tipo"
   String? horaEntrada;
   String? hora;
   String? estado;
@@ -35,6 +37,7 @@ class Story {
 
   factory Story.fromJson(Map<String, dynamic> json) => Story(
         fecha: json["Fecha"],
+        tipo: json["Tipo"], // Nuevo campo "Tipo"
         horaEntrada: json["horaEntrada"],
         hora: json["Hora"],
         estado: json["Estado"],
@@ -47,6 +50,7 @@ class Story {
 
   Map<String, dynamic> toJson() => {
         "Fecha": fecha,
+        "Tipo": tipo, // Nuevo campo "Tipo"
         "horaEntrada": horaEntrada,
         "Hora": hora,
         "Estado": estado,
