@@ -2682,7 +2682,9 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                     shape: RoundedRectangleBorder(
                                                       borderRadius: BorderRadius.circular(16.0),
                                                     ),
-                                                    content: Container(
+                                                    content: StatefulBuilder(
+                                                      builder:(context, setState) {
+                                                        return  Container(
                                                       decoration: BoxDecoration(
                                                         color: Colors.white,
                                                         borderRadius: BorderRadius.circular(16.0),
@@ -2712,18 +2714,33 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                           ),
                                                           Padding(
                                                             padding: const EdgeInsets.all(20.0),
-                                                            child: TextField(
-                                                              onChanged: (value) => comment=value,
-                                                              maxLines: null, // Permite que el texto se ajuste automáticamente a varias líneas
-                                                              textAlignVertical: TextAlignVertical.top, // Alinea el texto al principio del TextField
-                                                              decoration: InputDecoration(
-                                                                labelText: 'Escriba aquí',
-                                                                labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
-                                                                border: OutlineInputBorder( // Establece un borde al TextField
-                                                                  borderRadius: BorderRadius.circular(12.0),
-                                                                ),
-                                                              ),
-                                                            ),
+                                                            child: Column(
+                                                              children: [
+                                                                Row(
+                                                                  children: [
+                                                                    Checkbox(
+                                                                      value: razon1,
+                                                                      onChanged: (value) {
+                                                                        if(razon1==true)
+                                                                          return;
+
+                                                                        setState(() {
+                                                                          razonCancelar = "Trabajo desde casa";
+                                                                          razon1 = !razon1;
+                                                                          razon2 = false;
+                                                                          razon3 = false;
+                                                                          razon4 = false;
+                                                                        });
+                                                                      },
+                                                                    ),
+                                                                    Text(
+                                                                      " Trabajo desde casa",
+                                                                      style: TextStyle(color: Colors.black),
+                                                                    ),
+                                                                  ]
+                                                                )
+                                                              ],
+                                                            )
                                                           ),
                                                           SizedBox(height: 16),
                                                           Row(
@@ -2771,7 +2788,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                     Map data = {
                                                                       "agentForTravelId": tripData["agentForTravelId"].toString(),
                                                                       "confirmation": "0",
-                                                                      "agentComment": comment
+                                                                      "agentComment": razonCancelar
                                                                     };
                                                                     print(data);
                                                                     http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
@@ -2817,7 +2834,9 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                           SizedBox(height: 12)
                                                         ],
                                                       ),
-                                                    ),
+                                                    );
+                                                      }
+                                                    ),    
                                                   ),
                 
                                                 ),
