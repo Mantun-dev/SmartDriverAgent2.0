@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 final ThemeData appThemeDataLight = ThemeData(
-  fontFamily: 'Muli',
+  fontFamily: 'Roboto',
   primaryColor: const Color(0xFF285DA9),
   splashColor:const Color(0xF8F8F8F8),
   cardTheme: const CardTheme(
@@ -16,21 +16,21 @@ final ThemeData appThemeDataLight = ThemeData(
       color: Color.fromARGB(255, 0, 0, 0),
       fontSize: 18,
       fontWeight: FontWeight.w600,
-      fontFamily: 'Muli',
+      fontFamily: 'Roboto',
     ),    
 
     // Agrega otro estilo de texto con un color diferente
     displayMedium: TextStyle(
       color: Color(0xFF285DA9), // Cambia este color al que desees
       fontSize: 15.0, // Cambia el tamaño de fuente según tus necesidades      
-      fontFamily: 'Muli',
+      fontFamily: 'Roboto',
     ),
     displaySmall: 
     TextStyle(
       color: Color(0xFF000000),
       fontSize: 16,
       fontWeight: FontWeight.w400,
-      fontFamily: 'Muli'
+      fontFamily: 'Roboto'
     //  fontWeight: FontWeight.w200,
     ),
     headlineLarge: 
@@ -38,7 +38,7 @@ final ThemeData appThemeDataLight = ThemeData(
       color: Color(0xFF000000),
       fontSize: 16,
       fontWeight: FontWeight.w800,
-      fontFamily: 'Muli',
+      fontFamily: 'Roboto',
     ),
     // headlineMedium: TextStyle(
     //   color: Color.fromARGB(255, 255, 255, 255),
@@ -49,52 +49,52 @@ final ThemeData appThemeDataLight = ThemeData(
     headlineSmall: TextStyle(
       color: Color(0xFF000000),
       fontSize: 20,
-      fontFamily: 'Muli',
+      fontFamily: 'Roboto',
       fontWeight: FontWeight.w600,
     ),
     titleSmall: TextStyle(
       color: Color(0xFF000000),
       fontSize: 16,
       fontWeight: FontWeight.w400,
-      fontFamily: 'Muli'
+      fontFamily: 'Roboto'
     //  fontWeight: FontWeight.w200,
     ),
     titleLarge: TextStyle(
       color: Color.fromARGB(255, 0, 0, 0),
       fontSize: 18,
       fontWeight: FontWeight.w600,
-      fontFamily: 'Muli',
+      fontFamily: 'Roboto',
     ),
     titleMedium: TextStyle(
       color: Color.fromARGB(255, 0, 0, 0), // Cambia este color al que desees
       fontSize: 15.0, // Cambia el tamaño de fuente según tus necesidades 
       fontWeight: FontWeight.w600,     
-      fontFamily: 'Muli',
+      fontFamily: 'Roboto',
     ),
     bodyMedium: TextStyle(
       color: Color.fromARGB(255, 0, 0, 0), // Cambia este color al que desees
       fontSize: 15.0, // Cambia el tamaño de fuente según tus necesidades      
       fontWeight: FontWeight.w400,
-      fontFamily: 'Muli',
+      fontFamily: 'Roboto',
     ),
     bodyLarge: TextStyle(
       color: Color(0xFF285DA9), // Cambia este color al que desees
       fontSize: 15.0, // Cambia el tamaño de fuente según tus necesidades      
       fontWeight: FontWeight.w600,
-      fontFamily: 'Muli',
+      fontFamily: 'Roboto',
     ),
     labelMedium: TextStyle(
       color: Color(0xFF000000),
       fontSize: 18,
       fontWeight: FontWeight.w300,
-      fontFamily: 'Muli'
+      fontFamily: 'Roboto'
     ),
     //Texto pequeño perfil
     labelSmall: TextStyle(
       color: Color(0xFF000000),
       fontSize: 16,
       fontWeight: FontWeight.w300,
-      fontFamily: 'Muli'
+      fontFamily: 'Roboto'
     )
   ),
 );
@@ -102,7 +102,7 @@ final ThemeData appThemeDataLight = ThemeData(
 
 final ThemeData appThemeDataDark = ThemeData(
   primaryColor: const Color(0xFF285DA9),
-  fontFamily: 'Muli',
+  fontFamily: 'Roboto',
   textTheme: const TextTheme(displayLarge: TextStyle(
     color: Color.fromARGB(255, 203, 206, 221),
     fontSize: 72.0, fontWeight: FontWeight.bold))
