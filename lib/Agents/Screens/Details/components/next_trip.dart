@@ -64,6 +64,13 @@ class _NextTripScreenState extends State<NextTripScreen>
   late double rating5;
   late double rating6;
 
+  String razonCancelar = "";
+
+  bool razon1 = false;
+  bool razon2 = false;
+  bool razon3 = false;
+  bool razon4 = false;
+
   TextEditingController comentario1 = new TextEditingController();
   TextEditingController comentario2 = new TextEditingController();
   TextEditingController comentario3 = new TextEditingController();
