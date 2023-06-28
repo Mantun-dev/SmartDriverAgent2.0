@@ -142,7 +142,7 @@ class _BodyState extends State<Body> {
   Container menu(size, contextP) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(30.0),
           bottomRight: Radius.circular(30.0),
@@ -414,10 +414,7 @@ class _BodyState extends State<Body> {
                 padding: EdgeInsets.only(top: 25.0),
                 child: Text(
                   'Hola, ${prefs.nombreUsuarioFull}',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium!
-                      .copyWith(fontWeight: FontWeight.normal, color: Color.fromRGBO(255, 255, 255, 1), fontSize: 20),
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
         
@@ -438,7 +435,7 @@ class _BodyState extends State<Body> {
                       elevation: 2,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         child: TextField(
@@ -457,8 +454,9 @@ class _BodyState extends State<Body> {
                           },
                           focusNode: _focusNode,
                           decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.search, color: Colors.grey),
+                            prefixIcon: Icon(Icons.search, color: Theme.of(context).hintColor),
                             hintText: 'Buscar',
+                            hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
                             border: InputBorder.none,
                           ),
                         ),

@@ -52,13 +52,13 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                     height: 30,
                     child: SvgPicture.asset(
                       "assets/icons/inicio.svg",
-                      color: Theme.of(context).primaryIconTheme.color,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
 
                   Text(
                     "Inicio",
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).primaryIconTheme.color,),
+                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).primaryColor),
                   )
               ],
             ),
@@ -104,12 +104,12 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                   height: 28,
                   child: SvgPicture.asset(
                     "assets/icons/notificacion.svg",
-                    color: Theme.of(context).primaryIconTheme.color,
+                    color: Theme.of(context).primaryColor,
                   ),
                             ),
                             Text(
                     "Notificaciones",
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).primaryIconTheme.color),
+                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).primaryColor),
                   )
                 ],
               ),
@@ -145,7 +145,7 @@ class _AppBarPosterior extends State<AppBarPosterior> {
           ),
             Positioned(
               top: 5,
-              right: 18,
+              right: 8,
               child: Container(
                 width: 15,
                 height: 20,
@@ -154,11 +154,11 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.transparent,
-                      border: Border.all(color: Theme.of(context).focusColor, width: 1.5)),
+                      border: Border.all(color: Color(0xffc32c37), width: 1.5)),
                   child: Center(
                     child:   Text(
                         '0',
-                        style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).focusColor, fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.displaySmall!.copyWith(fontWeight: FontWeight.bold),
                       ),
                   ),
                 ),
@@ -183,12 +183,12 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                   height: 28,
                   child: SvgPicture.asset(
                     "assets/icons/chats.svg",
-                    color: Theme.of(context).primaryIconTheme.color,
+                    color: Theme.of(context).primaryColor,
                   ),
                             ),
                             Text(
                     "Chats",
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).primaryIconTheme.color),
+                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).primaryColor),
                   )
                 ],
               ),
@@ -238,11 +238,11 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.transparent,
-                      border: Border.all(color: Theme.of(context).focusColor, width: 1.5)),
+                      border: Border.all(color: Color(0xffc32c37), width: 1.5)),
                   child: Center(
                     child:  Text(
                     counter!=null?'$counter':'0',
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).focusColor, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.displaySmall
                   ),
                   ),
                 ),
@@ -261,13 +261,13 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                     height: 30,
                     child: SvgPicture.asset(
                       "assets/icons/usuario2.svg",
-                      color: Theme.of(context).primaryIconTheme.color
+                      color: Theme.of(context).primaryColor
                     ),
                   ),
 
                   Text(
                     "Perfil",
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).primaryIconTheme.color),
+                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).primaryColor),
                   )
               ],
             ),

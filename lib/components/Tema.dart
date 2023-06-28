@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const familyFont = "Roboto";
+const familyFont = 'Roboto';
 
 final ThemeData appThemeDataLight = ThemeData(
   fontFamily: familyFont,
@@ -18,13 +18,29 @@ final ThemeData appThemeDataLight = ThemeData(
   errorColor: Color(0xffc32c37),
 
 
+  appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+
   textTheme: const TextTheme(
 
     labelSmall: TextStyle( 
       color: Colors.black,
       fontSize: 9,
-      fontFamily: familyFont
+      fontFamily: familyFont,
+      fontWeight: FontWeight.normal
     ),
+
+    titleLarge: TextStyle(
+      color: Colors.white,
+      fontSize: 20,
+      fontFamily: familyFont,
+      fontWeight: FontWeight.normal
+    ),
+
+    titleMedium: TextStyle(
+      color: Colors.black,
+      fontFamily: familyFont,
+      fontWeight: FontWeight.bold
+    )
 
   ),
 );
