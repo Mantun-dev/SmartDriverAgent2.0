@@ -9,12 +9,13 @@ final ThemeData appThemeDataLight = ThemeData(
   scaffoldBackgroundColor:const Color.fromRGBO(248, 248, 248, 1),
 
   primaryIconTheme: IconThemeData(
-    color: const Color.fromRGBO(40, 93, 169, 1)
+    color: const Color.fromRGBO(40, 93, 169, 1),
   ),
 
   cardColor: Colors.white,
   hintColor: const Color.fromRGBO(158, 158, 158, 1),
-  focusColor: Color(0xffc32c37),
+  focusColor: const Color.fromRGBO(40, 93, 169, 1),
+  hoverColor: Color(0xffc32c37),
   errorColor: Color(0xffc32c37),
 
 
