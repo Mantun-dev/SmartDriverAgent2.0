@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/sharePrefers/services.dart';
 import 'package:flutter_auth/components/splash_screen.dart';
-import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/providers/chat.dart';

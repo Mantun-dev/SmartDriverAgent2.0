@@ -3262,7 +3262,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                           );
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
+                        backgroundColor: Colors.red,
                       ),
                       child: Text(
                         'Cancelar',

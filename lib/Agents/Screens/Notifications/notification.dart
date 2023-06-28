@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/Agents/Screens/Details/components/loader.dart';
-import 'package:flutter_auth/Agents/Screens/Details/details_screen_changes.dart';
 import 'package:flutter_auth/Agents/models/dataAgent.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 //import 'package:flutter_auth/Agents/models/dataAgent.dart';
-import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/Agents/models/profileAgent.dart';
 //import 'package:flutter_auth/Agents/models/profileAgent.dart';
 //import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/components/AppBarSuperior.dart';
 import 'package:flutter_auth/components/backgroundB.dart';
-import 'package:flutter_auth/components/solictud_cambio.dart';
-import 'package:flutter_svg/svg.dart';
 import '../../../components/AppBarPosterior.dart';
 
 void main() {

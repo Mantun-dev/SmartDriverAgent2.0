@@ -38,7 +38,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return AppBar(
-      backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+      backgroundColor: Theme.of(context).primaryColor,
       elevation: 0,
       iconTheme: IconThemeData(color: Colors.white, size: 25),
       automaticallyImplyLeading: false, 

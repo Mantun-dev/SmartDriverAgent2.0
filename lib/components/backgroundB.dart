@@ -11,6 +11,7 @@ class BackgroundBody extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               body: Column(
                 children: [
                   Expanded(
@@ -21,7 +22,7 @@ class BackgroundBody extends StatelessWidget {
                             width: size.width,
                             height: size.height / 2.5,
                             decoration: BoxDecoration(
-                              color: Color.fromRGBO(40, 93, 169, 1),
+                              color: Theme.of(context).primaryColor,
                             ),
                           ),
                           child,

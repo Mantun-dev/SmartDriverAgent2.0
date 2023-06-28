@@ -10,7 +10,6 @@ import 'package:flutter_auth/Agents/models/profileAgent.dart';
 //import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/components/AppBarSuperior.dart';
 import 'package:flutter_auth/components/backgroundB.dart';
-import 'package:flutter_auth/components/solictud_cambio.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../components/AppBarPosterior.dart';
 
