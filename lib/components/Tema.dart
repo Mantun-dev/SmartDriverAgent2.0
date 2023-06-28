@@ -8,9 +8,8 @@ final ThemeData appThemeDataLight = ThemeData(
   primaryColor: const Color.fromRGBO(40, 93, 169, 1),
   scaffoldBackgroundColor:const Color.fromRGBO(248, 248, 248, 1),
 
-  primaryIconTheme: IconThemeData(
-    color: const Color.fromRGBO(40, 93, 169, 1),
-  ),
+  primaryColorLight: Colors.white,
+  primaryColorDark: Colors.black,
 
   cardColor: Colors.white,
   hintColor: const Color.fromRGBO(158, 158, 158, 1),
@@ -18,8 +17,14 @@ final ThemeData appThemeDataLight = ThemeData(
   hoverColor: Color(0xffc32c37),
   errorColor: Color(0xffc32c37),
 
+  dividerColor: Color.fromRGBO(158, 158, 158, 1),
+
+  shadowColor: Color.fromRGBO(158, 158, 158, 0.18),
+
 
   appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+
+  primaryIconTheme: IconThemeData(color: const Color.fromRGBO(40, 93, 169, 1),),
 
   textTheme: const TextTheme(
 
@@ -41,7 +46,12 @@ final ThemeData appThemeDataLight = ThemeData(
       color: Colors.black,
       fontFamily: familyFont,
       fontWeight: FontWeight.bold
-    )
+    ),
+
+    bodyMedium: TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.normal
+    ),
 
   ),
 );

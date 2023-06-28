@@ -87,6 +87,8 @@ class _BodyState extends State<Body> {
   },
 ];
 
+BuildContext? contextP;
+
   List<dynamic>? ventanas2;
 
   PackageInfo _packageInfo = PackageInfo(
@@ -103,6 +105,7 @@ class _BodyState extends State<Body> {
     _value = 0;
     _focusNode.addListener(_onFocusChange);
     ventanas2=ventanas;
+    contextP=context;
     //realización callback para mostrar cuentas en agentes
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -173,19 +176,13 @@ class _BodyState extends State<Body> {
                             height: 25,
                             child: SvgPicture.asset(
                               icono,
-                              color: Color.fromRGBO(40, 93, 169, 1),
+                              color: Theme.of(context).primaryIconTheme.color,
                             ),
                           ),
                           SizedBox(width: 5),
                           Text(
                             nombre,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.normal,
-                              decoration: TextDecoration.none,
-                              fontFamily: 'Roboto',
-                            ),
+                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 15, fontWeight: FontWeight.normal),
                           ),
                         ],
                       ),
@@ -474,12 +471,12 @@ class _BodyState extends State<Body> {
                   padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: backgroundColor2,
+                      color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(15)
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Text('🔺$msgtoShow',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
+                      child: Text('🔺$msgtoShow',style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 16)),
                     ),
                   ),
                 )
@@ -596,11 +593,7 @@ class _BodyState extends State<Body> {
                                 Expanded(
                                   child: Text(
                                     'Últimos viajes',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 18),
                                   ),
                                 ),
                                 GestureDetector(
@@ -611,11 +604,7 @@ class _BodyState extends State<Body> {
                                   },
                                   child: Text(
                                     'Ver historial',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 12),
                                   ),
                                 ),
                               ],
@@ -629,133 +618,119 @@ class _BodyState extends State<Body> {
                               var trip = plantilla2[index];
                               return Padding(
                                 padding: const EdgeInsets.all(12.0),
-                                child: Container(
-                                  width: 240,
-                                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Color.fromRGBO(238, 238, 238, 1),
-                                      width: 2,
-                                    ),
-                                    color: Colors.white,
+                                child: Card(
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  child: Column(
-                                    children: [
-                                      SizedBox(height: 5),
-                                      Padding(
-                                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              width: 15,
-                                              height: 15,
-                                              child: SvgPicture.asset(
-                                                "assets/icons/Numeral.svg",
-                                                color: Color.fromRGBO(40, 93, 169, 1),
+                                  child: Container(
+                                    width: 240,
+                                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).cardColor,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 5),
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: 15,
+                                                height: 15,
+                                                child: SvgPicture.asset(
+                                                  "assets/icons/Numeral.svg",
+                                                  color: Theme.of(context).primaryIconTheme.color,
+                                                ),
                                               ),
-                                            ),
-                                            Text(
-                                              ' Viaje: ${trip["tripId"]}',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.normal,
+                                              Text(
+                                                ' Viaje: ${trip["tripId"]}',
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Container(
-                                        height: 1,
-                                        color: Color.fromRGBO(158, 158, 158, 1),
-                                      ),
-                                      SizedBox(height: 8),
-                                      Padding(
-                                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              width: 18,
-                                              height: 18,
-                                              child: SvgPicture.asset(
-                                                "assets/icons/calendar-note-svgrepo-com.svg",
-                                                color: Color.fromRGBO(40, 93, 169, 1),
-                                              ),
-                                            ),
-                                            Text(
-                                              ' Fecha: ${trip["tripDate"]}',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ],
+                                        Container(
+                                          height: 1,
+                                          color: Theme.of(context).dividerColor,
                                         ),
-                                      ),
-                                      Container(
-                                        height: 1,
-                                        color: Color.fromRGBO(158, 158, 158, 1),
-                                      ),
-                                      SizedBox(height: 8),
-                                      Padding(
-                                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              width: 18,
-                                              height: 18,
-                                              child: SvgPicture.asset(
-                                                "assets/icons/warning-circle-svgrepo-com.svg",
-                                                color: Color.fromRGBO(40, 93, 169, 1),
+                                        SizedBox(height: 8),
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: 18,
+                                                height: 18,
+                                                child: SvgPicture.asset(
+                                                  "assets/icons/calendar-note-svgrepo-com.svg",
+                                                  color: Theme.of(context).primaryIconTheme.color,
+                                                ),
                                               ),
-                                            ),
-                                            Text(
-                                              ' Tipo: ${trip["tripType"]}',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.normal,
+                                              Text(
+                                                ' Fecha: ${trip["tripDate"]}',
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Container(
-                                        height: 1,
-                                        color: Color.fromRGBO(158, 158, 158, 1),
-                                      ),
-                                      SizedBox(height: 8),
-                                      Padding(
-                                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              width: 15,
-                                              height: 15,
-                                              child: SvgPicture.asset(
-                                                "assets/icons/hora.svg",
-                                                color: Color.fromRGBO(40, 93, 169, 1),
-                                              ),
-                                            ),
-                                            Text(
-                                              ' Abordó: ${trip["traveled"]}',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ],
+                                        Container(
+                                          height: 1,
+                                          color: Theme.of(context).dividerColor,
                                         ),
-                                      ),
-                                      Container(
-                                        height: 1,
-                                        color: Color.fromRGBO(158, 158, 158, 1),
-                                      ),
-                                      SizedBox(height: 5),
-                                    ],
+                                        SizedBox(height: 8),
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: 18,
+                                                height: 18,
+                                                child: SvgPicture.asset(
+                                                  "assets/icons/warning-circle-svgrepo-com.svg",
+                                                  color: Theme.of(context).primaryIconTheme.color,
+                                                ),
+                                              ),
+                                              Text(
+                                                ' Tipo: ${trip["tripType"]}',
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 1,
+                                          color: Theme.of(context).dividerColor,
+                                        ),
+                                        SizedBox(height: 8),
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: 15,
+                                                height: 15,
+                                                child: SvgPicture.asset(
+                                                  "assets/icons/hora.svg",
+                                                  color: Theme.of(context).primaryIconTheme.color,
+                                                ),
+                                              ),
+                                              Text(
+                                                ' Abordó: ${trip["traveled"]}',
+                                                style:  Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 1,
+                                          color: Theme.of(context).dividerColor,
+                                        ),
+                                        SizedBox(height: 5),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
@@ -825,9 +800,10 @@ class _BodyState extends State<Body> {
             child: Opacity(
               opacity: a1.value,
               child: AlertDialog(
+                backgroundColor: Theme.of(contextP!).cardColor,
                 shape: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16.0)),
-                title: Center(child: Text('¿A qué cuenta pertenece?')),
+                title: Center(child: Text('¿A qué cuenta pertenece?', style: Theme.of(contextP!).textTheme.titleMedium!.copyWith(fontSize: 18, fontWeight: FontWeight.bold),)),
                 content: StatefulBuilder(
                     builder: (BuildContext context, StateSetter setState) {
                   return Container(
@@ -839,18 +815,12 @@ class _BodyState extends State<Body> {
                           ListTile(
                             title: Text(
                               '${no['counts'][i]['countName']}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium!
-                                  .copyWith(
-                                      color: i == no['counts'].length
-                                          ? Colors.black38
-                                          : Colors.black),
+                              style: Theme.of(contextP!).textTheme.bodyMedium!.copyWith(fontSize: 18),
                             ),
                             leading: Radio<dynamic>(
                               value: no['counts'][i]['countId'],
                               groupValue: _value,
-                              activeColor: Colors.blue,
+                              activeColor: Theme.of(contextP!).focusColor,
                               onChanged: i == no['counts'].length
                                   ? null
                                   : (value) {
@@ -870,7 +840,7 @@ class _BodyState extends State<Body> {
                   TextButton(
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: Colors.green,
+                      backgroundColor: Color.fromARGB(255, 63, 148, 66),
                     ),
                     onPressed: () => {
                       setState(() {
@@ -885,7 +855,7 @@ class _BodyState extends State<Body> {
                   TextButton(
                     style: TextButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: Colors.blueAccent),
+                        backgroundColor: Color.fromRGBO(40, 93, 169, 1)),
                     onPressed: () => {
                       Navigator.pop(context),
                     },
@@ -928,15 +898,13 @@ class _BodyState extends State<Body> {
             child: Opacity(
               opacity: a1.value,
               child: AlertDialog(
+                backgroundColor: Theme.of(contextP!).cardColor,
                 shape: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16.0)),
                 title: Center(
-                  child: Text("🔺¡Usuario no agendado!🔺",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: kCardColor2,
-                      )),
+                  child: Text("🔺¡Usuario no agendado!🔺" ,
+                      style: Theme.of(contextP!).textTheme.titleMedium!.copyWith(fontSize: 18)
+                    ),
                 ),
                 content: StatefulBuilder(
                     builder: (BuildContext context, StateSetter setState) {
@@ -945,7 +913,7 @@ class _BodyState extends State<Body> {
                     child: SingleChildScrollView(
                       child: Column(children: [
                         SizedBox(height: 5),
-                        Text('Usted no está siendo agendado para el servicio de transporte, debe comunicarse con su supervisor.',style: TextStyle(color: kgray)),
+                        Text('Usted no está siendo agendado para el servicio de transporte, debe comunicarse con su supervisor.',style: Theme.of(contextP!).textTheme.bodyMedium!.copyWith(fontSize: 15)),
                       ]),
                     ),
                   );
@@ -955,7 +923,7 @@ class _BodyState extends State<Body> {
                     child: TextButton(
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: Colors.green,
+                        backgroundColor: Color.fromARGB(255, 63, 148, 66),
                       ),
                       onPressed: () => {
                         setState(() {
