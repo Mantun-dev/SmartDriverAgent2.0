@@ -17,6 +17,7 @@ final ThemeData appThemeDataLight = ThemeData(
   hoverColor: Color(0xffc32c37),
   errorColor: Color(0xffc32c37),
 
+  disabledColor: Color.fromRGBO(238, 238, 238, 1),
   dividerColor: Color.fromRGBO(158, 158, 158, 1),
 
   shadowColor: Color.fromRGBO(158, 158, 158, 0.18),
@@ -58,5 +59,57 @@ final ThemeData appThemeDataLight = ThemeData(
 
 
 final ThemeData appThemeDataDark = ThemeData(
+
+  fontFamily: familyFont,
+
+  primaryColor: const Color.fromRGBO(27, 27, 39, 1),
+  scaffoldBackgroundColor:const Color.fromRGBO(14, 14, 20, 1),
+
+  primaryColorLight: Colors.black,
+  primaryColorDark: Colors.white,
+
+  cardColor: Color.fromRGBO(47, 46, 65, 1),
+  hintColor: Colors.white,
+  focusColor: const Color.fromRGBO(40, 93, 169, 1),
+  hoverColor: const Color.fromRGBO(40, 93, 169, 1),
+  errorColor: Color(0xffc32c37),
+
+  disabledColor: Color.fromRGBO(68, 67, 82,1),
+  dividerColor: Color.fromRGBO(158, 158, 158, 1),
+
+  shadowColor: Color.fromRGBO(158, 158, 158, 0.18),
+
+  appBarTheme: AppBarTheme(backgroundColor: const Color.fromRGBO(27, 27, 39, 1)),
+
+  primaryIconTheme: IconThemeData(color: Colors.white,),
+
+  textTheme: const TextTheme(
+
+    labelSmall: TextStyle( 
+      color: Colors.white,
+      fontSize: 9,
+      fontFamily: familyFont,
+      fontWeight: FontWeight.normal
+    ),
+
+    titleLarge: TextStyle(
+      color: Colors.white,
+      fontSize: 20,
+      fontFamily: familyFont,
+      fontWeight: FontWeight.normal
+    ),
+
+    titleMedium: TextStyle(
+      color: Colors.white,
+      fontFamily: familyFont,
+      fontWeight: FontWeight.bold
+    ),
+
+    bodyMedium: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.normal
+    ),
+
+  ),
   
 );

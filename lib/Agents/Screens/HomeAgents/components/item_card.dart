@@ -30,11 +30,16 @@ class _ItemCardState extends State<ItemCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: widget.press,
-      child: Card(
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+      child: Container(
+        decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    width: 2,
+                    color: Theme.of(context).disabledColor
+                  )
+                ),
+
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           child: Column(

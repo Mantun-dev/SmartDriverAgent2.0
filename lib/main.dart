@@ -71,7 +71,6 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'Smart Driver',
         theme: appThemeDataLight,
-        darkTheme: appThemeDataDark,
         //home: prefs.nombreUsuario ==null?WelcomeScreen():HomeScreen(),
         initialRoute: prefs.nombreUsuario == null || prefs.nombreUsuario == ""
             ? 'login'

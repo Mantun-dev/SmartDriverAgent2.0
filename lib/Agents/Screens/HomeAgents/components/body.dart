@@ -427,35 +427,35 @@ BuildContext? contextP;
                         child: menu(size, context),
                       ),
     
-                    Material(
-                      color: Colors.transparent,
-                      elevation: 2,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).cardColor,
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: TextField(
-                          controller: buscarText,
-                          onChanged: (value) {
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(
+                          width: 2,
+                          color: Theme.of(context).disabledColor
+                        )
+                      ),
+                      child: TextField(
+                        controller: buscarText,
+                        onChanged: (value) {
 
-                            if(value.isEmpty)
-                              ventanas2=ventanas;
-                            else
-                              ventanas2=ventanas.where((ventana) {
-                                String nombre = ventana['nombre'].toString().toLowerCase();
-                                return nombre.contains(value.toLowerCase());
-                              }).toList();
+                          if(value.isEmpty)
+                            ventanas2=ventanas;
+                          else
+                            ventanas2=ventanas.where((ventana) {
+                              String nombre = ventana['nombre'].toString().toLowerCase();
+                              return nombre.contains(value.toLowerCase());
+                            }).toList();
 
-                            setState(() {});
-                          },
-                          focusNode: _focusNode,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.search, color: Theme.of(context).hintColor),
-                            hintText: 'Buscar',
-                            hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
-                            border: InputBorder.none,
-                          ),
+                          setState(() {});
+                        },
+                        focusNode: _focusNode,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.search, color: Theme.of(context).hintColor),
+                          hintText: 'Buscar',
+                          hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
+                          border: InputBorder.none,
                         ),
                       ),
                     ),
@@ -618,11 +618,15 @@ BuildContext? contextP;
                               var trip = plantilla2[index];
                               return Padding(
                                 padding: const EdgeInsets.all(12.0),
-                                child: Card(
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                            color: Theme.of(context).cardColor,
+                                            borderRadius: BorderRadius.circular(20),
+                                            border: Border.all(
+                                              width: 2,
+                                              color: Theme.of(context).disabledColor
+                                            )
+                                          ),
                                   child: Container(
                                     width: 240,
                                     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -776,7 +780,7 @@ BuildContext? contextP;
     if (no['counts'].length == 0 || no['counts'].length == null) {
     } else {
       if (si.countId == null) {
-        showAlertDialog();
+        
       }
     }
   }

@@ -145,7 +145,7 @@ class _AppBarPosterior extends State<AppBarPosterior> {
           ),
             Positioned(
               top: 5,
-              right: 8,
+              right: 18,
               child: Container(
                 width: 15,
                 height: 20,
