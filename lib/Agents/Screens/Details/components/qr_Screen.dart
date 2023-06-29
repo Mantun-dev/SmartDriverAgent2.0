@@ -47,12 +47,8 @@ class _QrScannScreenState extends State<QrScannScreen> {
           Text(
             'Muestra este código QR para poder abordar',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 21.0)
-            ),
-        
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 21),
+          ),
         Padding(
           padding: const EdgeInsets.only(top:20.0, bottom: 2),
           child: Container(
@@ -69,17 +65,19 @@ class _QrScannScreenState extends State<QrScannScreen> {
             child: Text(
               'Este es un código único.',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.normal,
-                fontSize: 20.0
-              )
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 20),
             ),
           ),
             
           Padding(
             padding: const EdgeInsets.all(15.0),
-            child: QrImage(data: prefs.nombreUsuario),
+            child: Container(
+              color: Theme.of(context).highlightColor,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: QrImage(data: prefs.nombreUsuario),
+              )
+            ),
           ),
         ],
       ),

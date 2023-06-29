@@ -15,6 +15,7 @@ final ThemeData appThemeDataLight = ThemeData(
   hintColor: const Color.fromRGBO(158, 158, 158, 1),
   focusColor: const Color.fromRGBO(40, 93, 169, 1),
   hoverColor: Color(0xffc32c37),
+  highlightColor: Colors.transparent,
 
   disabledColor: Color.fromRGBO(238, 238, 238, 1),
   dividerColor: Color.fromRGBO(158, 158, 158, 1),
@@ -100,6 +101,8 @@ final ThemeData appThemeDataDark = ThemeData(
   disabledColor: Color.fromRGBO(68, 67, 82,1),
   dividerColor: Color.fromRGBO(158, 158, 158, 1),
   splashColor: Color.fromRGBO(158, 158, 158, 1),
+
+  highlightColor: Colors.white,
 
   shadowColor: Color.fromRGBO(158, 158, 158, 0.18),
 
