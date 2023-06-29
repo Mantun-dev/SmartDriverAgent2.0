@@ -18,6 +18,7 @@ import 'package:flutter_auth/Agents/models/rating.dart';
 import 'package:flutter_auth/Agents/models/tripAgent.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/constants.dart';
+import 'package:flutter_auth/main.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
@@ -414,7 +415,7 @@ class _NextTripScreenState extends State<NextTripScreen>
       children: [
         Container(
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(241, 239, 239, 1),
+            color: Theme.of(context).cardTheme.color,
             borderRadius: BorderRadius.circular(15.0),
           ),
           child: Center(
@@ -426,7 +427,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                   
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: viajesProceso ? Color.fromRGBO(40, 93, 169, 1) : Colors.transparent,
+                      backgroundColor: viajesProceso ? Theme.of(context).primaryColor: Colors.transparent,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -442,20 +443,20 @@ class _NextTripScreenState extends State<NextTripScreen>
                         Text(
                           'Viajes programados',
                           style: TextStyle(
-                            color: viajesProceso ? Colors.white : Colors.black,
+                            color: viajesProceso ? Colors.white : Theme.of(context).primaryColorDark,
                           ),
                         ),
                         Container(
                           margin: const EdgeInsets.only(left: 5),
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
-                            color: viajesProceso ? Colors.white : Color.fromRGBO(40, 93, 169, 1),
+                            color: viajesProceso ? Colors.white : Theme.of(context).primaryColor,
                             shape: BoxShape.circle,
                           ),
                           child: Text(
                             totalViajes.toString(),
                             style: TextStyle(
-                              color: !viajesProceso ? Colors.white : Color.fromRGBO(40, 93, 169, 1),
+                              color: !viajesProceso ? Colors.white : Theme.of(context).primaryColor,
                               fontWeight: FontWeight.normal,
                               fontSize: 10,
                             ),
@@ -467,7 +468,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                   SizedBox(width: 10),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: viajesProceso ? Colors.transparent : Color.fromRGBO(40, 93, 169, 1),
+                      backgroundColor: viajesProceso ? Colors.transparent : Theme.of(context).primaryColor,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -483,20 +484,20 @@ class _NextTripScreenState extends State<NextTripScreen>
                         Text(
                           'Solicitudes',
                           style: TextStyle(
-                            color: !viajesProceso ? Colors.white : Colors.black,
+                            color: !viajesProceso ? Colors.white : Theme.of(context).primaryColorDark,
                           ),
                         ),
                         Container(
                           margin: const EdgeInsets.only(left: 5),
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
-                            color: !viajesProceso ? Colors.white : Color.fromRGBO(40, 93, 169, 1),
+                            color: !viajesProceso ? Colors.white : Theme.of(context).primaryColor,
                             shape: BoxShape.circle,
                           ),
                           child: Text(
                             totalSolicitudes.toString(),
                             style: TextStyle(
-                              color: viajesProceso ? Colors.white : Color.fromRGBO(40, 93, 169, 1),
+                              color: viajesProceso ? Colors.white : Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 10,
                             ),
@@ -521,7 +522,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
                 } else if (snapshot.hasError) {
-                  return Text('Error al cargar los datos');
+                  return Text('Error al cargar los datos', style: Theme.of(context).textTheme.bodyMedium,);
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return Column(
                     children: [
@@ -530,16 +531,12 @@ class _NextTripScreenState extends State<NextTripScreen>
                       Center(
                         child: Text(
                           'No hay solicitudes de viajes',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
                         ),
                       ),
                       Container(
                         height: 1,
-                        color: Color.fromRGBO(158, 158, 158, 1),
+                        color: Theme.of(context).dividerColor,
                       ),
                     ],
                   );
@@ -554,30 +551,22 @@ class _NextTripScreenState extends State<NextTripScreen>
                             height: 40,
                             child: SvgPicture.asset(
                               "assets/icons/advertencia.svg",
-                              color: Color.fromRGBO(40, 93, 169, 1),
+                              color: Theme.of(context).primaryIconTheme.color,
                             ),
                           ),
                           SizedBox(height: 5),
 
                           Text(
-                                    mensajeAlerta,
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.0,
-                                    ),
-                                  ),
+                            mensajeAlerta,
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 18),
+                          ),
 
                           SizedBox(height: 5),
                           Text(
                             "Nos gustaría saber si necesitarás transporte" ,
                             textAlign: TextAlign.left,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 15.0,
-                            ),
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
                           ),
                           SizedBox(height: 15),
                         ],
@@ -610,16 +599,12 @@ class _NextTripScreenState extends State<NextTripScreen>
                       child: Text(
                         'No tiene viajes asignados',
                     
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
                       ),
                     ),
                     Container(
                       height: 1,
-                      color: Color.fromRGBO(158, 158, 158, 1),
+                      color: Theme.of(context).dividerColor,
                     ),
                   ],
                 );
@@ -634,11 +619,7 @@ class _NextTripScreenState extends State<NextTripScreen>
 
                       Text('Total de viajes',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color.fromRGBO(40, 93, 169, 1),
-                          fontWeight: FontWeight.normal,
-                          fontSize: 20.0
-                        )
+                        style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 20, fontWeight: FontWeight.normal),
                       ),
                   
                   SizedBox(height: 15),
@@ -660,18 +641,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                         height: 18,
                         child: SvgPicture.asset(
                           "assets/icons/Numeral.svg",
-                          color: Color.fromRGBO(40, 93, 169, 1),
+                          color: Theme.of(context).primaryIconTheme.color,
                         ),
                       ),
                       SizedBox(width: 5),
                       Flexible(
                         child: Text(
                           'Viaje: ${abc.data?.trips[index].tripId}',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                         ),
                       ),
                     ],
@@ -679,7 +656,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                     ),
                     Container(
                       height: 1,
-                      color: Color.fromRGBO(158, 158, 158, 1),
+                      color: Theme.of(context).dividerColor,
                     ),
                     SizedBox(height: 20),
                     Padding(
@@ -691,26 +668,22 @@ class _NextTripScreenState extends State<NextTripScreen>
                         height: 18,
                         child: SvgPicture.asset(
                           "assets/icons/calendar2.svg",
-                          color: Color.fromRGBO(40, 93, 169, 1),
+                          color: Theme.of(context).primaryIconTheme.color,
                         ),
                       ),
                       SizedBox(width: 5),
                       Flexible(
                         child: Text(
                           'Fecha: ${abc.data?.trips[index].fecha}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                         ),
                       ),
                     ],
                   ),
                     ),
                     Container(
-                  height: 1,
-                  color: Color.fromRGBO(158, 158, 158, 1),
+                      height: 1,
+                      color: Theme.of(context).dividerColor,
                     ),
                     SizedBox(height: 20),
                     Padding(
@@ -722,26 +695,22 @@ class _NextTripScreenState extends State<NextTripScreen>
                         height: 18,
                         child: SvgPicture.asset(
                           "assets/icons/hora.svg",
-                          color: Color.fromRGBO(40, 93, 169, 1),
+                          color: Theme.of(context).primaryIconTheme.color,
                         ),
                       ),
                       SizedBox(width: 5),
                       Flexible(
                         child: Text(
                           'Hora: ${abc.data?.trips[index].horaEntrada}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                         ),
                       ),
                     ],
                   ),
                     ),
                     Container(
-                  height: 1,
-                  color: Color.fromRGBO(158, 158, 158, 1),
+                      height: 1,
+                      color: Theme.of(context).dividerColor,
                     ),
                   
                      SizedBox(height: 20),
@@ -754,18 +723,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                         height: 15,
                         child: SvgPicture.asset(
                           "assets/icons/motorista.svg",
-                          color: Color.fromRGBO(40, 93, 169, 1),
+                          color: Theme.of(context).primaryIconTheme.color,
                         ),
                       ),
                       SizedBox(width: 5),
                       Flexible(
                         child: Text(
                           'Motorista: ${abc.data?.trips[index].conductor}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                         ),
                       ),
                     ],
@@ -773,7 +738,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                     ),
                     Container(
                   height: 1,
-                  color: Color.fromRGBO(158, 158, 158, 1),
+                  color: Theme.of(context).dividerColor,
                     ),
 
                     SizedBox(height: 20),
@@ -786,18 +751,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                         height: 15,
                         child: SvgPicture.asset(
                           "assets/icons/motorista.svg",
-                          color: Color.fromRGBO(40, 93, 169, 1),
+                          color: Theme.of(context).primaryIconTheme.color,
                         ),
                       ),
                       SizedBox(width: 5),
                       Flexible(
                         child: Text(
-                          'Vehiculo: ${abc.data?.trips[index].tripVehicle}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          abc.data?.trips[index].tripVehicle!=null?'Vehiculo: ${abc.data?.trips[index].tripVehicle}':'Vehiculo: ---',
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                         ),
                       ),
                     ],
@@ -805,7 +766,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                     ),
                     Container(
                   height: 1,
-                  color: Color.fromRGBO(158, 158, 158, 1),
+                  color: Theme.of(context).dividerColor,
                     ),
                   
                      SizedBox(height: 20),
@@ -818,18 +779,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                         height: 18,
                         child: SvgPicture.asset(
                           "assets/icons/telefono_num.svg",
-                          color: Color.fromRGBO(40, 93, 169, 1),
+                          color: Theme.of(context).primaryIconTheme.color,
                         ),
                       ),
                       SizedBox(width: 5),
                       Flexible(
                         child: Text(
                           'Teléfono: ${abc.data?.trips[index].telefono}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                         ),
                       ),
                     ],
@@ -837,7 +794,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                     ),
                     Container(
                   height: 1,
-                  color: Color.fromRGBO(158, 158, 158, 1),
+                  color: Theme.of(context).dividerColor,
                     ),
                   
                      SizedBox(height: 20),
@@ -850,18 +807,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                         height: 18,
                         child: SvgPicture.asset(
                           "assets/icons/Casa.svg",
-                          color: Color.fromRGBO(40, 93, 169, 1),
+                          color: Theme.of(context).primaryIconTheme.color,
                         ),
                       ),
                       SizedBox(width: 5),
                       Flexible(
                         child: Text(
                           'Dirección: ${abc.data?.trips[index].direccion}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                         ),
                       ),
                     ],
@@ -869,7 +822,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                     ),
                     Container(
                   height: 1,
-                  color: Color.fromRGBO(158, 158, 158, 1),
+                  color: Theme.of(context).dividerColor,
                     ),
                   
                      SizedBox(height: 20),
@@ -882,18 +835,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                           height: 18,
                           child: SvgPicture.asset(
                             "assets/icons/warning.svg",
-                            color: Color.fromRGBO(40, 93, 169, 1),
+                            color: Theme.of(context).primaryIconTheme.color,
                           ),
                         ),
                         SizedBox(width: 5),
                         Flexible(
                           child: Text(
                             'Acceso autorizado: ${abc.data?.trips[index].neighborhoodReferencePoint}',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                            ),
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                           ),
                         ),
                       ],
@@ -901,7 +850,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                   ),
                   Container(
                     height: 1,
-                    color: Color.fromRGBO(196, 196, 196, 1),
+                    color: Theme.of(context).dividerColor,
                   ),
                     
                   SizedBox(height: 20),
@@ -920,17 +869,13 @@ class _NextTripScreenState extends State<NextTripScreen>
                               height: 18,
                               child: SvgPicture.asset(
                                 "assets/icons/hora.svg",
-                                color: Color.fromRGBO(40, 93, 169, 1),
+                                color: Theme.of(context).primaryIconTheme.color,
                               ),
                             ),
                             SizedBox(width: 5),
                             Text(
                               'Hora de encuentro: ',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                             ),
                           ],
                         ),
@@ -950,7 +895,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                   ),
                   Container(
                     height: 1,
-                    color: Color.fromRGBO(196, 196, 196, 1),
+                    color: Theme.of(context).dividerColor,
                   ),
                     
                   SizedBox(height: 20),
@@ -961,7 +906,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         Expanded(
                           child: OutlinedButton(
                             style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: Colors.black),
+                              side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
@@ -984,7 +929,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                 builder:(context, setState) {
                                                   return  Container(
                                                     decoration: BoxDecoration(
-                                                      color: Colors.white,
+                                                      color: Theme.of(navigatorKey.currentContext!).cardColor,
                                                       borderRadius: BorderRadius.circular(16.0),
                                                     ),
                                                     child: Column(
@@ -992,7 +937,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                       children: [
                                                         Container(
                                                           decoration: BoxDecoration(
-                                                            color: Color.fromRGBO(40, 93, 169, 1),
+                                                            color: Theme.of(navigatorKey.currentContext!).primaryColor,
                                                             borderRadius: BorderRadius.only(
                                                               topLeft: Radius.circular(16.0),
                                                               topRight: Radius.circular(16.0),
@@ -1034,7 +979,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       ),
                                                                       Text(
                                                                         " Trabajo desde casa",
-                                                                        style: TextStyle(color: Colors.black),
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                       ),
                                                                     ]
                                                                   ),
@@ -1058,7 +1003,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       ),
                                                                       Text(
                                                                         " Incapacidad",
-                                                                        style: TextStyle(color: Colors.black),
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                       ),
                                                                     ],
                                                                   ),
@@ -1082,7 +1027,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       ),
                                                                       Text(
                                                                         " Vacaciones",
-                                                                        style: TextStyle(color: Colors.black),
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                       ),
                                                                     ],
                                                                   ),
@@ -1106,7 +1051,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       ),
                                                                       Text(
                                                                         " Motivo personal",
-                                                                        style: TextStyle(color: Colors.black),
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                       ),
                                                                     ],
                                                                   ),
@@ -1122,7 +1067,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                               style: OutlinedButton.styleFrom(
                                                                 padding: EdgeInsets.symmetric(horizontal: 20),
                                                                 foregroundColor: Colors.white,
-                                                                side: BorderSide(color: Colors.black),
+                                                                side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
                                                                 shape: RoundedRectangleBorder(
                                                                   borderRadius: BorderRadius.circular(12.0),
                                                                 ),
@@ -1132,7 +1077,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                               },
                                                               child: Text(
                                                                 'Cancelar',
-                                                                style: TextStyle(color: Colors.black),
+                                                                style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                               ),
                                                             ),
                               
@@ -1196,11 +1141,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                             },
                             child: Text(
                               'Cancelar',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.normal,
-                              ),
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
                             ),
                           ),
                           
@@ -1251,7 +1192,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                             height: 18,
                             child: SvgPicture.asset(
                               "assets/icons/hora.svg",
-                              color: Color.fromRGBO(40, 93, 169, 1),
+                              color: Theme.of(context).primaryIconTheme.color,
                             ),
                           ),
                           SizedBox(width: 5),
@@ -1270,7 +1211,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                     ),
                   Container(
                     height: 1,
-                    color: Color.fromRGBO(196, 196, 196, 1),
+                    color: Theme.of(context).dividerColor,
                   ),
                   } else ...{
                     Padding(
@@ -1282,7 +1223,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                           height: 18,
                           child: SvgPicture.asset(
                             "assets/icons/hora.svg",
-                            color: Color.fromRGBO(40, 93, 169, 1),
+                            color: Theme.of(context).primaryIconTheme.color,
                           ),
                         ),
                         SizedBox(width: 5),
@@ -1301,7 +1242,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                   ),
                   Container(
                     height: 1,
-                    color: Color.fromRGBO(196, 196, 196, 1),
+                    color: Theme.of(context).dividerColor,
                   ),
                     
                   SizedBox(height: 20),
@@ -1323,17 +1264,13 @@ class _NextTripScreenState extends State<NextTripScreen>
                               height: 18,
                               child: SvgPicture.asset(
                                 "assets/icons/hora.svg",
-                                color: Color.fromRGBO(40, 93, 169, 1),
+                                color: Theme.of(context).primaryIconTheme.color,
                               ),
                             ),
                             SizedBox(width: 5),
                             Text(
                               'Hora de encuentro: ',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                             ),
                           ],
                         ),
@@ -1353,7 +1290,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                   ),
                   Container(
                     height: 1,
-                    color: Color.fromRGBO(196, 196, 196, 1),
+                    color: Theme.of(context).dividerColor,
                   ),
                     
                   SizedBox(height: 20),
@@ -1370,17 +1307,13 @@ class _NextTripScreenState extends State<NextTripScreen>
                           height: 18,
                           child: SvgPicture.asset(
                             "assets/icons/hora.svg",
-                            color: Color.fromRGBO(40, 93, 169, 1),
+                            color: Theme.of(context).primaryIconTheme.color,
                           ),
                         ),
                         SizedBox(width: 5),
                         Text(
                           'Hora de encuentro: ',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                         ),
                         Text(
                          '${abc.data?.trips[index].horaConductor}',
@@ -1395,7 +1328,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                   ),
                   Container(
                     height: 1,
-                    color: Color.fromRGBO(196, 196, 196, 1),
+                    color: Theme.of(context).dividerColor,
                   ),
                     
                   SizedBox(height: 20),
@@ -1435,7 +1368,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                 builder:(context, setState) {
                                                   return Container(
                                                     decoration: BoxDecoration(
-                                                      color: Colors.white,
+                                                      color: Theme.of(navigatorKey.currentContext!).cardColor,
                                                       borderRadius: BorderRadius.circular(16.0),
                                                     ),
                                                     child: Column(
@@ -1443,7 +1376,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                       children: [
                                                         Container(
                                                           decoration: BoxDecoration(
-                                                            color: Color.fromRGBO(40, 93, 169, 1),
+                                                            color: Theme.of(navigatorKey.currentContext!).primaryColor,
                                                             borderRadius: BorderRadius.only(
                                                               topLeft: Radius.circular(16.0),
                                                               topRight: Radius.circular(16.0),
@@ -1485,7 +1418,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                           ),
                                                                           Text(
                                                                             " Trabajo desde casa",
-                                                                            style: TextStyle(color: Colors.black),
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                           ),
                                                                         ]
                                                                       ),
@@ -1509,7 +1442,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                           ),
                                                                           Text(
                                                                             " Incapacidad",
-                                                                            style: TextStyle(color: Colors.black),
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                           ),
                                                                         ],
                                                                       ),
@@ -1533,7 +1466,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                           ),
                                                                           Text(
                                                                             " Vacaciones",
-                                                                            style: TextStyle(color: Colors.black),
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                           ),
                                                                         ],
                                                                       ),
@@ -1557,7 +1490,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                           ),
                                                                           Text(
                                                                             " Motivo personal",
-                                                                            style: TextStyle(color: Colors.black),
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                           ),
                                                                         ],
                                                                       ),
@@ -1573,7 +1506,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                               style: OutlinedButton.styleFrom(
                                                                 padding: EdgeInsets.symmetric(horizontal: 20),
                                                                 foregroundColor: Colors.white,
-                                                                side: BorderSide(color: Colors.black),
+                                                                side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
                                                                 shape: RoundedRectangleBorder(
                                                                   borderRadius: BorderRadius.circular(12.0),
                                                                 ),
@@ -1583,7 +1516,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                               },
                                                               child: Text(
                                                                 'Cancelar',
-                                                                style: TextStyle(color: Colors.black),
+                                                                style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                               ),
                                                             ),
                         
@@ -1657,17 +1590,13 @@ class _NextTripScreenState extends State<NextTripScreen>
                           height: 18,
                           child: SvgPicture.asset(
                             "assets/icons/cronometro.svg",
-                            color: Color.fromRGBO(40, 93, 169, 1),
+                            color: Theme.of(context).primaryIconTheme.color,
                           ),
                         ),
                         SizedBox(width: 5),
                         Text(
                           'Viaje: ',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                         ),
                           ],
                         ),
@@ -1707,11 +1636,12 @@ class _NextTripScreenState extends State<NextTripScreen>
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.0), // Establece un radio de esquinas redondeadas de 8.0
-                      border: Border.all(color: Color.fromRGBO(196, 196, 196, 1)), // Establece el color del borde
+                      border: Border.all(color: Theme.of(context).dividerColor), // Establece el color del borde
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(right: 2, left: 2),
                       child: ExpansionTile(
+                        collapsedIconColor: Theme.of(context).primaryColorDark,
                         tilePadding: const EdgeInsets.only(right: 5, left: 10),
                         title: Column(
                           children: [
@@ -1723,18 +1653,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                   height: 18,
                                   child: SvgPicture.asset(
                                     "assets/icons/Numeral.svg",
-                                    color: Color.fromRGBO(40, 93, 169, 1),
+                                    color: Theme.of(context).primaryIconTheme.color,
                                   ),
                                 ),
                                 SizedBox(width: 5),
                                 Flexible(
                                   child: Text(
                                     'Viaje: ${abc.data?.trips[index].tripId}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                    style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                                   ),
                                 ),
                               ],
@@ -1747,18 +1673,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                   height: 18,
                                   child: SvgPicture.asset(
                                     "assets/icons/calendar2.svg",
-                                    color: Color.fromRGBO(40, 93, 169, 1),
+                                    color: Theme.of(context).primaryIconTheme.color,
                                   ),
                                 ),
                                 SizedBox(width: 5),
                                 Flexible(
                                   child: Text(
                                     'Fecha: ${abc.data?.trips[index].fecha}',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                    style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                                   ),
                                 ),
                               ],
@@ -1768,7 +1690,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         children: [
                       Container(
                         height: 1,
-                        color: Color.fromRGBO(196, 196, 196, 1),
+                        color: Theme.of(context).dividerColor,
                       ),    
                       SizedBox(height: 20),
                       Padding(
@@ -1780,18 +1702,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                               height: 18,
                               child: SvgPicture.asset(
                                 "assets/icons/hora.svg",
-                                color: Color.fromRGBO(40, 93, 169, 1),
+                                color: Theme.of(context).primaryIconTheme.color,
                               ),
                             ),
                             SizedBox(width: 5),
                             Flexible(
                               child: Text(
                                 'Hora: ${abc.data?.trips[index].horaEntrada}',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                               ),
                             ),
                           ],
@@ -1799,7 +1717,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                       ),
                       Container(
                         height: 1,
-                        color: Color.fromRGBO(196, 196, 196, 1),
+                        color: Theme.of(context).dividerColor,
                       ),
                         
                        SizedBox(height: 20),
@@ -1812,18 +1730,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                               height: 18,
                               child: SvgPicture.asset(
                                 "assets/icons/motorista.svg",
-                                color: Color.fromRGBO(40, 93, 169, 1),
+                                color: Theme.of(context).primaryIconTheme.color,
                               ),
                             ),
                             SizedBox(width: 5),
                             Flexible(
                               child: Text(
                                 'Motorista: ${abc.data?.trips[index].conductor}',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                               ),
                             ),
                           ],
@@ -1831,7 +1745,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                       ),
                       Container(
                         height: 1,
-                        color: Color.fromRGBO(196, 196, 196, 1),
+                        color: Theme.of(context).dividerColor,
                       ),
                         
                     SizedBox(height: 20),
@@ -1844,18 +1758,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                         height: 15,
                         child: SvgPicture.asset(
                           "assets/icons/motorista.svg",
-                          color: Color.fromRGBO(40, 93, 169, 1),
+                          color: Theme.of(context).primaryIconTheme.color,
                         ),
                       ),
                       SizedBox(width: 5),
                       Flexible(
                         child: Text(
-                          'Vehiculo: ${abc.data?.trips[index].tripVehicle}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          abc.data?.trips[index].tripVehicle!=null?'Vehiculo: ${abc.data?.trips[index].tripVehicle}':'Vehiculo: ---',
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                         ),
                       ),
                     ],
@@ -1863,7 +1773,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                     ),
                     Container(
                   height: 1,
-                  color: Color.fromRGBO(158, 158, 158, 1),
+                  color: Theme.of(context).dividerColor,
                     ),
 
                        SizedBox(height: 20),
@@ -1876,18 +1786,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                               height: 18,
                               child: SvgPicture.asset(
                                 "assets/icons/telefono_num.svg",
-                                color: Color.fromRGBO(40, 93, 169, 1),
+                                color: Theme.of(context).primaryIconTheme.color,
                               ),
                             ),
                             SizedBox(width: 5),
                             Flexible(
                               child: Text(
                                 'Teléfono: ${abc.data?.trips[index].telefono}',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                               ),
                             ),
                           ],
@@ -1895,7 +1801,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                       ),
                       Container(
                         height: 1,
-                        color: Color.fromRGBO(196, 196, 196, 1),
+                        color: Theme.of(context).dividerColor,
                       ),
                         
                        SizedBox(height: 20),
@@ -1908,18 +1814,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                               height: 18,
                               child: SvgPicture.asset(
                                 "assets/icons/Casa.svg",
-                                color: Color.fromRGBO(40, 93, 169, 1),
+                                color: Theme.of(context).primaryIconTheme.color,
                               ),
                             ),
                             SizedBox(width: 5),
                             Flexible(
                               child: Text(
                                 'Dirección: ${abc.data?.trips[index].direccion}',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                               ),
                             ),
                           ],
@@ -1927,7 +1829,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                       ),
                       Container(
                         height: 1,
-                        color: Color.fromRGBO(196, 196, 196, 1),
+                        color: Theme.of(context).dividerColor,
                       ),
                         
                        SizedBox(height: 20),
@@ -1940,18 +1842,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 height: 18,
                                 child: SvgPicture.asset(
                                   "assets/icons/warning.svg",
-                                  color: Color.fromRGBO(40, 93, 169, 1),
+                                  color: Theme.of(context).primaryIconTheme.color,
                                 ),
                               ),
                               SizedBox(width: 5),
                               Flexible(
                                 child: Text(
                                   'Acceso autorizado: ${abc.data?.trips[index].neighborhoodReferencePoint}',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                                 ),
                               ),
                             ],
@@ -1959,7 +1857,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ),
                         Container(
                           height: 1,
-                          color: Color.fromRGBO(158, 158, 158, 1),
+                          color: Theme.of(context).dividerColor,
                         ),
                           
                         SizedBox(height: 20),
@@ -1978,17 +1876,13 @@ class _NextTripScreenState extends State<NextTripScreen>
                                     height: 18,
                                     child: SvgPicture.asset(
                                       "assets/icons/hora.svg",
-                                      color: Color.fromRGBO(40, 93, 169, 1),
+                                      color: Theme.of(context).primaryIconTheme.color,
                                     ),
                                   ),
                                   SizedBox(width: 5),
                                   Text(
                                     'Hora de encuentro: ',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                    style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                                   ),
                                 ],
                               ),
@@ -2008,7 +1902,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ),
                         Container(
                           height: 1,
-                          color: Color.fromRGBO(158, 158, 158, 1),
+                          color: Theme.of(context).dividerColor,
                         ),
                           
                         SizedBox(height: 20),
@@ -2019,7 +1913,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                               Expanded(
                                 child: OutlinedButton(
                                   style: OutlinedButton.styleFrom(
-                                    side: BorderSide(color: Colors.black),
+                                    side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
@@ -2042,7 +1936,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                       builder:(context, setState) {
                                                         return Container(
                                                           decoration: BoxDecoration(
-                                                            color: Colors.white,
+                                                            color: Theme.of(navigatorKey.currentContext!).cardColor,
                                                             borderRadius: BorderRadius.circular(16.0),
                                                           ),
                                                           child: Column(
@@ -2050,7 +1944,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                             children: [
                                                               Container(
                                                                 decoration: BoxDecoration(
-                                                                  color: Color.fromRGBO(40, 93, 169, 1),
+                                                                  color: Theme.of(navigatorKey.currentContext!).primaryColor,
                                                                   borderRadius: BorderRadius.only(
                                                                     topLeft: Radius.circular(16.0),
                                                                     topRight: Radius.circular(16.0),
@@ -2092,7 +1986,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                           ),
                                                                           Text(
                                                                             " Trabajo desde casa",
-                                                                            style: TextStyle(color: Colors.black),
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                           ),
                                                                         ]
                                                                       ),
@@ -2116,7 +2010,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                           ),
                                                                           Text(
                                                                             " Incapacidad",
-                                                                            style: TextStyle(color: Colors.black),
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                           ),
                                                                         ],
                                                                       ),
@@ -2140,7 +2034,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                           ),
                                                                           Text(
                                                                             " Vacaciones",
-                                                                            style: TextStyle(color: Colors.black),
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                           ),
                                                                         ],
                                                                       ),
@@ -2164,7 +2058,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                           ),
                                                                           Text(
                                                                             " Motivo personal",
-                                                                            style: TextStyle(color: Colors.black),
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                           ),
                                                                         ],
                                                                       ),
@@ -2180,7 +2074,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                     style: OutlinedButton.styleFrom(
                                                                       padding: EdgeInsets.symmetric(horizontal: 20),
                                                                       foregroundColor: Colors.white,
-                                                                      side: BorderSide(color: Colors.black),
+                                                                      side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
                                                                       shape: RoundedRectangleBorder(
                                                                         borderRadius: BorderRadius.circular(12.0),
                                                                       ),
@@ -2190,7 +2084,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                     },
                                                                     child: Text(
                                                                       'Cancelar',
-                                                                      style: TextStyle(color: Colors.black),
+                                                                      style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                     ),
                                                                   ),
                             
@@ -2254,11 +2148,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                   },
                                   child: Text(
                                     'Cancelar',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                                    style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 15),
                                   ),
                                 ),
                         
@@ -2309,7 +2199,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                   height: 18,
                                   child: SvgPicture.asset(
                                     "assets/icons/hora.svg",
-                                    color: Color.fromRGBO(40, 93, 169, 1),
+                                    color: Theme.of(context).primaryIconTheme.color
                                   ),
                                 ),
                                 SizedBox(width: 5),
@@ -2336,7 +2226,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 height: 18,
                                 child: SvgPicture.asset(
                                   "assets/icons/hora.svg",
-                                  color: Color.fromRGBO(40, 93, 169, 1),
+                                  color: Theme.of(context).primaryIconTheme.color,
                                 ),
                               ),
                               SizedBox(width: 5),
@@ -2355,7 +2245,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ),
                         Container(
                           height: 1,
-                          color: Color.fromRGBO(158, 158, 158, 1),
+                          color: Theme.of(context).dividerColor,
                         ),
                           
                         SizedBox(height: 20),
@@ -2377,17 +2267,13 @@ class _NextTripScreenState extends State<NextTripScreen>
                                     height: 18,
                                     child: SvgPicture.asset(
                                       "assets/icons/hora.svg",
-                                      color: Color.fromRGBO(40, 93, 169, 1),
+                                      color: Theme.of(context).primaryIconTheme.color,
                                     ),
                                   ),
                                   SizedBox(width: 5),
                                   Text(
                                     'Hora de encuentro: ',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                    style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                                   ),
                                 ],
                               ),
@@ -2407,7 +2293,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ),
                         Container(
                           height: 1,
-                          color: Color.fromRGBO(196, 196, 196, 1),
+                          color: Theme.of(context).dividerColor
                         ),
                           
                         SizedBox(height: 20),
@@ -2424,17 +2310,13 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 height: 18,
                                 child: SvgPicture.asset(
                                   "assets/icons/hora.svg",
-                                  color: Color.fromRGBO(40, 93, 169, 1),
+                                  color: Theme.of(context).primaryIconTheme.color
                                 ),
                               ),
                               SizedBox(width: 5),
                               Text(
                                 'Hora de encuentro: ',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                               ),
                               Text(
                                '${abc.data?.trips[index].horaConductor}',
@@ -2449,7 +2331,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ),
                         Container(
                           height: 1,
-                          color: Color.fromRGBO(158, 158, 158, 1),
+                          color: Theme.of(context).dividerColor
                         ),
                           
                         SizedBox(height: 20),
@@ -2489,7 +2371,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                     builder:(context, setState) {
                                                       return Container(
                                                         decoration: BoxDecoration(
-                                                          color: Colors.white,
+                                                          color: Theme.of(navigatorKey.currentContext!).cardColor,
                                                           borderRadius: BorderRadius.circular(16.0),
                                                         ),
                                                         child: Column(
@@ -2497,7 +2379,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                           children: [
                                                             Container(
                                                               decoration: BoxDecoration(
-                                                                color: Color.fromRGBO(40, 93, 169, 1),
+                                                                color: Theme.of(navigatorKey.currentContext!).primaryColor,
                                                                 borderRadius: BorderRadius.only(
                                                                   topLeft: Radius.circular(16.0),
                                                                   topRight: Radius.circular(16.0),
@@ -2539,7 +2421,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                           ),
                                                                           Text(
                                                                             " Trabajo desde casa",
-                                                                            style: TextStyle(color: Colors.black),
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                           ),
                                                                         ]
                                                                       ),
@@ -2563,7 +2445,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                           ),
                                                                           Text(
                                                                             " Incapacidad",
-                                                                            style: TextStyle(color: Colors.black),
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                           ),
                                                                         ],
                                                                       ),
@@ -2587,7 +2469,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                           ),
                                                                           Text(
                                                                             " Vacaciones",
-                                                                            style: TextStyle(color: Colors.black),
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                           ),
                                                                         ],
                                                                       ),
@@ -2611,7 +2493,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                           ),
                                                                           Text(
                                                                             " Motivo personal",
-                                                                            style: TextStyle(color: Colors.black),
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                           ),
                                                                         ],
                                                                       ),
@@ -2627,7 +2509,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                   style: OutlinedButton.styleFrom(
                                                                     padding: EdgeInsets.symmetric(horizontal: 20),
                                                                     foregroundColor: Colors.white,
-                                                                    side: BorderSide(color: Colors.black),
+                                                                    side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
                                                                     shape: RoundedRectangleBorder(
                                                                       borderRadius: BorderRadius.circular(12.0),
                                                                     ),
@@ -2637,7 +2519,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                   },
                                                                   child: Text(
                                                                     'Cancelar',
-                                                                    style: TextStyle(color: Colors.black),
+                                                                    style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                   ),
                                                                 ),
                           
@@ -2711,17 +2593,13 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 height: 18,
                                 child: SvgPicture.asset(
                                   "assets/icons/cronometro.svg",
-                                  color: Color.fromRGBO(40, 93, 169, 1),
+                                  color: Theme.of(context).primaryIconTheme.color
                                 ),
                               ),
                               SizedBox(width: 5),
                               Text(
                                 'Viaje: ',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                               ),
                                 ],
                               ),
@@ -2783,7 +2661,7 @@ class _NextTripScreenState extends State<NextTripScreen>
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
-            color: Color.fromRGBO(158, 158, 158, 1),
+            color: Theme.of(context).dividerColor,
             width: 1,
           ),
           borderRadius: BorderRadius.circular(10),
@@ -2803,18 +2681,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                         height: 18,
                         child: SvgPicture.asset(
                           "assets/icons/calendar-note-svgrepo-com.svg",
-                          color: Color.fromRGBO(40, 93, 169, 1),
+                          color: Theme.of(context).primaryIconTheme.color,
                         ),
                       ),
                       SizedBox(width: 5),
                       Text(
                         'Fecha: ${tripData["dateToTravel"]}',
                         textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 15.0,
-                        ),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15)
                       ),
                     ],
                   ),
@@ -2822,7 +2696,7 @@ class _NextTripScreenState extends State<NextTripScreen>
               ),
               Container(
                 height: 1,
-                color: Color.fromRGBO(158, 158, 158, 1),
+                color: Theme.of(context).dividerColor,
               ),
               SizedBox(height: 10),
               Padding(
@@ -2836,18 +2710,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                         height: 18,
                         child: SvgPicture.asset(
                           "assets/icons/advertencia.svg",
-                          color: Color.fromRGBO(40, 93, 169, 1),
+                          color: Theme.of(context).primaryIconTheme.color,
                         ),
                       ),
                       SizedBox(width: 5),
                       Text(
                         'Transporte para: ${tripData["tripType"]}',
                         textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 15.0,
-                        ),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15)
                       ),
                     ],
                   ),
@@ -2855,7 +2725,7 @@ class _NextTripScreenState extends State<NextTripScreen>
               ),
               Container(
                 height: 1,
-                color: Color.fromRGBO(158, 158, 158, 1),
+                color: Theme.of(context).dividerColor,
               ),
               SizedBox(height: 10),
               Padding(
@@ -2869,7 +2739,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         height: 18,
                         child: SvgPicture.asset(
                           "assets/icons/hora.svg",
-                          color: Color.fromRGBO(40, 93, 169, 1),
+                          color: Theme.of(context).primaryIconTheme.color,
                         ),
                       ),
                       SizedBox(width: 5),
@@ -2877,15 +2747,12 @@ class _NextTripScreenState extends State<NextTripScreen>
                         child: Text.rich(
                           TextSpan(
                             text: 'Hora: ',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 15.0,
-                            ),
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
                             children: <InlineSpan>[
                               TextSpan(
                                 text: '${tripData["hour"]}',
                                 style: TextStyle(
+                                  fontSize: 15,
                                   color: Color.fromRGBO(40, 169, 83, 1),
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -2901,7 +2768,7 @@ class _NextTripScreenState extends State<NextTripScreen>
               ),
               Container(
                 height: 1,
-                color: Color.fromRGBO(158, 158, 158, 1),
+                color: Theme.of(context).dividerColor,
               ),
               SizedBox(height: 10),
               Padding(
@@ -2915,18 +2782,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                         height: 18,
                         child: SvgPicture.asset(
                           "assets/icons/Casa.svg",
-                          color: Color.fromRGBO(40, 93, 169, 1),
+                          color: Theme.of(context).primaryIconTheme.color,
                         ),
                       ),
                       SizedBox(width: 5),
                       Text(
                         'Dirección: ${tripData["agentAddress"]}',
                         textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 15.0,
-                        ),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
                       ),
                     ],
                   ),
@@ -2934,7 +2797,7 @@ class _NextTripScreenState extends State<NextTripScreen>
               ),
               Container(
                 height: 1,
-                color: Color.fromRGBO(158, 158, 158, 1),
+                color: Theme.of(context).dividerColor,
               ),
               SizedBox(height: 10),
               Padding(
@@ -2948,7 +2811,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         height: 18,
                         child: SvgPicture.asset(
                           "assets/icons/warning.svg",
-                          color: Color.fromRGBO(40, 93, 169, 1),
+                          color: Theme.of(context).primaryIconTheme.color,
                         ),
                       ),
                       SizedBox(width: 5),
@@ -2956,11 +2819,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         child: Text(
                           'Acceso autorizado: ${tripData["authorizedAccess"]}',
                           textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15.0,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
                         ),
                       ),
                     ],
@@ -2969,7 +2828,7 @@ class _NextTripScreenState extends State<NextTripScreen>
               ),
               Container(
                 height: 1,
-                color: Color.fromRGBO(158, 158, 158, 1),
+                color: Theme.of(context).dividerColor,
               ),
               SizedBox(height: 10),
               if (tripData["confirmation"] == true)
@@ -2982,7 +2841,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                             height: 18,
                              child: SvgPicture.asset(
                               "assets/icons/advertencia.svg",
-                              color: Color.fromRGBO(40, 93, 169, 1),
+                              color: Theme.of(context).primaryIconTheme.color,
                             ),
                           ),
                           SizedBox(width: 5),
@@ -3022,7 +2881,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                       builder:(context, setState) {
                                                         return  Container(
                                                       decoration: BoxDecoration(
-                                                        color: Colors.white,
+                                                        color: Theme.of(navigatorKey.currentContext!).cardColor,
                                                         borderRadius: BorderRadius.circular(16.0),
                                                       ),
                                                       child: Column(
@@ -3030,7 +2889,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                         children: [
                                                           Container(
                                                             decoration: BoxDecoration(
-                                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                                              color: Theme.of(navigatorKey.currentContext!).primaryColor,
                                                               borderRadius: BorderRadius.only(
                                                                 topLeft: Radius.circular(16.0),
                                                                 topRight: Radius.circular(16.0),
@@ -3072,7 +2931,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       ),
                                                                       Text(
                                                                         " Trabajo desde casa",
-                                                                        style: TextStyle(color: Colors.black),
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                       ),
                                                                     ]
                                                                   ),
@@ -3096,7 +2955,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       ),
                                                                       Text(
                                                                         " Incapacidad",
-                                                                        style: TextStyle(color: Colors.black),
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                       ),
                                                                     ],
                                                                   ),
@@ -3120,7 +2979,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       ),
                                                                       Text(
                                                                         " Vacaciones",
-                                                                        style: TextStyle(color: Colors.black),
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                       ),
                                                                     ],
                                                                   ),
@@ -3128,6 +2987,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                   Row(
                                                                     children: [
                                                                       Checkbox(
+                                                                        
                                                                         value: razon4,
                                                                         onChanged: (value) {
                                                                           if(razon4==true)
@@ -3144,7 +3004,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       ),
                                                                       Text(
                                                                         " Motivo personal",
-                                                                        style: TextStyle(color: Colors.black),
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                       ),
                                                                     ],
                                                                   ),
@@ -3159,8 +3019,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                               OutlinedButton(
                                                                 style: OutlinedButton.styleFrom(
                                                                   padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                  foregroundColor: Colors.white,
-                                                                  side: BorderSide(color: Colors.black),
+                                                                  foregroundColor: Theme.of(navigatorKey.currentContext!).cardColor,
+                                                                  side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
                                                                   shape: RoundedRectangleBorder(
                                                                     borderRadius: BorderRadius.circular(12.0),
                                                                   ),
@@ -3170,21 +3030,20 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                 },
                                                                 child: Text(
                                                                   'Cancelar',
-                                                                  style: TextStyle(color: Colors.black),
+                                                                  style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium
                                                                 ),
                                                               ),
                 
                                                               OutlinedButton(
                                                                 style: OutlinedButton.styleFrom(
                                                                   padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                  backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                                  backgroundColor: Theme.of(navigatorKey.currentContext!).primaryColor,
                                                                   shape: RoundedRectangleBorder(
                                                                     borderRadius: BorderRadius.circular(12.0),
                                                                   ),
                                                                 ),
                                                                 onPressed: () async{
                                                                   if (razonCancelar.isEmpty) {
-                                                                    Navigator.of(context).pop();
                                                                     QuickAlert.show(
                                                                       context: context,
                                                                       title: "Comentario Requerido",
@@ -3281,7 +3140,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         height: 18,
                          child: SvgPicture.asset(
                           "assets/icons/advertencia.svg",
-                          color: Color.fromRGBO(40, 93, 169, 1),
+                          color: Theme.of(context).primaryIconTheme.color,
                         ),
                       ),
                       SizedBox(width: 5),
@@ -3321,7 +3180,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                       builder:(context, setState) {
                                                         return  Container(
                                                       decoration: BoxDecoration(
-                                                        color: Colors.white,
+                                                        color: Theme.of(navigatorKey.currentContext!).cardColor,
                                                         borderRadius: BorderRadius.circular(16.0),
                                                       ),
                                                       child: Column(
@@ -3329,7 +3188,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                         children: [
                                                           Container(
                                                             decoration: BoxDecoration(
-                                                              color: Color.fromRGBO(40, 93, 169, 1),
+                                                              color: Theme.of(navigatorKey.currentContext!).primaryColor,
                                                               borderRadius: BorderRadius.only(
                                                                 topLeft: Radius.circular(16.0),
                                                                 topRight: Radius.circular(16.0),
@@ -3371,7 +3230,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       ),
                                                                       Text(
                                                                         " Trabajo desde casa",
-                                                                        style: TextStyle(color: Colors.black),
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                       ),
                                                                     ]
                                                                   ),
@@ -3395,7 +3254,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       ),
                                                                       Text(
                                                                         " Incapacidad",
-                                                                        style: TextStyle(color: Colors.black),
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                       ),
                                                                     ],
                                                                   ),
@@ -3419,7 +3278,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       ),
                                                                       Text(
                                                                         " Vacaciones",
-                                                                        style: TextStyle(color: Colors.black),
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                       ),
                                                                     ],
                                                                   ),
@@ -3443,7 +3302,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       ),
                                                                       Text(
                                                                         " Motivo personal",
-                                                                        style: TextStyle(color: Colors.black),
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                       ),
                                                                     ],
                                                                   ),
@@ -3458,8 +3317,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                               OutlinedButton(
                                                                 style: OutlinedButton.styleFrom(
                                                                   padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                  foregroundColor: Colors.white,
-                                                                  side: BorderSide(color: Colors.black),
+                                                                  foregroundColor: Theme.of(navigatorKey.currentContext!).cardColor,
+                                                                  side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
                                                                   shape: RoundedRectangleBorder(
                                                                     borderRadius: BorderRadius.circular(12.0),
                                                                   ),
@@ -3469,21 +3328,20 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                 },
                                                                 child: Text(
                                                                   'Cancelar',
-                                                                  style: TextStyle(color: Colors.black),
+                                                                  style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium
                                                                 ),
                                                               ),
                 
                                                               OutlinedButton(
                                                                 style: OutlinedButton.styleFrom(
                                                                   padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                  backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                                  backgroundColor: Theme.of(navigatorKey.currentContext!).primaryColor,
                                                                   shape: RoundedRectangleBorder(
                                                                     borderRadius: BorderRadius.circular(12.0),
                                                                   ),
                                                                 ),
                                                                 onPressed: () async{
                                                                   if (razonCancelar.isEmpty) {
-                                                                    Navigator.of(context).pop();
                                                                     QuickAlert.show(
                                                                       context: context,
                                                                       title: "Comentario Requerido",
@@ -3545,7 +3403,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                       ),
                                                     );
                                                       }
-                                                    ),    
+                                                    ),     
                                                   ),
                 
                                                 ),
@@ -3562,7 +3420,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black),
+                          border: Border.all(color: Theme.of(context).primaryColorDark),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Padding(
@@ -3570,7 +3428,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                           child: Text(
                             'No',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Theme.of(context).primaryColorDark,
                             ),
                           ),
                         ),
@@ -3660,7 +3518,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         height: 18,
                          child: SvgPicture.asset(
                           "assets/icons/advertencia.svg",
-                          color: Color.fromRGBO(40, 93, 169, 1),
+                          color: Theme.of(context).primaryIconTheme.color,
                         ),
                       ),
                       SizedBox(width: 5),
@@ -3804,7 +3662,7 @@ class _NextTripScreenState extends State<NextTripScreen>
       if (getData['tripId'] != 0 && responsex.body.isNotEmpty) {
         showAlertDialogRatingOld();       
       }  
-    }
+    }   
 
   }
 
@@ -3824,15 +3682,11 @@ class _NextTripScreenState extends State<NextTripScreen>
       return Transform(transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
         child: Opacity(opacity: a1.value,
           child: AlertDialog(shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(navigatorKey.currentContext!).cardColor,
             title: Text(
               '¿Cómo calificaría su último viaje con\n${resp1.driverFullname}?',
               textAlign: TextAlign.center, 
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold, 
-                fontSize: 16
-              )
+              style: Theme.of(navigatorKey.currentContext!).textTheme.titleMedium!.copyWith(fontSize: 16),
             ), 
             content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState){
@@ -3845,7 +3699,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         //creación reacciones para conducción
               
                         SizedBox(height: 10.0),
-                        Text('Conducción', style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1))),
+                        Text('Conducción', style:Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16)),
                         SizedBox(height: 5.0),
                         RatingBar.builder(
                           initialRating: 0,
@@ -3872,7 +3726,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                
                         SizedBox(height: 40.0),
                         //creación reacciones para amabilidad
-                        Text('Amabilidad del motorista', style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1)),),
+                        Text('Amabilidad del motorista', style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16)),
                         SizedBox(height: 5.0),
                         RatingBar.builder(initialRating: 0,itemCount: 5,
                           itemBuilder: (context, index) {
@@ -3897,7 +3751,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                  
                         SizedBox(height: 40.0),
                         //creación reacciones para condiciones
-                        Text('Condiciones del vehículo', style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1)),),
+                        Text('Condiciones del vehículo', style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16)),
                         SizedBox(height: 5.0),
                         RatingBar.builder(initialRating: 0,itemCount: 5,
                           itemBuilder: (context, index) {
@@ -4001,11 +3855,18 @@ class _NextTripScreenState extends State<NextTripScreen>
                             return Transform.scale(scale: a1.value,
                               child: Opacity(opacity: a1.value,
                                 child: AlertDialog(
-                                  backgroundColor: Colors.white,
+                                  backgroundColor: Theme.of(navigatorKey.currentContext!).cardColor,
                                   shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
                                   title: Center(
-                                    child: Text('Estamos evaluando a nuestros \nmotoristas, para esto es \nmuy importante su comentario.',textAlign: TextAlign.center, style: TextStyle(color: Colors.black),)),
-                                  content: TextField(controller: message,decoration: InputDecoration(labelText: 'Escriba aquí')),
+                                    child: Text('Estamos evaluando a nuestros \nmotoristas, para esto es \nmuy importante su comentario.',textAlign: TextAlign.center, style:Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium)),
+                                  content: TextField(
+                                    style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                    controller: message,
+                                    decoration: InputDecoration(   
+                                      hintText: 'Escriba aquí', 
+                                      hintStyle: Theme.of(navigatorKey.currentContext!).textTheme.bodySmall!.copyWith(fontSize: 15),
+                                    )
+                                  ),
                                   actions: [
                                     //SizedBox(width: 60.0),
                                     Center(

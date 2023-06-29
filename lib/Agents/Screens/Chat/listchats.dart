@@ -169,6 +169,7 @@ class _ChatsListState extends State<ChatsList> {
                 children: [
                   Expanded(
                     child: TextField(
+                      style: Theme.of(context).textTheme.bodyMedium,
                       onChanged:(value) {
                         listaChats=listaChats2;
                         setState(() {

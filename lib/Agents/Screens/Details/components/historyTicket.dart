@@ -208,6 +208,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                           children: [
                             Expanded(
                               child: TextField(
+                                style: Theme.of(context).textTheme.bodyMedium,
                                 onChanged:(value) async {
                                  itemFiltro = await fetchTicketStory();
 

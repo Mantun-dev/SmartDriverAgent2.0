@@ -12,7 +12,6 @@ import 'package:flutter_auth/Agents/models/messageCount.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
-import 'package:flutter_auth/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:package_info/package_info.dart';
@@ -437,6 +436,7 @@ BuildContext? contextP;
                         )
                       ),
                       child: TextField(
+                        style: Theme.of(context).textTheme.bodyMedium,
                         controller: buscarText,
                         onChanged: (value) {
 

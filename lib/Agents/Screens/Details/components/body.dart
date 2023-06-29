@@ -24,10 +24,10 @@ class _BodyState extends State<Body> {
         width: size.width,
         decoration: BoxDecoration(
           border: Border.all( 
-            color: Color.fromRGBO(238, 238, 238, 1),
+            color: Theme.of(context).disabledColor,
             width: 2
           ),
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20)
         ),
         child: SingleChildScrollView(
