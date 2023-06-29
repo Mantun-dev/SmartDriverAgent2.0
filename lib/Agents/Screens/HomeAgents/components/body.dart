@@ -452,7 +452,7 @@ BuildContext? contextP;
                         },
                         focusNode: _focusNode,
                         decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.search, color: Theme.of(context).hintColor),
+                          prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryIconTheme.color),
                           hintText: 'Buscar',
                           hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
                           border: InputBorder.none,

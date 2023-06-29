@@ -60,10 +60,10 @@ class _NotificationPage extends State<NotificationPage> {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all( 
-            color: Color.fromRGBO(238, 238, 238, 1),
+            color: Theme.of(context).disabledColor,
             width: 2
           ),
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20)
         ),
 
@@ -75,30 +75,21 @@ class _NotificationPage extends State<NotificationPage> {
               children: [
                 Text(
                   'Hoy',
-                  style: TextStyle(
-                    color: Color.fromRGBO(40, 93, 169, 1),
-                    fontSize: 15
-                  ),
+                  style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 15),
                   textAlign: TextAlign.left,
                 ),
                 SizedBox(height: 10),
 
                 Text(
                   'Tiene 1 viaje(s) donde confirmó y no salió a tomar el transporte. Si esto ocurre por tercera vez, el sistema le dará de baja y no será agendado para el servicio de transporte. Deberá comunicarse con su supervisor.',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
                   textAlign: TextAlign.left,
                 ),
                 SizedBox(height: 5),
 
                 Text(
                   '11:02 AM',
-                  style: TextStyle(
-                    color: Color.fromRGBO(158, 158, 158, 1),
-                    fontSize: 12
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
                   textAlign: TextAlign.left,
                 ),
                 SizedBox(height: 20),
@@ -106,30 +97,21 @@ class _NotificationPage extends State<NotificationPage> {
                 //---------------------------------------------
                 Text(
                   'Ayer',
-                  style: TextStyle(
-                    color: Color.fromRGBO(40, 93, 169, 1),
-                    fontSize: 15
-                  ),
+                  style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 15),
                   textAlign: TextAlign.left,
                 ),
                 SizedBox(height: 10),
 
                 Text(
                   'Has agregado un nuevo viaje.',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
                   textAlign: TextAlign.left,
                 ),
                 SizedBox(height: 5),
 
                 Text(
                   '17:30 PM',
-                  style: TextStyle(
-                    color: Color.fromRGBO(158, 158, 158, 1),
-                    fontSize: 12
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
                   textAlign: TextAlign.left,
                 ),
                 SizedBox(height: 20),

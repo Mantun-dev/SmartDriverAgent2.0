@@ -284,13 +284,13 @@ class _ChatScreenState extends State<ChatScreen> {
     }
 
     return Scaffold(
-      backgroundColor: Color.fromRGBO(236, 235, 235, 1),
+      backgroundColor: Theme.of(context).canvasColor,
               appBar: PreferredSize(
                 preferredSize: Size.fromHeight(56),
                 child: AppBar(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
                     elevation: 0,
-                    iconTheme: IconThemeData(color: Colors.white, size: 25),
+                    iconTheme: IconThemeData(size: 25),
                     automaticallyImplyLeading: false, 
                     actions: <Widget>[
                     //aquí está el icono de las notificaciones
@@ -313,7 +313,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           width: 45,
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: Color.fromRGBO(40, 93, 169, 1),
+                              color: Theme.of(context).primaryIconTheme.color!,
                               width: 0.5,
                             ),
                             borderRadius: BorderRadius.circular(10.0),
@@ -322,7 +322,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             padding: const EdgeInsets.all(10.0),
                             child: SvgPicture.asset(
                               "assets/icons/flecha_atras_oscuro.svg",
-                              color: Color.fromRGBO(40, 93, 169, 1),
+                              color: Theme.of(context).primaryIconTheme.color!,
                             ),
                           ),
                         ),
@@ -349,11 +349,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             Flexible(
                               child: Text(
                                 nameDriver!,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18
-                                ),
+                                style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 18),
                               ),
                             ) 
                           : Text(''),
@@ -436,8 +432,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                       ),
                                     ),
                                     color: message.user == widget.nombre.toUpperCase()
-                                        ? Color.fromRGBO(40, 93, 169, 1)
-                                        : Colors.white,
+                                        ? Theme.of(context).focusColor
+                                        : Theme.of(context).cardColor,
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
@@ -451,7 +447,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                   color: message.user ==
                                                       widget.nombre.toUpperCase()
                                                   ? Colors.white
-                                                  : Colors.black,
+                                                  : Theme.of(context).primaryColorDark,
                                                   fontSize: 17),
                                             ),
                                             Row(
@@ -471,7 +467,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                   Text(
                                                     message.hora,
                                                     style: TextStyle(
-                                                        color: Colors.black,
+                                                        color: Theme.of(context).primaryColorDark,
                                                         fontSize: 10),
                                                   ),
                                                 SizedBox(
@@ -516,28 +512,30 @@ class _ChatScreenState extends State<ChatScreen> {
                         children: [
                           SizedBox(width: 5),
                           NeumorphicButton(
-                              margin: EdgeInsets.only(top: 0),
-                              onPressed: () {
-                                _messageInputController.text =
-                                    "Viene en camino?";
-                                if (_messageInputController.text
-                                    .trim()
-                                    .isNotEmpty) {
-                                  _sendMessage(_messageInputController.text);
-                                }
-                              },
-                              style: NeumorphicStyle(
-                                color: Color.fromRGBO(40, 93, 169, 1),
-                                shape: NeumorphicShape.flat,
-                                boxShape: NeumorphicBoxShape.roundRect(
-                                    BorderRadius.circular(8)),
-                                //border: NeumorphicBorder()
+                            margin: EdgeInsets.only(top: 0),
+                            onPressed: () {
+                              _messageInputController.text = "Viene en camino?";
+                              if (_messageInputController.text.trim().isNotEmpty) {
+                                _sendMessage(_messageInputController.text);
+                              }
+                            },
+                            style: NeumorphicStyle(
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                              shape: NeumorphicShape.flat,
+                              boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
+                              depth: 0, // Quita la sombra estableciendo la profundidad en 0
+                              border: NeumorphicBorder( // Agrega un borde
+                                color: Theme.of(context).disabledColor, // Color del borde
+                                width: 1.0, // Ancho del borde
                               ),
-                              padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                "Viene en camino?",
-                                style: TextStyle(color: Colors.white),
-                              )),
+                            ),
+                            padding: const EdgeInsets.all(12.0),
+                            child: Text(
+                              "Viene en camino?",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+
                           SizedBox(width: 5),
                           NeumorphicButton(
                               margin: EdgeInsets.only(top: 0),
@@ -550,12 +548,15 @@ class _ChatScreenState extends State<ChatScreen> {
                                 }
                               },
                               style: NeumorphicStyle(
-                                color: Color.fromRGBO(40, 93, 169, 1),
-                                shape: NeumorphicShape.flat,
-                                boxShape: NeumorphicBoxShape.roundRect(
-                                    BorderRadius.circular(8)),
-                                //border: NeumorphicBorder()
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                              shape: NeumorphicShape.flat,
+                              boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
+                              depth: 0, // Quita la sombra estableciendo la profundidad en 0
+                              border: NeumorphicBorder( // Agrega un borde
+                                color: Theme.of(context).disabledColor, // Color del borde
+                                width: 1.0, // Ancho del borde
                               ),
+                            ),
                               padding: const EdgeInsets.all(12.0),
                               child: Text(
                                 "Estoy aquí",
@@ -574,12 +575,15 @@ class _ChatScreenState extends State<ChatScreen> {
                                 }
                               },
                               style: NeumorphicStyle(
-                                color: Color.fromRGBO(40, 93, 169, 1),
-                                shape: NeumorphicShape.flat,
-                                boxShape: NeumorphicBoxShape.roundRect(
-                                    BorderRadius.circular(8)),
-                                //border: NeumorphicBorder()
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                              shape: NeumorphicShape.flat,
+                              boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
+                              depth: 0, // Quita la sombra estableciendo la profundidad en 0
+                              border: NeumorphicBorder( // Agrega un borde
+                                color: Theme.of(context).disabledColor, // Color del borde
+                                width: 1.0, // Ancho del borde
                               ),
+                            ),
                               padding: const EdgeInsets.all(12.0),
                               child: Text(
                                 "¡Entendido!",
@@ -599,12 +603,15 @@ class _ChatScreenState extends State<ChatScreen> {
                                 }
                               },
                               style: NeumorphicStyle(
-                                color: Color.fromRGBO(40, 93, 169, 1),
-                                shape: NeumorphicShape.flat,
-                                boxShape: NeumorphicBoxShape.roundRect(
-                                    BorderRadius.circular(8)),
-                                //border: NeumorphicBorder()
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                              shape: NeumorphicShape.flat,
+                              boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
+                              depth: 0, // Quita la sombra estableciendo la profundidad en 0
+                              border: NeumorphicBorder( // Agrega un borde
+                                color: Theme.of(context).disabledColor, // Color del borde
+                                width: 1.0, // Ancho del borde
                               ),
+                            ),
                               padding: const EdgeInsets.all(12.0),
                               child: Text(
                                 "Lo estoy viendo",
@@ -616,7 +623,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).cardColor,
                     ),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
@@ -626,18 +633,19 @@ class _ChatScreenState extends State<ChatScreen> {
                         margin: EdgeInsets.only(top: 15, bottom: 15),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
-                          color: Color.fromRGBO(241, 239, 239, 1)
+                          color: Theme.of(context).cardTheme.color,
+                          border: Border.all(color: Theme.of(context).disabledColor)
                         ),
                         child: Row(
                           children: [
                             Expanded(
                               child: TextField(
-                                style: TextStyle(color: Colors.black),
+                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
                                 controller: _messageInputController,
                                 decoration: InputDecoration(
-                                  hintStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
                                   contentPadding: EdgeInsets.only(left: 10),
                                   hintText: 'Escriba su mensaje aquí...',
+                                  hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
                                   border: InputBorder.none,
                                 ),
                               ),
@@ -652,7 +660,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       _messageInputController.text.trim());
                                 }
                               },
-                              icon: const Icon(Icons.send, color: Color.fromRGBO(40, 93, 169, 1),),
+                              icon: Icon(Icons.send, color: Theme.of(context).primaryIconTheme.color),
                             )
                           ],
                         ),

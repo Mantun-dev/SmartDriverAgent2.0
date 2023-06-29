@@ -102,6 +102,15 @@ class PreferenciasUsuario {
     return _prefs.getString('versionOld') ?? '';
   }
 
+  // GET y SET del tema
+  bool get tema {
+    return _prefs.getBool('tema') ?? false;
+  }
+
+  set tema(bool value) {
+    _prefs.setBool('tema', value);
+  }
+
   set versionOld(String value) {
     _prefs.setString('versionOld', value);
   }

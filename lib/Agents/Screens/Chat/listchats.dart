@@ -105,10 +105,10 @@ class _ChatsListState extends State<ChatsList> {
                           width: size.width,
                           decoration: BoxDecoration(
                             border: Border.all( 
-                              color: Color.fromRGBO(238, 238, 238, 1),
+                              color: Theme.of(context).disabledColor,
                               width: 2
                             ),
-                            color: Colors.white,
+                            color: Theme.of(context).cardColor,
                             borderRadius: BorderRadius.circular(20)
                           ),
                           child: SingleChildScrollView(child: body())
@@ -146,10 +146,7 @@ class _ChatsListState extends State<ChatsList> {
         children: [
           Text(
           "Cargando...",
-          style: TextStyle(
-            color: Colors.black, 
-            fontSize: 17
-          )
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 17)
         ),
           SizedBox(height: 10),
           CircularProgressIndicator(),
@@ -164,9 +161,9 @@ class _ChatsListState extends State<ChatsList> {
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                color: Color.fromRGBO(241, 239, 239, 1),
+                color: Theme.of(context).cardTheme.color,
                 borderRadius: BorderRadius.circular(10.0),
-                border: Border.all(color: Color.fromRGBO(241, 239, 239, 1))
+                border: Border.all(color: Theme.of(context).disabledColor)
               ),
               child: Row(
                 children: [
@@ -184,9 +181,9 @@ class _ChatsListState extends State<ChatsList> {
                         });
                       },
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search, color: Color.fromRGBO(40, 93, 169, 1),),
+                        prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryIconTheme.color),
                         hintText: 'Buscar',
-                        hintStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
+                        hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
                         border: InputBorder.none,
                       ),
                     ),
@@ -194,7 +191,7 @@ class _ChatsListState extends State<ChatsList> {
 
                   IconButton(
                     icon: Icon(Icons.refresh),
-                    color: Color.fromRGBO(40, 93, 169, 1),
+                    color: Theme.of(context).primaryIconTheme.color,
                     onPressed: () {
                       refresh();
                     },
@@ -244,18 +241,11 @@ class _ChatsListState extends State<ChatsList> {
                             children: [
                               Text(
                                 listaChats[index]['NombreM'],
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                ),
+                                style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 13),
                               ),
                               Text(
                                 '# de viaje: ${listaChats[index]['id']}',
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Color.fromRGBO(40, 93, 169, 1),
-                                ),
+                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 10),
                               ),
                             ],
                           ),
@@ -272,25 +262,19 @@ class _ChatsListState extends State<ChatsList> {
                                       height: 15,
                                       child: SvgPicture.asset(
                                         "assets/icons/ignorado.svg",
-                                        color: listaChats[index]['Leido'] == true?Color.fromRGBO(40, 93, 169, 1)
-                                          :Color.fromRGBO(158, 158, 158, 1),
+                                        color: listaChats[index]['Leido'] == true?Theme.of(context).focusColor
+                                          :Theme.of(context).splashColor,
                                       ),
                                     ),
                                     Text(
                                       ' Tu: ${listaChats[index]['UltimoM']}',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.black,
-                                      ),
+                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12),
                                     ),
                                   ],
                                 ):
                                 Text(
                                   '${listaChats[index]['UltimoM']}',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.black,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12),
                                 ),
                         ),
                               if (listaChats[index]['sinLeer'] != 0)
@@ -301,16 +285,12 @@ class _ChatsListState extends State<ChatsList> {
                                     margin: const EdgeInsets.only(left: 5),
                                     padding: const EdgeInsets.all(5),
                                     decoration: BoxDecoration(
-                                      color: Color.fromRGBO(40, 93, 169, 1),
+                                      color: Theme.of(context).focusColor,
                                       shape: BoxShape.circle,
                                     ),
                                     child: Text(
                                       '${listaChats[index]['sinLeer']}',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 9,
-                                      ),
+                                      style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 9),
                                     ),
                                   ),
                                 ),
@@ -319,11 +299,10 @@ class _ChatsListState extends State<ChatsList> {
                           right: 0,
                           child: Text(
                                   '${listaChats[index]['TiempoUltimoM']}',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: listaChats[index]['sinLeer'] != 0?Color.fromRGBO(40, 93, 169, 1)
-                                          :Color.fromRGBO(158, 158, 158, 1),
-                                  ),
+                                  style: listaChats[index]['sinLeer'] != 0? 
+                                    Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 12):
+                                    Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12)
+                                  ,
                                 ),
                         ),
                       ],
@@ -335,10 +314,7 @@ class _ChatsListState extends State<ChatsList> {
             children: [
               Text(
               "Cargando...",
-              style: TextStyle(
-                color: Colors.black, 
-                fontSize: 17
-              )
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 17)
             ),
               SizedBox(height: 10),
               CircularProgressIndicator(),

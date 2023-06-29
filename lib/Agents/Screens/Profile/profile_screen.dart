@@ -69,10 +69,10 @@ class _DataTableExample extends State<ProfilePage> {
 
         decoration: BoxDecoration(
           border: Border.all( 
-            color: Color.fromRGBO(238, 238, 238, 1),
+            color: Theme.of(context).disabledColor,
             width: 2
           ),
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20)
         ),
         child: ListView(
@@ -100,7 +100,7 @@ class _DataTableExample extends State<ProfilePage> {
                                     height: 100,
                                     child: SvgPicture.asset(
                                       "assets/icons/Perfil_Usuario.svg",
-                                      color: Color.fromRGBO(40, 93, 169, 1),
+                                      color: Theme.of(context).primaryColor,
                                     ),
                                   ),
                                           
@@ -126,11 +126,7 @@ class _DataTableExample extends State<ProfilePage> {
                             Center(
                               child: Text(
                                 '${abc.data!.agentFullname}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  ),
+                                style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 16),
                                 ),
                             ),
                             SizedBox(height: 30),
@@ -146,24 +142,20 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/Numeral.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
                                       Text(
                                         'No. empleado: ',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -175,24 +167,20 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/usuario.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
                                       Text(
                                         'Usuario: ',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -204,24 +192,20 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/telefono_num.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
                                       Text(
                                         'Teléfono: ',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -233,24 +217,20 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/correo.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
                                       Text(
                                         'Email: ',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -262,24 +242,20 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/Casa.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
                                       Text(
                                         'Dirección: ',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -291,18 +267,14 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/warning.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
                                       Flexible(
                                         child: Text(
                                           'Acceso autorizado: ',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500
-                                          ),
+                                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                         ),
                                       ),
                                     ],
@@ -310,7 +282,7 @@ class _DataTableExample extends State<ProfilePage> {
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                               } else ...{
@@ -323,7 +295,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/Numeral.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -333,18 +305,11 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "No. empleado: ",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500
-                                                ),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentUser}",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                                               ),
                                             ],
                                           ),
@@ -355,7 +320,7 @@ class _DataTableExample extends State<ProfilePage> {
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -367,7 +332,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/usuario.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -377,18 +342,11 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Usuario: ",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500
-                                                ),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentUser}",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                                               ),
                                             ],
                                           ),
@@ -399,7 +357,7 @@ class _DataTableExample extends State<ProfilePage> {
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -411,7 +369,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/telefono_num.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -421,18 +379,11 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Teléfono: ",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500
-                                                ),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentPhone}",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                                               ),
                                             ],
                                           ),
@@ -443,7 +394,7 @@ class _DataTableExample extends State<ProfilePage> {
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -455,7 +406,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/correo.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -465,18 +416,11 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Email: ",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500
-                                                ),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentEmail}",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                                               ),
                                             ],
                                           ),
@@ -487,7 +431,7 @@ class _DataTableExample extends State<ProfilePage> {
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -499,7 +443,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/Casa.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -509,18 +453,11 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Dirección: ",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500
-                                                ),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                                               ),
                                             ],
                                           ),
@@ -531,7 +468,7 @@ class _DataTableExample extends State<ProfilePage> {
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 
@@ -547,7 +484,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/warning.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -556,18 +493,11 @@ class _DataTableExample extends State<ProfilePage> {
                                           children: [
                                             TextSpan(
                                               text: "Acceso autorizado: ",
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500
-                                              ),
+                                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                             ),
                                             TextSpan(
                                               text: "${abc.data!.neighborhoodReferencePoint}",
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16,
-                                              ),
+                                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                                             ),
                                           ],
                                         ),
@@ -577,7 +507,7 @@ class _DataTableExample extends State<ProfilePage> {
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 }
@@ -593,24 +523,20 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/Numeral.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
                                       Text(
                                         'No. empleado: ',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -622,24 +548,20 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 20,
                                         child: SvgPicture.asset(
                                           "assets/icons/compañia.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
                                       Text(
                                         'Cuenta: ',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -651,24 +573,20 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/usuario.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
                                       Text(
                                         'Usuario: ',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -680,24 +598,20 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/telefono_num.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
                                       Text(
                                         'Teléfono: ',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -709,24 +623,20 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/correo.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
                                       Text(
                                         'Email: ',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -738,24 +648,20 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/Casa.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
                                       Text(
                                         'Dirección: ',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -767,24 +673,20 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/warning.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
                                       Text(
                                         'Acceso autorizado: ',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500
-                                        ),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                               } else ...{
@@ -797,7 +699,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/Numeral.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -807,18 +709,11 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "No. empleado: ",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500
-                                                ),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentUser}",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                                               ),
                                             ],
                                           ),
@@ -829,7 +724,7 @@ class _DataTableExample extends State<ProfilePage> {
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 if (abc.data!.countName == null)
@@ -843,24 +738,20 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 20,
                                         child: SvgPicture.asset(
                                           "assets/icons/compañia.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
                                       Text(
                                         'Cuenta: ',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                   }
@@ -874,7 +765,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 20,
                                         child: SvgPicture.asset(
                                           "assets/icons/compañia.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -884,18 +775,11 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Cuenta: ",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500
-                                                ),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.countName}",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                                               ),
                                             ],
                                           ),
@@ -906,7 +790,7 @@ class _DataTableExample extends State<ProfilePage> {
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 },
@@ -919,7 +803,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/usuario.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -929,18 +813,11 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Usuario: ",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500
-                                                ),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentUser}",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                                               ),
                                             ],
                                           ),
@@ -951,7 +828,7 @@ class _DataTableExample extends State<ProfilePage> {
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -963,7 +840,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/telefono_num.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -973,18 +850,11 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Teléfono: ",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500
-                                                ),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentPhone}",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                                               ),
                                             ],
                                           ),
@@ -995,7 +865,7 @@ class _DataTableExample extends State<ProfilePage> {
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -1007,7 +877,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/correo.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -1017,18 +887,11 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Email: ",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500
-                                                ),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentEmail}",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                                               ),
                                             ],
                                           ),
@@ -1039,7 +902,7 @@ class _DataTableExample extends State<ProfilePage> {
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 Padding(
@@ -1051,7 +914,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/Casa.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -1061,18 +924,11 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Dirección: ",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500
-                                                ),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                                               ),
                                             ],
                                           ),
@@ -1083,7 +939,7 @@ class _DataTableExample extends State<ProfilePage> {
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 if (abc.data!.neighborhoodReferencePoint == null)
@@ -1098,7 +954,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/warning.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -1108,18 +964,11 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Acceso autorizado: ",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500
-                                                ),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.neighborhoodReferencePoint}",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                ),
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                                               ),
                                             ],
                                           ),
@@ -1130,7 +979,7 @@ class _DataTableExample extends State<ProfilePage> {
                                 ),
                                 Container(
                                   height: 1,
-                                  color: Color.fromRGBO(158, 158, 158, 1),
+                                  color: Theme.of(context).dividerColor,
                                 ),
                                 SizedBox(height: 20),
                                 }
@@ -1149,10 +998,7 @@ class _DataTableExample extends State<ProfilePage> {
               Center(
                   child: Text(
                 'Horario laboral',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromRGBO(40, 93, 169, 1)),
+                style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 16),
               )),
               //ingreso de data por el future builder horario
               FutureBuilder<Profile>(
@@ -1164,7 +1010,7 @@ class _DataTableExample extends State<ProfilePage> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15)),
                       child: Card(
-                        color: Colors.white,
+                        color: Theme.of(context).cardColor,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
                         elevation: 0,
@@ -1182,66 +1028,52 @@ class _DataTableExample extends State<ProfilePage> {
                                   columns: [
                                     DataColumn(
                                         label: Text('Día',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14))),
                                     DataColumn(
                                         label: Text('Salida',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14))),
                                   ],
                                   rows: [
                                     if (abc.data == null) ...{
                                       DataRow(cells: [
                                         DataCell(Text('Lunes',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(Text(''))
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Martes',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(Text(''))
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Miercoles',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(Text(''))
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Jueves',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(Text(''))
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Viernes',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(Text(''))
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Sábado',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(Text(''))
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Domingo',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(Text(''))
                                       ]),
                                     } else ...{
                                       DataRow(cells: [
                                         DataCell(Text('Lunes',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(FutureBuilder<Profile>(
                                             future: item,
                                             builder: (context, abc) {
@@ -1249,14 +1081,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.mondayOut}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.white));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.mondayOut}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1266,8 +1095,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Martes',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(FutureBuilder<Profile>(
                                             future: item,
                                             builder: (context, abc) {
@@ -1275,14 +1103,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.tuesdayOut}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.black));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.tuesdayOut}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1292,8 +1117,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Miercoles',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(FutureBuilder<Profile>(
                                             future: item,
                                             builder: (context, abc) {
@@ -1301,14 +1125,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.wednesdayOut}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.black));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.wednesdayOut}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1319,8 +1140,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Jueves',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(FutureBuilder<Profile>(
                                             future: item,
                                             builder: (context, abc) {
@@ -1328,14 +1148,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.thursdayOut}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.black));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.thursdayOut}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1345,8 +1162,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Viernes',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(FutureBuilder<Profile>(
                                             future: item,
                                             builder: (context, abc) {
@@ -1354,14 +1170,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.fridayOut}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.white));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.fridayOut}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1380,14 +1193,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.saturdayOut}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.black));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.saturdayOut}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1406,14 +1216,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.sundayOut}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.black));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.sundayOut}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1429,79 +1236,62 @@ class _DataTableExample extends State<ProfilePage> {
                                   columns: [
                                     DataColumn(
                                         label: Text('Día',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14))),
                                     DataColumn(
                                         label: Text('Entrada',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14))),
                                     DataColumn(
                                         label: Text('Salida',
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14))),
                                   ],
                                   rows: [
                                     if (abc.data == null) ...{
                                       DataRow(cells: [
                                         DataCell(Text('Lunes',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(Text('')),
                                         DataCell(Text(''))
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Martes',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(Text('')),
                                         DataCell(Text(''))
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Miercoles',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(Text('')),
                                         DataCell(Text(''))
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Jueves',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(Text('')),
                                         DataCell(Text(''))
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Viernes',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(Text('')),
                                         DataCell(Text(''))
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Sábado',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style:Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(Text('')),
                                         DataCell(Text(''))
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Domingo',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(Text('')),
                                         DataCell(Text(''))
                                       ]),
                                     } else ...{
                                       DataRow(cells: [
                                         DataCell(Text('Lunes',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(FutureBuilder<Profile>(
                                             future: item,
                                             builder: (context, abc) {
@@ -1510,15 +1300,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                 if ('${abc.data!.mondayIn}' ==
                                                     'null') {
                                                   return Text('Día libre',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.mondayIn}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1534,15 +1320,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                     'null') {
                                                   return Text(
                                                     'Día libre',
-                                                    style: TextStyle(
-                                                        color: Colors.black),
-                                                  );
+                                                    style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.mondayOut}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1552,8 +1334,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Martes',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(FutureBuilder<Profile>(
                                             future: item,
                                             builder: (context, abc) {
@@ -1562,15 +1343,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                 if ('${abc.data!.tuesdayIn}' ==
                                                     'null') {
                                                   return Text('Día libre',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.tuesdayIn}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1585,15 +1362,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                 if ('${abc.data!.tuesdayOut}' ==
                                                     'null') {
                                                   return Text('Día libre',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.tuesdayOut}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1603,8 +1376,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Miercoles',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(FutureBuilder<Profile>(
                                             future: item,
                                             builder: (context, abc) {
@@ -1617,9 +1389,7 @@ class _DataTableExample extends State<ProfilePage> {
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.wednesdayIn}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1633,14 +1403,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.wednesdayOut}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.black));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.wednesdayOut}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1651,8 +1418,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Jueves',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(FutureBuilder<Profile>(
                                             future: item,
                                             builder: (context, abc) {
@@ -1660,14 +1426,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.thursdayIn}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.black));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.thursdayIn}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1681,14 +1444,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.thursdayOut}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.white));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.thursdayOut}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1698,8 +1458,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Viernes',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(FutureBuilder<Profile>(
                                             future: item,
                                             builder: (context, abc) {
@@ -1707,14 +1466,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.fridayIn}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.black));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.fridayIn}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1728,14 +1484,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.fridayOut}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.black));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.fridayOut}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1745,8 +1498,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Sábado',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(FutureBuilder<Profile>(
                                             future: item,
                                             builder: (context, abc) {
@@ -1754,14 +1506,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.saturdayIn}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.black));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.saturdayIn}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1775,14 +1524,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.saturdayOut}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.black));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.saturdayOut}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1792,8 +1538,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       ]),
                                       DataRow(cells: [
                                         DataCell(Text('Domingo',
-                                            style: TextStyle(
-                                                color: Colors.black))),
+                                            style: Theme.of(context).textTheme.bodyMedium)),
                                         DataCell(FutureBuilder<Profile>(
                                             future: item,
                                             builder: (context, abc) {
@@ -1801,14 +1546,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.sundayIn}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.black));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.sundayIn}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1822,14 +1564,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.sundayOut}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.black));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.sundayOut}',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Colors.black));
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                 }
                                               } else {
                                                 return CircularProgressIndicator();
@@ -1870,17 +1609,11 @@ class _DataTableExample extends State<ProfilePage> {
                                 children: [
                                   TextSpan(
                                     text: "¿Tu información es incorrecta? ",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                    ),
+                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12)
                                   ),
                                   TextSpan(
                                     text: "Solicita cambio aquí",
-                                    style: TextStyle(
-                                      color: Color.fromRGBO(40, 93, 169, 1),
-                                      fontSize: 12,
-                                    ),
+                                    style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 12)
                                   ),
                                 ],
                               ),

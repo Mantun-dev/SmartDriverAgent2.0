@@ -13,6 +13,7 @@ import 'package:upgrader/upgrader.dart';
 import 'Agents/sharePrefers/preferencias_usuario.dart';
 import 'components/Tema.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey(debugLabel: "Main Navigator");
 Future<void> main() async {
   //inicialización de clases y variables necesarias para
   //que la apliación inicie sin problemas
@@ -36,8 +37,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   //Variables globales
-  final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey(debugLabel: "Main Navigator");
+
   final prefs = new PreferenciasUsuario();
   bool menuDesplegable=false;
 
@@ -59,6 +59,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final prefs = new PreferenciasUsuario();
     //Aqui es donde se inicializa la aplicación
     return MultiProvider(
       providers: [
@@ -70,7 +71,7 @@ class _MyAppState extends State<MyApp> {
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'Smart Driver',
-        theme: appThemeDataLight,
+        theme: prefs.tema!=true? appThemeDataLight : appThemeDataDark,
         //home: prefs.nombreUsuario ==null?WelcomeScreen():HomeScreen(),
         initialRoute: prefs.nombreUsuario == null || prefs.nombreUsuario == ""
             ? 'login'

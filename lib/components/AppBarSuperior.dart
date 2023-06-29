@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/Screens/Profile/profile_screen.dart';
 import 'package:flutter_auth/components/progress_indicator.dart';
+import 'package:flutter_auth/main.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -13,6 +14,7 @@ import '../Agents/Screens/Details/details_screen_qr.dart';
 import '../Agents/Screens/Welcome/welcome_screen.dart';
 import '../Agents/models/network.dart';
 import '../Agents/models/plantilla.dart';
+import '../Agents/sharePrefers/preferencias_usuario.dart';
 
 
 class AppBarSuperior extends StatefulWidget {
@@ -26,6 +28,7 @@ class AppBarSuperior extends StatefulWidget {
 
 class _AppBarSuperior extends State<AppBarSuperior> {
   int? item;
+  final prefs = new PreferenciasUsuario();
 
   _AppBarSuperior({this.item});
 
@@ -256,7 +259,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
           ],
         ):Padding(
           padding: const EdgeInsets.all(8.0),
-          child: menu(size, context),
+          child: menu(size, navigatorKey.currentContext),
         )
         
       ],
@@ -389,6 +392,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                         ],
                                       ),
                                     ),
+                                    
                                     Container(
                                       width: 15,
                                       height: 15,
@@ -530,6 +534,8 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: GestureDetector(
                                 onTap: () {
+                                  prefs.tema=!prefs.tema;
+                                  WidgetsBinding.instance.reassembleApplication();
                                   
                                 },
                                 child: Row(

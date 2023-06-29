@@ -24,7 +24,7 @@ class LoadingIndicatorDialog {
           return WillPopScope(
             onWillPop: () async => false,
             child: SimpleDialog(
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(context).cardColor,
               children: [
                 Center(
                   child: Column(
@@ -38,12 +38,7 @@ class LoadingIndicatorDialog {
                         padding: const EdgeInsets.all(16),
                         child: Text(
                           text, 
-                          style: 
-                            TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.normal,
-                              color:Colors.black,
-                            ),
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
                           ),
                       )
                     ],
