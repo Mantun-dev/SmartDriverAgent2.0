@@ -66,6 +66,9 @@ class _DataTableExample extends State<HistoryTicketScreen> {
     
     itemFiltro = await _item;
 
+    totalPendientes = itemFiltro!.trips[0].pendant!.length;
+    totalProcesados = itemFiltro!.trips[1].closed!.length;
+
     setState(() { });
   }
 
