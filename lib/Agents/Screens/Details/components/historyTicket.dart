@@ -305,12 +305,9 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                       //retorno de container y card con la data respectiva
                       return Card(
                         elevation: 0,
-                        color: const Color.fromRGBO(241, 239, 239, 1),
+                        color: Theme.of(context).shadowColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(
-                            color: Colors.white,
-                          ),
                         ),
                         child: Container(
                           decoration: BoxDecoration(
@@ -415,7 +412,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                           height: 40,
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            color: Colors.white,
+                                            color: Theme.of(context).cardColor,
                                           ),
                                         ),
                                       ),
@@ -432,7 +429,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                           height: 40,
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            color: Colors.white,
+                                            color: Theme.of(context).cardColor,
                                           ),
                                         ),
                                       ),

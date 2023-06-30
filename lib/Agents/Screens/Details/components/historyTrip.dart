@@ -60,25 +60,18 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
               children: [
                 SizedBox(height: 5),
                  Text('Agentes',
-                  style: TextStyle(
-                      color: Color.fromRGBO(40, 93, 169, 1),
-                      fontWeight: FontWeight.normal,
-                      fontSize: 20.0)),
+                  style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 20, fontWeight: FontWeight.normal)),
                 SizedBox(height: 10),
                 Center(
                   child: Text(
                     'No hay viajes realizados',
                 
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style:  Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
                   ),
                 ),
                 Container(
                   height: 1,
-                  color: Color.fromRGBO(158, 158, 158, 1),
+                  color: Theme.of(context).dividerColor,
                 ),
               ],
             );
@@ -97,7 +90,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0), // Establece un radio de esquinas redondeadas de 8.0
-                border: Border.all(color: Color.fromRGBO(196, 196, 196, 1)), // Establece el color del borde
+                border: Border.all(color: Theme.of(context).dividerColor,), // Establece el color del borde
               ),
               child: Padding(
                 padding: const EdgeInsets.only(right: 2, left: 2),
@@ -113,18 +106,14 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                       height: 15,
                                       child: SvgPicture.asset(
                                         "assets/icons/Numeral.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                        color: Theme.of(context).primaryIconTheme.color,
                                       ),
                                     ),
                                     SizedBox(width: 5),
                                     Flexible(
                                       child: Text(
                                         'Viaje: ${abc.data![index].tripId}',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                                       ),
                                     ),
                                   ],
@@ -137,18 +126,14 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                       height: 18,
                                       child: SvgPicture.asset(
                                         "assets/icons/calendar2.svg",
-                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                        color: Theme.of(context).primaryIconTheme.color,
                                       ),
                                     ),
                                     SizedBox(width: 5),
                                     Flexible(
                                       child: Text(
                                         'Fecha: ${abc.data![index].fecha}',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                                       ),
                                     ),
   
@@ -159,7 +144,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                   children: [
                     Container(
                       height: 1,
-                      color: Color.fromRGBO(196, 196, 196, 1),
+                      color: Theme.of(context).dividerColor,
                     ),    
                     SizedBox(height: 20),
                     Padding(
@@ -171,18 +156,14 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                             height: 18,
                             child: SvgPicture.asset(
                               "assets/icons/warning-circle-svgrepo-com.svg",
-                              color: Color.fromRGBO(40, 93, 169, 1),
+                              color: Theme.of(context).primaryIconTheme.color,
                             ),
                           ),
                           SizedBox(width: 5),
                           Flexible(
                             child: Text(
                               'Transporte para: ${abc.data![index].tipo}',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                             ),
                           ),
 
@@ -191,7 +172,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                     ),
                     Container(
                       height: 1,
-                      color: Color.fromRGBO(196, 196, 196, 1),
+                      color: Theme.of(context).dividerColor,
                     ),
                                                         
                     SizedBox(height: 20),
@@ -204,18 +185,14 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                             height: 18,
                             child: SvgPicture.asset(
                               "assets/icons/hora.svg",
-                              color: Color.fromRGBO(40, 93, 169, 1),
+                              color: Theme.of(context).primaryIconTheme.color,
                             ),
                           ),
                           SizedBox(width: 5),
                           Flexible(
                             child: Text(
                               'Hora de encuentro: ${abc.data![index].hora}',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                             ),
                           ),
           
@@ -224,7 +201,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                     ),
                     Container(
                       height: 1,
-                      color: Color.fromRGBO(196, 196, 196, 1),
+                      color: Theme.of(context).dividerColor,
                     ),
                                                                     
                     SizedBox(height: 20),
@@ -237,18 +214,14 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                             height: 18,
                             child: SvgPicture.asset(
                               "assets/icons/Casa.svg",
-                              color: Color.fromRGBO(40, 93, 169, 1),
+                              color: Theme.of(context).primaryIconTheme.color,
                             ),
                           ),
                           SizedBox(width: 5),
                           Flexible(
                             child: Text(
                               'Dirección: ${abc.data![index].direccion}',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                             ),
                           ),
                         ],
@@ -256,7 +229,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                     ),
                     Container(
                       height: 1,
-                      color: Color.fromRGBO(196, 196, 196, 1),
+                      color: Theme.of(context).dividerColor,
                     ),
 
                     SizedBox(height: 20),
@@ -269,18 +242,14 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                             height: 18,
                             child: SvgPicture.asset(
                               "assets/icons/motorista.svg",
-                              color: Color.fromRGBO(40, 93, 169, 1),
+                              color: Theme.of(context).primaryIconTheme.color,
                             ),
                           ),
                           SizedBox(width: 5),
                           Flexible(
                             child: Text(
                               'Conductor: ${abc.data![index].conductor}',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
                             ),
                           ),
 
@@ -289,7 +258,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                     ),
                     Container(
                       height: 1,
-                      color: Color.fromRGBO(196, 196, 196, 1),
+                      color: Theme.of(context).dividerColor,
                     ),
                                                     
                     SizedBox(height: 8),
