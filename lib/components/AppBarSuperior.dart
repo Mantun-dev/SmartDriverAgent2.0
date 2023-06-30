@@ -296,7 +296,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                       height: size.height / 2,
                       width: size.width,
                       decoration: BoxDecoration(
-                        color: Theme.of(contextP).cardColor,
+                        color: prefs.tema ? Color.fromRGBO(47, 46, 65, 1) : Colors.white,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(30.0),
                           topRight: Radius.circular(30.0),
@@ -341,12 +341,12 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                             height: 25,
                                             child: SvgPicture.asset(
                                               "assets/icons/usuario.svg",
-                                              color: Theme.of(contextP).primaryIconTheme.color,
+                                              color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
                                             ),
                                           ),
                                           Text(
                                             ' Mi perfil',
-                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
                                           ),
                                         ],
                                       ),
@@ -356,7 +356,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                       height: 15,
                                       child: SvgPicture.asset(
                                         "assets/icons/flechader.svg",
-                                        color: Theme.of(contextP).primaryIconTheme.color,
+                                        color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
                                       ),
                                     ),
                                   ],
@@ -383,11 +383,11 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                             height: 25,
                                             child: SvgPicture.asset(
                                               "assets/icons/proximo_viaje.svg",
-                                              color: Theme.of(contextP).primaryIconTheme.color,
+                                              color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
                                             ),
                                           ),
                                           Text(' Próximos viajes', 
-                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
                                           ),
                                         ],
                                       ),
@@ -398,7 +398,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                       height: 15,
                                       child: SvgPicture.asset(
                                         "assets/icons/flechader.svg",
-                                        color: Theme.of(contextP).primaryIconTheme.color,
+                                        color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
                                       ),
                                     ),
                                   ],
@@ -425,11 +425,11 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                             height: 25,
                                             child: SvgPicture.asset(
                                               "assets/icons/historial_de_viaje.svg",
-                                              color: Theme.of(contextP).primaryIconTheme.color,
+                                              color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
                                             ),
                                           ),
                                           Text(' Historial de viajes', 
-                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
                                           ),
                                         ],
                                       ),
@@ -439,7 +439,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                       height: 15,
                                       child: SvgPicture.asset(
                                         "assets/icons/flechader.svg",
-                                        color: Theme.of(contextP).primaryIconTheme.color,
+                                        color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
                                       ),
                                     ),
                                   ],
@@ -466,11 +466,11 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                             height: 25,
                                             child: SvgPicture.asset(
                                               "assets/icons/QR.svg",
-                                              color: Theme.of(contextP).primaryIconTheme.color,
+                                              color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
                                             ),
                                           ),
                                           Text(' Generar código QR', 
-                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
                                           ),
                                         ],
                                       ),
@@ -480,7 +480,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                       height: 15,
                                       child: SvgPicture.asset(
                                         "assets/icons/flechader.svg",
-                                        color: Theme.of(contextP).primaryIconTheme.color,
+                                        color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
                                       ),
                                     ),
                                   ],
@@ -508,11 +508,11 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                             height: 25,
                                             child: SvgPicture.asset(
                                               "assets/icons/solicitud_de_cambio.svg",
-                                              color: Theme.of(contextP).primaryIconTheme.color,
+                                              color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
                                             ),
                                           ),
                                           Text(' Solicitud de cambios', 
-                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
                                           ),
                                         ],
                                       ),
@@ -522,7 +522,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                       height: 15,
                                       child: SvgPicture.asset(
                                         "assets/icons/flechader.svg",
-                                        color: Theme.of(contextP).primaryIconTheme.color,
+                                        color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
                                       ),
                                     ),
                                   ],
@@ -548,11 +548,11 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                             height: 25,
                                             child: SvgPicture.asset(
                                               "assets/icons/tema.svg",
-                                              color: Theme.of(contextP).primaryIconTheme.color,
+                                              color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
                                             ),
                                           ),
                                           Text(' Tema', 
-                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
                                           ),
                                         ],
                                       ),
@@ -566,7 +566,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                             duration: const Duration(milliseconds: 300),
                                             padding: const EdgeInsets.all(8.0),
                                             decoration: BoxDecoration(
-                                              color: prefs.tema ? const Color.fromARGB(255, 34, 32, 32) : Colors.grey,
+                                              color: prefs.tema ? const Color.fromARGB(255, 34, 32, 32) : const Color.fromRGBO(158, 158, 158, 1),
                                               borderRadius: BorderRadius.circular(25.0),
                                             ),
                                             child: Row(
@@ -623,7 +623,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 12),
+                            /*SizedBox(height: 12),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: GestureDetector(
@@ -640,11 +640,11 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                             height: 25,
                                             child: SvgPicture.asset(
                                               "assets/icons/idioma.svg",
-                                              color: Theme.of(contextP).primaryIconTheme.color,
+                                              color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
                                             ),
                                           ),
                                           Text(' Idiomas', 
-                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
                                           ),
                                         ],
                                       ),
@@ -654,13 +654,13 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                       height: 15,
                                       child: SvgPicture.asset(
                                         "assets/icons/flechader.svg",
-                                        color: Theme.of(contextP).primaryIconTheme.color,
+                                        color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ),
+                            ),*/
                             
                             SizedBox(height: 12),
                             Padding(
@@ -719,11 +719,11 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                             height: 25,
                                             child: SvgPicture.asset(
                                               "assets/icons/cerrar-sesion.svg",
-                                              color: Theme.of(contextP).primaryIconTheme.color,
+                                              color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
                                             ),
                                           ),
                                           Text(' Cerrar sesión', 
-                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
                                           ),
                                         ],
                                       ),
@@ -733,7 +733,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                       height: 15,
                                       child: SvgPicture.asset(
                                         "assets/icons/flechader.svg",
-                                        color: Theme.of(contextP).primaryIconTheme.color,
+                                        color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
                                       ),
                                     ),
                                   ],
