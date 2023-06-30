@@ -557,13 +557,67 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                         ],
                                       ),
                                     ),
-                                    Container(
-                                      width: 15,
-                                      height: 15,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/flechader.svg",
-                                        color: Theme.of(contextP).primaryIconTheme.color,
-                                      ),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [                                  
+                                        SizedBox(
+
+                                          child: AnimatedContainer(
+                                            duration: const Duration(milliseconds: 300),
+                                            padding: const EdgeInsets.all(8.0),
+                                            decoration: BoxDecoration(
+                                              color: prefs.tema ? const Color.fromARGB(255, 34, 32, 32) : Colors.grey,
+                                              borderRadius: BorderRadius.circular(25.0),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                AnimatedOpacity(
+                                                  opacity: prefs.tema ? 0.0 : 1.0,
+                                                  duration: const Duration(milliseconds: 300),
+                                                  child: Container(  
+                                                                                             
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(25.0),
+                                                      color: Color.fromRGBO(40, 93, 169, 1),     
+                                                    ),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(5.0),
+                                                      child: SvgPicture.asset(
+                                                        "assets/icons/light.svg",
+                                                        color: Colors.white,
+                                                        height: 20,
+                                                        width: 20,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                AnimatedOpacity(
+                                                  opacity: prefs.tema ? 1.0 : 0.0,
+                                                  duration: const Duration(milliseconds: 300),
+                                                  child: Container(                                                
+                                                    decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(25.0),
+                                                      color: Color.fromRGBO(40, 93, 169, 1),     
+                                                    ),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(5.0),
+                                                      child: SvgPicture.asset(
+                                                        "assets/icons/dark.svg",
+                                                        color: Colors.white,   
+                                                        height: 20,
+                                                        width: 20,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+
+                                        //Icon(Icons.arrow_forward_ios,color: Theme.of(context).primaryColor,),
+                                      ],
                                     ),
                                   ],
                                 ),
