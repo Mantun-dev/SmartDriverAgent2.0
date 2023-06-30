@@ -3037,7 +3037,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                               OutlinedButton(
                                                                 style: OutlinedButton.styleFrom(
                                                                   padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                  backgroundColor: Theme.of(navigatorKey.currentContext!).primaryColor,
+                                                                  backgroundColor: const Color.fromRGBO(40, 93, 169, 1),
                                                                   shape: RoundedRectangleBorder(
                                                                     borderRadius: BorderRadius.circular(12.0),
                                                                   ),
@@ -3335,7 +3335,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                               OutlinedButton(
                                                                 style: OutlinedButton.styleFrom(
                                                                   padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                  backgroundColor: Theme.of(navigatorKey.currentContext!).primaryColor,
+                                                                  backgroundColor: const Color.fromRGBO(40, 93, 169, 1),
                                                                   shape: RoundedRectangleBorder(
                                                                     borderRadius: BorderRadius.circular(12.0),
                                                                   ),
@@ -3967,7 +3967,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                   child: TextButton(
                     style: TextButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: GradiantV1),
+                        backgroundColor: const Color.fromRGBO(40, 93, 169, 1)),
                     onPressed: () => {
                       if(rating1 != 0 && rating2 !=0 && rating3 != 0 && rating4 != 0&& rating5 != 0 &&rating6 != 0)...{
                         Navigator.pop(context),
