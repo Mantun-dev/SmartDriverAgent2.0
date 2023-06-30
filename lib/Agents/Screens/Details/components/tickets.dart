@@ -115,7 +115,7 @@ class _TicketScreenState extends State<TicketScreen> {
         child: Container(
           width: size.width,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(20)
           ),
           child: SingleChildScrollView(
@@ -129,19 +129,19 @@ class _TicketScreenState extends State<TicketScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 5, right: 5),
                         child: TextField(
-                          style: TextStyle(color: Colors.black),
+                          style: Theme.of(context).textTheme.bodyMedium,
                           controller: ticketIssue,
                           autofocus: false,
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             labelText: 'Asunto',
-                            labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
+                            labelStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide.none,
                             ),
                             prefixIcon: Icon(
                               Icons.title,
-                              color: Color.fromRGBO(40, 93, 169, 1),
+                              color: Theme.of(context).primaryIconTheme.color,
                               size: 30,
                             ),
                             
@@ -150,7 +150,7 @@ class _TicketScreenState extends State<TicketScreen> {
                       ),
                       Container(
                         height: 1,
-                        color: Color.fromRGBO(158, 158, 158, 1),
+                        color: Theme.of(context).dividerColor,
                       ),
                     ],
                   ),
@@ -169,13 +169,13 @@ class _TicketScreenState extends State<TicketScreen> {
                               height: 40,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Color.fromRGBO(40, 93, 169, 1),
+                                color: Theme.of(context).primaryColor,
                               ),
                             ),
                           ),
                         ),
                                   
-                        Expanded(child: DottedLine(dashLength:12, dashGapLength:10)),
+                        Expanded(child: DottedLine(dashLength:12, dashGapLength:10, dashColor: Theme.of(context).primaryColorDark,)),
                                   
                         ClipRect(
                           child: Align(
@@ -186,7 +186,7 @@ class _TicketScreenState extends State<TicketScreen> {
                               height: 40,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Color.fromRGBO(40, 93, 169, 1),
+                                color: Theme.of(context).primaryColor,
                               ),
                             ),
                           ),
@@ -197,25 +197,25 @@ class _TicketScreenState extends State<TicketScreen> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 40.0, left: 52, right: 52),
                   child: TextField(
-                    style: TextStyle(color: Colors.black),
+                    style: Theme.of(context).textTheme.bodyMedium,
                     controller: ticketMessage,
                     minLines: 6,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
                     decoration: InputDecoration(
                       labelText: 'Mensaje',
-                      labelStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
+                      labelStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
                       prefixIcon: Icon(
                         Icons.message,
-                        color: Color.fromRGBO(40, 93, 169, 1),
+                        color: Theme.of(context).primaryIconTheme.color,
                         size: 30,
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
+                        borderSide: BorderSide(color: Theme.of(context).primaryColorDark),
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
+                        borderSide: BorderSide(color: Theme.of(context).primaryColorDark),
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       contentPadding: EdgeInsets.symmetric(vertical: 80.0), // Ajusta el padding vertical
@@ -227,7 +227,7 @@ class _TicketScreenState extends State<TicketScreen> {
                  
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
+                    border: Border.all(color: Theme.of(context).primaryColorDark),
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: Padding(
@@ -250,11 +250,7 @@ class _TicketScreenState extends State<TicketScreen> {
                       },
                       child: Text(
                         "Enviar",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal
-                        ),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                       ),
                     ),
                   ),
@@ -264,7 +260,7 @@ class _TicketScreenState extends State<TicketScreen> {
                 
                 Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
+                        border: Border.all(color: Theme.of(context).primaryColorDark),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: Padding(
@@ -275,11 +271,7 @@ class _TicketScreenState extends State<TicketScreen> {
                           },
                           child: Text(
                             "Tickets anteriores",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.normal
-                            ),
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                           ),
                         ),
                       ),

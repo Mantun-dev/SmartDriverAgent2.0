@@ -76,10 +76,10 @@ class _DataTableExample extends State<HistoryTicketScreen> {
 
         decoration: BoxDecoration(
           border: Border.all( 
-            color: Colors.white,
+            color: Theme.of(context).disabledColor,
             width: 2
           ),
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20)
         ),
         child: Padding(
@@ -90,7 +90,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                 
                   Container(
                     decoration: BoxDecoration(
-                      color: const Color.fromRGBO(241, 239, 239, 1),
+                      color: Theme.of(context).cardTheme.color,
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                     child: Center(
@@ -102,7 +102,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                             
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: ticketsP ? Color.fromRGBO(40, 93, 169, 1) : Colors.transparent,
+                                backgroundColor: ticketsP ? Theme.of(context).primaryColor: Colors.transparent,
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -120,20 +120,20 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                     Text(
                                       'Pendientes',
                                       style: TextStyle(
-                                        color: ticketsP ? Colors.white : Colors.black,
+                                        color: ticketsP ? Colors.white : Theme.of(context).primaryColorDark,
                                       ),
                                     ),
                                     Container(
                                       margin: const EdgeInsets.only(left: 5),
                                       padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
-                                        color: ticketsP ? Colors.white : Color.fromRGBO(40, 93, 169, 1),
+                                        color: ticketsP ? Colors.white : Theme.of(context).primaryColor,
                                         shape: BoxShape.circle,
                                       ),
                                       child: Text(
                                         totalPendientes.toString(),
                                         style: TextStyle(
-                                          color: !ticketsP ? Colors.white : Color.fromRGBO(40, 93, 169, 1),
+                                          color: !ticketsP ? Colors.white : Theme.of(context).primaryColor,
                                           fontWeight: FontWeight.normal,
                                           fontSize: 10,
                                         ),
@@ -148,7 +148,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
           
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: ticketsP ? Colors.transparent : Color.fromRGBO(40, 93, 169, 1),
+                                backgroundColor: ticketsP ? Colors.transparent : Theme.of(context).primaryColor,
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -166,20 +166,20 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                     Text(
                                       'Procesados',
                                       style: TextStyle(
-                                        color: !ticketsP ? Colors.white : Colors.black,
+                                        color: !ticketsP ? Colors.white : Theme.of(context).primaryColorDark,
                                       ),
                                     ),
                                     Container(
                                       margin: const EdgeInsets.only(left: 5),
                                       padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
-                                        color: !ticketsP ? Colors.white : Color.fromRGBO(40, 93, 169, 1),
+                                        color: !ticketsP ? Colors.white : Theme.of(context).primaryColor,
                                         shape: BoxShape.circle,
                                       ),
                                       child: Text(
                                         totalProcesados.toString(),
                                         style: TextStyle(
-                                          color: ticketsP ? Colors.white : Color.fromRGBO(40, 93, 169, 1),
+                                          color: ticketsP ? Colors.white : Theme.of(context).primaryColor,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 10,
                                         ),
@@ -200,9 +200,9 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                     padding: const EdgeInsets.only(top: 22, bottom: 22),
                     child: Container(
                         decoration: BoxDecoration(
-                          color: const Color.fromRGBO(241, 239, 239, 1),
+                          color: Theme.of(context).cardTheme.color,
                           borderRadius: BorderRadius.circular(10.0),
-                          border: Border.all(color: const Color.fromRGBO(241, 239, 239, 1),)
+                          border: Border.all(color: Theme.of(context).disabledColor)
                         ),
                         child: Row(
                           children: [
@@ -239,9 +239,9 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                     });
                                 },
                                 decoration: InputDecoration(
-                                  prefixIcon: Icon(Icons.search, color: Color.fromRGBO(40, 93, 169, 1),),
+                                  prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryIconTheme.color),
                                   hintText: 'Buscar',
-                                  hintStyle: TextStyle(color: Color.fromRGBO(158, 158, 158, 1)),
+                                  hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
                                   border: InputBorder.none,
                                 ),
                               ),
@@ -279,16 +279,12 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                 child: Text(
                   'No hay tickets pendientes',
               
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
                 ),
               ),
               Container(
                 height: 1,
-                color: Color.fromRGBO(158, 158, 158, 1),
+                color: Theme.of(context).dividerColor,
               ),
             ],
           );
@@ -331,7 +327,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                               height: 18,
                                               child: SvgPicture.asset(
                                                 "assets/icons/advertencia.svg",
-                                                color: Color.fromRGBO(40, 93, 169, 1),
+                                                color: Theme.of(context).primaryIconTheme.color,
                                               ),
                                             ),
                                             SizedBox(width: 5),
@@ -339,11 +335,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                               child: Text(
                                                 'Fecha: ${abc.data!.trips[0].pendant![index].ticketDatetime}',
                                                 textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.normal,
-                                                  fontSize: 12.0,
-                                                ),
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12)
                                               ),
                                             ),
                                           ],
@@ -355,11 +347,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         child: Text(
                                           '# Ticket: ${abc.data!.trips[0].pendant![index].ticketId}',
                                           textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            color: Color.fromRGBO(40, 93, 169, 1),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12.0,
-                                          ),
+                                          style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 12, fontWeight: FontWeight.normal)
                                         ),
                                       ),
                                     ],
@@ -378,7 +366,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/calendar-note-svgrepo-com.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -386,11 +374,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         child: Text(
                                           'Asunto: ${abc.data!.trips[0].pendant![index].ticketIssue}',
                                           textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 12.0,
-                                          ),
+                                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12)
                                         ),
                                       ),
                                     ],
@@ -418,7 +402,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                       ),
                                     ),
                                               
-                                    Expanded(child: DottedLine(dashLength:12, dashGapLength:10)),
+                                    Expanded(child: DottedLine(dashLength:12, dashGapLength:10, dashColor: Theme.of(context).primaryColorDark)),
                                               
                                     ClipRect(
                                       child: Align(
@@ -449,7 +433,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/advertencia.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -457,11 +441,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         child: Text(
                                           'Mensaje: ${abc.data!.trips[0].pendant![index].ticketMessage}',
                                           textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 12.0,
-                                          ),
+                                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12)
                                         ),
                                       ),
                                     ],
@@ -499,16 +479,12 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                 child: Text(
                   'No hay tickets en proceso',
               
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14)
                 ),
               ),
               Container(
                 height: 1,
-                color: Color.fromRGBO(158, 158, 158, 1),
+                color: Theme.of(context).dividerColor,
               ),
             ],
           );
@@ -525,12 +501,9 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                     itemBuilder: (context, index) {
                       return Card(
                         elevation: 0,
-                        color: const Color.fromRGBO(241, 239, 239, 1),
+                        color: Theme.of(context).shadowColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(
-                            color: Colors.white,
-                          ),
                         ),
                         child: Container(
                           decoration: BoxDecoration(
@@ -554,7 +527,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                               height: 18,
                                               child: SvgPicture.asset(
                                                 "assets/icons/advertencia.svg",
-                                                color: Color.fromRGBO(40, 93, 169, 1),
+                                                color: Theme.of(context).primaryIconTheme.color,
                                               ),
                                             ),
                                             SizedBox(width: 5),
@@ -562,11 +535,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                               child: Text(
                                                 'Fecha: ${abc.data!.trips[1].closed![index].ticketDatetime}',
                                                 textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.normal,
-                                                  fontSize: 12.0,
-                                                ),
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12)
                                               ),
                                             ),
                                           ],
@@ -578,11 +547,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         child: Text(
                                           '# Ticket: ${abc.data!.trips[1].closed![index].ticketId}',
                                           textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            color: Color.fromRGBO(40, 93, 169, 1),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12.0,
-                                          ),
+                                          style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 12, fontWeight: FontWeight.normal)
                                         ),
                                       ),
                                     ],
@@ -601,7 +566,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/calendar-note-svgrepo-com.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -609,11 +574,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         child: Text(
                                           'Asunto: ${abc.data!.trips[1].closed![index].ticketIssue}',
                                           textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 12.0,
-                                          ),
+                                          style:Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12)
                                         ),
                                       ),
                                     ],
@@ -635,13 +596,13 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                           height: 40,
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            color: Colors.white,
+                                            color: Theme.of(context).cardColor
                                           ),
                                         ),
                                       ),
                                     ),
                                               
-                                    Expanded(child: DottedLine(dashLength:12, dashGapLength:10)),
+                                    Expanded(child: DottedLine(dashLength:12, dashGapLength:10, dashColor: Theme.of(context).primaryColorDark)),
                                               
                                     ClipRect(
                                       child: Align(
@@ -652,7 +613,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                           height: 40,
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
-                                            color: Colors.white,
+                                            color: Theme.of(context).cardColor
                                           ),
                                         ),
                                       ),
@@ -672,7 +633,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/advertencia.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -680,11 +641,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         child: Text(
                                           'Mensaje: ${abc.data!.trips[1].closed![index].ticketMessage}',
                                           textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 12.0,
-                                          ),
+                                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12)
                                         ),
                                       ),
                                     ],
@@ -705,7 +662,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/advertencia.svg",
-                                          color: Color.fromRGBO(40, 93, 169, 1),
+                                          color: Theme.of(context).primaryIconTheme.color
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -713,11 +670,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         child: Text(
                                           'Respuesta de ${abc.data!.trips[1].closed![index].userName}: ${abc.data!.trips[1].closed![index].replyMessage}',
                                           textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 12.0,
-                                          ),
+                                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12)
                                         ),
                                       ),
                                     ],
