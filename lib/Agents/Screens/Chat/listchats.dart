@@ -129,18 +129,13 @@ class _ChatsListState extends State<ChatsList> {
       listaChats != null ? listaChats2.length>0 ? contenido() :
       Center(
         child: Text("No hay salas de chat actualmente",
-        style: TextStyle(
-          color: Colors.black, 
-          fontSize: 17)
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 17)
         ),
       ) : 
       Center(
         child: Text(
           "No hay salas de chat actualmente",
-          style: TextStyle(
-            color: Colors.black, 
-            fontSize: 17
-          )
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 17)
         ),
       ):Column(
         children: [
