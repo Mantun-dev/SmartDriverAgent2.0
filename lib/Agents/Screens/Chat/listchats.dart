@@ -128,14 +128,30 @@ class _ChatsListState extends State<ChatsList> {
       child: cargarP!=false?
       listaChats != null ? listaChats2.length>0 ? contenido() :
       Center(
-        child: Text("No hay salas de chat actualmente",
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 17)
+        child: Column(
+          children: [
+            Text("No hay salas de chat actualmente",
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 17)
+            ),
+            Container(
+              height: 1,
+              color: Theme.of(context).dividerColor,
+            ),
+          ],
         ),
       ) : 
       Center(
-        child: Text(
-          "No hay salas de chat actualmente",
-          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 17)
+        child: Column(
+          children: [
+            Text(
+              "No hay salas de chat actualmente",
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 17)
+            ),
+            Container(
+              height: 1,
+              color: Theme.of(context).dividerColor,
+            ),
+          ],
         ),
       ):Column(
         children: [
