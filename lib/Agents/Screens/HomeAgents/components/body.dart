@@ -23,6 +23,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../Chat/listchats.dart';
 import '../../Details/details_screen_changes.dart';
 import '../../Details/details_screen_qr.dart';
+import '../../Notifications/notification.dart';
 import '../../Profile/profile_screen.dart';
 
 class Body extends StatefulWidget {
@@ -224,7 +225,10 @@ BuildContext? contextP;
         ));
         break;
       case 4:
-        
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return NotificationPage();
+          })
+        );
         break;
       case 5:
         fetchProfile().then((value) {
