@@ -1986,7 +1986,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       }else{
                                         QuickAlert.show(
                                           context: context,
-                                          title: "Error",
+                                          title: "Lo sentimos",
                                           text: dataR["message"],
                                           type: QuickAlertType.error
                                         );
@@ -2052,7 +2052,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                       };
 
                       http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
-                      
+
+                       
 
                       var dataR = json.decode(response.body);
 
@@ -2068,9 +2069,10 @@ class _NextTripScreenState extends State<NextTripScreen>
                           item2=getSolicitudes();
                         });
                       }else{
+                         
                         QuickAlert.show(
                           context: context,
-                          title: "Error",
+                          title: "Lo sentimos",
                           text: dataR["message"],
                           type: QuickAlertType.error
                         );
@@ -2251,7 +2253,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                       }else{
                                         QuickAlert.show(
                                           context: context,
-                                          title: "Error",
+                                          title: "Lo sentimos",
                                           text: dataR["message"],
                                           type: QuickAlertType.error
                                         );
