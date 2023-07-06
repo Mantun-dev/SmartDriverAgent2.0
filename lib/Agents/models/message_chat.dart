@@ -20,7 +20,8 @@ class Message {
         this.ao,
         this.tipo,
         this.leido,
-        this.id2
+        this.id2,
+        this.mostrarF,
     });
 
     String? user;
@@ -34,6 +35,7 @@ class Message {
     String? tipo;
     bool? leido;
     dynamic id2;
+    bool? mostrarF; // Nuevo campo mostrarF
 
     factory Message.fromJson(Map<String, dynamic> json) => Message(
         mensaje: json["mensaje"],
@@ -46,7 +48,8 @@ class Message {
         ao: json["año"],
         tipo: json["tipo"],
         leido: json["leido"],
-        id2: json["_id"]
+        id2: json["_id"],
+        mostrarF: json["mostrarF"], // Agregar el campo mostrarF al constructor
     );
 
     Map<String, dynamic> toJson() => {
@@ -60,6 +63,7 @@ class Message {
         "año": ao,
         "tipo": tipo,
         "leido": leido,
-        "_id": id2
+        "_id": id2,
+        "mostrarF": mostrarF, // Agregar el campo mostrarF al método toJson
     };
 }

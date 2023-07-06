@@ -387,7 +387,11 @@ class _ChatScreenState extends State<ChatScreen> {
                           controller: _scrollController,
                           padding: const EdgeInsets.all(16),
                           itemBuilder: (context, index) {
-                            final message = provider.mensaje[index];
+                            var message = provider.mensaje[index];
+
+                            if(fecha('${message.mes}/${message.dia}/${message.ao}')==true ){
+                              message.mostrarF=true;
+                            }
                             //print(message.user);
                             //print(widget.nombre);
                             return Wrap(
@@ -396,7 +400,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       ? WrapAlignment.end
                                       : WrapAlignment.start,
                               children: [
-                                if(fecha('${message.mes}/${message.dia}/${message.ao}')==true )
+                                if(message.mostrarF==true)
                                   Padding(
                                     padding: const EdgeInsets.only(top: 35, bottom: 35, left: 8, right: 8),
                                     child: Row(
