@@ -65,7 +65,7 @@ class _ItemCardState extends State<ItemCard> {
               Text(
                 widget.plantilla.title,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 15),
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14),
               ),
 
               SizedBox(height: 6),

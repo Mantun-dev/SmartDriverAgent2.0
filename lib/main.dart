@@ -78,7 +78,7 @@ class _MyAppState extends State<MyApp> {
             : 'home',
         routes: {
           'login': (BuildContext context) => UpgradeAlert(child: SplashView()),
-          'home': (BuildContext context) => UpgradeAlert(child: HomeScreen(),),
+          'home': (BuildContext context) => UpgradeAlert(child: HomeScreen()),
         },
       ),
     );
