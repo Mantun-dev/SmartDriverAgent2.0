@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                       Expanded(
                         child: Body(),
                       ),
-                      AppBarPosterior(item:0),
+                      SafeArea(child: AppBarPosterior(item:0)),
                     ],
                   ),
                 ),

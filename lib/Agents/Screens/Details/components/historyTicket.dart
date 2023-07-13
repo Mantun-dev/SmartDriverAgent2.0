@@ -55,7 +55,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                     Expanded(
                       child: cuerpo(),
                     ),
-                    AppBarPosterior(item:-1),
+                    SafeArea(child: AppBarPosterior(item:-1)),
                   ],
                 ),
               ),

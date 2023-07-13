@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'package:event_bus/event_bus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
@@ -55,6 +56,13 @@ class _MyAppState extends State<MyApp> {
       }
       //print(event);
     });
+
+    eventBus.on<ThemeChangeEvent>().listen((event) {
+      // Actualizar el estado o realizar acciones según el evento recibido
+      setState(() { 
+        prefs.tema = !prefs.tema;
+      });
+    });
   }
 
   @override
@@ -84,4 +92,12 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+}
+
+EventBus eventBus = EventBus();
+
+class ThemeChangeEvent {
+  final bool newTheme;
+
+  ThemeChangeEvent(this.newTheme);
 }

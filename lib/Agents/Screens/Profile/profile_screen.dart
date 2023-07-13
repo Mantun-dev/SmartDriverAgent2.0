@@ -55,7 +55,7 @@ class _DataTableExample extends State<ProfilePage> {
                     Expanded(
                       child: body(),
                     ),
-                    AppBarPosterior(item:1),
+                    SafeArea(child: AppBarPosterior(item:1)),
                   ],
                 ),
               ),
@@ -547,7 +547,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         width: 20,
                                         height: 20,
                                         child: SvgPicture.asset(
-                                          "assets/icons/compañia.svg",
+                                          "assets/icons/compania.svg",
                                           color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
@@ -737,7 +737,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         width: 20,
                                         height: 20,
                                         child: SvgPicture.asset(
-                                          "assets/icons/compañia.svg",
+                                          "assets/icons/compania.svg",
                                           color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
@@ -764,7 +764,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         width: 20,
                                         height: 20,
                                         child: SvgPicture.asset(
-                                          "assets/icons/compañia.svg",
+                                          "assets/icons/compania.svg",
                                           color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),

@@ -534,8 +534,9 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: GestureDetector(
                                 onTap: () {
-                                  prefs.tema=!prefs.tema;
-                                  WidgetsBinding.instance.reassembleApplication();
+                                  
+                                  Navigator.pop(context);
+                                  eventBus.fire(ThemeChangeEvent(true)); // Cambia el valor de prefs.tema a true
                                   
                                 },
                                 child: Row(

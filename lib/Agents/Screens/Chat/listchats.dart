@@ -115,7 +115,7 @@ class _ChatsListState extends State<ChatsList> {
                         ),
                       )
                     ),
-                    AppBarPosterior(item:3),
+                    SafeArea(child: AppBarPosterior(item:3)),
                   ],
                 ),
               ),

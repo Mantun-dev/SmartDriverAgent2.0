@@ -45,7 +45,7 @@ class _DetailScreenHistoryTripState extends State<DetailScreenHistoryTrip> {
                       Expanded(
                         child: Body(plantilla: widget.plantilla),
                       ),
-                      AppBarPosterior(item:-1),
+                      SafeArea(child: AppBarPosterior(item:-1)),
                     ],
                   ),
                 ),

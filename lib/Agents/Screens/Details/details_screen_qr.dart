@@ -44,7 +44,7 @@ class _DetailScreenQrState extends State<DetailScreenQr> {
                       Expanded(
                         child: Body(plantilla: widget.plantilla),
                       ),
-                      AppBarPosterior(item:-1),
+                      SafeArea(child: AppBarPosterior(item:-1)),
                     ],
                   ),
                 ),

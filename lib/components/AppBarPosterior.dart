@@ -38,7 +38,7 @@ class _AppBarPosterior extends State<AppBarPosterior> {
 
     return AppBar(
       backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-      elevation: 10,
+      elevation: 0,
       iconTheme: IconThemeData(size: 25),
       automaticallyImplyLeading: false, // Ocultar el ícono del Drawer
       actions: <Widget>[

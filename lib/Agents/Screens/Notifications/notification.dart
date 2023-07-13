@@ -47,7 +47,7 @@ class _NotificationPage extends State<NotificationPage> {
                     Expanded(
                       child: body(),
                     ),
-                    AppBarPosterior(item:2),
+                    SafeArea(child: AppBarPosterior(item:2)),
                   ],
                 ),
               ),

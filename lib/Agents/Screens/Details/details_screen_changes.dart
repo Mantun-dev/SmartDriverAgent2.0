@@ -44,7 +44,7 @@ class _DetailScreenChangesState extends State<DetailScreenChanges> {
                       Expanded(
                         child: Body(plantilla: widget.plantilla),
                       ),
-                      AppBarPosterior(item:-1),
+                      SafeArea(child: AppBarPosterior(item:-1)),
                     ],
                   ),
                 ),

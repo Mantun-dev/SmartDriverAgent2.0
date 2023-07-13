@@ -44,7 +44,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       Expanded(
                         child: Body(plantilla: widget.plantilla),
                       ),
-                      AppBarPosterior(item:-1),
+                      SafeArea(child: AppBarPosterior(item:-1)),
                     ],
                   ),
                 ),
