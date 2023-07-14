@@ -7,7 +7,10 @@ import 'package:flutter_auth/Agents/models/profileAgent.dart';
 //import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/components/AppBarSuperior.dart';
 import 'package:flutter_auth/components/backgroundB.dart';
+import 'package:intl/intl.dart';
 import '../../../components/AppBarPosterior.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' show json;
 
 void main() {
   runApp(NotificationPage());
@@ -22,15 +25,23 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPage extends State<NotificationPage> {
   //variables
-  Future<Profile>? item;
-  Future<DataAgent>? itemx;
+  var listaNotificaciones;
 
   @override
   void initState() {
     super.initState();
-    itemx = fetchRefres();
-    //indexar variable a fetch
-    item = fetchProfile();
+    getData();
+  }
+
+  void getData() async{
+    http.Response response2 = await http.get(Uri.parse('https://smtdriver.com/api/getAgentNotifications/${prefs.usuarioId}'));
+    var resp2 = json.decode(response2.body);
+    print(response2.body);
+    if(resp2['ok']==true){
+      setState(() {
+        listaNotificaciones=resp2['agentNotifications'];
+      });
+    }
   }
 
   @override
@@ -54,10 +65,41 @@ class _NotificationPage extends State<NotificationPage> {
     );
   }
 
+  String getFecha(String dataFecha) {
+    DateTime dateTime = DateTime.parse(dataFecha);
+    DateTime now = DateTime.now();
+    DateTime yesterday = DateTime(now.year, now.month, now.day - 1);
+
+    String formattedDate;
+
+    if (dateTime.year == now.year &&
+        dateTime.month == now.month &&
+        dateTime.day == now.day) {
+      formattedDate = 'Hoy';
+    } else if (dateTime.year == yesterday.year &&
+        dateTime.month == yesterday.month &&
+        dateTime.day == yesterday.day) {
+      formattedDate = 'Ayer';
+    } else {
+      formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
+    }
+
+    return formattedDate;
+  }
+
+  String getHora(String dataFecha) {
+    DateTime dateTime = DateTime.parse(dataFecha);
+    String formattedTime = DateFormat('hh:mm a').format(dateTime);
+
+    return formattedTime;
+  }
+
   Widget body(){
+    Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Container(
+        width: size.width,
         decoration: BoxDecoration(
           border: Border.all( 
             color: Theme.of(context).disabledColor,
@@ -69,55 +111,66 @@ class _NotificationPage extends State<NotificationPage> {
 
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Hoy',
-                  style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 15),
-                  textAlign: TextAlign.left,
+          child: listaNotificaciones != null ?
+            listaNotificaciones.length <=0 
+              ? Center(
+                child: Column(
+                  children: [
+                    Text("No hay notificaciones pendientes",
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 17)
+                    ),
+                    Container(
+                      height: 1,
+                      color: Theme.of(context).dividerColor,
+                    ),
+                  ],
                 ),
-                SizedBox(height: 10),
-
-                Text(
-                  'Tiene 1 viaje(s) donde confirmó y no salió a tomar el transporte. Si esto ocurre por tercera vez, el sistema le dará de baja y no será agendado para el servicio de transporte. Deberá comunicarse con su supervisor.',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(height: 5),
-
-                Text(
-                  '11:02 AM',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(height: 20),
-
-                //---------------------------------------------
-                Text(
-                  'Ayer',
-                  style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 15),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(height: 10),
-
-                Text(
-                  'Has agregado un nuevo viaje.',
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(height: 5),
-
-                Text(
-                  '17:30 PM',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(height: 20),
+              ):
+            SingleChildScrollView(
+              child: ListView.builder(
+                itemCount: listaNotificaciones.length,
+                shrinkWrap: true,
+                padding: EdgeInsets.only(top: 16),
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
                 
-              ],
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        getFecha(listaNotificaciones[index]['notificationCreated']),
+                        style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 15),
+                        textAlign: TextAlign.left,
+                      ),
+                      SizedBox(height: 10),
+            
+                      Text(
+                        '${listaNotificaciones[index]['notificationDescription']}',
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
+                        textAlign: TextAlign.left,
+                      ),
+                      SizedBox(height: 5),
+            
+                      Text(
+                        getHora(listaNotificaciones[index]['notificationCreated']),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
+                        textAlign: TextAlign.left,
+                      ),
+                      SizedBox(height: 20),
+                      
+                    ],
+                  );
+                },
+              ),
+            ):Column(
+            children: [
+              Text(
+              "Cargando...",
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 17)
             ),
+              SizedBox(height: 10),
+              CircularProgressIndicator(),
+            ],
           ),
         ),
         

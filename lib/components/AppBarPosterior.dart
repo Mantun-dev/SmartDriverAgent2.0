@@ -24,6 +24,7 @@ class _AppBarPosterior extends State<AppBarPosterior> {
   int? counter;
   String? tripIdTologin;
   String? driverId;
+  int? totalNotificaciones;
 
   _AppBarPosterior({this.item});
 
@@ -157,7 +158,7 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                       border: Border.all(color: Theme.of(context).hoverColor, width: 1.5)),
                   child: Center(
                     child:   Text(
-                        '0',
+                        counter!=null?'$totalNotificaciones':'0',
                         style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hoverColor)
                       ),
                   ),
@@ -311,8 +312,16 @@ class _AppBarPosterior extends State<AppBarPosterior> {
 
     var listaChats = resp['salas'] as List<dynamic>;
 
+    http.Response response2 = await http.get(Uri.parse('https://smtdriver.com/api/getAgentNotifications/${prefs.usuarioId}'));
+    var resp2 = json.decode(response2.body);
+
     if(mounted){
-      setState(() {counter= listaChats.length;});
+      setState(() {
+        counter= listaChats.length;
+        if(resp2['ok']==true){
+          totalNotificaciones = resp2['totalAgentNotifications'];
+        }
+      });
     }
   }
 

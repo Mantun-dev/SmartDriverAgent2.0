@@ -213,115 +213,117 @@ class _ChatsListState extends State<ChatsList> {
             ),
     
             listaChats != null ?
-            ListView.builder(
-              itemCount: listaChats.length,
-              shrinkWrap: true,
-              padding: EdgeInsets.only(top: 16),
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-    
-                return GestureDetector(
-                  onTap: () {
-                    fetchProfile().then((value) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return ChatScreen(
-                          id: id!,
-                          rol: rol!,
-                          nombre: '${value.agentFullname}',
-                          sala: '${listaChats[index]['id']}',
-                          driverId: '${listaChats[index]['idM']}'
-                        );
-                      }));
-                    });
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(top:20),
-                    child: Stack(
-                      children: [
-                        Container(
-                          width: 50,
-                          height: 50,
-                          child: Image.asset(
-                            "assets/images/perfilmotorista.png",
+            SingleChildScrollView(
+              child: ListView.builder(
+                itemCount: listaChats.length,
+                shrinkWrap: true,
+                padding: EdgeInsets.only(top: 16),
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                
+                  return GestureDetector(
+                    onTap: () {
+                      fetchProfile().then((value) {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return ChatScreen(
+                            id: id!,
+                            rol: rol!,
+                            nombre: '${value.agentFullname}',
+                            sala: '${listaChats[index]['id']}',
+                            driverId: '${listaChats[index]['idM']}'
+                          );
+                        }));
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top:20),
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: 50,
+                            height: 50,
+                            child: Image.asset(
+                              "assets/images/perfilmotorista.png",
+                            ),
                           ),
-                        ),
-                  
-                        Positioned(
-                          left: 60,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                listaChats[index]['NombreM'],
-                                style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 13),
-                              ),
-                              Text(
-                                '# de viaje: ${listaChats[index]['id']}',
-                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 10),
-                              ),
-                            ],
+                    
+                          Positioned(
+                            left: 60,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  listaChats[index]['NombreM'],
+                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 13),
+                                ),
+                                Text(
+                                  '# de viaje: ${listaChats[index]['id']}',
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 10),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-
-                        Positioned(
-                          left: 60,
-                          bottom: 5,
-                          child: listaChats[index]['esAgente'] == true ?
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 15,
-                                      height: 15,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/ignorado.svg",
-                                        color: listaChats[index]['Leido'] == true?Theme.of(context).focusColor
-                                          :Theme.of(context).splashColor,
+            
+                          Positioned(
+                            left: 60,
+                            bottom: 5,
+                            child: listaChats[index]['esAgente'] == true ?
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 15,
+                                        height: 15,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/ignorado.svg",
+                                          color: listaChats[index]['Leido'] == true?Theme.of(context).focusColor
+                                            :Theme.of(context).splashColor,
+                                        ),
+                                      ),
+                                      Text(
+                                        ' Tu: ${listaChats[index]['UltimoM']}',
+                                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12),
+                                      ),
+                                    ],
+                                  ):
+                                  Text(
+                                    '${listaChats[index]['UltimoM']}',
+                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12),
+                                  ),
+                          ),
+                                if (listaChats[index]['sinLeer'] != 0)
+                                  Positioned(
+                                    right: 0,
+                                    bottom: 5,
+                                    child: Container(
+                                      margin: const EdgeInsets.only(left: 5),
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).focusColor,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Text(
+                                        '${listaChats[index]['sinLeer']}',
+                                        style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 9),
                                       ),
                                     ),
-                                    Text(
-                                      ' Tu: ${listaChats[index]['UltimoM']}',
-                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12),
-                                    ),
-                                  ],
-                                ):
-                                Text(
-                                  '${listaChats[index]['UltimoM']}',
-                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12),
-                                ),
-                        ),
-                              if (listaChats[index]['sinLeer'] != 0)
-                                Positioned(
-                                  right: 0,
-                                  bottom: 5,
-                                  child: Container(
-                                    margin: const EdgeInsets.only(left: 5),
-                                    padding: const EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).focusColor,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Text(
-                                      '${listaChats[index]['sinLeer']}',
-                                      style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 9),
-                                    ),
                                   ),
-                                ),
-
-                        Positioned(
-                          right: 0,
-                          child: Text(
-                                  '${listaChats[index]['TiempoUltimoM']}',
-                                  style: listaChats[index]['sinLeer'] != 0? 
-                                    Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 12):
-                                    Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12)
-                                  ,
-                                ),
-                        ),
-                      ],
+            
+                          Positioned(
+                            right: 0,
+                            child: Text(
+                                    '${listaChats[index]['TiempoUltimoM']}',
+                                    style: listaChats[index]['sinLeer'] != 0? 
+                                      Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 12):
+                                      Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12)
+                                    ,
+                                  ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ):Column(
             children: [
               Text(
