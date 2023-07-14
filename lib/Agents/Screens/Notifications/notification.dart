@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/Agents/models/dataAgent.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 //import 'package:flutter_auth/Agents/models/dataAgent.dart';
-import 'package:flutter_auth/Agents/models/profileAgent.dart';
 //import 'package:flutter_auth/Agents/models/profileAgent.dart';
 //import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/components/AppBarSuperior.dart';
