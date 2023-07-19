@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
-import 'package:flutter_auth/components/add_cart.dart';
 import 'package:flutter_auth/components/description.dart';
-import 'package:flutter_auth/components/plantilla_titleWithImage.dart';
-import 'package:flutter_auth/constants.dart';
 //import 'package:flutter_auth/constants.dart';
 
 class Body extends StatefulWidget {
@@ -21,45 +18,25 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return SingleChildScrollView(
+    return widget.plantilla.id!=4?Padding(
+      padding: const EdgeInsets.all(12.0),
       child: Container(
-        child: Column(
-          children: [
-            SizedBox(
-              height: size.height,
-              child: Stack(
-                children: [
-                  Container(
-                    width: size.width,
-                    height: size.height,
-                    margin: EdgeInsets.only(top: size.height * 0.27),
-                    padding: EdgeInsets.only(
-                      top: 30.0,
-                      left: 0,
-                      right: 0,
-                    ),
-                    decoration: BoxDecoration(
-                      color: backgroundColor,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(24),
-                          topRight: Radius.circular(24)),
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Description(plantilla: widget.plantilla),
-                          AddToCart(plantilla: widget.plantilla),
-                        ],
-                      ),
-                    ),
-                  ),
-                  PlantillaTitleWithImage(plantilla: widget.plantilla),
-                ],
-              ),
-            ),
-          ],
+        width: size.width,
+        decoration: BoxDecoration(
+          border: Border.all( 
+            color: Theme.of(context).disabledColor,
+            width: 2
+          ),
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(20)
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Description(plantilla: widget.plantilla),
+          ),
         ),
       ),
-    );
+    ):Description(plantilla: widget.plantilla);
   }
 }
