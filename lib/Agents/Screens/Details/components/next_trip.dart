@@ -235,6 +235,7 @@ class _NextTripScreenState extends State<NextTripScreen>
 //función para confirmar trip
   Future<dynamic> fetchConfirm(
       String agentUser, String tripId, String condition, String comment) async {
+        LoadingIndicatorDialog().show(context);
     //<List<Map<String, dynamic>>>
     prefs.tripId = tripId;
     Map data = {
@@ -251,31 +252,35 @@ class _NextTripScreenState extends State<NextTripScreen>
         .get(Uri.parse('$ip/api/refreshingAgentData/${prefs.nombreUsuario}'));
     final resps = DataAgent.fromJson(json.decode(responses.body));
     //alertas y redirecciones
-    if (response.statusCode == 200) {
-      Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => DetailScreen(plantilla: plantilla[0])))
-          .then((_) => DetailScreen(plantilla: plantilla[0]));
-      QuickAlert.show(
+
+    LoadingIndicatorDialog().dismiss();
+    if(mounted){
+      if (response.statusCode == 200) {
+        Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => DetailScreen(plantilla: plantilla[0])))
+            .then((_) => DetailScreen(plantilla: plantilla[0]));
+        QuickAlert.show(
+            context: context,
+            title: "Enviado",
+            text: 'Su viaje ha sido confirmado',
+            type: QuickAlertType.success);
+
+        Map data2 = {"idU": resps.agentId.toString(), "Estado": 'CONFIRMADO'};
+        String sendData2 = json.encode(data2);
+        await http.put(Uri.parse('https://apichat.smtdriver.com/api/salas/$tripId'), body: sendData2, headers: {"Content-Type": "application/json"});
+
+        //print(algoe.body);
+        //showAlertDialog();
+      } else if (response.statusCode == 500) {
+        QuickAlert.show(
           context: context,
-          title: "Enviado",
-          text: 'Su viaje ha sido confirmado',
-          type: QuickAlertType.success);
-
-      Map data2 = {"idU": resps.agentId.toString(), "Estado": 'CONFIRMADO'};
-      String sendData2 = json.encode(data2);
-      await http.put(Uri.parse('https://apichat.smtdriver.com/api/salas/$tripId'), body: sendData2, headers: {"Content-Type": "application/json"});
-
-      //print(algoe.body);
-      //showAlertDialog();
-    } else if (response.statusCode == 500) {
-      QuickAlert.show(
-        context: context,
-        title: "Alerta",
-        text: resp.message,
-        type: QuickAlertType.error
-      );
+          title: "Alerta",
+          text: resp.message,
+          type: QuickAlertType.error
+        );
+      }
     }
     return Message.fromJson(json.decode(response.body));
   }
@@ -283,6 +288,7 @@ class _NextTripScreenState extends State<NextTripScreen>
   //función para cancel trip
   Future<dynamic> fetchCancel(String agentUser, String tripId,
       String conditionC, String message) async {
+        LoadingIndicatorDialog().show(context);
     //<List<Map<String, dynamic>>>
     Map data = {
       'agentUser': agentUser,
@@ -305,7 +311,9 @@ class _NextTripScreenState extends State<NextTripScreen>
 
     //redirección y alertas
     razonCancelar="";
-    if (response.statusCode == 200) {
+    LoadingIndicatorDialog().dismiss();
+    if(mounted){
+      if (response.statusCode == 200) {
       Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -323,6 +331,7 @@ class _NextTripScreenState extends State<NextTripScreen>
           title: "Alerta",
           text: resp.message,
           type: QuickAlertType.error);
+    }
     }
     return Message.fromJson(json.decode(response.body));
   }
@@ -1270,13 +1279,26 @@ class _NextTripScreenState extends State<NextTripScreen>
                               ),
                               backgroundColor: Color.fromRGBO(40, 93, 169, 1),
                             ),
-                            onPressed: () => {
-                              ChatApis().confirmOrCancel('CONFIRMADO'),
-                              fetchConfirm(
-                                prefs.nombreUsuario,
-                                '${abc.data?.trips[index].tripId}',
-                                condition,comment
-                              ),
+                            onPressed: () {
+                                ConfirmationDialog confirmationDialog = ConfirmationDialog();
+                                confirmationDialog.show(
+                                  context,
+                                  title: '¿Desea confirmar el viaje?',
+                                  type: "0",
+                                  onConfirm: () async {
+
+                                    ChatApis().confirmOrCancel('CONFIRMADO');
+                                    fetchConfirm(
+                                      prefs.nombreUsuario,
+                                      '${abc.data?.trips[index].tripId}',
+                                      condition,comment
+                                    );
+                                    
+                                  },
+                                  onCancel: () {
+
+                                  },
+                                );
                             },
                             child: Text(
                               'Confirmar',
@@ -2396,13 +2418,26 @@ class _NextTripScreenState extends State<NextTripScreen>
                                     ),
                                     backgroundColor: Color.fromRGBO(40, 93, 169, 1),
                                   ),
-                                  onPressed: () => {
-                                    ChatApis().confirmOrCancel('CONFIRMADO'),
+                                  onPressed: () {
+                                    ConfirmationDialog confirmationDialog = ConfirmationDialog();
+                                confirmationDialog.show(
+                                  context,
+                                  title: '¿Desea confirmar el viaje?',
+                                  type: "0",
+                                  onConfirm: () async {
+
+                                    ChatApis().confirmOrCancel('CONFIRMADO');
                                     fetchConfirm(
                                       prefs.nombreUsuario,
                                       '${abc.data?.trips[index].tripId}',
                                       condition,comment
-                                    ),
+                                    );
+                                    
+                                  },
+                                  onCancel: () {
+
+                                  },
+                                );
                                   },
                                   child: Text(
                                     'Confirmar',
