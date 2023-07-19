@@ -518,7 +518,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           NeumorphicButton(
                             margin: EdgeInsets.only(top: 0),
                             onPressed: () {
-                              _messageInputController.text = "Viene en camino?";
+                              _messageInputController.text = "¿Viene en camino?";
                               if (_messageInputController.text.trim().isNotEmpty) {
                                 _sendMessage(_messageInputController.text);
                               }
@@ -648,7 +648,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 controller: _messageInputController,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(left: 10),
-                                  hintText: 'Escriba su mensaje aquí...',
+                                  hintText: 'Mensaje',
                                   hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
                                   border: InputBorder.none,
                                 ),
