@@ -145,7 +145,7 @@ class _BodyState extends State<Body> {
         Padding(
           padding: const EdgeInsets.all(30.0),
           child: Text(
-            "Escribe tu usuario designado y un correo válido, se enviará un código de confirmación para que puedas registrarte.",
+            "Escribe tu número de empleado asignado o identidad y tu correo electrónico. Te enviaremos un código de confirmación para que puedas registrarte.",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.black,fontSize: 12),
           ),
@@ -268,7 +268,7 @@ class _BodyState extends State<Body> {
                   color: Color.fromRGBO(40, 93, 169, 1),
                   size: 30,
                 ),
-                hintText: "Usuario",
+                hintText: "Número de empleado o identidad",
                 hintStyle: TextStyle(color: Color.fromRGBO(134, 134, 134, 1)),
                 border: InputBorder.none,
               ),
@@ -299,7 +299,7 @@ class _BodyState extends State<Body> {
               //onChanged: onChanged,
               cursorColor: thirdColor,
               decoration: InputDecoration(
-                hintText: "Ingresa tu email",
+                hintText: "Email",
                 icon: Icon(
                   Icons.email_outlined,
                   color: Color.fromRGBO(40, 93, 169, 1),
