@@ -345,7 +345,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         ),
                                       ),
                               
-                                      SizedBox(width: 5),
+                                      SizedBox(width: 10),
                                       Flexible(
                                         child: Text(
                                           '# Ticket: ${abc.data!.trips[0].pendant![index].ticketId}',
@@ -545,7 +545,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         ),
                                       ),
                               
-                                      SizedBox(width: 5),
+                                      SizedBox(width: 10),
                                       Flexible(
                                         child: Text(
                                           '# Ticket: ${abc.data!.trips[1].closed![index].ticketId}',

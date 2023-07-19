@@ -208,7 +208,7 @@ BuildContext? contextP;
         break;
       case 1:
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return DetailScreen(plantilla: plantilla[1]);
+          return DetailScreenHistoryTrip(plantilla: plantilla[1]);
           }
         ));
         break;

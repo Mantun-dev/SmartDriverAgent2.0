@@ -166,31 +166,6 @@ class _DataTableExample extends State<ProfilePage> {
                                         width: 18,
                                         height: 18,
                                         child: SvgPicture.asset(
-                                          "assets/icons/usuario.svg",
-                                          color: Theme.of(context).primaryIconTheme.color,
-                                        ),
-                                      ),
-                                      SizedBox(width: 5),
-                                      Text(
-                                        'Usuario: ',
-                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  height: 1,
-                                  color: Theme.of(context).dividerColor,
-                                ),
-                                SizedBox(height: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
                                           "assets/icons/telefono_num.svg",
                                           color: Theme.of(context).primaryIconTheme.color,
                                         ),
@@ -322,43 +297,7 @@ class _DataTableExample extends State<ProfilePage> {
                                   height: 1,
                                   color: Theme.of(context).dividerColor,
                                 ),
-                                SizedBox(height: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/usuario.svg",
-                                          color: Theme.of(context).primaryIconTheme.color,
-                                        ),
-                                      ),
-                                      SizedBox(width: 5),
-                                      Flexible(
-                                        child: RichText(
-                                          text: TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: "Usuario: ",
-                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
-                                              ),
-                                              TextSpan(
-                                                text: "${abc.data!.agentUser}",
-                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  height: 1,
-                                  color: Theme.of(context).dividerColor,
-                                ),
+
                                 SizedBox(height: 20),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
@@ -554,31 +493,6 @@ class _DataTableExample extends State<ProfilePage> {
                                       SizedBox(width: 5),
                                       Text(
                                         'Cuenta: ',
-                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  height: 1,
-                                  color: Theme.of(context).dividerColor,
-                                ),
-                                SizedBox(height: 20),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/usuario.svg",
-                                          color: Theme.of(context).primaryIconTheme.color,
-                                        ),
-                                      ),
-                                      SizedBox(width: 5),
-                                      Text(
-                                        'Usuario: ',
                                         style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
                                       ),
                                     ],
@@ -794,43 +708,7 @@ class _DataTableExample extends State<ProfilePage> {
                                 ),
                                 SizedBox(height: 20),
                                 },
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/usuario.svg",
-                                          color: Theme.of(context).primaryIconTheme.color,
-                                        ),
-                                      ),
-                                      SizedBox(width: 5),
-                                      Flexible(
-                                        child: RichText(
-                                          text: TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: "Usuario: ",
-                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
-                                              ),
-                                              TextSpan(
-                                                text: "${abc.data!.agentUser}",
-                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  height: 1,
-                                  color: Theme.of(context).dividerColor,
-                                ),
-                                SizedBox(height: 20),
+
                                 Padding(
                                   padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
                                   child: Row(
@@ -1612,7 +1490,7 @@ class _DataTableExample extends State<ProfilePage> {
                                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12)
                                   ),
                                   TextSpan(
-                                    text: "Solicita cambio aquí",
+                                    text: "Solicita un cambio aquí",
                                     style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 12)
                                   ),
                                 ],

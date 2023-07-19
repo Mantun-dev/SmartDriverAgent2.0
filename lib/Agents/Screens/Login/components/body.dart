@@ -276,7 +276,7 @@ class _BodyState extends State<Body> {
                 color: Colors.white,
                 size: 30,
               ),
-              hintText: "Usuario",
+              hintText: "Número de empleado o identidad",
               hintStyle: TextStyle(color: Colors.white),
               border: InputBorder.none,
             ),

@@ -482,7 +482,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                     child: Row(
                       children: [
                         Text(
-                          'Solicitudes',
+                          'Confirmaciones',
                           style: TextStyle(
                             color: !viajesProceso ? Colors.white : Theme.of(context).primaryColorDark,
                           ),
@@ -646,11 +646,22 @@ class _NextTripScreenState extends State<NextTripScreen>
                       ),
                       SizedBox(width: 5),
                       Flexible(
-                        child: Text(
-                          'Viaje: ${abc.data?.trips[index].tripId}',
-                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
+                        child: RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                            children: [
+                              TextSpan(
+                                text: 'Viaje: ',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                text: '${abc.data?.trips[index].tripId}',
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
+                      )
+
                     ],
                   ),
                     ),
@@ -882,7 +893,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         Padding(
                           padding: const EdgeInsets.only(left:16),
                           child: Text(
-                            'Necesita confirmación para poder asignarle una hora de encuentro',
+                            'Necesitas confirmar para que te asignen una hora de encuentro',
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.red,
@@ -1277,7 +1288,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         Padding(
                           padding: const EdgeInsets.only(left:16),
                           child: Text(
-                            'Viaje confirmado, espere a que el motorista asigne la hora a la que pasará por usted',
+                            '¡Viaje confirmado! Te notificaremos cuando el conductor asigne la hora en la que pasará por ti',
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.green,
@@ -1658,14 +1669,29 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 ),
                                 SizedBox(width: 5),
                                 Flexible(
-                                  child: Text(
-                                    'Viaje: ${abc.data?.trips[index].tripId}',
-                                    style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                                      children: [
+                                        TextSpan(
+                                          text: 'Viaje: ',
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                        TextSpan(
+                                          text: '${abc.data?.trips[index].tripId}',
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
+                                )
                               ],
                             ),
-                            SizedBox(height: 20),
+                            SizedBox(height: 10),
+                            Container(
+                              height: 1,
+                              color: Theme.of(context).dividerColor,
+                                ),
+                            SizedBox(height: 10),
                             Row(
                               children: [
                                 Container(
@@ -1889,7 +1915,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                               Padding(
                                 padding: const EdgeInsets.only(left:16),
                                 child: Text(
-                                  'Necesita confirmación para poder asignarle una hora de encuentro',
+                                  'Necesitas confirmar para que te asignen una hora de encuentro',
                                   style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.red,
@@ -2280,7 +2306,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                               Padding(
                                 padding: const EdgeInsets.only(left:16),
                                 child: Text(
-                                  'Viaje confirmado, espere a que el motorista asigne la hora a la que pasará por usted',
+                                  '¡Viaje confirmado! Te notificaremos cuando el conductor asigne la hora en la que pasará por ti',
                                   style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.green,
@@ -2786,10 +2812,12 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ),
                       ),
                       SizedBox(width: 5),
-                      Text(
-                        'Dirección: ${tripData["agentAddress"]}',
-                        textAlign: TextAlign.left,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
+                      Flexible(
+                        child: Text(
+                          'Dirección: ${tripData["agentAddress"]}',
+                          textAlign: TextAlign.left,
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
+                        ),
                       ),
                     ],
                   ),
@@ -3684,7 +3712,7 @@ class _NextTripScreenState extends State<NextTripScreen>
           child: AlertDialog(shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
             backgroundColor: Theme.of(navigatorKey.currentContext!).cardColor,
             title: Text(
-              '¿Cómo calificaría su último viaje con\n${resp1.driverFullname}?',
+              '¿Cómo calificaría tu último viaje con\n${resp1.driverFullname}?',
               textAlign: TextAlign.center, 
               style: Theme.of(navigatorKey.currentContext!).textTheme.titleMedium!.copyWith(fontSize: 16),
             ), 
@@ -3858,12 +3886,12 @@ class _NextTripScreenState extends State<NextTripScreen>
                                   backgroundColor: Theme.of(navigatorKey.currentContext!).cardColor,
                                   shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
                                   title: Center(
-                                    child: Text('Estamos evaluando a nuestros \nmotoristas, para esto es \nmuy importante su comentario.',textAlign: TextAlign.center, style:Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium)),
+                                    child: Text('Estamos evaluando a nuestros \nmotoristas, para esto es \nmuy importante tu comentario.',textAlign: TextAlign.center, style:Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium)),
                                   content: TextField(
                                     style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                     controller: message,
                                     decoration: InputDecoration(   
-                                      hintText: 'Escriba aquí', 
+                                      hintText: 'Comentario', 
                                       hintStyle: Theme.of(navigatorKey.currentContext!).textTheme.bodySmall!.copyWith(fontSize: 15),
                                     )
                                   ),

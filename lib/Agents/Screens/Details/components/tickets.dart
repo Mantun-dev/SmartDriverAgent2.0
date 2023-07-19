@@ -207,7 +207,7 @@ class _TicketScreenState extends State<TicketScreen> {
                       labelStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
                       prefixIcon: Icon(
                         Icons.message,
-                        color: Theme.of(context).primaryIconTheme.color,
+                        color: Colors.transparent,
                         size: 30,
                       ),
                       enabledBorder: OutlineInputBorder(
@@ -270,7 +270,7 @@ class _TicketScreenState extends State<TicketScreen> {
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HistoryTicketScreen())).then((_) => HomeScreen());
                           },
                           child: Text(
-                            "Tickets anteriores",
+                            "Tickets enviados",
                             style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                           ),
                         ),
