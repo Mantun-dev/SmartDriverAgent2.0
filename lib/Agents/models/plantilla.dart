@@ -23,7 +23,7 @@ List<Plantilla> plantilla = [
       title: "Próximos viajes",
       name: '',
       //size: 100,
-      description: 'Confirma o cancela mi próximo viaje',
+      description: 'Confirmar o cancelar mi próximo viaje',
       image: "assets/icons/proximo_viaje.svg",
       color: Colors.white),
   Plantilla(
