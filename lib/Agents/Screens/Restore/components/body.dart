@@ -141,7 +141,7 @@ class _BodyState extends State<Body> {
                 children: [
                   SizedBox(height: size.height * 0.12),
                   Text(
-                    'Escriba su nombre de usuario, se enviará un enlace al correo para reestablecer tu contraseña',
+                    'Escribe tu número de empleado asignado o identidad, te enviaremos un enlace al correo para que puedas restablecer tu contraseña.',
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: (12.0),
@@ -191,7 +191,7 @@ class _BodyState extends State<Body> {
         Container(
           margin: EdgeInsets.only(left: 10, right: 10),
           child: TextField(
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.black),
             controller: user,
             //onChanged: onChanged,
             cursorColor: thirdColor,
@@ -201,8 +201,8 @@ class _BodyState extends State<Body> {
                 color: Color.fromRGBO(40, 93, 169, 1),
                 size: 30,
               ),
-              hintText: "Ingrese su usuario",
-              hintStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.normal),
+              hintText: "Número de empleado o identidad",
+              hintStyle: TextStyle(color: Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
               border: InputBorder.none,
             ),
           ),
