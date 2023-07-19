@@ -38,7 +38,7 @@ class SolicitudCambio extends StatelessWidget {
               padding: const EdgeInsets.only(right: 10.0),
               child: Flexible(
                 child: Text(
-                  profile != null ? "\tSolicita cambio aquí." : "",
+                  profile != null ? "\tSolicita un cambio aquí." : "",
                   textAlign: TextAlign.left,
                   
                   style: TextStyle(
