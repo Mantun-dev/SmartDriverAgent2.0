@@ -231,6 +231,7 @@ class _TicketScreenState extends State<TicketScreen> {
                  
                 Container(
                   decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColorDark,
                     border: Border.all(color: Theme.of(context).primaryColorDark),
                     borderRadius: BorderRadius.circular(12.0),
                   ),
@@ -254,7 +255,7 @@ class _TicketScreenState extends State<TicketScreen> {
                       },
                       child: Text(
                         "Enviar",
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16, color: Theme.of(context).primaryColorLight),
                       ),
                     ),
                   ),
