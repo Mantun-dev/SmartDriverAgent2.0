@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/Register/fail_screen.dart';
 import 'package:flutter_auth/Agents/models/register.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
+import 'package:flutter_auth/components/progress_indicator.dart';
 
 import 'package:flutter_auth/components/text_field_container.dart';
 import 'package:flutter_svg/svg.dart';
@@ -46,6 +47,7 @@ class _BodyState extends State<Body> {
       String agentPassword,
       String agentPassword2) async {
     //<List<Map<String,Register>>>
+    LoadingIndicatorDialog().show(context);
     Map data = {
       'agentUser': agentUser,
       'agentEmail': agentEmail,
@@ -59,40 +61,43 @@ class _BodyState extends State<Body> {
         await http.post(Uri.parse('$ip/api/register'), body: data);
     final no = Register.fromJson(json.decode(responses.body));
     //redirección y alertas
-    if (responses.statusCode == 200 && no.ok == true) {
+    LoadingIndicatorDialog().dismiss();
+    if(mounted){
+      if (responses.statusCode == 200 && no.ok == true) {
+        Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        transitionDuration: Duration(milliseconds: 500 ), // Adjust the animation duration as needed
+                        pageBuilder: (_, __, ___) => SuccessScreen(),
+                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                          return SlideTransition(
+                            position: Tween<Offset>(
+                              begin: Offset(-1.0, 0.0),
+                              end: Offset.zero,
+                            ).animate(animation),
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
+      } else if (no.ok != true) {
       Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      transitionDuration: Duration(milliseconds: 500 ), // Adjust the animation duration as needed
-                      pageBuilder: (_, __, ___) => SuccessScreen(),
-                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                        return SlideTransition(
-                          position: Tween<Offset>(
-                            begin: Offset(-1.0, 0.0),
-                            end: Offset.zero,
-                          ).animate(animation),
-                          child: child,
-                        );
-                      },
-                    ),
-                  );
-    } else if (no.ok != true) {
-     Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      transitionDuration: Duration(milliseconds: 500 ), // Adjust the animation duration as needed
-                      pageBuilder: (_, __, ___) => FailScreen(),
-                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                        return SlideTransition(
-                          position: Tween<Offset>(
-                            begin: Offset(-1.0, 0.0),
-                            end: Offset.zero,
-                          ).animate(animation),
-                          child: child,
-                        );
-                      },
-                    ),
-                  );
+                      context,
+                      PageRouteBuilder(
+                        transitionDuration: Duration(milliseconds: 500 ), // Adjust the animation duration as needed
+                        pageBuilder: (_, __, ___) => FailScreen(),
+                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                          return SlideTransition(
+                            position: Tween<Offset>(
+                              begin: Offset(-1.0, 0.0),
+                              end: Offset.zero,
+                            ).animate(animation),
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
+      }
     }
     return Register.fromJson(json.decode(responses.body));
   }
@@ -228,27 +233,32 @@ class _BodyState extends State<Body> {
 
   Future<dynamic> fetchUserRegister(String agentUser, String agentEmail) async {
     //<List<Map<String,Register>>>
+    LoadingIndicatorDialog().show(context);
     Map data = {'agentUser': agentUser, 'agentEmail': agentEmail};
     //manejo de api register
     http.Response responses =
         await http.post(Uri.parse('$ip/api/code'), body: data);
     final no = Register.fromJson(json.decode(responses.body));
     //redirección y alertas
-    if (responses.statusCode == 200 && no.ok == true) {
 
-      QuickAlert.show(
-        context: context,
-        title: no.title,
-        text: "Se reenvio el codigo.",
-        type: QuickAlertType.success
-      );
+    LoadingIndicatorDialog().dismiss();
+    if(mounted){
+      if (responses.statusCode == 200 && no.ok == true) {
 
-    } else if (no.ok != true) {
         QuickAlert.show(
-        context: context,
+          context: context,
           title: no.title,
-          text: no.message,
-          type: QuickAlertType.error);
+          text: "Se reenvio el codigo.",
+          type: QuickAlertType.success
+        );
+
+      } else if (no.ok != true) {
+          QuickAlert.show(
+          context: context,
+            title: no.title,
+            text: no.message,
+            type: QuickAlertType.error);
+      }
     }
     return Register.fromJson(json.decode(responses.body));
   }

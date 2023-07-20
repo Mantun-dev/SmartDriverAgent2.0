@@ -576,7 +576,33 @@ BuildContext? contextP;
                     );
                   }
                 } else {
-                  return Text('');
+                  return WillPopScope(
+                    onWillPop: () async => false,
+                    child: SimpleDialog(
+                       elevation: 20,
+                      backgroundColor: Theme.of(context).cardColor,
+                      children: [
+                        Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  'Cargando menú...', 
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                  ),
+                              )
+                            ],
+                          ),
+                        )
+                      ] ,
+                    ),
+                  );
                 }
               },
             ),
@@ -752,7 +778,33 @@ BuildContext? contextP;
                   } else if (snapshot.hasError) {
                     return Text('');
                   } else {
-                    return CircularProgressIndicator();
+                    return WillPopScope(
+                    onWillPop: () async => false,
+                    child: SimpleDialog(
+                       elevation: 20,
+                      backgroundColor: Theme.of(context).cardColor,
+                      children: [
+                        Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  'Cargando últimos viajes...', 
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                  ),
+                              )
+                            ],
+                          ),
+                        )
+                      ] ,
+                    ),
+                  );
                   }
                 },
               ),

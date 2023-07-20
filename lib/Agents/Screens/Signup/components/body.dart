@@ -5,6 +5,7 @@ import 'package:flutter_auth/Agents/Screens/Login/login_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Register/register_screen.dart';
 import 'package:flutter_auth/Agents/models/register.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
+import 'package:flutter_auth/components/progress_indicator.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
@@ -29,6 +30,7 @@ class _BodyState extends State<Body> {
   TextEditingController userPasswordC = new TextEditingController();
   bool? _passwordVisibleC;
   String ip = "https://smtdriver.com";
+  bool camposVaciosAlerta = false;
 
   //variables que necesitan incialización que son preferencias de usuarios
   @override
@@ -43,13 +45,17 @@ class _BodyState extends State<Body> {
   //función fetch para registrar usuarios
   Future<dynamic> fetchUserRegister(String agentUser, String agentEmail, password1) async {
     //<List<Map<String,Register>>>
+    LoadingIndicatorDialog().show(context);
     Map data = {'agentUser': agentUser, 'agentEmail': agentEmail};
     //manejo de api register
     http.Response responses =
         await http.post(Uri.parse('$ip/api/code'), body: data);
     final no = Register.fromJson(json.decode(responses.body));
     //redirección y alertas
-    if (responses.statusCode == 200 && no.ok == true) {
+
+    LoadingIndicatorDialog().dismiss();
+    if(mounted){
+      if (responses.statusCode == 200 && no.ok == true) {
       prefs.nombreUsuario = agentUser;
       prefs.emailUsuario = agentEmail;
       prefs.passwordUsuario=password1;
@@ -65,12 +71,13 @@ class _BodyState extends State<Body> {
         type: QuickAlertType.success
       );
 
-    } else if (no.ok != true) {
-        QuickAlert.show(
-        context: context,
-          title: no.title,
-          text: no.message,
-          type: QuickAlertType.error);
+      } else if (no.ok != true) {
+          QuickAlert.show(
+          context: context,
+            title: no.title,
+            text: no.message,
+            type: QuickAlertType.error);
+      }
     }
     return Register.fromJson(json.decode(responses.body));
   }
@@ -176,9 +183,13 @@ class _BodyState extends State<Body> {
                             QuickAlert.show(
                               context: context,
                               title: "Alerta",
-                              text: "Ingrese Contraseña",
+                              text: "Campos Vacios",
                               type: QuickAlertType.error
                             );
+
+                            setState(() {
+                              camposVaciosAlerta = true;
+                            });
                             return;
                           }
 
@@ -190,6 +201,10 @@ class _BodyState extends State<Body> {
                               text: "Confirme su contraseña",
                               type: QuickAlertType.error
                             );
+
+                            setState(() {
+                              camposVaciosAlerta = true;
+                            });
                             return;
                           }
                           await fetchUserRegister(user.text, userEmail.text, userPassword.text);
@@ -271,7 +286,7 @@ class _BodyState extends State<Body> {
                   height: 20,
                 ),
                 hintText: "Número de empleado o identidad",
-                hintStyle: TextStyle(color: Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
+                hintStyle: TextStyle(color: camposVaciosAlerta==true?Colors.red:Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
                 border: InputBorder.none,
               ),
               onChanged: (value) {
@@ -309,7 +324,7 @@ class _BodyState extends State<Body> {
                   height: 20,
                 ),
                 border: InputBorder.none,
-                hintStyle: TextStyle(color: Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
+                hintStyle: TextStyle(color: camposVaciosAlerta==true?Colors.red:Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
               ),
               onChanged: (value) {
                 //prefs.emailUsuario = value;
@@ -341,7 +356,7 @@ class _BodyState extends State<Body> {
               cursorColor: Colors.white,
               decoration: InputDecoration(
                 hintText: "Contraseña",
-                hintStyle: TextStyle(color: Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
+                hintStyle: TextStyle(color: camposVaciosAlerta==true?Colors.red:Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
                 icon: Icon(
                   Icons.lock_outline,
                   color: Color.fromRGBO(40, 93, 169, 1),
@@ -393,7 +408,7 @@ class _BodyState extends State<Body> {
               cursorColor: Colors.white,
               decoration: InputDecoration(
                 hintText: "Confirmar contraseña",
-                hintStyle: TextStyle(color: Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
+                hintStyle: TextStyle(color: camposVaciosAlerta==true?Colors.red:Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
                 icon: Icon(
                   Icons.lock_outline,
                   color: Color.fromRGBO(40, 93, 169, 1),

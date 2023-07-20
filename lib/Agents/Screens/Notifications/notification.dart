@@ -160,16 +160,33 @@ class _NotificationPage extends State<NotificationPage> {
                   );
                 },
               ),
-            ):Column(
-            children: [
-              Text(
-              "Cargando...",
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 17)
-            ),
-              SizedBox(height: 10),
-              CircularProgressIndicator(),
-            ],
-          ),
+            ):WillPopScope(
+                    onWillPop: () async => false,
+                    child: SimpleDialog(
+                       elevation: 20,
+                      backgroundColor: Theme.of(context).cardColor,
+                      children: [
+                        Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  'Cargando...', 
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                  ),
+                              )
+                            ],
+                          ),
+                        )
+                      ] ,
+                    ),
+                  ),
         ),
         
       ),

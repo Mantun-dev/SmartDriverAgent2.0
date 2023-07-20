@@ -5,6 +5,7 @@ import 'package:flutter_auth/Agents/Screens/Login/login_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Restore/components/background.dart';
 import 'package:flutter_auth/Agents/models/register.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
+import 'package:flutter_auth/components/progress_indicator.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
@@ -24,6 +25,8 @@ class _BodyState extends State<Body> {
   final prefs = new PreferenciasUsuario();
   TextEditingController user = new TextEditingController();
   String ip = "https://smtdriver.com";
+  bool camposVaciosAlerta = false;
+
   @override
   void initState() {
     super.initState();
@@ -32,6 +35,7 @@ class _BodyState extends State<Body> {
 
 //función fetch para restore pass
   Future<dynamic> fetchUserResetPass(String agentUser) async {
+    LoadingIndicatorDialog().show(context);
     //<List<Map<String,Register>>>
     Map data = {'agentUser': agentUser};
 
@@ -41,23 +45,27 @@ class _BodyState extends State<Body> {
     final no = Register.fromJson(json.decode(responses.body));
     //alertas y redirecciones
     //print(responses.body);
-    if (responses.statusCode == 200 && no.ok == true) {
-      setState(() {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
-            (Route<dynamic> route) => false);
-      });
-      QuickAlert.show(
-        context: context,
-          title: no.title,
-          text: no.message,
-          type: QuickAlertType.success);
-    } else if (no.ok != true) {
-      QuickAlert.show(
-        context: context,
-          title: no.title,
-          text: no.message,
-          type: QuickAlertType.error);
+
+    LoadingIndicatorDialog().dismiss();
+    if(mounted){
+      if (responses.statusCode == 200 && no.ok == true) {
+        setState(() {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
+              (Route<dynamic> route) => false);
+        });
+        QuickAlert.show(
+          context: context,
+            title: no.title,
+            text: no.message,
+            type: QuickAlertType.success);
+      } else if (no.ok != true) {
+        QuickAlert.show(
+          context: context,
+            title: no.title,
+            text: no.message,
+            type: QuickAlertType.error);
+      }
     }
     return Register.fromJson(json.decode(responses.body));
   }
@@ -178,6 +186,19 @@ class _BodyState extends State<Body> {
                                 backgroundColor: const Color.fromRGBO(40, 93, 169, 1)
                               ),
                               onPressed: () {
+                                if(user.text.isEmpty){
+                                  QuickAlert.show(
+                                  context: context,
+                                  title: "Alerta",
+                                  text: "Campos Vacios",
+                                  type: QuickAlertType.error
+                                );
+
+                                setState(() {
+                                  camposVaciosAlerta = true;
+                                });
+                            return;
+                                }
                                 fetchUserResetPass(user.text);
                               },
                               child: Text(
@@ -218,7 +239,7 @@ class _BodyState extends State<Body> {
                   height: 20,
                 ),
               hintText: "Número de empleado o identidad",
-              hintStyle: TextStyle(color: Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
+              hintStyle: TextStyle(color: camposVaciosAlerta==true?Colors.red:Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
               border: InputBorder.none,
             ),
           ),
