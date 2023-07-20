@@ -126,7 +126,7 @@ class _DataTableExample extends State<ProfilePage> {
                             Center(
                               child: Text(
                                 '${abc.data!.agentFullname}',
-                                style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 16),
+                                style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                 ),
                             ),
                             SizedBox(height: 30),
@@ -148,7 +148,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       SizedBox(width: 5),
                                       Text(
                                         'No. empleado: ',
-                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -173,7 +173,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       SizedBox(width: 5),
                                       Text(
                                         'Teléfono: ',
-                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -198,7 +198,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       SizedBox(width: 5),
                                       Text(
                                         'Email: ',
-                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -223,7 +223,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       SizedBox(width: 5),
                                       Text(
                                         'Dirección: ',
-                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -249,7 +249,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       Flexible(
                                         child: Text(
                                           'Acceso autorizado: ',
-                                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                         ),
                                       ),
                                     ],
@@ -280,7 +280,7 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "No. empleado: ",
-                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentUser}",
@@ -318,7 +318,7 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Teléfono: ",
-                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentPhone}",
@@ -355,7 +355,7 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Email: ",
-                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentEmail}",
@@ -392,7 +392,7 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Dirección: ",
-                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}",
@@ -432,7 +432,7 @@ class _DataTableExample extends State<ProfilePage> {
                                           children: [
                                             TextSpan(
                                               text: "Acceso autorizado: ",
-                                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                             ),
                                             TextSpan(
                                               text: "${abc.data!.neighborhoodReferencePoint}",
@@ -468,7 +468,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       SizedBox(width: 5),
                                       Text(
                                         'No. empleado: ',
-                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -493,7 +493,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       SizedBox(width: 5),
                                       Text(
                                         'Cuenta: ',
-                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -518,7 +518,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       SizedBox(width: 5),
                                       Text(
                                         'Teléfono: ',
-                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -543,7 +543,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       SizedBox(width: 5),
                                       Text(
                                         'Email: ',
-                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -568,7 +568,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       SizedBox(width: 5),
                                       Text(
                                         'Dirección: ',
-                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -593,7 +593,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       SizedBox(width: 5),
                                       Text(
                                         'Acceso autorizado: ',
-                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -623,7 +623,7 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "No. empleado: ",
-                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentUser}",
@@ -658,7 +658,7 @@ class _DataTableExample extends State<ProfilePage> {
                                       SizedBox(width: 5),
                                       Text(
                                         'Cuenta: ',
-                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                       ),
                                     ],
                                   ),
@@ -689,7 +689,7 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Cuenta: ",
-                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.countName}",
@@ -728,7 +728,7 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Teléfono: ",
-                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentPhone}",
@@ -765,7 +765,7 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Email: ",
-                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentEmail}",
@@ -802,7 +802,7 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Dirección: ",
-                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}",
@@ -842,7 +842,7 @@ class _DataTableExample extends State<ProfilePage> {
                                             children: [
                                               TextSpan(
                                                 text: "Acceso autorizado: ",
-                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
                                               ),
                                               TextSpan(
                                                 text: "${abc.data!.neighborhoodReferencePoint}",
@@ -876,7 +876,7 @@ class _DataTableExample extends State<ProfilePage> {
               Center(
                   child: Text(
                 'Horario laboral',
-                style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 16),
+                style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
               )),
               //ingreso de data por el future builder horario
               FutureBuilder<Profile>(
@@ -906,10 +906,10 @@ class _DataTableExample extends State<ProfilePage> {
                                   columns: [
                                     DataColumn(
                                         label: Text('Día',
-                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14))),
+                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14, fontWeight: FontWeight.w500))),
                                     DataColumn(
                                         label: Text('Salida',
-                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14))),
+                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14, fontWeight: FontWeight.w500))),
                                   ],
                                   rows: [
                                     if (abc.data == null) ...{
@@ -1114,13 +1114,13 @@ class _DataTableExample extends State<ProfilePage> {
                                   columns: [
                                     DataColumn(
                                         label: Text('Día',
-                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14))),
+                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14, fontWeight: FontWeight.w500))),
                                     DataColumn(
                                         label: Text('Entrada',
-                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14))),
+                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14, fontWeight: FontWeight.w500))),
                                     DataColumn(
                                         label: Text('Salida',
-                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14))),
+                                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14, fontWeight: FontWeight.w500))),
                                   ],
                                   rows: [
                                     if (abc.data == null) ...{

@@ -312,12 +312,10 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                         ),
                         child: Container(
                           decoration: BoxDecoration(
-
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Column(
                             children: [
-
                               Padding(
                                 padding: const EdgeInsets.only(right: 40, left: 40, top: 15, bottom: 5),
                                 child: Align(
@@ -340,19 +338,21 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                               child: Text(
                                                 'Fecha: ${abc.data!.trips[0].pendant![index].ticketDatetime}',
                                                 textAlign: TextAlign.left,
-                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12)
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12),
                                               ),
                                             ),
                                           ],
                                         ),
                                       ),
-                              
                                       SizedBox(width: 10),
                                       Flexible(
-                                        child: Text(
-                                          '# Ticket: ${abc.data!.trips[0].pendant![index].ticketId}',
-                                          textAlign: TextAlign.left,
-                                          style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 12, fontWeight: FontWeight.normal)
+                                        child: Align(
+                                          alignment: Alignment.centerRight, // Alinea el texto hacia la esquina derecha
+                                          child: Text(
+                                            '# Ticket: ${abc.data!.trips[0].pendant![index].ticketId}',
+                                            textAlign: TextAlign.left,
+                                            style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 12, fontWeight: FontWeight.normal),
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -379,7 +379,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         child: Text(
                                           'Asunto: ${abc.data!.trips[0].pendant![index].ticketIssue}',
                                           textAlign: TextAlign.left,
-                                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12)
+                                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12),
                                         ),
                                       ),
                                     ],
@@ -454,6 +454,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                 ),
                               ),
                               SizedBox(height: 5),
+
                             ],
                           ),
                         ),
@@ -512,12 +513,10 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                         ),
                         child: Container(
                           decoration: BoxDecoration(
-
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Column(
                             children: [
-
                               Padding(
                                 padding: const EdgeInsets.only(right: 40, left: 40, top: 15, bottom: 5),
                                 child: Align(
@@ -540,19 +539,21 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                               child: Text(
                                                 'Fecha: ${abc.data!.trips[1].closed![index].ticketDatetime}',
                                                 textAlign: TextAlign.left,
-                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12)
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12),
                                               ),
                                             ),
                                           ],
                                         ),
                                       ),
-                              
                                       SizedBox(width: 10),
                                       Flexible(
-                                        child: Text(
-                                          '# Ticket: ${abc.data!.trips[1].closed![index].ticketId}',
-                                          textAlign: TextAlign.left,
-                                          style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 12, fontWeight: FontWeight.normal)
+                                        child: Align(
+                                          alignment: Alignment.centerRight, // Alinea el texto hacia la esquina derecha
+                                          child: Text(
+                                            '# Ticket: ${abc.data!.trips[1].closed![index].ticketId}',
+                                            textAlign: TextAlign.left,
+                                            style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 12, fontWeight: FontWeight.normal),
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -571,7 +572,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         height: 18,
                                         child: SvgPicture.asset(
                                           "assets/icons/calendar-note-svgrepo-com.svg",
-                                          color: Theme.of(context).primaryIconTheme.color
+                                          color: Theme.of(context).primaryIconTheme.color,
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -579,7 +580,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                         child: Text(
                                           'Asunto: ${abc.data!.trips[1].closed![index].ticketIssue}',
                                           textAlign: TextAlign.left,
-                                          style:Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12)
+                                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12),
                                         ),
                                       ),
                                     ],
@@ -684,6 +685,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                               ),
                               
                               SizedBox(height: 5),
+
                             ],
                           ),
                         ),

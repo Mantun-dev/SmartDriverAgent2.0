@@ -766,8 +766,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                   child: Row(
                     children: [
                       Container(
-                        width: 15,
-                        height: 15,
+                        width: 20,
+                        height: 20,
                         child: SvgPicture.asset(
                           "assets/icons/motorista.svg",
                           color: Theme.of(context).primaryIconTheme.color,
@@ -807,13 +807,10 @@ class _NextTripScreenState extends State<NextTripScreen>
                   padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
                   child: Row(
                     children: [
-                      Container(
-                        width: 15,
-                        height: 15,
-                        child: SvgPicture.asset(
-                          "assets/icons/motorista.svg",
-                          color: Theme.of(context).primaryIconTheme.color,
-                        ),
+                      Icon(
+                        Icons.directions_car_outlined,
+                        size: 20,
+                        color:  Theme.of(context).primaryIconTheme.color,
                       ),
                       SizedBox(width: 5),
                       Flexible(
@@ -1916,39 +1913,42 @@ class _NextTripScreenState extends State<NextTripScreen>
                       padding: const EdgeInsets.only(right: 2, left: 2),
                       child: ExpansionTile(
                         collapsedIconColor: Theme.of(context).primaryColorDark,
-                        tilePadding: const EdgeInsets.only(right: 5, left: 10),
+                        tilePadding: const EdgeInsets.only(right: 0, left: 0),
                         title: Column(
                           children: [
                             SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Container(
-                                  width: 18,
-                                  height: 18,
-                                  child: SvgPicture.asset(
-                                    "assets/icons/Numeral.svg",
-                                    color: Theme.of(context).primaryIconTheme.color,
-                                  ),
-                                ),
-                                SizedBox(width: 5),
-                                Flexible(
-                                  child: RichText(
-                                    text: TextSpan(
-                                      style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
-                                      children: [
-                                        TextSpan(
-                                          text: 'Viaje: ',
-                                          style: TextStyle(fontWeight: FontWeight.w500),
-                                        ),
-                                        TextSpan(
-                                          text: '${abc.data?.trips[index].tripId}',
-                                          style: TextStyle(fontWeight: FontWeight.normal),
-                                        ),
-                                      ],
+                            Padding(
+                              padding: const EdgeInsets.only(right: 5, left: 10),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 18,
+                                    height: 18,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/Numeral.svg",
+                                      color: Theme.of(context).primaryIconTheme.color,
                                     ),
                                   ),
-                                )
-                              ],
+                                  SizedBox(width: 5),
+                                  Flexible(
+                                    child: RichText(
+                                      text: TextSpan(
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                                        children: [
+                                          TextSpan(
+                                            text: 'Viaje: ',
+                                            style: TextStyle(fontWeight: FontWeight.w500),
+                                          ),
+                                          TextSpan(
+                                            text: '${abc.data?.trips[index].tripId}',
+                                            style: TextStyle(fontWeight: FontWeight.normal),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                             SizedBox(height: 10),
                             Container(
@@ -1956,35 +1956,38 @@ class _NextTripScreenState extends State<NextTripScreen>
                               color: Theme.of(context).dividerColor,
                             ),
                             SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Container(
-                                  width: 18,
-                                  height: 18,
-                                  child: SvgPicture.asset(
-                                    "assets/icons/proximo_viaje.svg",
-                                    color: Theme.of(context).primaryIconTheme.color,
-                                  ),
-                                ),
-                                SizedBox(width: 5),
-                                Flexible(
-                                  child: RichText(
-                                    text: TextSpan(
-                                      style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
-                                      children: [
-                                        TextSpan(
-                                          text: 'Fecha: ',
-                                          style: TextStyle(fontWeight: FontWeight.w500),
-                                        ),
-                                        TextSpan(
-                                          text: '${abc.data?.trips[index].fecha}',
-                                          style: TextStyle(fontWeight: FontWeight.normal),
-                                        ),
-                                      ],
+                            Padding(
+                              padding: const EdgeInsets.only(right: 5, left: 10),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 18,
+                                    height: 18,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/proximo_viaje.svg",
+                                      color: Theme.of(context).primaryIconTheme.color,
                                     ),
                                   ),
-                                )
-                              ],
+                                  SizedBox(width: 5),
+                                  Flexible(
+                                    child: RichText(
+                                      text: TextSpan(
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                                        children: [
+                                          TextSpan(
+                                            text: 'Fecha: ',
+                                            style: TextStyle(fontWeight: FontWeight.w500),
+                                          ),
+                                          TextSpan(
+                                            text: '${abc.data?.trips[index].fecha}',
+                                            style: TextStyle(fontWeight: FontWeight.normal),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -2042,8 +2045,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                         child: Row(
                           children: [
                             Container(
-                              width: 18,
-                              height: 18,
+                              width: 20,
+                              height: 20,
                               child: SvgPicture.asset(
                                 "assets/icons/motorista.svg",
                                 color: Theme.of(context).primaryIconTheme.color,
@@ -2083,13 +2086,10 @@ class _NextTripScreenState extends State<NextTripScreen>
                   padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
                   child: Row(
                     children: [
-                      Container(
-                        width: 15,
-                        height: 15,
-                        child: SvgPicture.asset(
-                          "assets/icons/motorista.svg",
-                          color: Theme.of(context).primaryIconTheme.color,
-                        ),
+                      Icon(
+                        Icons.directions_car_outlined,
+                        size: 20,
+                        color:  Theme.of(context).primaryIconTheme.color,
                       ),
                       SizedBox(width: 5),
                       Flexible(

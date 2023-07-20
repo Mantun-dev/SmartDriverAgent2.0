@@ -86,186 +86,295 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
             itemBuilder: (context, index) {
               //retorno de card con datos ingresados
               return Padding(
-            padding: const EdgeInsets.only(top:10),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0), // Establece un radio de esquinas redondeadas de 8.0
-                border: Border.all(color: Theme.of(context).dividerColor,), // Establece el color del borde
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(right: 2, left: 2),
-                child: ExpansionTile(
-                  tilePadding: const EdgeInsets.only(right: 5, left: 10),
-                            title: Column(
+                padding: const EdgeInsets.only(top:10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    border: Border.all(color: Theme.of(context).dividerColor,),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 2, left: 2),
+                    child: ExpansionTile(
+                      tilePadding: const EdgeInsets.only(right: 0, left: 0),
+                      title: Column(
+                        children: [
+                          SizedBox(height: 8),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 5, left: 10),
+                            child: Row(
                               children: [
-                                SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 15,
-                                      height: 15,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/Numeral.svg",
-                                        color: Theme.of(context).primaryIconTheme.color,
-                                      ),
-                                    ),
-                                    SizedBox(width: 5),
-                                    Flexible(
-                                      child: Text(
-                                        'Viaje: ${abc.data![index].tripId}',
-                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
-                                      ),
-                                    ),
-                                  ],
+                                Container(
+                                  width: 15,
+                                  height: 15,
+                                  child: SvgPicture.asset(
+                                    "assets/icons/Numeral.svg",
+                                    color: Theme.of(context).primaryIconTheme.color,
+                                  ),
                                 ),
-                                SizedBox(height: 20),
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/calendar2.svg",
-                                        color: Theme.of(context).primaryIconTheme.color,
-                                      ),
+                                SizedBox(width: 5),
+                                Flexible(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: DefaultTextStyle.of(context).style,
+                                      children: [
+                                        TextSpan(
+                                          text: 'Viaje: ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: '${abc.data![index].tripId}',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(width: 5),
-                                    Flexible(
-                                      child: Text(
-                                        'Fecha: ${abc.data![index].fecha}',
-                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
-                                      ),
-                                    ),
-  
-                                  ],
+                                  ),
                                 ),
                               ],
                             ),
-                  children: [
-                    Container(
-                      height: 1,
-                      color: Theme.of(context).dividerColor,
-                    ),    
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                      child: Row(
-                        children: [
+                          ),
+                          SizedBox(height: 10),
                           Container(
-                            width: 18,
-                            height: 18,
-                            child: SvgPicture.asset(
-                              "assets/icons/warning-circle-svgrepo-com.svg",
-                              color: Theme.of(context).primaryIconTheme.color,
+                            height: 1,
+                            color: Theme.of(context).dividerColor,
+                          ),    
+                          SizedBox(height: 10),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 5, left: 10),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 18,
+                                  height: 18,
+                                  child: SvgPicture.asset(
+                                    "assets/icons/calendar2.svg",
+                                    color: Theme.of(context).primaryIconTheme.color,
+                                  ),
+                                ),
+                                SizedBox(width: 5),
+                                Flexible(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: DefaultTextStyle.of(context).style,
+                                      children: [
+                                        TextSpan(
+                                          text: 'Fecha: ',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: '${abc.data![index].fecha}',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          SizedBox(width: 5),
-                          Flexible(
-                            child: Text(
-                              'Transporte para: ${abc.data![index].tipo}',
-                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
-                            ),
+                        ],
+                      ),
+                      children: [
+                        Container(
+                          height: 1,
+                          color: Theme.of(context).dividerColor,
+                        ),    
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 18,
+                                height: 18,
+                                child: SvgPicture.asset(
+                                  "assets/icons/warning-circle-svgrepo-com.svg",
+                                  color: Theme.of(context).primaryIconTheme.color,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Flexible(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: DefaultTextStyle.of(context).style,
+                                    children: [
+                                      TextSpan(
+                                        text: 'Transporte para: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '${abc.data![index].tipo}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
+                        ),
+                        Container(
+                          height: 1,
+                          color: Theme.of(context).dividerColor,
+                        ),
+                                                                        
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 18,
+                                height: 18,
+                                child: SvgPicture.asset(
+                                  "assets/icons/hora.svg",
+                                  color: Theme.of(context).primaryIconTheme.color,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Flexible(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: DefaultTextStyle.of(context).style,
+                                    children: [
+                                      TextSpan(
+                                        text: 'Hora de encuentro: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '${abc.data![index].hora}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 1,
+                          color: Theme.of(context).dividerColor,
+                        ),
+                                                                                    
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 18,
+                                height: 18,
+                                child: SvgPicture.asset(
+                                  "assets/icons/Casa.svg",
+                                  color: Theme.of(context).primaryIconTheme.color,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Flexible(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: DefaultTextStyle.of(context).style,
+                                    children: [
+                                      TextSpan(
+                                        text: 'Dirección: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '${abc.data![index].direccion}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 1,
+                          color: Theme.of(context).dividerColor,
+                        ),
 
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 1,
-                      color: Theme.of(context).dividerColor,
-                    ),
-                                                        
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 18,
-                            height: 18,
-                            child: SvgPicture.asset(
-                              "assets/icons/hora.svg",
-                              color: Theme.of(context).primaryIconTheme.color,
-                            ),
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 20,
+                                height: 20,
+                                child: SvgPicture.asset(
+                                  "assets/icons/motorista.svg",
+                                  color: Theme.of(context).primaryIconTheme.color,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Flexible(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: DefaultTextStyle.of(context).style,
+                                    children: [
+                                      TextSpan(
+                                        text: 'Conductor: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '${abc.data![index].conductor}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(width: 5),
-                          Flexible(
-                            child: Text(
-                              'Hora de encuentro: ${abc.data![index].hora}',
-                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
-                            ),
-                          ),
-          
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 1,
-                      color: Theme.of(context).dividerColor,
-                    ),
+                        ),
+                        Container(
+                          height: 1,
+                          color: Theme.of(context).dividerColor,
+                        ),
                                                                     
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 18,
-                            height: 18,
-                            child: SvgPicture.asset(
-                              "assets/icons/Casa.svg",
-                              color: Theme.of(context).primaryIconTheme.color,
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Flexible(
-                            child: Text(
-                              'Dirección: ${abc.data![index].direccion}',
-                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
-                            ),
-                          ),
-                        ],
-                      ),
+                        SizedBox(height: 8),
+                      ],
                     ),
-                    Container(
-                      height: 1,
-                      color: Theme.of(context).dividerColor,
-                    ),
-
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 18,
-                            height: 18,
-                            child: SvgPicture.asset(
-                              "assets/icons/motorista.svg",
-                              color: Theme.of(context).primaryIconTheme.color,
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Flexible(
-                            child: Text(
-                              'Conductor: ${abc.data![index].conductor}',
-                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14)
-                            ),
-                          ),
-
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 1,
-                      color: Theme.of(context).dividerColor,
-                    ),
-                                                    
-                    SizedBox(height: 8),
-                  ],
+                  ),
                 ),
-              ),
-            ),
               );
             });
           }

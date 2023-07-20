@@ -7,6 +7,7 @@ import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/models/dataAgentMessage.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
 //import 'package:sweetalert/sweetalert.dart';
@@ -141,10 +142,11 @@ class _TicketScreenState extends State<TicketScreen> {
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide.none,
                             ),
-                            prefixIcon: Icon(
-                              Icons.title,
-                              color: Theme.of(context).primaryIconTheme.color,
-                              size: 30,
+                            prefixIcon: SvgPicture.asset(  
+                              "assets/icons/mensaje.svg",
+                              color: Color.fromRGBO(40, 93, 169, 1),
+                              width: 20,
+                              height: 20,
                             ),
                             
                           ),
