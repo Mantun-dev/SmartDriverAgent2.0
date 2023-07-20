@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
 import 'package:flutter_auth/Agents/Screens/Chat/socketChat.dart';
-import 'package:flutter_auth/Agents/Screens/Details/components/loader.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/models/dataAgent.dart';
@@ -529,7 +528,33 @@ class _NextTripScreenState extends State<NextTripScreen>
               future: item2,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return WillPopScope(
+                    onWillPop: () async => false,
+                    child: SimpleDialog(
+                       elevation: 20,
+                      backgroundColor: Theme.of(context).cardColor,
+                      children: [
+                        Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  'Cargando..', 
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                  ),
+                              )
+                            ],
+                          ),
+                        )
+                      ] ,
+                    ),
+                  );
                 } else if (snapshot.hasError) {
                   return Text('Error al cargar los datos', style: Theme.of(context).textTheme.bodyMedium,);
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -3164,11 +3189,63 @@ class _NextTripScreenState extends State<NextTripScreen>
                     ],
                   );
                 } else {
-                  return CircularProgressIndicator();
+                  return WillPopScope(
+                    onWillPop: () async => false,
+                    child: SimpleDialog(
+                       elevation: 20,
+                      backgroundColor: Theme.of(context).cardColor,
+                      children: [
+                        Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  'Cargando..', 
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                  ),
+                              )
+                            ],
+                          ),
+                        )
+                      ] ,
+                    ),
+                  );
                 }
               }
             } else {
-              return ColorLoader3();
+              return WillPopScope(
+                    onWillPop: () async => false,
+                    child: SimpleDialog(
+                       elevation: 20,
+                      backgroundColor: Theme.of(context).cardColor,
+                      children: [
+                        Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  'Cargando..', 
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                  ),
+                              )
+                            ],
+                          ),
+                        )
+                      ] ,
+                    ),
+                  );
             }
             //return SizedBox();
           },

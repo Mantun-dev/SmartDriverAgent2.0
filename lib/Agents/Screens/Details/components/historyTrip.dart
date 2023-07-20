@@ -1,6 +1,5 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/Agents/Screens/Details/components/loader.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/models/historyTrips.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
@@ -379,7 +378,33 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
             });
           }
         } else {
-          return ColorLoader3();
+          return WillPopScope(
+                    onWillPop: () async => false,
+                    child: SimpleDialog(
+                       elevation: 20,
+                      backgroundColor: Theme.of(context).cardColor,
+                      children: [
+                        Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  'Cargando..', 
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                  ),
+                              )
+                            ],
+                          ),
+                        )
+                      ] ,
+                    ),
+                  );
         }
       },
     );
