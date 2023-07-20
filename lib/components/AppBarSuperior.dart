@@ -695,6 +695,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                                       QuickAlert.show(
                                                         context: context,
                                                         type: QuickAlertType.success,
+                                                        title: "¡Hecho!",
                                                         text: "¡Gracias por usar Smart Driver!",
                                                       );
                                                 });
