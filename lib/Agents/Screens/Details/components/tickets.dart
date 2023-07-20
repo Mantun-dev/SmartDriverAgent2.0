@@ -135,7 +135,9 @@ class _TicketScreenState extends State<TicketScreen> {
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             labelText: 'Asunto',
-                            labelStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
+                            labelStyle: TextStyle(
+                              color: Theme.of(context).hintColor, fontSize: 15, fontFamily: 'Roboto'
+                            ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide.none,
                             ),
@@ -204,7 +206,9 @@ class _TicketScreenState extends State<TicketScreen> {
                     maxLines: null,
                     decoration: InputDecoration(
                       labelText: 'Mensaje',
-                      labelStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
+                      labelStyle: TextStyle(
+                            color: Theme.of(context).hintColor, fontSize: 15, fontFamily: 'Roboto'
+                          ),
                       prefixIcon: Icon(
                         Icons.message,
                         color: Colors.transparent,

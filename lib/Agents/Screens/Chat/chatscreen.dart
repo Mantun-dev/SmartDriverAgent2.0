@@ -649,7 +649,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(left: 10),
                                   hintText: 'Mensaje',
-                                  hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
+                                          hintStyle: TextStyle(
+                                    color: Theme.of(context).hintColor, fontSize: 15, fontFamily: 'Roboto'
+                                  ),
                                   border: InputBorder.none,
                                 ),
                               ),

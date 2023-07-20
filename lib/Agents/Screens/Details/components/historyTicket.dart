@@ -244,7 +244,9 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryIconTheme.color),
                                   hintText: 'Buscar',
-                                  hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
+                                  hintStyle: TextStyle(
+                                    color: Theme.of(context).hintColor, fontSize: 15, fontFamily: 'Roboto'
+                                  ),
                                   border: InputBorder.none,
                                 ),
                               ),

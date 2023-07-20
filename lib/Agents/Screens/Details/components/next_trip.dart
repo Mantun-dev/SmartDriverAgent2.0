@@ -1466,7 +1466,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.red,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.normal,
                               ),
                             ),
                           ),
@@ -1497,7 +1497,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.red,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.normal,
                             ),
                           ),
                         ),
@@ -2734,7 +2734,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.red,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.normal,
                                     ),
                                   ),
                                 ),
@@ -2761,7 +2761,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                   style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.red,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.normal,
                                   ),
                                 ),
                               ),
@@ -2848,7 +2848,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 style: TextStyle(
                                  fontSize: 15,
                                   color: Color.fromRGBO(40, 169, 83, 1),
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.normal,
                                 ),
                               ),
                             ],
@@ -3208,16 +3208,28 @@ class _NextTripScreenState extends State<NextTripScreen>
                         width: 18,
                         height: 18,
                         child: SvgPicture.asset(
-                          "assets/icons/calendar-note-svgrepo-com.svg",
+                          "assets/icons/proximo_viaje.svg",
                           color: Theme.of(context).primaryIconTheme.color,
                         ),
                       ),
                       SizedBox(width: 5),
-                      Text(
-                        'Fecha: ${tripData["dateToTravel"]}',
-                        textAlign: TextAlign.left,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15)
-                      ),
+                      Flexible(
+                        child: RichText(
+                          text: TextSpan( 
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                            children: [
+                              TextSpan(
+                                text: 'Fecha: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '${tripData["dateToTravel"]}',
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -3242,11 +3254,23 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ),
                       ),
                       SizedBox(width: 5),
-                      Text(
-                        'Transporte para: ${tripData["tripType"]}',
-                        textAlign: TextAlign.left,
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15)
-                      ),
+                      Flexible(
+                        child: RichText(
+                          text: TextSpan( 
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                            children: [
+                              TextSpan(
+                                text: 'Transporte para: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '${tripData["tripType"]}',
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -3272,26 +3296,22 @@ class _NextTripScreenState extends State<NextTripScreen>
                       ),
                       SizedBox(width: 5),
                       Flexible(
-                                  child: RichText(
-                                    text: TextSpan(
-                                      style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
-                                      children: [
-                                        TextSpan(
-                                          text: 'Hora: ',
-                                          style: TextStyle(fontWeight: FontWeight.w500),
-                                        ),
-                                        TextSpan(
-                                          text: '${tripData["hour"]}',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Color.fromRGBO(40, 169, 83, 1),
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )
+                        child: RichText(
+                          text: TextSpan( 
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                            children: [
+                              TextSpan(
+                                text: 'Hora: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '${tripData["hour"]}',
+                                style: TextStyle(fontWeight: FontWeight.normal, color: Color.fromRGBO(40, 169, 83, 1)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -3318,7 +3338,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                       SizedBox(width: 5),
                       Flexible(
                         child: RichText(
-                          text: TextSpan(
+                          text: TextSpan( 
                             style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
                             children: [
                               TextSpan(
@@ -3327,10 +3347,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                               ),
                               TextSpan(
                                 text: '${tripData["agentAddress"]}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal,
-                                ),
+                                style: TextStyle(fontWeight: FontWeight.normal),
                               ),
                             ],
                           ),
@@ -3362,7 +3379,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                       SizedBox(width: 5),
                       Flexible(
                         child: RichText(
-                          text: TextSpan(
+                          text: TextSpan( 
                             style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
                             children: [
                               TextSpan(
@@ -3371,10 +3388,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                               ),
                               TextSpan(
                                 text: '${tripData["authorizedAccess"]}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal,
-                                ),
+                                style: TextStyle(fontWeight: FontWeight.normal),
                               ),
                             ],
                           ),
@@ -3412,7 +3426,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 style: TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.normal,
-                                  fontSize: 15.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ),
@@ -3714,7 +3728,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                             style: TextStyle(
                               color: Colors.red,
                               fontWeight: FontWeight.normal,
-                              fontSize: 15.0,
+                              fontSize: 14.0,
                             ),
                           ),
                         ),
@@ -4095,7 +4109,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                             style: TextStyle(
                               color: Colors.red,
                               fontWeight: FontWeight.normal,
-                              fontSize: 15.0,
+                              fontSize: 14.0,
                             ),
                           ),
                         ),
@@ -4251,9 +4265,9 @@ class _NextTripScreenState extends State<NextTripScreen>
           child: AlertDialog(shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
             backgroundColor: Theme.of(navigatorKey.currentContext!).cardColor,
             title: Text(
-              '¿Cómo calificaría tu último viaje con\n${resp1.driverFullname}?',
+              '¿Cómo calificarías tu último viaje con\n${resp1.driverFullname}?',
               textAlign: TextAlign.center, 
-              style: Theme.of(navigatorKey.currentContext!).textTheme.titleMedium!.copyWith(fontSize: 16),
+              style: Theme.of(navigatorKey.currentContext!).textTheme.titleMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
             ), 
             content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState){
@@ -4266,7 +4280,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         //creación reacciones para conducción
               
                         SizedBox(height: 10.0),
-                        Text('Conducción', style:Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16)),
+                        Text('Conducción', style:Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.normal)),
                         SizedBox(height: 5.0),
                         RatingBar.builder(
                           initialRating: 0,
@@ -4293,7 +4307,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                
                         SizedBox(height: 40.0),
                         //creación reacciones para amabilidad
-                        Text('Amabilidad del motorista', style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16)),
+                        Text('Amabilidad del motorista', style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.normal)),
                         SizedBox(height: 5.0),
                         RatingBar.builder(initialRating: 0,itemCount: 5,
                           itemBuilder: (context, index) {
@@ -4318,7 +4332,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                  
                         SizedBox(height: 40.0),
                         //creación reacciones para condiciones
-                        Text('Condiciones del vehículo', style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16)),
+                        Text('Condiciones del vehículo', style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.normal)),
                         SizedBox(height: 5.0),
                         RatingBar.builder(initialRating: 0,itemCount: 5,
                           itemBuilder: (context, index) {
@@ -4359,7 +4373,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                     ),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor : Color.fromRGBO(40, 93, 169, 1),
+                        backgroundColor : Colors.orange,
                         foregroundColor : Colors.white,
                       ),
                       onPressed: () {
@@ -4389,7 +4403,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                     ),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor : Color.fromRGBO(40, 93, 169, 1),
+                        backgroundColor : Colors.grey,
                         foregroundColor : Colors.white,
                       ),
                       onPressed: () {
