@@ -233,9 +233,8 @@ class _NextTripScreenState extends State<NextTripScreen>
   }
 
 //función para confirmar trip
-  Future<dynamic> fetchConfirm(
-      String agentUser, String tripId, String condition, String comment) async {
-        LoadingIndicatorDialog().show(context);
+  Future<dynamic> fetchConfirm(String agentUser, String tripId, String condition, String comment) async {
+    LoadingIndicatorDialog().show(context);
     //<List<Map<String, dynamic>>>
     prefs.tripId = tripId;
     Map data = {
@@ -253,8 +252,8 @@ class _NextTripScreenState extends State<NextTripScreen>
     final resps = DataAgent.fromJson(json.decode(responses.body));
     //alertas y redirecciones
 
-    LoadingIndicatorDialog().dismiss();
     if(mounted){
+      LoadingIndicatorDialog().dismiss();
       if (response.statusCode == 200) {
         Navigator.pushReplacement(
                 context,
@@ -288,7 +287,7 @@ class _NextTripScreenState extends State<NextTripScreen>
   //función para cancel trip
   Future<dynamic> fetchCancel(String agentUser, String tripId,
       String conditionC, String message) async {
-        LoadingIndicatorDialog().show(context);
+    LoadingIndicatorDialog().show(context);
     //<List<Map<String, dynamic>>>
     Map data = {
       'agentUser': agentUser,
@@ -311,8 +310,9 @@ class _NextTripScreenState extends State<NextTripScreen>
 
     //redirección y alertas
     razonCancelar="";
-    LoadingIndicatorDialog().dismiss();
+    
     if(mounted){
+      LoadingIndicatorDialog().dismiss();
       if (response.statusCode == 200) {
       Navigator.pushReplacement(
               context,
@@ -1226,14 +1226,18 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                   return;
                                                                 }
 
-                                                                ChatApis().confirmOrCancel('RECHAZADO');
-                                                                fetchCancel(
-                                                                  prefs.nombreUsuario,
-                                                                  '${abc.data?.trips[index].tripId}',
-                                                                  conditionC,
-                                                                  razonCancelar,
-                                                                );
                                                                 Navigator.pop(context);
+                                                                
+                                                                if(mounted){
+                                                                  ChatApis().confirmOrCancel('RECHAZADO');
+                                                                  fetchCancel(
+                                                                    prefs.nombreUsuario,
+                                                                    '${abc.data?.trips[index].tripId}',
+                                                                    conditionC,
+                                                                    razonCancelar,
+                                                                  );
+                                                                }
+
                                                               },
                                                               child: Text(
                                                                 'Enviar',
@@ -1280,25 +1284,148 @@ class _NextTripScreenState extends State<NextTripScreen>
                               backgroundColor: Color.fromRGBO(40, 93, 169, 1),
                             ),
                             onPressed: () {
-                                ConfirmationDialog confirmationDialog = ConfirmationDialog();
-                                confirmationDialog.show(
-                                  context,
-                                  title: '¿Desea confirmar el viaje?',
-                                  type: "0",
-                                  onConfirm: () async {
-
-                                    ChatApis().confirmOrCancel('CONFIRMADO');
-                                    fetchConfirm(
-                                      prefs.nombreUsuario,
-                                      '${abc.data?.trips[index].tripId}',
-                                      condition,comment
-                                    );
-                                    
-                                  },
-                                  onCancel: () {
-
-                                  },
-                                );
+                              showGeneralDialog(
+                                      barrierColor: Colors.black.withOpacity(0.5),
+                                      transitionBuilder: (context, a1, a2, widget) {
+                                        return Transform.scale(
+                                          scale: a1.value,
+                                          child: Opacity(
+                                            opacity: a1.value,
+                                            child: AlertDialog(
+                                              backgroundColor: Colors.transparent,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(16.0),
+                                              ),
+                                              content: StatefulBuilder(
+                                                builder:(context, setState) {
+                                                  return  SingleChildScrollView(
+                                                    child: Column(
+                                                      children: [
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.only(
+                                                              topLeft: Radius.circular(10.0),
+                                                              topRight: Radius.circular(10.0),
+                                                            ),
+                                                            color: Color.fromRGBO(40, 169, 83, 1),
+                                                          ),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(right: 100.0, left: 100, bottom: 30, top: 30),
+                                                            child: CircleAvatar(
+                                                              backgroundColor: Color.fromRGBO(0, 191, 95, 1),
+                                                              radius: 30.0 + 10.0, 
+                                                              child: Padding(
+                                                                padding: EdgeInsets.all(15.0), 
+                                                                child: SvgPicture.asset(
+                                                                  "assets/icons/check.svg",
+                                                                  color: Colors.white,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                  
+                                                  
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.only(
+                                                              bottomLeft: Radius.circular(10.0),
+                                                              bottomRight: Radius.circular(10.0),
+                                                            ),
+                                                            color: Colors.white, 
+                                                          ),
+                                                          child: Column(children: [
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(top: 20),
+                                                              child: Text(
+                                                                '¿Desea confirmar el viaje?',
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(
+                                                                  fontWeight: FontWeight.bold,
+                                                                  color: Colors.black,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(top: 20, bottom: 20),
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                children: [
+                                                                  TextButton(
+                                                                    style: ButtonStyle(
+                                                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                                        RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(10.0),
+                                                                          side: BorderSide(color: Colors.black),
+                                                                        ),
+                                                                      ),
+                                                                      backgroundColor: MaterialStateProperty.all(Colors.transparent),
+                                                                    ),
+                                                                    onPressed: () {
+                                                                      Navigator.pop(context);
+                                                                    },
+                                                                    child: Text(
+                                                                      'No',
+                                                                      style: TextStyle(
+                                                                        color: Colors.black,
+                                                                        fontWeight: FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(width: 20),
+                                                                  TextButton(
+                                                                    style: ButtonStyle(
+                                                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                                        RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(10.0),
+                                                                          side: BorderSide(color: Color.fromRGBO(40, 93, 169, 1)),
+                                                                        ),
+                                                                      ),
+                                                                      backgroundColor: MaterialStateProperty.all(Color.fromRGBO(40, 93, 169, 1)),
+                                                                    ),
+                                                                    onPressed: () {
+                                                                      Navigator.pop(context);
+                                                                  
+                                                                      if(mounted){
+                                                                        ChatApis().confirmOrCancel('CONFIRMADO');
+                                                                        fetchConfirm(
+                                                                          prefs.nombreUsuario,
+                                                                          '${abc.data?.trips[index].tripId}',
+                                                                          condition,comment
+                                                                        );
+                                                                      }
+                                                                    },
+                                                                    child: Text(
+                                                                      'Sí',
+                                                                      style: TextStyle(
+                                                                        color: Colors.white,
+                                                                        fontWeight: FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ]),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                            ),
+                          
+                                          ),
+                                        );
+                                      },
+                                      transitionDuration: Duration(milliseconds: 200),
+                                      barrierDismissible: true,
+                                      barrierLabel: '',
+                                      context: context,
+                                      pageBuilder: (context, animation1, animation2) {
+                                        return widget;
+                                      },
+                                    );                    
                             },
                             child: Text(
                               'Confirmar',
@@ -1684,14 +1811,17 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                   return;
                                                                 }
 
-                                                                ChatApis().confirmOrCancel('RECHAZADO');
-                                                                fetchCancel(
-                                                                  prefs.nombreUsuario,
-                                                                  '${abc.data?.trips[index].tripId}',
-                                                                  conditionC,
-                                                                  razonCancelar,
-                                                                );
                                                                 Navigator.pop(context);
+                                                                
+                                                                if(mounted){
+                                                                  ChatApis().confirmOrCancel('RECHAZADO');
+                                                                  fetchCancel(
+                                                                    prefs.nombreUsuario,
+                                                                    '${abc.data?.trips[index].tripId}',
+                                                                    conditionC,
+                                                                    razonCancelar,
+                                                                  );
+                                                                }
                                                               },
                                                               child: Text(
                                                                 'Enviar',
@@ -2364,14 +2494,17 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                         return;
                                                                       }
                                                                       
-                                                                      ChatApis().confirmOrCancel('RECHAZADO');
-                                                                      fetchCancel(
-                                                                        prefs.nombreUsuario,
-                                                                        '${abc.data?.trips[index].tripId}',
-                                                                        conditionC,
-                                                                        razonCancelar,
-                                                                      );
                                                                       Navigator.pop(context);
+                                                                
+                                                                      if(mounted){
+                                                                        ChatApis().confirmOrCancel('RECHAZADO');
+                                                                        fetchCancel(
+                                                                          prefs.nombreUsuario,
+                                                                          '${abc.data?.trips[index].tripId}',
+                                                                          conditionC,
+                                                                          razonCancelar,
+                                                                        );
+                                                                      }
                                                                     },
                                                                     child: Text(
                                                                       'Enviar',
@@ -2419,25 +2552,148 @@ class _NextTripScreenState extends State<NextTripScreen>
                                     backgroundColor: Color.fromRGBO(40, 93, 169, 1),
                                   ),
                                   onPressed: () {
-                                    ConfirmationDialog confirmationDialog = ConfirmationDialog();
-                                confirmationDialog.show(
-                                  context,
-                                  title: '¿Desea confirmar el viaje?',
-                                  type: "0",
-                                  onConfirm: () async {
-
-                                    ChatApis().confirmOrCancel('CONFIRMADO');
-                                    fetchConfirm(
-                                      prefs.nombreUsuario,
-                                      '${abc.data?.trips[index].tripId}',
-                                      condition,comment
-                                    );
-                                    
-                                  },
-                                  onCancel: () {
-
-                                  },
-                                );
+                                    showGeneralDialog(
+                                      barrierColor: Colors.black.withOpacity(0.5),
+                                      transitionBuilder: (context, a1, a2, widget) {
+                                        return Transform.scale(
+                                          scale: a1.value,
+                                          child: Opacity(
+                                            opacity: a1.value,
+                                            child: AlertDialog(
+                                              backgroundColor: Colors.transparent,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(16.0),
+                                              ),
+                                              content: StatefulBuilder(
+                                                builder:(context, setState) {
+                                                  return  SingleChildScrollView(
+                                                    child: Column(
+                                                      children: [
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.only(
+                                                              topLeft: Radius.circular(10.0),
+                                                              topRight: Radius.circular(10.0),
+                                                            ),
+                                                            color: Color.fromRGBO(40, 169, 83, 1),
+                                                          ),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(right: 100.0, left: 100, bottom: 30, top: 30),
+                                                            child: CircleAvatar(
+                                                              backgroundColor: Color.fromRGBO(0, 191, 95, 1),
+                                                              radius: 30.0 + 10.0, 
+                                                              child: Padding(
+                                                                padding: EdgeInsets.all(15.0), 
+                                                                child: SvgPicture.asset(
+                                                                  "assets/icons/check.svg",
+                                                                  color: Colors.white,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                  
+                                                  
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.only(
+                                                              bottomLeft: Radius.circular(10.0),
+                                                              bottomRight: Radius.circular(10.0),
+                                                            ),
+                                                            color: Colors.white, 
+                                                          ),
+                                                          child: Column(children: [
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(top: 20),
+                                                              child: Text(
+                                                                '¿Desea confirmar el viaje?',
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(
+                                                                  fontWeight: FontWeight.bold,
+                                                                  color: Colors.black,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(top: 20, bottom: 20),
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                children: [
+                                                                  TextButton(
+                                                                    style: ButtonStyle(
+                                                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                                        RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(10.0),
+                                                                          side: BorderSide(color: Colors.black),
+                                                                        ),
+                                                                      ),
+                                                                      backgroundColor: MaterialStateProperty.all(Colors.transparent),
+                                                                    ),
+                                                                    onPressed: () {
+                                                                      Navigator.pop(context);
+                                                                    },
+                                                                    child: Text(
+                                                                      'No',
+                                                                      style: TextStyle(
+                                                                        color: Colors.black,
+                                                                        fontWeight: FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(width: 20),
+                                                                  TextButton(
+                                                                    style: ButtonStyle(
+                                                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                                        RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(10.0),
+                                                                          side: BorderSide(color: Color.fromRGBO(40, 93, 169, 1)),
+                                                                        ),
+                                                                      ),
+                                                                      backgroundColor: MaterialStateProperty.all(Color.fromRGBO(40, 93, 169, 1)),
+                                                                    ),
+                                                                    onPressed: () {
+                                                                      Navigator.pop(context);
+                                                                  
+                                                                      if(mounted){
+                                                                        ChatApis().confirmOrCancel('CONFIRMADO');
+                                                                        fetchConfirm(
+                                                                          prefs.nombreUsuario,
+                                                                          '${abc.data?.trips[index].tripId}',
+                                                                          condition,comment
+                                                                        );
+                                                                      }
+                                                                    },
+                                                                    child: Text(
+                                                                      'Sí',
+                                                                      style: TextStyle(
+                                                                        color: Colors.white,
+                                                                        fontWeight: FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ]),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                            ),
+                          
+                                          ),
+                                        );
+                                      },
+                                      transitionDuration: Duration(milliseconds: 200),
+                                      barrierDismissible: true,
+                                      barrierLabel: '',
+                                      context: context,
+                                      pageBuilder: (context, animation1, animation2) {
+                                        return widget;
+                                      },
+                                    );  
                                   },
                                   child: Text(
                                     'Confirmar',
@@ -2812,14 +3068,17 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       return;
                                                                     }
 
-                                                                    ChatApis().confirmOrCancel('RECHAZADO');
-                                                                    fetchCancel(
-                                                                      prefs.nombreUsuario,
-                                                                      '${abc.data?.trips[index].tripId}',
-                                                                      conditionC,
-                                                                      razonCancelar,
-                                                                    );
                                                                     Navigator.pop(context);
+                                                                
+                                                                    if(mounted){
+                                                                      ChatApis().confirmOrCancel('RECHAZADO');
+                                                                      fetchCancel(
+                                                                        prefs.nombreUsuario,
+                                                                        '${abc.data?.trips[index].tripId}',
+                                                                        conditionC,
+                                                                        razonCancelar,
+                                                                      );
+                                                                    }
                                                                   },
                                                                   child: Text(
                                                                     'Enviar',

@@ -146,9 +146,9 @@ class _AppBarPosterior extends State<AppBarPosterior> {
           ),
             Positioned(
               top: 5,
-              right: 18,
+              right: 15,
               child: Container(
-                width: 15,
+                width: 20,
                 height: 20,
                 child: Container(
                   
@@ -176,7 +176,7 @@ class _AppBarPosterior extends State<AppBarPosterior> {
         Stack(
           children: [
             item==3?Padding(
-              padding: const EdgeInsets.only(top:10, right: 10),
+              padding: const EdgeInsets.only(top:10, right: 15),
               child: Column(
                 children: [
                   Container(
@@ -208,7 +208,7 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                 });
               },
             child: Padding(
-              padding: const EdgeInsets.only(top:10, right: 10),
+              padding: const EdgeInsets.only(top:10, right: 15),
               child: Column(
                 children: [
                   Container(
@@ -230,9 +230,9 @@ class _AppBarPosterior extends State<AppBarPosterior> {
           ),
             Positioned(
               top: 5,
-              right: 0,
+              left: 25,
               child: Container(
-                width: 15,
+                width: 20,
                 height: 20,
                 child: Container(
                   
