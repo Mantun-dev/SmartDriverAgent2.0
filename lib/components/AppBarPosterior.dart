@@ -59,7 +59,9 @@ class _AppBarPosterior extends State<AppBarPosterior> {
 
                   Text(
                     "Inicio",
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).focusColor),
+                    style: TextStyle(
+                            color: Theme.of(context).focusColor, fontSize: 10, fontFamily: 'Roboto'
+                          ),
                   )
               ],
             ),
@@ -86,7 +88,9 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                     ),
                     Text(
                     "Inicio",
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor),
+                    style: TextStyle(
+                            color: Theme.of(context).hintColor, fontSize: 10, fontFamily: 'Roboto'
+                          ),
                   )
                   ],
                 ),
@@ -110,7 +114,9 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                             ),
                             Text(
                     "Notificaciones",
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).focusColor),
+                    style: TextStyle(
+                            color: Theme.of(context).focusColor, fontSize: 10, fontFamily: 'Roboto'
+                          ),
                   )
                 ],
               ),
@@ -138,7 +144,9 @@ class _AppBarPosterior extends State<AppBarPosterior> {
 
                   Text(
                     "Notificaciones",
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor),
+                    style: TextStyle(
+                            color: Theme.of(context).hintColor, fontSize: 10, fontFamily: 'Roboto'
+                          ),
                   )
                 ],
               ),
@@ -146,7 +154,7 @@ class _AppBarPosterior extends State<AppBarPosterior> {
           ),
             Positioned(
               top: 5,
-              right: 15,
+              right: 8,
               child: Container(
                 width: 20,
                 height: 20,
@@ -176,7 +184,7 @@ class _AppBarPosterior extends State<AppBarPosterior> {
         Stack(
           children: [
             item==3?Padding(
-              padding: const EdgeInsets.only(top:10, right: 15),
+              padding: const EdgeInsets.only(top:10, right: 18),
               child: Column(
                 children: [
                   Container(
@@ -189,7 +197,9 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                             ),
                             Text(
                     "Chats",
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).focusColor),
+                    style: TextStyle(
+                            color: Theme.of(context).focusColor, fontSize: 10, fontFamily: 'Roboto'
+                          ),
                   )
                 ],
               ),
@@ -208,7 +218,7 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                 });
               },
             child: Padding(
-              padding: const EdgeInsets.only(top:10, right: 15),
+              padding: const EdgeInsets.only(top:10, right: 18),
               child: Column(
                 children: [
                   Container(
@@ -222,7 +232,9 @@ class _AppBarPosterior extends State<AppBarPosterior> {
 
                   Text(
                     "Chats",
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor),
+                    style: TextStyle(
+                            color: Theme.of(context).hintColor, fontSize: 10, fontFamily: 'Roboto'
+                          ),
                   )
                 ],
               ),
@@ -268,7 +280,9 @@ class _AppBarPosterior extends State<AppBarPosterior> {
 
                   Text(
                     "Perfil",
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).focusColor),
+                    style: TextStyle(
+                            color: Theme.of(context).focusColor, fontSize: 10, fontFamily: 'Roboto'
+                          ),
                   )
               ],
             ),
@@ -295,7 +309,9 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                     ),
                     Text(
                     "Perfil",
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor),
+                    style: TextStyle(
+                            color: Theme.of(context).hintColor, fontSize: 10, fontFamily: 'Roboto'
+                          ),
                   )
                   ],
                 ),
