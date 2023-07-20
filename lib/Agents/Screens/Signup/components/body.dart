@@ -183,7 +183,7 @@ class _BodyState extends State<Body> {
                             QuickAlert.show(
                               context: context,
                               title: "Alerta",
-                              text: "Campos Vacios",
+                              text: "Campos vacíos",
                               type: QuickAlertType.error
                             );
 

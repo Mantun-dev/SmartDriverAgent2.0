@@ -265,6 +265,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                         style: TextStyle(
                                           fontWeight: FontWeight.normal,
                                           fontSize: 14,
+                                          color: Colors.green
                                         ),
                                       ),
                                     ],

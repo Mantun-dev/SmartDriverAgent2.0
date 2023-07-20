@@ -322,7 +322,7 @@ class _NextTripScreenState extends State<NextTripScreen>
           context: context,
           title: "Cancelación éxitosa",
           text:
-              "El motorista será notificado que usted no hará uso del transporte",
+              "Le hemos notificado al conductor",
           type: QuickAlertType.success);
     } else if (response.statusCode == 500) {
       QuickAlert.show(

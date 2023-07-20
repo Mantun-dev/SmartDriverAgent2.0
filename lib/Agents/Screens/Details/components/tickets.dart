@@ -277,7 +277,7 @@ class _TicketScreenState extends State<TicketScreen> {
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HistoryTicketScreen())).then((_) => HomeScreen());
                           },
                           child: Text(
-                            "Tickets enviados",
+                            "Solicitudes Enviadas",
                             style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                           ),
                         ),

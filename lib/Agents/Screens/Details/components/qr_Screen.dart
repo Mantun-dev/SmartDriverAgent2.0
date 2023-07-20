@@ -47,7 +47,7 @@ class _QrScannScreenState extends State<QrScannScreen> {
           Text(
             'Muestra este código QR para poder abordar',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 21),
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 21, fontWeight: FontWeight.w500),
           ),
         Padding(
           padding: const EdgeInsets.only(top:20.0, bottom: 2),
