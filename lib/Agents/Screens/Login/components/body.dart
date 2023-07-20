@@ -11,6 +11,8 @@ import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/Agents/sharePrefers/services.dart';
 import 'package:flutter_auth/components/already_have_an_account_acheck.dart';
 import 'package:flutter_auth/components/forgot_password.dart';
+import 'package:flutter_auth/components/progress_indicator.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:quickalert/quickalert.dart';
 import '../../../../constants.dart';
@@ -46,12 +48,14 @@ class _BodyState extends State<Body> {
     Map data = {'agentUser': agentUser, 'agentPassword': agentPassword};
     String device = "mobile";
     if (agentUser == "" || agentPassword == "") {
+      
       QuickAlert.show(
         context: context,
           title: "Alerta",
           text: "Campos vacios",
           type: QuickAlertType.error);
     } else {
+      LoadingIndicatorDialog().show(context);
       //Api post refresca la informacion enviada desde el backend hacia el login
       http.Response responses = await http
           .get(Uri.parse('$ip/api/refreshingAgentData/${data['agentUser']}'));
@@ -81,20 +85,28 @@ class _BodyState extends State<Body> {
         prefs.passwordUsuario = agentPassword;
         prefs.nombreUsuario = agentUser;
         prefs.tokenAndroid = claro.data![0].token!;
-        Navigator.of(context).pushAndRemoveUntil(
+
+        LoadingIndicatorDialog().dismiss();
+        if(mounted){
+          Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => HomeScreen()),
             (Route<dynamic> route) => false);
              QuickAlert.show(
-        context: context,
-          title: "\nBienvenido(a)",
-          text: si.agentFullname,
-          type: QuickAlertType.success);
+          context: context,
+            title: "\nBienvenido(a)",
+            text: si.agentFullname,
+            type: QuickAlertType.success);
+          }
       } else if (no.ok != true) {
-        QuickAlert.show(
-        context: context,
-          title: "\nError",
-          text: no.message,
-          type: QuickAlertType.error);
+        LoadingIndicatorDialog().dismiss();
+        
+        if(mounted){
+          QuickAlert.show(
+          context: context,
+            title: "\nError",
+            text: no.message,
+            type: QuickAlertType.error);
+        }
       }
       return DataAgents.fromJson(json.decode(response.body));
     }
@@ -150,16 +162,20 @@ class _BodyState extends State<Body> {
                           ),
                           borderRadius: BorderRadius.circular(5.0),
                         ),
-                        child: Icon(
-                          Icons.arrow_back_outlined,
-                          color: Colors.white,
-                          size:30
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: SvgPicture.asset(
+                            "assets/icons/flecha_atras_oscuro.svg",
+                            color: Colors.white,
+                            width: 5,
+                            height: 10,
+                          ),
                         ),
                       ),
                     ),
                   ),
   
-                  Center(child: Text("Iniciar sesión",style: TextStyle(color: Colors.white,fontSize: 22),)),
+                  Center(child: Text("Iniciar sesión",style: TextStyle(color: Colors.white,fontSize: 27),)),
                 ],
               ),
             ),
@@ -228,7 +244,7 @@ class _BodyState extends State<Body> {
                     "Ingresar",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 22,
+                      fontSize: 19,
                       fontWeight: FontWeight.normal
                     ),
                   ),
@@ -267,17 +283,18 @@ class _BodyState extends State<Body> {
         Container(
           margin: EdgeInsets.only(left: 10, right: 10),
           child: TextField(
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.normal),
             controller: userName,
             cursorColor: firstColor,
             decoration: InputDecoration(
-              icon: Icon(
-                Icons.person_outline,
-                color: Colors.white,
-                size: 30,
-              ),
+              icon: SvgPicture.asset(  
+                  "assets/icons/usuario.svg",
+                  color: Colors.white,
+                  width: 20,
+                  height: 20,
+                ),
               hintText: "Número de empleado o identidad",
-              hintStyle: TextStyle(color: Colors.white),
+              hintStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.normal),
               border: InputBorder.none,
             ),
           ),
@@ -296,14 +313,14 @@ class _BodyState extends State<Body> {
         Container(
           margin: EdgeInsets.only(left: 10, right: 10),
           child: TextField(
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.normal),
             //keyboardType: TextInputType.,
             controller: userPassword,
             obscureText: _passwordVisible!,
             cursorColor: Colors.white,
             decoration: InputDecoration(
               hintText: "Contraseña",
-              hintStyle: TextStyle(color: Colors.white),
+              hintStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.normal),
               icon: Icon(
                 Icons.lock_outline,
                 color: Colors.white,

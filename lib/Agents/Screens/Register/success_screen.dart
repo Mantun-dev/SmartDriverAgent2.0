@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/Login/login_screen.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 
 import '../Signup/signup_screen.dart';
@@ -70,11 +71,15 @@ class _BodyState extends State<Body> {
                     ),
                     borderRadius: BorderRadius.circular(5.0),
                   ),
-                  child: Icon(
-                    Icons.arrow_back_outlined,
-                    color: Color.fromRGBO(40, 93, 169, 1),
-                    size:30
-                  ),
+                  child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: SvgPicture.asset(
+                            "assets/icons/flecha_atras_oscuro.svg",
+                            color: Color.fromRGBO(40, 93, 169, 1),
+                            width: 5,
+                            height: 10,
+                          ),
+                        ),
                 ),
               ),
             ),

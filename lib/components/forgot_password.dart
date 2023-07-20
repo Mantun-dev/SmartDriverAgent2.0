@@ -17,7 +17,7 @@ class ForgotPassword extends StatelessWidget {
             login
                 ? "¿Has olvidado tu contraseña?"
                 : "¿Quieres reestablecer contraseña? ",
-            style: TextStyle(color: Colors.white, fontSize: 12),
+            style: TextStyle(color: Colors.white, fontSize: 14),
           ),
         ),
       ],

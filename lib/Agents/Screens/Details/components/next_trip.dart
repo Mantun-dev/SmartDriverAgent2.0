@@ -3392,30 +3392,33 @@ class _NextTripScreenState extends State<NextTripScreen>
               if (tripData["confirmation"] == true)
                 Column(
                   children: [
-                    Row(
-                        children: [
-                          Container(
-                            width: 18,
-                            height: 18,
-                             child: SvgPicture.asset(
-                              "assets/icons/advertencia.svg",
-                              color: Theme.of(context).primaryIconTheme.color,
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Flexible(
-                            child: Text(
-                              '¡Solicitud confirmada! Te notificaremos cuando tengas el viaje programado',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Colors.green,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15.0,
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Row(
+                          children: [
+                            Container(
+                              width: 18,
+                              height: 18,
+                               child: SvgPicture.asset(
+                                "assets/icons/advertencia.svg",
+                                color: Theme.of(context).primaryIconTheme.color,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
+                            SizedBox(width: 5),
+                            Flexible(
+                              child: Text(
+                                '¡Solicitud confirmada! Te notificaremos cuando tengas el viaje programado',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15.0,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                    ),
 
                       if(tripData["hideCancelButton"]!=true)
                         SizedBox(height: 10),
@@ -3691,30 +3694,33 @@ class _NextTripScreenState extends State<NextTripScreen>
                   ],
                 ),
               if (tripData["confirmation"] == false)
-                Row(
-                    children: [
-                      Container(
-                        width: 18,
-                        height: 18,
-                         child: SvgPicture.asset(
-                          "assets/icons/advertencia.svg",
-                          color: Theme.of(context).primaryIconTheme.color,
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Flexible(
-                        child: Text(
-                          'Solicitud cancelada con éxito',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15.0,
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Row(
+                      children: [
+                        Container(
+                          width: 18,
+                          height: 18,
+                           child: SvgPicture.asset(
+                            "assets/icons/advertencia.svg",
+                            color: Theme.of(context).primaryIconTheme.color,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                        SizedBox(width: 5),
+                        Flexible(
+                          child: Text(
+                            'Solicitud cancelada con éxito',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                ),
               if (tripData["confirmation"] != true && tripData["confirmation"] != false)
                 tripData["systemComment"]==null?
                 Row(
@@ -4069,30 +4075,33 @@ class _NextTripScreenState extends State<NextTripScreen>
                   
                   ],
                 ) :
-                Row(
-                    children: [
-                      Container(
-                        width: 18,
-                        height: 18,
-                         child: SvgPicture.asset(
-                          "assets/icons/advertencia.svg",
-                          color: Theme.of(context).primaryIconTheme.color,
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Flexible(
-                        child: Text(
-                          'El tiempo de confirmación ha expirado',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15.0,
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Row(
+                      children: [
+                        Container(
+                          width: 18,
+                          height: 18,
+                           child: SvgPicture.asset(
+                            "assets/icons/advertencia.svg",
+                            color: Theme.of(context).primaryIconTheme.color,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                        SizedBox(width: 5),
+                        Flexible(
+                          child: Text(
+                            'El tiempo de confirmación ha expirado',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                ),
             ],
           ),
         ),

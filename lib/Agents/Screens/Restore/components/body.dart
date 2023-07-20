@@ -5,7 +5,9 @@ import 'package:flutter_auth/Agents/Screens/Login/login_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Restore/components/background.dart';
 import 'package:flutter_auth/Agents/models/register.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 import 'dart:convert' show json;
 import 'package:quickalert/quickalert.dart';
 import '../../../../constants.dart';
@@ -103,10 +105,14 @@ class _BodyState extends State<Body> {
                         ),
                         borderRadius: BorderRadius.circular(5.0),
                       ),
-                      child: Icon(
-                        Icons.arrow_back_outlined,
-                        color: Color.fromRGBO(40, 93, 169, 1),
-                        size:30
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: SvgPicture.asset(
+                          "assets/icons/flecha_atras_oscuro.svg",
+                          color: Color.fromRGBO(40, 93, 169, 1),
+                          width: 5,
+                          height: 10,
+                        ),
                       ),
                     ),
                   ),
@@ -127,6 +133,15 @@ class _BodyState extends State<Body> {
                         style: TextStyle(
                             fontWeight: FontWeight.normal, fontSize: 27, color: Color.fromRGBO(40, 93, 169, 1)),
                       ),
+
+                      SizedBox(height: 20),
+                      Container(
+                        constraints: BoxConstraints(
+                          maxWidth: 180,
+                          maxHeight: 180,
+                        ),
+                        child: Lottie.asset('assets/videos/contraR.json')
+                      ),
                     ],
                   ),
                 ),
@@ -134,21 +149,20 @@ class _BodyState extends State<Body> {
             ),
           ),
 
-
           Container(
             margin: EdgeInsets.only(left: 40, right: 40),
             child: Column(
                 children: [
-                  SizedBox(height: size.height * 0.12),
+                  SizedBox(height: 30),
                   Text(
                     'Escribe tu número de empleado asignado o identidad, te enviaremos un enlace al correo para que puedas restablecer tu contraseña.',
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
-                        fontSize: (12.0),
+                        fontSize: (14.0),
                         color: Colors.black),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: size.height * 0.08),
+                  SizedBox(height: 30),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5.0),
                     child: _crearUsuario(),
@@ -159,8 +173,9 @@ class _BodyState extends State<Body> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
-                                side: BorderSide(color: Colors.black),
-                                fixedSize: Size(size.width-80, 50)
+                                side: BorderSide(color: const Color.fromRGBO(40, 93, 169, 1)),
+                                fixedSize: Size(size.width-80, 50),
+                                backgroundColor: const Color.fromRGBO(40, 93, 169, 1)
                               ),
                               onPressed: () {
                                 fetchUserResetPass(user.text);
@@ -168,7 +183,7 @@ class _BodyState extends State<Body> {
                               child: Text(
                                 "Enviar",
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.white,
                                   fontSize: 20,
                                   fontWeight: FontWeight.normal
                                 ),
@@ -191,16 +206,17 @@ class _BodyState extends State<Body> {
         Container(
           margin: EdgeInsets.only(left: 10, right: 10),
           child: TextField(
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal),
             controller: user,
             //onChanged: onChanged,
             cursorColor: thirdColor,
             decoration: InputDecoration(
-              icon: Icon(
-                Icons.person_outline,
-                color: Color.fromRGBO(40, 93, 169, 1),
-                size: 30,
-              ),
+              icon: SvgPicture.asset(  
+                  "assets/icons/usuario.svg",
+                  color: Color.fromRGBO(40, 93, 169, 1),
+                  width: 20,
+                  height: 20,
+                ),
               hintText: "Número de empleado o identidad",
               hintStyle: TextStyle(color: Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
               border: InputBorder.none,

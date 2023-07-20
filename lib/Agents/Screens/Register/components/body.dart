@@ -6,6 +6,7 @@ import 'package:flutter_auth/Agents/models/register.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 
 import 'package:flutter_auth/components/text_field_container.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 import 'dart:convert' show json;
@@ -134,16 +135,20 @@ class _BodyState extends State<Body> {
                     ),
                     borderRadius: BorderRadius.circular(5.0),
                   ),
-                  child: Icon(
-                    Icons.arrow_back_outlined,
-                    color: Color.fromRGBO(40, 93, 169, 1),
-                    size:30
-                  ),
+                  child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: SvgPicture.asset(
+                            "assets/icons/flecha_atras_oscuro.svg",
+                            color: Color.fromRGBO(40, 93, 169, 1),
+                            width: 5,
+                            height: 10,
+                          ),
+                        ),
                 ),
               ),
             ),
   
-            Center(child: Text("Ingresar código",style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1), fontSize: 22),),),
+            Center(child: Text("Ingresar código",style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1), fontSize: 27),),),
           ],
         ),
         
@@ -171,7 +176,7 @@ class _BodyState extends State<Body> {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.normal,
-            fontSize: 13,
+            fontSize: 14,
           )
         ),
           SizedBox(height: 5),
@@ -184,7 +189,7 @@ class _BodyState extends State<Body> {
                 'Reenviar código',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 13,
+                  fontSize: 14,
                   color: Color.fromRGBO(40, 93, 169, 1)
                 )
               ),
@@ -201,7 +206,8 @@ class _BodyState extends State<Body> {
               borderRadius: BorderRadius.circular(12),
             ),
             side: BorderSide(color: Colors.black),
-              fixedSize: Size(size.width-80, 50)
+              fixedSize: Size(size.width-80, 50),
+              backgroundColor: Colors.black
           ),
           onPressed: () async {
             fetchUserRegisterCode(prefs.nombreUsuario, prefs.emailUsuario,userCode.text, prefs.passwordUsuario, prefs.passwordUsuario);
@@ -209,7 +215,7 @@ class _BodyState extends State<Body> {
           child: Text(
             "Verificar",
             style: TextStyle(
-              color: Colors.black,
+              color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.normal
             ),

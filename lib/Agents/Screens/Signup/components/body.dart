@@ -5,7 +5,9 @@ import 'package:flutter_auth/Agents/Screens/Login/login_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Register/register_screen.dart';
 import 'package:flutter_auth/Agents/models/register.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 import 'dart:convert' show json;
 import 'package:quickalert/quickalert.dart';
 
@@ -111,43 +113,43 @@ class _BodyState extends State<Body> {
                     ),
                     borderRadius: BorderRadius.circular(5.0),
                   ),
-                  child: Icon(
-                    Icons.arrow_back_outlined,
-                    color: Color.fromRGBO(40, 93, 169, 1),
-                    size:30
-                  ),
+                  child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: SvgPicture.asset(
+                            "assets/icons/flecha_atras_oscuro.svg",
+                            color: Color.fromRGBO(40, 93, 169, 1),
+                            width: 5,
+                            height: 10,
+                          ),
+                        ),
                 ),
               ),
             ),
   
-            Center(child: Text("Regístrate",style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1), fontSize: 22),)),
+            Center(child: Text("Regístrate",style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1), fontSize: 27),)),
           ],
         ),
         SizedBox(height: 20),
-        Container(
-          height: 80,
-          width: 80,
-          decoration: BoxDecoration(
-            color: Color.fromRGBO(40, 93, 169, 1),
-            shape: BoxShape.circle,
-            border: Border.all(
-              color: Colors.white,
-              width: 2.0,
+        
+        Positioned(
+            top: 80,
+            right: 0,
+            left: 0,
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: 120,
+                maxHeight: 120,
+              ),
+              child: Lottie.asset('assets/videos/registrar.json')
             ),
           ),
-          child: Icon(
-            Icons.person_outline,
-            color: Colors.white,
-            size: 50,
-          ),
-        ),
 
         Padding(
           padding: const EdgeInsets.all(30.0),
           child: Text(
             "Escribe tu número de empleado asignado o identidad y tu correo electrónico. Te enviaremos un código de confirmación para que puedas registrarte.",
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.black,fontSize: 12),
+            style: TextStyle(color: Colors.black,fontSize: 14),
           ),
         ),
         _crearUsuario(),
@@ -164,7 +166,8 @@ class _BodyState extends State<Body> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           side: BorderSide(color: Colors.black),
-                          fixedSize: Size(size.width-80, 50)
+                          fixedSize: Size(size.width-80, 50),
+                          backgroundColor: Colors.black
                         ),
                         onPressed: () async {
                           //función fetch
@@ -192,10 +195,10 @@ class _BodyState extends State<Body> {
                           await fetchUserRegister(user.text, userEmail.text, userPassword.text);
                         },
                         child: Text(
-                          "Enviar",
+                          "Enviar código",
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
+                            color: Colors.white,
+                            fontSize: 19,
                             fontWeight: FontWeight.normal
                           ),
                         ),
@@ -252,24 +255,23 @@ class _BodyState extends State<Body> {
   Widget _crearUsuario() {
     return Container(
       margin: EdgeInsets.only(left: 40, right: 40),
-
       child: Column(
         children: [
           Container(
             margin: EdgeInsets.only(left: 10, right: 10),
             child: TextField(
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal),
               controller: user,
-              //onChanged: onChanged,
               cursorColor: Colors.black,
               decoration: InputDecoration(
-                icon: Icon(
-                  Icons.person_outline,
+                icon: SvgPicture.asset(  
+                  "assets/icons/usuario.svg",
                   color: Color.fromRGBO(40, 93, 169, 1),
-                  size: 30,
+                  width: 20,
+                  height: 20,
                 ),
                 hintText: "Número de empleado o identidad",
-                hintStyle: TextStyle(color: Color.fromRGBO(134, 134, 134, 1)),
+                hintStyle: TextStyle(color: Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
                 border: InputBorder.none,
               ),
               onChanged: (value) {
@@ -294,19 +296,20 @@ class _BodyState extends State<Body> {
           Container(
             margin: EdgeInsets.only(left: 10, right: 10),
             child: TextField(
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal),
               controller: userEmail,
               //onChanged: onChanged,
               cursorColor: thirdColor,
               decoration: InputDecoration(
                 hintText: "Email",
-                icon: Icon(
-                  Icons.email_outlined,
+                icon: SvgPicture.asset(  
+                  "assets/icons/correo.svg",
                   color: Color.fromRGBO(40, 93, 169, 1),
-                  size: 30,
+                  width: 20,
+                  height: 20,
                 ),
                 border: InputBorder.none,
-                hintStyle: TextStyle(color: Color.fromRGBO(134, 134, 134, 1)),
+                hintStyle: TextStyle(color: Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
               ),
               onChanged: (value) {
                 //prefs.emailUsuario = value;
@@ -331,14 +334,14 @@ class _BodyState extends State<Body> {
           Container(
             margin: EdgeInsets.only(left: 10, right: 10),
             child: TextField(
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal),
               //keyboardType: TextInputType.,
               controller: userPassword,
               obscureText: _passwordVisible!,
               cursorColor: Colors.white,
               decoration: InputDecoration(
                 hintText: "Contraseña",
-                hintStyle: TextStyle(color: Color.fromRGBO(134, 134, 134, 1)),
+                hintStyle: TextStyle(color: Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
                 icon: Icon(
                   Icons.lock_outline,
                   color: Color.fromRGBO(40, 93, 169, 1),
@@ -383,14 +386,14 @@ class _BodyState extends State<Body> {
           Container(
             margin: EdgeInsets.only(left: 10, right: 10),
             child: TextField(
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal),
               //keyboardType: TextInputType.,
               controller: userPasswordC,
               obscureText: _passwordVisibleC!,
               cursorColor: Colors.white,
               decoration: InputDecoration(
                 hintText: "Confirmar contraseña",
-                hintStyle: TextStyle(color: Color.fromRGBO(134, 134, 134, 1)),
+                hintStyle: TextStyle(color: Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
                 icon: Icon(
                   Icons.lock_outline,
                   color: Color.fromRGBO(40, 93, 169, 1),
