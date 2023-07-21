@@ -408,7 +408,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 12),
+                              SizedBox(height: 18),
                               Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 2),
                                 child: GestureDetector(
@@ -463,7 +463,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                   ),
                                 ),
                               ),
-                             SizedBox(height: 12),
+                             SizedBox(height: 18),
                               Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 2),
                                 child: GestureDetector(
@@ -517,7 +517,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 12),
+                              SizedBox(height: 18),
                               Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 2),
                                 child: GestureDetector(
@@ -571,7 +571,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 12),                                                     
+                              SizedBox(height: 18),                                                     
                               Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 2),
                                 child: GestureDetector(
@@ -682,8 +682,8 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                                         child: SvgPicture.asset(
                                                           "assets/icons/light.svg",
                                                           color: Colors.white,
-                                                          height: 20,
-                                                          width: 20,
+                                                          height: 10,
+                                                          width: 10,
                                                         ),
                                                       ),
                                                     ),
@@ -701,8 +701,8 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                                         child: SvgPicture.asset(
                                                           "assets/icons/dark.svg",
                                                           color: Colors.white,
-                                                          height: 20,
-                                                          width: 20,
+                                                          height: 10,
+                                                          width: 10,
                                                         ),
                                                       ),
                                                     ),
