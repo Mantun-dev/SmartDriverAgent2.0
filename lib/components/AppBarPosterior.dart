@@ -69,9 +69,19 @@ class _AppBarPosterior extends State<AppBarPosterior> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) {
-                    return HomeScreen();
-                  })
+                  PageRouteBuilder(
+                    transitionDuration: Duration(milliseconds: 200 ),
+                    pageBuilder: (_, __, ___) => HomeScreen(),
+                    transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                      return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: Offset(1.0, 0.0),
+                            end: Offset.zero,
+                          ).animate(animation),
+                        child: child,
+                      );
+                    },
+                  ),
                 );
               },
               child: Padding(
@@ -124,9 +134,19 @@ class _AppBarPosterior extends State<AppBarPosterior> {
             onTap: item==2?null:() {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) {
-                    return NotificationPage();
-                  })
+                  PageRouteBuilder(
+                    transitionDuration: Duration(milliseconds: 200 ),
+                    pageBuilder: (_, __, ___) => NotificationPage(),
+                    transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                      return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: Offset(1.0, 0.0),
+                            end: Offset.zero,
+                          ).animate(animation),
+                        child: child,
+                      );
+                    },
+                  ),
                 );
             },
             child: Padding(
@@ -303,9 +323,19 @@ class _AppBarPosterior extends State<AppBarPosterior> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) {
-                    return ProfilePage();
-                  })
+                  PageRouteBuilder(
+                    transitionDuration: Duration(milliseconds: 200 ),
+                    pageBuilder: (_, __, ___) => ProfilePage(),
+                    transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                      return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: Offset(1.0, 0.0),
+                            end: Offset.zero,
+                          ).animate(animation),
+                        child: child,
+                      );
+                    },
+                  ),
                 );
               },
               child: Padding(

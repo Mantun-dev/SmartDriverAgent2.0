@@ -60,7 +60,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                       transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
                                         return SlideTransition(
                                           position: Tween<Offset>(
-                                            begin: Offset(1.0, 0.0),
+                                            begin: Offset(-1.0, 0.0),
                                             end: Offset.zero,
                                           ).animate(animation),
                                           child: child,
@@ -72,9 +72,19 @@ class _AppBarSuperior extends State<AppBarSuperior> {
               else{
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) {
-                    return HomeScreen();
-                  })
+                  PageRouteBuilder(
+                    transitionDuration: Duration(milliseconds: 200),
+                    pageBuilder: (_, __, ___) => HomeScreen(),
+                    transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                      return SlideTransition(
+                        position: Tween<Offset>(
+                          begin: Offset(-1.0, 0.0), // Cambiar Offset de inicio a (1.0, 0.0)
+                          end: Offset.zero, // Mantener Offset de final en (0.0, 0.0)
+                        ).animate(animation),
+                        child: child,
+                      );
+                    },
+                  ),
                 );
               }
             },
@@ -242,9 +252,19 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) {
-                        return ProfilePage();
-                      })
+                      PageRouteBuilder(
+                        transitionDuration: Duration(milliseconds: 200),
+                        pageBuilder: (_, __, ___) => ProfilePage(),
+                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                          return SlideTransition(
+                            position: Tween<Offset>(
+                              begin: Offset(1.0, 0.0), // Cambiar Offset de inicio a (1.0, 0.0)
+                              end: Offset.zero, // Mantener Offset de final en (0.0, 0.0)
+                            ).animate(animation),
+                            child: child,
+                          );
+                        },
+                      ),
                     );
                   },
                   child: Padding(
@@ -339,10 +359,20 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                   onTap: () {
                                     Navigator.pop(context);
                                     Navigator.push(
-                                      contextP,
-                                      MaterialPageRoute(builder: (contextP) {
-                                        return ProfilePage();
-                                      })
+                                      navigatorKey.currentContext!,
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200),
+                                        pageBuilder: (_, __, ___) => ProfilePage(),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0), // Cambiar Offset de inicio a (1.0, 0.0)
+                                              end: Offset.zero, // Mantener Offset de final en (0.0, 0.0)
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
                                     );
                                   },
                                   child: Row(
@@ -384,9 +414,22 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                 child: GestureDetector(
                                   onTap: () {
                                     Navigator.pop(context);
-                                    Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
-                                    return DetailScreen(plantilla: plantilla[0]);
-                                  }));
+                                    Navigator.push(
+                                      navigatorKey.currentContext!,
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200),
+                                        pageBuilder: (_, __, ___) => DetailScreen(plantilla: plantilla[0]),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0), // Cambiar Offset de inicio a (1.0, 0.0)
+                                              end: Offset.zero, // Mantener Offset de final en (0.0, 0.0)
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
                                   },
                                   child: Row(
                                     children: [
@@ -426,9 +469,22 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                 child: GestureDetector(
                                   onTap: () {
                                     Navigator.pop(context);
-                                    Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
-                                    return DetailScreenHistoryTrip(plantilla: plantilla[1]);
-                                  }));
+                                    Navigator.push(
+                                      navigatorKey.currentContext!,
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200),
+                                        pageBuilder: (_, __, ___) => DetailScreenHistoryTrip(plantilla: plantilla[1]),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0), // Cambiar Offset de inicio a (1.0, 0.0)
+                                              end: Offset.zero, // Mantener Offset de final en (0.0, 0.0)
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
                                   },
                                   child: Row(
                                     children: [
@@ -467,9 +523,22 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                 child: GestureDetector(
                                   onTap: () {
                                     Navigator.pop(context);
-                                    Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
-                                    return DetailScreenQr(plantilla: plantilla[2]);
-                                  }));
+                                    Navigator.push(
+                                      navigatorKey.currentContext!,
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200),
+                                        pageBuilder: (_, __, ___) => DetailScreenQr(plantilla: plantilla[2]),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0), // Cambiar Offset de inicio a (1.0, 0.0)
+                                              end: Offset.zero, // Mantener Offset de final en (0.0, 0.0)
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
                                   },
                                   child: Row(
                                     children: [
@@ -509,9 +578,22 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                   onTap: () {
                                     Navigator.pop(context);
                         
-                                    Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
-                                    return DetailScreenChanges(plantilla: plantilla[3]);
-                                  }));
+                                    Navigator.push(
+                                      navigatorKey.currentContext!,
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200),
+                                        pageBuilder: (_, __, ___) => DetailScreenChanges(plantilla: plantilla[3]),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0), // Cambiar Offset de inicio a (1.0, 0.0)
+                                              end: Offset.zero, // Mantener Offset de final en (0.0, 0.0)
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
                                   },
                                   child: Row(
                                     children: [

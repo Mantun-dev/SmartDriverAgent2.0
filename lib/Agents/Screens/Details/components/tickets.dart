@@ -274,7 +274,22 @@ class _TicketScreenState extends State<TicketScreen> {
                         padding: const EdgeInsets.only(right: 20, left: 20),
                         child: TextButton(
                           onPressed: () {
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HistoryTicketScreen())).then((_) => HomeScreen());
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                transitionDuration: Duration(milliseconds: 200),
+                                pageBuilder: (_, __, ___) => HistoryTicketScreen(),
+                                transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: Offset(1.0, 0.0), // Cambiar Offset de inicio a (1.0, 0.0)
+                                      end: Offset.zero, // Mantener Offset de final en (0.0, 0.0)
+                                    ).animate(animation),
+                                    child: child,
+                                  );
+                                },
+                              ),
+                            );
                           },
                           child: Text(
                             "Solicitudes Enviadas",
