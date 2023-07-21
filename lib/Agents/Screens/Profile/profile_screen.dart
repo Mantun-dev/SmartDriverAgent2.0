@@ -1287,8 +1287,7 @@ class _DataTableExample extends State<ProfilePage> {
                                                   ConnectionState.done) {
                                                 if ('${abc.data!.wednesdayIn}' ==
                                                     'null') {
-                                                  return Text('Día libre',style: TextStyle(
-                                        color: Colors.black));
+                                                  return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                 } else if (abc.hasData) {
                                                   return Text(
                                                       '${abc.data!.wednesdayIn}',
