@@ -49,6 +49,7 @@ class _BodyState extends State<Body> {
   bool isMenuOpen = false;
   TextEditingController buscarText = TextEditingController();
   FocusNode _focusNode = FocusNode();
+  bool cargarM = false;
   List<dynamic> ventanas = [
   {
     'nombre': 'Próximos viajes',
@@ -470,7 +471,8 @@ BuildContext? contextP;
     http.Response responses2 = await http.post(Uri.parse('$ip2/agents/warning/transportation'), body: data);    
     var msg = json.decode(responses2.body);
     if (mounted) {      
-      setState(() {            
+      setState(() { 
+        cargarM = true;           
         msgtoShow = msg['msg'];
         display = msg['display'];    
       });
@@ -593,7 +595,39 @@ BuildContext? contextP;
                   ),
                 ),
                 SizedBox(height: 15)
-              },                                          
+              },
+              if(cargarM == false)...{
+
+                WillPopScope(
+                    onWillPop: () async => false,
+                    child: SimpleDialog(
+                       elevation: 20,
+                      backgroundColor: Theme.of(context).cardColor,
+                      children: [
+                        Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  'Cargando advertencia...', 
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                  ),
+                              )
+                            ],
+                          ),
+                        )
+                      ] ,
+                    ),
+                  ),
+
+                SizedBox(height: 15)
+              },                                    
               // Padding(
               //   padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
               //   child: Container(
