@@ -508,7 +508,7 @@ BuildContext? contextP;
               builder: (BuildContext context, abc) {
                 if (abc.connectionState == ConnectionState.done) {
                   //validación
-                  if (abc.data!.companyId != 7) {
+                  if (abc.data!.companyId != 1) {
                     return GridView.count(
                       crossAxisCount: 2,
                       shrinkWrap: true,
@@ -544,35 +544,54 @@ BuildContext? contextP;
                       }),
                     );
                   } else {
-                    return GridView.count(
-                      crossAxisCount: 2,
-                      shrinkWrap: true,
-                      //todas las cards
-                      children: List.generate(plantilla.length, (index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: ItemCard(
-                            plantilla: plantilla[index],
-                            press: () {
-                              setState(() {
-                                if (plantilla[index] == plantilla[0]) {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return DetailScreen(plantilla: plantilla[0]);
-                                  }));
-                                } else if (plantilla[index] == plantilla[1]) {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return DetailScreenHistoryTrip(plantilla: plantilla[1]);
-                                  }));
-                                } else if (plantilla[index] == plantilla[2]) {
+                    return Column(
+                      children: [
+                        GridView.count(
+                          crossAxisCount: 2,
+                          shrinkWrap: true,
+                          //todas las cards
+                          children: List.generate(2, (index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8.0, left: 8, bottom: 8),
+                              child: ItemCard(
+                                plantilla: plantilla[index],
+                                press: () {
+                                  setState(() {
+                                    if (plantilla[index] == plantilla[0]) {
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                        return DetailScreen(plantilla: plantilla[index]);
+                                      }));
+                                    } else if (plantilla[index] == plantilla[1]) {
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                        return DetailScreenHistoryTrip(plantilla: plantilla[index]);
+                                      }));
+                                    } else if (plantilla[index] == plantilla[2]) {
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                        return DetailScreenQr(plantilla: plantilla[index]);
+                                      }));
+                                    }
+                                  });
+                                },
+                              ),
+                            );
+                          }),
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 8.0, left: 8, bottom: 8),
+                            child: ItemCard(
+                              plantilla: plantilla[2],
+                              press: () {
+                                setState(() {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                                     return DetailScreenQr(plantilla: plantilla[2]);
                                   }));
-                                }
-                              });
-                            },
+                                });
+                              },
+                            ),
                           ),
-                        );
-                      }),
+                        ),
+                      ],
                     );
                   }
                 } else {
