@@ -562,6 +562,10 @@ BuildContext? contextP;
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: Theme.of(context).disabledColor,
+                        width: 2
+                      )
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -571,7 +575,7 @@ BuildContext? contextP;
                         children: [
                           Icon(
                             Icons.warning,
-                            color: Colors.yellow,
+                            color: Colors.orangeAccent,
                           ),
                           SizedBox(width: 10), // Espacio entre el icono y el texto
                           Expanded( // Usar Expanded para que el texto tome el espacio disponible
@@ -587,7 +591,8 @@ BuildContext? contextP;
                       ),
                     ),
                   ),
-                )
+                ),
+                SizedBox(height: 15)
               },                                          
               // Padding(
               //   padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
