@@ -832,7 +832,7 @@ BuildContext? contextP;
       
                           if(snapshot.data!.length>0)
                           Padding(
-                            padding: const EdgeInsets.only(right: 25.0, left: 25, bottom: 10),
+                            padding: const EdgeInsets.only(right: 25.0, left: 25, bottom: 0),
                             child: Row(
                               children: [
                                 Expanded(
