@@ -300,13 +300,26 @@ class _ChatScreenState extends State<ChatScreen> {
                         onTap: () {
                             desconectar();
                             fetchProfile().then((value) {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                return ChatsList(
-                                  id: '${value.agentId}',
-                                  rol: 'agente',
-                                  nombre: '${value.agentFullname}',
-                                );
-                              }));
+                             Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                      pageBuilder: (_, __, ___) => ChatsList(
+                                        id: '${value.agentId}',
+                                        rol: 'agente',
+                                        nombre: '${value.agentFullname}',
+                                      ),
+                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                        return SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: Offset(1.0, 0.0),
+                                            end: Offset.zero,
+                                          ).animate(animation),
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
                             });
                           },
                         child: Container(

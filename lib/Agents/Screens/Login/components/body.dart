@@ -140,7 +140,7 @@ class _BodyState extends State<Body> {
                         Navigator.push(
                           context,
                           PageRouteBuilder(
-                            transitionDuration: Duration(milliseconds: 500 ), // Adjust the animation duration as needed
+                            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
                             pageBuilder: (_, __, ___) => WelcomeScreen(),
                             transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
                               return SlideTransition(
@@ -217,9 +217,22 @@ class _BodyState extends State<Body> {
                           children: [
                             ForgotPassword(
                               press: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return RestoreScreen();
-                                }));
+                                Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                      pageBuilder: (_, __, ___) => RestoreScreen(),
+                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                        return SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: Offset(1.0, 0.0),
+                                            end: Offset.zero,
+                                          ).animate(animation),
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
                               },
                             ),
                           ],

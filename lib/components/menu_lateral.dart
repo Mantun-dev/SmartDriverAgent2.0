@@ -192,15 +192,28 @@ class _MenuLateralState extends State<MenuLateral> {
             ),
             onTap: () {
               fetchProfile().then((value) {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return ChatScreen(
-                    id: '${value.agentId}',
-                    rol: 'agente',
-                    nombre: '${value.agentFullname}',
-                    sala: '$tripIdTologin',
-                    driverId: '$driverId',
-                  );
-                }));
+             Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                      pageBuilder: (_, __, ___) => ChatScreen(
+                                        id: '${value.agentId}',
+                                        rol: 'agente',
+                                        nombre: '${value.agentFullname}',
+                                        sala: '$tripIdTologin',
+                                        driverId: '$driverId',
+                                      ),
+                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                        return SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: Offset(1.0, 0.0),
+                                            end: Offset.zero,
+                                          ).animate(animation),
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
               });
             },
           ),

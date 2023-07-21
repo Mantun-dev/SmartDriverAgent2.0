@@ -52,9 +52,22 @@ class _AppBarSuperior extends State<AppBarSuperior> {
           child: GestureDetector(
             onTap: () {
               if(item==7){
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return DetailScreenChanges(plantilla: plantilla[3]);
-                }));
+                Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                      pageBuilder: (_, __, ___) => DetailScreenChanges(plantilla: plantilla[3]),
+                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                        return SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: Offset(1.0, 0.0),
+                                            end: Offset.zero,
+                                          ).animate(animation),
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
               }
               else{
                 Navigator.push(
@@ -293,7 +306,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
-                      height: size.height / 2,
+
                       width: size.width,
                       decoration: BoxDecoration(
                         color: prefs.tema ? Color.fromRGBO(47, 46, 65, 1) : Colors.white,
@@ -304,447 +317,445 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 120, left: 120, top: 15, bottom: 20),
-                              child: GestureDetector(
-                                onTap: () => Navigator.pop(context),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(contextP).dividerColor,
-                                    borderRadius: BorderRadius.circular(80)
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 120, left: 120, top: 15, bottom: 20),
+                                child: GestureDetector(
+                                  onTap: () => Navigator.pop(context),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(contextP).dividerColor,
+                                      borderRadius: BorderRadius.circular(80)
+                                    ),
+                                    height: 6,
                                   ),
-                                  height: 6,
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 2),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(
-                                    contextP,
-                                    MaterialPageRoute(builder: (contextP) {
-                                      return ProfilePage();
-                                    })
-                                  );
-                                },
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-
-                                            child: SvgPicture.asset(
-                                              "assets/icons/usuario.svg",
-                                              color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 2),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    Navigator.push(
+                                      contextP,
+                                      MaterialPageRoute(builder: (contextP) {
+                                        return ProfilePage();
+                                      })
+                                    );
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 18,
+                                              height: 18,
+                        
+                                              child: SvgPicture.asset(
+                                                "assets/icons/usuario.svg",
+                                                color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            ' Mi perfil',
-                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
-                                          ),
-                                        ],
+                                            Text(
+                                              ' Mi perfil',
+                                              style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/flechader.svg",
-                                        color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/flechader.svg",
+                                          color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: 12),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 2),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
-                                  return DetailScreen(plantilla: plantilla[0]);
-                                }));
-                                },
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/proximo_viaje.svg",
-                                              color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                              SizedBox(height: 12),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 2),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
+                                    return DetailScreen(plantilla: plantilla[0]);
+                                  }));
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 18,
+                                              height: 18,
+                                              child: SvgPicture.asset(
+                                                "assets/icons/proximo_viaje.svg",
+                                                color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                              ),
                                             ),
-                                          ),
-                                          Text(' Próximos viajes', 
-                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
-                                          ),
-                                        ],
+                                            Text(' Próximos viajes', 
+                                              style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
+                                      
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/flechader.svg",
+                                          color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                             SizedBox(height: 12),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 2),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
+                                    return DetailScreenHistoryTrip(plantilla: plantilla[1]);
+                                  }));
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 18,
+                                        height: 18,
+                                              child: SvgPicture.asset(
+                                                "assets/icons/historial_de_viaje.svg",
+                                                color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                              ),
+                                            ),
+                                            Text(' Historial de viajes', 
+                                              style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/flechader.svg",
+                                          color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 12),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 2),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
+                                    return DetailScreenQr(plantilla: plantilla[2]);
+                                  }));
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 18,
+                                        height: 18,
+                                              child: SvgPicture.asset(
+                                                "assets/icons/QR.svg",
+                                                color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                              ),
+                                            ),
+                                            Text(' Generar código QR', 
+                                              style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/flechader.svg",
+                                          color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 12),                                                     
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 2),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                        
+                                    Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
+                                    return DetailScreenChanges(plantilla: plantilla[3]);
+                                  }));
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 18,
+                                        height: 18,
+                                              child: SvgPicture.asset(
+                                                "assets/icons/solicitud_de_cambio.svg",
+                                                color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                              ),
+                                            ),
+                                            Text(' Solicitud de cambios', 
+                                              style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/flechader.svg",
+                                          color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 12),      
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 2),
+                                child: GestureDetector(
+                                  onTap: () {
                                     
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/flechader.svg",
-                                        color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                    Navigator.pop(context);
+                                    eventBus.fire(ThemeChangeEvent(true)); // Cambia el valor de prefs.tema a true
+                                    
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 18,
+                                        height: 18,
+                                              child: SvgPicture.asset(
+                                                "assets/icons/tema.svg",
+                                                color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                              ),
+                                            ),
+                                            Text(' Tema', 
+                                              style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                           SizedBox(height: 12),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 2),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
-                                  return DetailScreenHistoryTrip(plantilla: plantilla[1]);
-                                }));
-                                },
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
-                                          Container(
-                                            width: 18,
-                                      height: 18,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/historial_de_viaje.svg",
-                                              color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
-                                            ),
-                                          ),
-                                          Text(' Historial de viajes', 
-                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/flechader.svg",
-                                        color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 12),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 2),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
-                                  return DetailScreenQr(plantilla: plantilla[2]);
-                                }));
-                                },
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                      height: 18,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/QR.svg",
-                                              color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
-                                            ),
-                                          ),
-                                          Text(' Generar código QR', 
-                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/flechader.svg",
-                                        color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 12),                                                     
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 2),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-
-                                  Navigator.push(contextP, MaterialPageRoute(builder: (contextP) {
-                                  return DetailScreenChanges(plantilla: plantilla[3]);
-                                }));
-                                },
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                      height: 18,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/solicitud_de_cambio.svg",
-                                              color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
-                                            ),
-                                          ),
-                                          Text(' Solicitud de cambios', 
-                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/flechader.svg",
-                                        color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 12),      
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 2),
-                              child: GestureDetector(
-                                onTap: () {
-                                  
-                                  Navigator.pop(context);
-                                  eventBus.fire(ThemeChangeEvent(true)); // Cambia el valor de prefs.tema a true
-                                  
-                                },
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                      height: 18,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/tema.svg",
-                                              color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
-                                            ),
-                                          ),
-                                          Text(' Tema', 
-                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [                                  
-                                        SizedBox(
-
-                                          child: AnimatedContainer(
-                                            duration: const Duration(milliseconds: 300),
-                                            padding: const EdgeInsets.all(8.0),
-                                            decoration: BoxDecoration(
-                                              color: prefs.tema ? const Color.fromARGB(255, 34, 32, 32) : const Color.fromRGBO(158, 158, 158, 1),
-                                              borderRadius: BorderRadius.circular(25.0),
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                AnimatedOpacity(
-                                                  opacity: prefs.tema ? 0.0 : 1.0,
-                                                  duration: const Duration(milliseconds: 300),
-                                                  child: Container(  
-                                                                                             
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(25.0),
-                                                      color: Color.fromRGBO(40, 93, 169, 1),     
-                                                    ),
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.all(5.0),
-                                                      child: SvgPicture.asset(
-                                                        "assets/icons/light.svg",
-                                                        color: Colors.white,
-                                                        height: 20,
-                                                        width: 20,
+                                          SizedBox(
+                                            child: AnimatedContainer(
+                                              duration: const Duration(milliseconds: 300),
+                                              padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 4.0), // Ajustar el padding aquí
+                                              decoration: BoxDecoration(
+                                                color: prefs.tema ? const Color.fromARGB(255, 34, 32, 32) : const Color.fromRGBO(158, 158, 158, 1),
+                                                borderRadius: BorderRadius.circular(25.0),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  AnimatedOpacity(
+                                                    opacity: prefs.tema ? 0.0 : 1.0,
+                                                    duration: const Duration(milliseconds: 300),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(25.0),
+                                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                                      ),
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(5.0),
+                                                        child: SvgPicture.asset(
+                                                          "assets/icons/light.svg",
+                                                          color: Colors.white,
+                                                          height: 20,
+                                                          width: 20,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                                AnimatedOpacity(
-                                                  opacity: prefs.tema ? 1.0 : 0.0,
-                                                  duration: const Duration(milliseconds: 300),
-                                                  child: Container(                                                
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(25.0),
-                                                      color: Color.fromRGBO(40, 93, 169, 1),     
-                                                    ),
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.all(5.0),
-                                                      child: SvgPicture.asset(
-                                                        "assets/icons/dark.svg",
-                                                        color: Colors.white,   
-                                                        height: 20,
-                                                        width: 20,
+                                                  AnimatedOpacity(
+                                                    opacity: prefs.tema ? 1.0 : 0.0,
+                                                    duration: const Duration(milliseconds: 300),
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(25.0),
+                                                        color: Color.fromRGBO(40, 93, 169, 1),
+                                                      ),
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(5.0),
+                                                        child: SvgPicture.asset(
+                                                          "assets/icons/dark.svg",
+                                                          color: Colors.white,
+                                                          height: 20,
+                                                          width: 20,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        )
-
-                                        //Icon(Icons.arrow_forward_ios,color: Theme.of(context).primaryColor,),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            /*SizedBox(height: 12),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 2),
-                              child: GestureDetector(
-                                onTap: () {
-                                  
-                                },
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 25,
-                                            height: 25,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/idioma.svg",
-                                              color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
-                                            ),
-                                          ),
-                                          Text(' Idiomas', 
-                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
-                                          ),
+                                          )
                                         ],
                                       ),
-                                    ),
-                                    Container(
-                                      width: 15,
-                                      height: 15,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/flechader.svg",
-                                        color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),*/
-                            
-                            SizedBox(height: 12),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 2),
-                              child: GestureDetector(
-                                onTap: () {
-                                            QuickAlert.show(
-                                              context: context,
-                                              title: "Está seguro que desea salir?",          
-                                              type: QuickAlertType.success,
-                                              confirmBtnText: 'Confirmar',
-                                              cancelBtnText: 'Cancelar',
-                                              showCancelBtn: true,  
-                                              confirmBtnTextStyle: TextStyle(fontSize: 15, color: Colors.white),
-                                              cancelBtnTextStyle:TextStyle(color: Colors.red, fontSize: 15, fontWeight:FontWeight.bold ), 
-                                              onConfirmBtnTap:() {
-                                                LoadingIndicatorDialog().show(context);
-
-                                                fetchDeleteSession();
-                                                prefs.remove();
-                                                prefs.removeData();
-                                                
-                                                new Future.delayed(new Duration(seconds: 2), () {
-                                                  LoadingIndicatorDialog().dismiss();
-                                                  Navigator.pop(context);
-                                                  Navigator.pop(context);
-                                                  Navigator.of(contextP).pushAndRemoveUntil(
-                                                      MaterialPageRoute(
-                                                          builder: (BuildContext contextP) => WelcomeScreen()),
-                                                      (Route<dynamic> route) => false);
-                                                      QuickAlert.show(
-                                                        context: context,
-                                                        type: QuickAlertType.success,
-                                                        title: "¡Hecho!",
-                                                        text: "¡Gracias por usar Smart Driver!",
-                                                      );
-                                                });
-                                              },
-                                              onCancelBtnTap: (() {
-                                                Navigator.pop(context);
-                                                Navigator.pop(context);
-                                                /*QuickAlert.show(
-                                                  context: context,
-                                                  type: QuickAlertType.success,
-                                                  text: "Cancelado",
-                                                );*/
-                                              })
-                                            );
-                                },
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                      height: 18,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/cerrar-sesion.svg",
-                                              color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                              /*SizedBox(height: 12),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 2),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 25,
+                                              height: 25,
+                                              child: SvgPicture.asset(
+                                                "assets/icons/idioma.svg",
+                                                color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                              ),
                                             ),
-                                          ),
-                                          Text(' Cerrar sesión', 
-                                            style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
-                                          ),
-                                        ],
+                                            Text(' Idiomas', 
+                                              style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-                                      width: 18,
-                                      height: 18,
-                                      child: SvgPicture.asset(
-                                        "assets/icons/flechader.svg",
-                                        color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                      Container(
+                                        width: 15,
+                                        height: 15,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/flechader.svg",
+                                          color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
+                                ),
+                              ),*/
+                              
+                              SizedBox(height: 12),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 2),
+                                child: GestureDetector(
+                                  onTap: () {
+                                              QuickAlert.show(
+                                                context: context,
+                                                title: "Está seguro que desea salir?",          
+                                                type: QuickAlertType.success,
+                                                confirmBtnText: 'Confirmar',
+                                                cancelBtnText: 'Cancelar',
+                                                showCancelBtn: true,  
+                                                confirmBtnTextStyle: TextStyle(fontSize: 15, color: Colors.white),
+                                                cancelBtnTextStyle:TextStyle(color: Colors.red, fontSize: 15, fontWeight:FontWeight.bold ), 
+                                                onConfirmBtnTap:() {
+                                                  LoadingIndicatorDialog().show(context);
+                        
+                                                  fetchDeleteSession();
+                                                  prefs.remove();
+                                                  prefs.removeData();
+                                                  
+                                                  new Future.delayed(new Duration(seconds: 2), () {
+                                                    LoadingIndicatorDialog().dismiss();
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
+                                                    Navigator.of(contextP).pushAndRemoveUntil(
+                                                        MaterialPageRoute(
+                                                            builder: (BuildContext contextP) => WelcomeScreen()),
+                                                        (Route<dynamic> route) => false);
+                                                        QuickAlert.show(
+                                                          context: context,
+                                                          type: QuickAlertType.success,
+                                                          title: "¡Hecho!",
+                                                          text: "¡Gracias por usar Smart Driver!",
+                                                        );
+                                                  });
+                                                },
+                                                onCancelBtnTap: (() {
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                  /*QuickAlert.show(
+                                                    context: context,
+                                                    type: QuickAlertType.success,
+                                                    text: "Cancelado",
+                                                  );*/
+                                                })
+                                              );
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 18,
+                                        height: 18,
+                                              child: SvgPicture.asset(
+                                                "assets/icons/cerrar-sesion.svg",
+                                                color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                              ),
+                                            ),
+                                            Text(' Cerrar sesión', 
+                                              style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 18,
+                                        height: 18,
+                                        child: SvgPicture.asset(
+                                          "assets/icons/flechader.svg",
+                                          color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-
-                          ],
+                              SizedBox(height: 20)
+                            ],
+                          ),
                         ),
                       ),
                     ),

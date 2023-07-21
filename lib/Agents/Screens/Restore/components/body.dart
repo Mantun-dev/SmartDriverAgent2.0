@@ -91,7 +91,7 @@ class _BodyState extends State<Body> {
                       Navigator.push(
                         context,
                         PageRouteBuilder(
-                          transitionDuration: Duration(milliseconds: 500 ), // Adjust the animation duration as needed
+                          transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
                           pageBuilder: (_, __, ___) => LoginScreen(),
                           transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
                             return SlideTransition(

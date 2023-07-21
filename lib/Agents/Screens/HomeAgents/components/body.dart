@@ -201,49 +201,132 @@ BuildContext? contextP;
   void rutas(int i){
     switch (i) {
       case 0:
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return DetailScreen(plantilla: plantilla[0]);
-          }
-        ));
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+            pageBuilder: (_, __, ___) => DetailScreen(plantilla: plantilla[0]),
+            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        );                                    
         break;
       case 1:
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return DetailScreenHistoryTrip(plantilla: plantilla[1]);
-          }
-        ));
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+            pageBuilder: (_, __, ___) => DetailScreenHistoryTrip(plantilla: plantilla[1]),
+            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        );  
         break;
       case 2:
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return DetailScreen(plantilla: plantilla[2]);
-          }
-        ));
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+            pageBuilder: (_, __, ___) => DetailScreen(plantilla: plantilla[2]),
+            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        ); 
         break;
       case 3:
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return DetailScreen(plantilla: plantilla[3]);
-          }
-        ));
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+            pageBuilder: (_, __, ___) => DetailScreen(plantilla: plantilla[3]),
+            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        ); 
         break;
       case 4:
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return NotificationPage();
-          })
-        );
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+            pageBuilder: (_, __, ___) => NotificationPage(),
+            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        ); 
         break;
       case 5:
         fetchProfile().then((value) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-             return ChatsList(id: '${value.agentId}',rol: 'agente',nombre: '${value.agentFullname}',);
-          }));
+          Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+            pageBuilder: (_, __, ___) => ChatsList(id: '${value.agentId}',rol: 'agente',nombre: '${value.agentFullname}'),
+            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        ); 
         });
         break;
       case 6:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) {
-            return ProfilePage();
-          })
-        );
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+            pageBuilder: (_, __, ___) => ProfilePage(),
+            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        ); 
         break;
     }
   }
@@ -478,11 +561,30 @@ BuildContext? contextP;
                   child: Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(15)
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Text('🔺$msgtoShow',style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 16)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.warning,
+                            color: Colors.yellow,
+                          ),
+                          SizedBox(width: 10), // Espacio entre el icono y el texto
+                          Expanded( // Usar Expanded para que el texto tome el espacio disponible
+                            child: Text(
+                              '$msgtoShow',
+                              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 )
@@ -521,21 +623,73 @@ BuildContext? contextP;
                             press: () {
                               setState(() {
                                 if (plantilla[index] == plantilla[0]) {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return DetailScreen(plantilla: plantilla[index]);
-                                  }));
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                      pageBuilder: (_, __, ___) => DetailScreen(plantilla: plantilla[index]),
+                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                        return SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: Offset(1.0, 0.0),
+                                            end: Offset.zero,
+                                          ).animate(animation),
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
                                 } else if (plantilla[index] == plantilla[1]) {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return DetailScreenHistoryTrip(plantilla: plantilla[index]);
-                                  }));
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                      pageBuilder: (_, __, ___) => DetailScreenHistoryTrip(plantilla: plantilla[index]),
+                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                        return SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: Offset(1.0, 0.0),
+                                            end: Offset.zero,
+                                          ).animate(animation),
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
                                 } else if (plantilla[index] == plantilla[2]) {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return DetailScreenQr(plantilla: plantilla[index]);
-                                  }));
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                      pageBuilder: (_, __, ___) => DetailScreenQr(plantilla: plantilla[index]),
+                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                        return SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: Offset(1.0, 0.0),
+                                            end: Offset.zero,
+                                          ).animate(animation),
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
                                 } else if (plantilla[index] == plantilla[3]) {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return DetailScreenChanges(plantilla: plantilla[index]);
-                                  }));
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                      pageBuilder: (_, __, ___) => DetailScreenChanges(plantilla: plantilla[index]),
+                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                        return SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: Offset(1.0, 0.0),
+                                            end: Offset.zero,
+                                          ).animate(animation),
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
                                 }
                               });
                             },
@@ -558,17 +712,39 @@ BuildContext? contextP;
                                 press: () {
                                   setState(() {
                                     if (plantilla[index] == plantilla[0]) {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                        return DetailScreen(plantilla: plantilla[index]);
-                                      }));
+                                      Navigator.push(
+                                        context,
+                                        PageRouteBuilder(
+                                          transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                          pageBuilder: (_, __, ___) => DetailScreen(plantilla: plantilla[index]),
+                                          transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                            return SlideTransition(
+                                              position: Tween<Offset>(
+                                                begin: Offset(1.0, 0.0),
+                                                end: Offset.zero,
+                                              ).animate(animation),
+                                              child: child,
+                                            );
+                                          },
+                                        ),
+                                      );
                                     } else if (plantilla[index] == plantilla[1]) {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                        return DetailScreenHistoryTrip(plantilla: plantilla[index]);
-                                      }));
-                                    } else if (plantilla[index] == plantilla[2]) {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                        return DetailScreenQr(plantilla: plantilla[index]);
-                                      }));
+                                      Navigator.push(
+                                        context,
+                                        PageRouteBuilder(
+                                          transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                          pageBuilder: (_, __, ___) => DetailScreenHistoryTrip(plantilla: plantilla[index]),
+                                          transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                            return SlideTransition(
+                                              position: Tween<Offset>(
+                                                begin: Offset(1.0, 0.0),
+                                                end: Offset.zero,
+                                              ).animate(animation),
+                                              child: child,
+                                            );
+                                          },
+                                        ),
+                                      );
                                     }
                                   });
                                 },
@@ -582,11 +758,22 @@ BuildContext? contextP;
                             child: ItemCard(
                               plantilla: plantilla[2],
                               press: () {
-                                setState(() {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return DetailScreenQr(plantilla: plantilla[2]);
-                                  }));
-                                });
+                                Navigator.push(
+                                        context,
+                                        PageRouteBuilder(
+                                          transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                          pageBuilder: (_, __, ___) => DetailScreenQr(plantilla: plantilla[2]),
+                                          transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                            return SlideTransition(
+                                              position: Tween<Offset>(
+                                                begin: Offset(1.0, 0.0),
+                                                end: Offset.zero,
+                                              ).animate(animation),
+                                              child: child,
+                                            );
+                                          },
+                                        ),
+                                      );
                               },
                             ),
                           ),
@@ -649,9 +836,22 @@ BuildContext? contextP;
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                      return DetailScreenHistoryTrip(plantilla: plantilla[1]);
-                                    }));
+                                   Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                      pageBuilder: (_, __, ___) => DetailScreenHistoryTrip(plantilla: plantilla[1]),
+                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                        return SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: Offset(1.0, 0.0),
+                                            end: Offset.zero,
+                                          ).animate(animation),
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
                                   },
                                   child: Text(
                                     'Ver historial',

@@ -243,15 +243,28 @@ class _ChatsListState extends State<ChatsList> {
                   return GestureDetector(
                     onTap: () {
                       fetchProfile().then((value) {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return ChatScreen(
-                            id: id!,
-                            rol: rol!,
-                            nombre: '${value.agentFullname}',
-                            sala: '${listaChats[index]['id']}',
-                            driverId: '${listaChats[index]['idM']}'
-                          );
-                        }));
+                        Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                      pageBuilder: (_, __, ___) => ChatScreen(
+                                        id: id!,
+                                        rol: rol!,
+                                        nombre: '${value.agentFullname}',
+                                        sala: '${listaChats[index]['id']}',
+                                        driverId: '${listaChats[index]['idM']}'
+                                      ),
+                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                        return SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: Offset(1.0, 0.0),
+                                            end: Offset.zero,
+                                          ).animate(animation),
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
                       });
                     },
                     child: Padding(
