@@ -385,6 +385,7 @@ class _NextTripScreenState extends State<NextTripScreen>
     //función para skipear calificación
   Future<dynamic>fetchSkipRating2(String agentId, String tripId, int rating1, int rating2, int rating3, String comment) async {
       //<List<Map<String, dynamic>>>
+      LoadingIndicatorDialog().show(context);
       Map data = {
         'agentId' : agentId,
         'tripId'    : tripId,
@@ -397,19 +398,22 @@ class _NextTripScreenState extends State<NextTripScreen>
     http.Response response = await http.post(Uri.parse('$ip/api/ratingTrip'), body: data);
     final resp = MessageAccount.fromJson(json.decode(response.body));
       //alertas
-      if (response.statusCode == 200 && resp.ok == true) {   
-        QuickAlert.show(
-          context: context,
-          title: 'Enviado',
-          text: resp.message,
-          type: QuickAlertType.success);  
-      } 
-      else if(response.statusCode == 200 && resp.ok != true){
-        QuickAlert.show(
-          context: context,
-          title: 'Error',
-          text: resp.message,
-          type: QuickAlertType.error);
+      LoadingIndicatorDialog().dismiss();
+      if(mounted){
+        if (response.statusCode == 200 && resp.ok == true) {   
+          QuickAlert.show(
+            context: context,
+            title: 'Enviado',
+            text: resp.message,
+            type: QuickAlertType.success);  
+        } 
+        else if(response.statusCode == 200 && resp.ok != true){
+          QuickAlert.show(
+            context: context,
+            title: 'Error',
+            text: resp.message,
+            type: QuickAlertType.error);
+        }
       }
     return MessageAccount.fromJson(json.decode(response.body));
   }  
@@ -4533,8 +4537,9 @@ class _NextTripScreenState extends State<NextTripScreen>
                                             backgroundColor: Color.fromRGBO(40, 93, 169, 1)),
                                         onPressed: () => {
                                           //fetch skip rating
-                                          fetchSkipRating2(resp.agentId.toString(), resp1.tripId.toString(), rating1.toInt(), rating2.toInt(), rating3.toInt(), message.text),
                                           Navigator.pop(context),
+                                          fetchSkipRating2(resp.agentId.toString(), resp1.tripId.toString(), rating1.toInt(), rating2.toInt(), rating3.toInt(), message.text),
+                                          
                                         },
                                         child: Text('Enviar', style: TextStyle(fontWeight: FontWeight.bold)),                                                    
                                       ),
