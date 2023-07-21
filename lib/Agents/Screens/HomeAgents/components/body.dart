@@ -619,6 +619,7 @@ BuildContext? contextP;
                     return GridView.count(
                       crossAxisCount: 2,
                       shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       //todas las cards
                       children: List.generate(plantilla.length, (index) {
                         return Padding(
@@ -709,6 +710,7 @@ BuildContext? contextP;
                           crossAxisCount: 2,
                           shrinkWrap: true,
                           //todas las cards
+                          physics: NeverScrollableScrollPhysics(),
                           children: List.generate(2, (index) {
                             return Padding(
                               padding: const EdgeInsets.only(right: 8.0, left: 8, bottom: 8),
