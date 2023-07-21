@@ -508,7 +508,7 @@ BuildContext? contextP;
               builder: (BuildContext context, abc) {
                 if (abc.connectionState == ConnectionState.done) {
                   //validación
-                  if (abc.data!.companyId != 1) {
+                  if (abc.data!.companyId != 7) {
                     return GridView.count(
                       crossAxisCount: 2,
                       shrinkWrap: true,
