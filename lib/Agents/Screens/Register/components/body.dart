@@ -249,7 +249,8 @@ class _BodyState extends State<Body> {
           context: context,
           title: no.title,
           text: "Se reenvio el codigo.",
-          type: QuickAlertType.success
+          type: QuickAlertType.success,
+          confirmBtnText: "Ok"
         );
 
       } else if (no.ok != true) {
@@ -257,7 +258,8 @@ class _BodyState extends State<Body> {
           context: context,
             title: no.title,
             text: no.message,
-            type: QuickAlertType.error);
+            type: QuickAlertType.error,
+            confirmBtnText: "Ok");
       }
     }
     return Register.fromJson(json.decode(responses.body));

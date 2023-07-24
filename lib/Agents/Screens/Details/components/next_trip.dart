@@ -262,8 +262,10 @@ class _NextTripScreenState extends State<NextTripScreen>
         QuickAlert.show(
             context: context,
             title: "Enviado",
-            text: 'Su viaje ha sido confirmado',
-            type: QuickAlertType.success);
+            text: 'Tu viaje ha sido confirmado',
+            type: QuickAlertType.success,
+            confirmBtnText: "Ok"
+          );
 
         Map data2 = {"idU": resps.agentId.toString(), "Estado": 'CONFIRMADO'};
         String sendData2 = json.encode(data2);
@@ -276,7 +278,8 @@ class _NextTripScreenState extends State<NextTripScreen>
           context: context,
           title: "Alerta",
           text: resp.message,
-          type: QuickAlertType.error
+          type: QuickAlertType.error,
+          confirmBtnText: "Ok"
         );
       }
     }
@@ -329,7 +332,8 @@ class _NextTripScreenState extends State<NextTripScreen>
           context: context,
           title: "Alerta",
           text: resp.message,
-          type: QuickAlertType.error);
+          type: QuickAlertType.error,
+          confirmBtnText: "Ok");
     }
     }
     return Message.fromJson(json.decode(response.body));
@@ -371,13 +375,15 @@ class _NextTripScreenState extends State<NextTripScreen>
           context: context,
           title: 'Enviado',
           text: resp.message,
-          type: QuickAlertType.success);
+          type: QuickAlertType.success,
+          confirmBtnText: "Ok");
     } else if (response.statusCode == 200 && resp.ok != true) {
       QuickAlert.show(
           context: context,
           title: 'Error',
           text: resp.message,
-          type: QuickAlertType.error);
+          type: QuickAlertType.error,
+          confirmBtnText: "Ok");
     }
   
   }
@@ -405,14 +411,16 @@ class _NextTripScreenState extends State<NextTripScreen>
             context: context,
             title: 'Enviado',
             text: resp.message,
-            type: QuickAlertType.success);  
+            type: QuickAlertType.success,
+            confirmBtnText: "Ok");  
         } 
         else if(response.statusCode == 200 && resp.ok != true){
           QuickAlert.show(
             context: context,
             title: 'Error',
             text: resp.message,
-            type: QuickAlertType.error);
+            type: QuickAlertType.error,
+            confirmBtnText: "Ok");
         }
       }
     return MessageAccount.fromJson(json.decode(response.body));
@@ -1246,7 +1254,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                     context: context,
                                                                     title: "Alerta",
                                                                     text: 'Debe de seleccionar un motivo.',
-                                                                    type: QuickAlertType.error
+                                                                    type: QuickAlertType.error,
+                                                                    confirmBtnText: "Ok"
                                                                   );
 
                                                                   return;
@@ -1364,7 +1373,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                             Padding(
                                                               padding: const EdgeInsets.only(top: 20),
                                                               child: Text(
-                                                                '¿Desea confirmar el viaje?',
+                                                                '¿Deseas confirmar el viaje?',
                                                                 textAlign: TextAlign.center,
                                                                 style: TextStyle(
                                                                   fontWeight: FontWeight.bold,
@@ -1831,7 +1840,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                     context: context,
                                                                     title: "Alerta",
                                                                     text: 'Debe de seleccionar un motivo.',
-                                                                    type: QuickAlertType.error
+                                                                    type: QuickAlertType.error,
+                                                                    confirmBtnText: "Ok"
                                                                   );
 
                                                                   return;
@@ -2517,7 +2527,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                           context: context,
                                                                           title: "Alerta",
                                                                           text: 'Debe de seleccionar un motivo.',
-                                                                          type: QuickAlertType.error
+                                                                          type: QuickAlertType.error,
+                                                                          confirmBtnText: "Ok"
                                                                         );
 
                                                                         return;
@@ -2635,7 +2646,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                             Padding(
                                                               padding: const EdgeInsets.only(top: 20),
                                                               child: Text(
-                                                                '¿Desea confirmar el viaje?',
+                                                                '¿Deseas confirmar el viaje?',
                                                                 textAlign: TextAlign.center,
                                                                 style: TextStyle(
                                                                   fontWeight: FontWeight.bold,
@@ -3091,7 +3102,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                         context: context,
                                                                         title: "Alerta",
                                                                         text: 'Debe de seleccionar un motivo.',
-                                                                        type: QuickAlertType.error
+                                                                        type: QuickAlertType.error,
+                                                                        confirmBtnText: "Ok"
                                                                       );
 
                                                                       return;
@@ -3704,7 +3716,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       context: context,
                                                                       title: "Comentario Requerido",
                                                                       text: "Debes elegir una opcion antes de enviar",
-                                                                      type: QuickAlertType.error
+                                                                      type: QuickAlertType.error,
+                                                                      confirmBtnText: "Ok"
                                                                     );  
                                                                     return;        
                                                                   } else {
@@ -3730,6 +3743,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                           title: "Enviado",
                                                                           text: dataR["message"],
                                                                           type: QuickAlertType.success,
+                                                                          confirmBtnText: "Ok"
                                                                         );
                                                                       setState(() {
                                                                         razonCancelar="";
@@ -3743,6 +3757,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                         title: "Error",
                                                                         text: dataR["message"],
                                                                         type: QuickAlertType.error,
+                                                                        confirmBtnText: "Ok"
                                                                       );
                                                                     }
                                                                     
@@ -4005,7 +4020,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       context: context,
                                                                       title: "Comentario Requerido",
                                                                       text: "Debes elegir una opcion antes de enviar",
-                                                                      type: QuickAlertType.error
+                                                                      type: QuickAlertType.error,
+                                                                      confirmBtnText: "Ok"
                                                                     );  
                                                                     return;        
                                                                   } else {
@@ -4031,6 +4047,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                           title: "Enviado",
                                                                           text: dataR["message"],
                                                                           type: QuickAlertType.success,
+                                                                          confirmBtnText: "Ok"
                                                                         );
                                                                       setState(() {
                                                                         razonCancelar="";
@@ -4044,6 +4061,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                         title: "Error",
                                                                         text: dataR["message"],
                                                                         type: QuickAlertType.error,
+                                                                        confirmBtnText: "Ok"
                                                                       );
                                                                     }
                                                                     
@@ -4101,7 +4119,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ConfirmationDialog confirmationDialog = ConfirmationDialog();
                         confirmationDialog.show(
                           context,
-                          title: '¿Desea confirmar la solicitud?',
+                          title: '¿Deseas confirmar la solicitud?',
                           type: "0",
                           onConfirm: () async {
                             loadingDialog.show(context);
@@ -4128,6 +4146,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 title: "Enviado",
                                 text: dataR["message"],
                                 type: QuickAlertType.success,
+                                confirmBtnText: "Ok"
                               );
                             } else {
                               loadingDialog.dismiss();
@@ -4137,6 +4156,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 title: "Error",
                                 text: dataR["message"],
                                 type: QuickAlertType.error,
+                                confirmBtnText: "Ok"
                               );
                             }
                             
@@ -4595,7 +4615,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                       onPressed: () => {
                         QuickAlert.show(
                           context: context,
-                          title: "Está seguro que desea omitir la encuesta?",          
+                          title: "Estás seguro que deseas omitir la encuesta?",          
                           type: QuickAlertType.success,
                           confirmBtnText: 'Confirmar',
                           cancelBtnText: 'Cancelar',
@@ -4642,7 +4662,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                             title: 'Pendiente',
                             confirmBtnText: "Aceptar",
                             text: 'Hace falta que califique la pregunta $rating44, los comentarios son opcionales.',
-                            type: QuickAlertType.info
+                            type: QuickAlertType.info,
                           ),
                         }else if(rating5== 0){
                           QuickAlert.show(

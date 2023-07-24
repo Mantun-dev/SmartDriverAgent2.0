@@ -58,13 +58,15 @@ class _BodyState extends State<Body> {
           context: context,
             title: no.title,
             text: no.message,
-            type: QuickAlertType.success);
+            type: QuickAlertType.success,
+            confirmBtnText: "Ok");
       } else if (no.ok != true) {
         QuickAlert.show(
           context: context,
             title: no.title,
             text: no.message,
-            type: QuickAlertType.error);
+            type: QuickAlertType.error,
+            confirmBtnText: "Ok");
       }
     }
     return Register.fromJson(json.decode(responses.body));
@@ -191,7 +193,8 @@ class _BodyState extends State<Body> {
                                   context: context,
                                   title: "Alerta",
                                   text: "Campos Vacios",
-                                  type: QuickAlertType.error
+                                  type: QuickAlertType.error,
+                                  confirmBtnText: "Ok"
                                 );
 
                                 setState(() {

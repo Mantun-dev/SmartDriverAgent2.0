@@ -229,7 +229,7 @@ class _MenuLateralState extends State<MenuLateral> {
             onTap: () {
               QuickAlert.show(
                 context: context,
-                title: "Está seguro que desea salir?",          
+                title: "¿Estás seguro que deseas salir?",          
                 type: QuickAlertType.success,
                 confirmBtnText: 'Confirmar',
                 cancelBtnText: 'Cancelar',
@@ -244,6 +244,7 @@ class _MenuLateralState extends State<MenuLateral> {
                     context: context,
                     type: QuickAlertType.success,
                     text: "¡Gracias por usar Smart Driver!",
+                    confirmBtnText: "Ok"
                   );
                   new Future.delayed(new Duration(seconds: 2), () {
                     Navigator.of(context).pushAndRemoveUntil(
@@ -258,6 +259,7 @@ class _MenuLateralState extends State<MenuLateral> {
                     context: context,
                     type: QuickAlertType.success,
                     text: "Cancelado",
+                    confirmBtnText: "Ok"
                   );
                 })
               );

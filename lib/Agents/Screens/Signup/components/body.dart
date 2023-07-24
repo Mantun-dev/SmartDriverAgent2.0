@@ -68,7 +68,8 @@ class _BodyState extends State<Body> {
         context: context,
         title: no.title,
         text: no.message,
-        type: QuickAlertType.success
+        type: QuickAlertType.success,
+        confirmBtnText: "Ok"
       );
 
       } else if (no.ok != true) {
@@ -76,7 +77,8 @@ class _BodyState extends State<Body> {
           context: context,
             title: no.title,
             text: no.message,
-            type: QuickAlertType.error);
+            type: QuickAlertType.error,
+            confirmBtnText: "Ok");
       }
     }
     return Register.fromJson(json.decode(responses.body));
@@ -184,7 +186,8 @@ class _BodyState extends State<Body> {
                               context: context,
                               title: "Alerta",
                               text: "Campos vacíos",
-                              type: QuickAlertType.error
+                              type: QuickAlertType.error,
+                              confirmBtnText: "Ok"
                             );
 
                             setState(() {
@@ -199,7 +202,8 @@ class _BodyState extends State<Body> {
                               context: context,
                               title: "Alerta",
                               text: "Confirme su contraseña",
-                              type: QuickAlertType.error
+                              type: QuickAlertType.error,
+                              confirmBtnText: "Ok"
                             );
 
                             setState(() {

@@ -53,7 +53,8 @@ class _BodyState extends State<Body> {
         context: context,
           title: "Alerta",
           text: "Campos vacios",
-          type: QuickAlertType.error);
+          type: QuickAlertType.error,
+          confirmBtnText: "Ok");
     } else {
       LoadingIndicatorDialog().show(context);
       //Api post refresca la informacion enviada desde el backend hacia el login
@@ -95,7 +96,8 @@ class _BodyState extends State<Body> {
           context: context,
             title: "\nBienvenido(a)",
             text: si.agentFullname,
-            type: QuickAlertType.success);
+            type: QuickAlertType.success,
+            confirmBtnText: "Ok");
           }
       } else if (no.ok != true) {
         LoadingIndicatorDialog().dismiss();
@@ -105,7 +107,8 @@ class _BodyState extends State<Body> {
           context: context,
             title: "\nError",
             text: no.message,
-            type: QuickAlertType.error);
+            type: QuickAlertType.error,
+            confirmBtnText: "Ok");
         }
       }
       return DataAgents.fromJson(json.decode(response.body));

@@ -451,14 +451,16 @@ BuildContext? contextP;
       QuickAlert.show(
         context: context,
           title: 'Cuentas',
-          text: ' No ha seleccionado una cuenta valida\n si no desea hacerlo presione cancelar.',
-          type: QuickAlertType.error);
+          text: ' No has seleccionado una cuenta valida\n si no deseas hacerlo presione cancelar.',
+          type: QuickAlertType.error,
+          confirmBtnText: "Ok");
     } else if (yep.ok == true && respons.statusCode == 200) {
       QuickAlert.show(
         context: context,
           title: yep.title,
           text: yep.message,
-          type: QuickAlertType.success);
+          type: QuickAlertType.success,
+          confirmBtnText: "Ok");
     }
     return Map<String, dynamic>.from(json.decode(response.body));
   }

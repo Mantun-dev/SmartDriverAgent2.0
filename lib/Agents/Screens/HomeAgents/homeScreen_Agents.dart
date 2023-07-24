@@ -65,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               type: QuickAlertType.error,
               title: "Lo sentimos",
               text: "Usuario deshabilitado",
+              confirmBtnText: "Ok"
             );
       }
     });

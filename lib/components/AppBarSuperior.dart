@@ -763,7 +763,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                   onTap: () {
                                               QuickAlert.show(
                                                 context: context,
-                                                title: "Está seguro que desea salir?",          
+                                                title: "¿Estás seguro que deseas salir?",          
                                                 type: QuickAlertType.success,
                                                 confirmBtnText: 'Confirmar',
                                                 cancelBtnText: 'Cancelar',
@@ -790,6 +790,7 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                                           type: QuickAlertType.success,
                                                           title: "¡Hecho!",
                                                           text: "¡Gracias por usar Smart Driver!",
+                                                          confirmBtnText: "Ok"
                                                         );
                                                   });
                                                 },

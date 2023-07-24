@@ -91,7 +91,8 @@ class _TicketScreenState extends State<TicketScreen> {
           context: context,
           title: "Ticket enviado",
           text: no.message,
-          type: QuickAlertType.success
+          type: QuickAlertType.success,
+          confirmBtnText: "Ok"
         );
       }  
       if (no.ok != true) {
@@ -99,7 +100,8 @@ class _TicketScreenState extends State<TicketScreen> {
         context: context,
           title: "Alerta",
           text: no.message,
-          type: QuickAlertType.error);
+          type: QuickAlertType.error,
+          confirmBtnText: "Ok");
         new Future.delayed(new Duration(seconds: 2), () {
           Navigator.pop(context);
         });
@@ -247,7 +249,8 @@ class _TicketScreenState extends State<TicketScreen> {
                             context: context,
                             title: "Alerta",
                             text: 'El mensaje o asunto no puede estar vacio',
-                            type: QuickAlertType.error
+                            type: QuickAlertType.error,
+                            confirmBtnText: "Ok"
                           );
                           return;
                         }
