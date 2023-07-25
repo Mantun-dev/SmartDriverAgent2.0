@@ -27,7 +27,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 31 // Incrementar la versión a una compatible con tus dependencias
+    compileSdkVersion 31 // Incrementar la versión a 33 o a la más alta que sea compatible con tus dependencias
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -45,8 +45,8 @@ android {
     defaultConfig {
         applicationId "com.smartdriver.devs"
         minSdkVersion 19
-        targetSdkVersion 31 // Incrementar la versión a una compatible con tus dependencias
-        multiDexEnabled true
+        targetSdkVersion 31 // Incrementar la versión a 33 o a la más alta que sea compatible con tus dependencias
+        multiDexEnabled true // Habilitar el soporte multidex
         versionCode flutterVersionCode.toInteger()
         versionName "2.7.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -78,7 +78,7 @@ android {
     }
 
     dexOptions {
-        preDexLibraries false
+        javaMaxHeapSize "4g" // Aumentar el tamaño de la memoria de Java (Heap) a 4 GB
     }
 }
 
