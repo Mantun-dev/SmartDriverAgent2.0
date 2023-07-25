@@ -74,194 +74,199 @@ class _DataTableExample extends State<HistoryTicketScreen> {
   Widget cuerpo() {
     return Padding(
       padding: const EdgeInsets.all(12.0),
-      child: Container(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+        maxWidth: 700.0, // Aquí defines el ancho máximo deseado
+      ),
+        child: Container(
 
-        decoration: BoxDecoration(
-          border: Border.all( 
-            color: Theme.of(context).disabledColor,
-            width: 2
+          decoration: BoxDecoration(
+            border: Border.all( 
+              color: Theme.of(context).disabledColor,
+              width: 2
+            ),
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.circular(20)
           ),
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(20)
-        ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardTheme.color,
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Center(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: ticketsP ? Theme.of(context).primaryColor: Colors.transparent,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  ticketsP = true;
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 10, right: 10),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'Pendientes',
-                                      style: TextStyle(
-                                        color: ticketsP ? Colors.white : Theme.of(context).primaryColorDark,
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 5),
-                                      padding: const EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        color: ticketsP ? Colors.white : Theme.of(context).primaryColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Text(
-                                        totalPendientes.toString(),
-                                        style: TextStyle(
-                                          color: !ticketsP ? Colors.white : Theme.of(context).primaryColor,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 10,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                        
-                            SizedBox(width: 10),
-          
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: ticketsP ? Colors.transparent : Theme.of(context).primaryColor,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  ticketsP = false;
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 10, right: 10),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'Procesados',
-                                      style: TextStyle(
-                                        color: !ticketsP ? Colors.white : Theme.of(context).primaryColorDark,
-                                      ),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 5),
-                                      padding: const EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        color: !ticketsP ? Colors.white : Theme.of(context).primaryColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Text(
-                                        totalProcesados.toString(),
-                                        style: TextStyle(
-                                          color: ticketsP ? Colors.white : Theme.of(context).primaryColor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 10,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),  
-                
-                  Padding(
-                    padding: const EdgeInsets.only(top: 22, bottom: 22),
-                    child: Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).cardTheme.color,
-                          borderRadius: BorderRadius.circular(10.0),
-                          border: Border.all(color: Theme.of(context).disabledColor)
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                style: Theme.of(context).textTheme.bodyMedium,
-                                onChanged:(value) async {
-                                 itemFiltro = await fetchTicketStory();
-
-                                 if(ticketsP==true)
-                                    if (value.isEmpty) {
-                                      print('vacio');
-                                      itemFiltro = await fetchTicketStory();
-                                    } else {
-                                      itemFiltro?.trips[0].pendant = itemFiltro?.trips[0].pendant?.where((ticket) =>
-                                        ticket.ticketDatetime.contains(value) ||
-                                        ticket.ticketId.toString().contains(value) ||
-                                        ticket.ticketIssue.contains(value)
-                                      ).toList();
-                                    }
-                                  else
-                                  if (value.isEmpty) {
-                                      print('vacio');
-                                      itemFiltro = await fetchTicketStory();
-                                    } else {
-                                      itemFiltro?.trips[1].closed = itemFiltro?.trips[1].closed?.where((ticket) =>
-                                        ticket.ticketDatetime!.contains(value) ||
-                                        ticket.ticketId!.toString().contains(value) ||
-                                        ticket.ticketIssue!.contains(value)
-                                      ).toList();
-                                    }
-                                    setState(() {
-                                      
-                                    });
-                                },
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryIconTheme.color),
-                                  hintText: 'Buscar',
-                                  hintStyle: TextStyle(
-                                    color: Theme.of(context).hintColor, fontSize: 15, fontFamily: 'Roboto'
-                                  ),
-                                  border: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      ),
-                  ), 
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
                   
-                  if(ticketsP==true)
-                    _ticketPendant(),
-                
-                  if(ticketsP==false)
-                    _ticketProcess(),
-                  SizedBox(height: 50)
-                ]),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardTheme.color,
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: Center(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: ticketsP ? Theme.of(context).primaryColor: Colors.transparent,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    ticketsP = true;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10, right: 10),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'Pendientes',
+                                        style: TextStyle(
+                                          color: ticketsP ? Colors.white : Theme.of(context).primaryColorDark,
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 5),
+                                        padding: const EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          color: ticketsP ? Colors.white : Theme.of(context).primaryColor,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Text(
+                                          totalPendientes.toString(),
+                                          style: TextStyle(
+                                            color: !ticketsP ? Colors.white : Theme.of(context).primaryColor,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                          
+                              SizedBox(width: 10),
+            
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: ticketsP ? Colors.transparent : Theme.of(context).primaryColor,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    ticketsP = false;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10, right: 10),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'Procesados',
+                                        style: TextStyle(
+                                          color: !ticketsP ? Colors.white : Theme.of(context).primaryColorDark,
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 5),
+                                        padding: const EdgeInsets.all(5),
+                                        decoration: BoxDecoration(
+                                          color: !ticketsP ? Colors.white : Theme.of(context).primaryColor,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Text(
+                                          totalProcesados.toString(),
+                                          style: TextStyle(
+                                            color: ticketsP ? Colors.white : Theme.of(context).primaryColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),  
+                  
+                    Padding(
+                      padding: const EdgeInsets.only(top: 22, bottom: 22),
+                      child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).cardTheme.color,
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(color: Theme.of(context).disabledColor)
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  onChanged:(value) async {
+                                   itemFiltro = await fetchTicketStory();
+
+                                   if(ticketsP==true)
+                                      if (value.isEmpty) {
+                                        print('vacio');
+                                        itemFiltro = await fetchTicketStory();
+                                      } else {
+                                        itemFiltro?.trips[0].pendant = itemFiltro?.trips[0].pendant?.where((ticket) =>
+                                          ticket.ticketDatetime.contains(value) ||
+                                          ticket.ticketId.toString().contains(value) ||
+                                          ticket.ticketIssue.contains(value)
+                                        ).toList();
+                                      }
+                                    else
+                                    if (value.isEmpty) {
+                                        print('vacio');
+                                        itemFiltro = await fetchTicketStory();
+                                      } else {
+                                        itemFiltro?.trips[1].closed = itemFiltro?.trips[1].closed?.where((ticket) =>
+                                          ticket.ticketDatetime!.contains(value) ||
+                                          ticket.ticketId!.toString().contains(value) ||
+                                          ticket.ticketIssue!.contains(value)
+                                        ).toList();
+                                      }
+                                      setState(() {
+                                        
+                                      });
+                                  },
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryIconTheme.color),
+                                    hintText: 'Buscar',
+                                    hintStyle: TextStyle(
+                                      color: Theme.of(context).hintColor, fontSize: 15, fontFamily: 'Roboto'
+                                    ),
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ),
+                    ), 
+                    
+                    if(ticketsP==true)
+                      _ticketPendant(),
+                  
+                    if(ticketsP==false)
+                      _ticketProcess(),
+                    SizedBox(height: 50)
+                  ]),
+            ),
           ),
         ),
       ),

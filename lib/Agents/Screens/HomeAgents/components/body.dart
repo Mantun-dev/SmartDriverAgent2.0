@@ -491,588 +491,593 @@ BuildContext? contextP;
           _focusNode.unfocus();
         });
       },
-      child: Container(
-        height: size.height,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 25.0),
-                child: Text(
-                  'Hola, ${prefs.nombreUsuarioFull}',
-                  style: Theme.of(context).textTheme.titleLarge,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: 700.0, // Aquí defines el ancho máximo deseado
+        ),
+        child: Container(
+          height: size.height,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 25.0),
+                  child: Text(
+                    'Hola, ${prefs.nombreUsuarioFull}',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
                 ),
-              ),
-        
-              SizedBox(height: 25),      
-        
-              Padding(
-                padding: const EdgeInsets.only(right: 12, left: 12),
-                child: Stack(
-                  children: [
-                    if(isMenuOpen==true && ventanas2!.length>0)
-                      Padding(
-                        padding: const EdgeInsets.only(top:40.0),
-                        child: menu(size, context),
-                      ),
+          
+                SizedBox(height: 25),      
+          
+                Padding(
+                  padding: const EdgeInsets.only(right: 12, left: 12),
+                  child: Stack(
+                    children: [
+                      if(isMenuOpen==true && ventanas2!.length>0)
+                        Padding(
+                          padding: const EdgeInsets.only(top:40.0),
+                          child: menu(size, context),
+                        ),
     
-                    Container(
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(
+                            width: 2,
+                            color: Theme.of(context).disabledColor
+                          )
+                        ),
+                        child: TextField(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          controller: buscarText,
+                          onChanged: (value) {
+
+                            if(value.isEmpty)
+                              ventanas2=ventanas;
+                            else
+                              ventanas2=ventanas.where((ventana) {
+                                String nombre = ventana['nombre'].toString().toLowerCase();
+                                return nombre.contains(value.toLowerCase());
+                              }).toList();
+
+                            setState(() {});
+                          },
+                          focusNode: _focusNode,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryIconTheme.color),
+                            hintText: 'Buscar',
+                            hintStyle: TextStyle(
+                              color: Theme.of(context).hintColor, fontSize: 15, fontFamily: 'Roboto'
+                            ),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      
+                    ],
+                  ),
+                ),
+                
+          
+                SizedBox(height: 15),            
+                if (display == 1)... {                        
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
+                    child: Container(
                       decoration: BoxDecoration(
                         color: Theme.of(context).cardColor,
-                        borderRadius: BorderRadius.circular(10.0),
+                        borderRadius: BorderRadius.circular(15),
                         border: Border.all(
-                          width: 2,
-                          color: Theme.of(context).disabledColor
+                          color: Theme.of(context).disabledColor,
+                          width: 2
                         )
                       ),
-                      child: TextField(
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        controller: buscarText,
-                        onChanged: (value) {
-
-                          if(value.isEmpty)
-                            ventanas2=ventanas;
-                          else
-                            ventanas2=ventanas.where((ventana) {
-                              String nombre = ventana['nombre'].toString().toLowerCase();
-                              return nombre.contains(value.toLowerCase());
-                            }).toList();
-
-                          setState(() {});
-                        },
-                        focusNode: _focusNode,
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryIconTheme.color),
-                          hintText: 'Buscar',
-                          hintStyle: TextStyle(
-                            color: Theme.of(context).hintColor, fontSize: 15, fontFamily: 'Roboto'
-                          ),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    
-                  ],
-                ),
-              ),
-              
-        
-              SizedBox(height: 15),            
-              if (display == 1)... {                        
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                        color: Theme.of(context).disabledColor,
-                        width: 2
-                      )
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(
-                            Icons.warning,
-                            color: Colors.orangeAccent,
-                          ),
-                          SizedBox(width: 10), // Espacio entre el icono y el texto
-                          Expanded( // Usar Expanded para que el texto tome el espacio disponible
-                            child: Text(
-                              '$msgtoShow',
-                              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                fontSize: 14,
-                                fontWeight: FontWeight.normal,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.warning,
+                              color: Colors.orangeAccent,
+                            ),
+                            SizedBox(width: 10), // Espacio entre el icono y el texto
+                            Expanded( // Usar Expanded para que el texto tome el espacio disponible
+                              child: Text(
+                                '$msgtoShow',
+                                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: 15)
-              },
-              if(cargarM == false)...{
+                  SizedBox(height: 15)
+                },
+                if(cargarM == false)...{
 
-                WillPopScope(
-                    onWillPop: () async => false,
-                    child: SimpleDialog(
-                       elevation: 20,
-                      backgroundColor: Theme.of(context).cardColor,
-                      children: [
-                        Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(left: 16, top: 16, right: 16),
-                                child: CircularProgressIndicator(),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Text(
-                                  'Cargando advertencia...', 
-                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
-                                  ),
-                              )
-                            ],
-                          ),
-                        )
-                      ] ,
-                    ),
-                  ),
-
-                SizedBox(height: 15)
-              },                                    
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
-              //   child: Container(
-              //     decoration: BoxDecoration(
-              //       color: backgroundColor2,
-              //       borderRadius: BorderRadius.circular(15)
-              //     ),
-              //     child: Padding(
-              //       padding: const EdgeInsets.all(10.0),
-              //       child: Text('Tiene viaje(s) donde confirmó y no salió a tomar el transporte. Si esto ocurre por 3ra vez, el sistema le dará de baja y no será agendado para el servicio de transporte. Deberá justificar el caso enviando un ticket solicitando el uso de transporte.',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
-              //     ),
-              //   ),
-              // ),
-              
-              //future builder para hacer la validación que aparezcan 3 o las 4 cards
-              // las que necesarias a mostrar
-              FutureBuilder<DataAgent>(
-              future: item,
-              builder: (BuildContext context, abc) {
-                if (abc.connectionState == ConnectionState.done) {
-                  //validación
-                  if (abc.data!.companyId != 7) {
-                    return GridView.count(
-                      crossAxisCount: 2,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      //todas las cards
-                      children: List.generate(plantilla.length, (index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 8.0, left: 8, bottom: 8),
-                          child: ItemCard(
-                            plantilla: plantilla[index],
-                            press: () {
-                              setState(() {
-                                if (plantilla[index] == plantilla[0]) {
-                                  Navigator.push(
-                                    context,
-                                    PageRouteBuilder(
-                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
-                                      pageBuilder: (_, __, ___) => DetailScreen(plantilla: plantilla[index]),
-                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                                        return SlideTransition(
-                                          position: Tween<Offset>(
-                                            begin: Offset(1.0, 0.0),
-                                            end: Offset.zero,
-                                          ).animate(animation),
-                                          child: child,
-                                        );
-                                      },
-                                    ),
-                                  );
-                                } else if (plantilla[index] == plantilla[1]) {
-                                  Navigator.push(
-                                    context,
-                                    PageRouteBuilder(
-                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
-                                      pageBuilder: (_, __, ___) => DetailScreenHistoryTrip(plantilla: plantilla[index]),
-                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                                        return SlideTransition(
-                                          position: Tween<Offset>(
-                                            begin: Offset(1.0, 0.0),
-                                            end: Offset.zero,
-                                          ).animate(animation),
-                                          child: child,
-                                        );
-                                      },
-                                    ),
-                                  );
-                                } else if (plantilla[index] == plantilla[2]) {
-                                  Navigator.push(
-                                    context,
-                                    PageRouteBuilder(
-                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
-                                      pageBuilder: (_, __, ___) => DetailScreenQr(plantilla: plantilla[index]),
-                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                                        return SlideTransition(
-                                          position: Tween<Offset>(
-                                            begin: Offset(1.0, 0.0),
-                                            end: Offset.zero,
-                                          ).animate(animation),
-                                          child: child,
-                                        );
-                                      },
-                                    ),
-                                  );
-                                } else if (plantilla[index] == plantilla[3]) {
-                                  Navigator.push(
-                                    context,
-                                    PageRouteBuilder(
-                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
-                                      pageBuilder: (_, __, ___) => DetailScreenChanges(plantilla: plantilla[index]),
-                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                                        return SlideTransition(
-                                          position: Tween<Offset>(
-                                            begin: Offset(1.0, 0.0),
-                                            end: Offset.zero,
-                                          ).animate(animation),
-                                          child: child,
-                                        );
-                                      },
-                                    ),
-                                  );
-                                }
-                              });
-                            },
-                          ),
-                        );
-                      }),
-                    );
-                  } else {
-                    return Column(
-                      children: [
-                        GridView.count(
-                          crossAxisCount: 2,
-                          shrinkWrap: true,
-                          //todas las cards
-                          physics: NeverScrollableScrollPhysics(),
-                          children: List.generate(2, (index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 8.0, left: 8, bottom: 8),
-                              child: ItemCard(
-                                plantilla: plantilla[index],
-                                press: () {
-                                  setState(() {
-                                    if (plantilla[index] == plantilla[0]) {
-                                      Navigator.push(
-                                        context,
-                                        PageRouteBuilder(
-                                          transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
-                                          pageBuilder: (_, __, ___) => DetailScreen(plantilla: plantilla[index]),
-                                          transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                                            return SlideTransition(
-                                              position: Tween<Offset>(
-                                                begin: Offset(1.0, 0.0),
-                                                end: Offset.zero,
-                                              ).animate(animation),
-                                              child: child,
-                                            );
-                                          },
-                                        ),
-                                      );
-                                    } else if (plantilla[index] == plantilla[1]) {
-                                      Navigator.push(
-                                        context,
-                                        PageRouteBuilder(
-                                          transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
-                                          pageBuilder: (_, __, ___) => DetailScreenHistoryTrip(plantilla: plantilla[index]),
-                                          transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                                            return SlideTransition(
-                                              position: Tween<Offset>(
-                                                begin: Offset(1.0, 0.0),
-                                                end: Offset.zero,
-                                              ).animate(animation),
-                                              child: child,
-                                            );
-                                          },
-                                        ),
-                                      );
-                                    }
-                                  });
-                                },
-                              ),
-                            );
-                          }),
-                        ),
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 8.0, left: 8, bottom: 8),
-                            child: ItemCard(
-                              plantilla: plantilla[2],
-                              press: () {
-                                Navigator.push(
-                                        context,
-                                        PageRouteBuilder(
-                                          transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
-                                          pageBuilder: (_, __, ___) => DetailScreenQr(plantilla: plantilla[2]),
-                                          transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                                            return SlideTransition(
-                                              position: Tween<Offset>(
-                                                begin: Offset(1.0, 0.0),
-                                                end: Offset.zero,
-                                              ).animate(animation),
-                                              child: child,
-                                            );
-                                          },
-                                        ),
-                                      );
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                } else {
-                  return WillPopScope(
-                    onWillPop: () async => false,
-                    child: SimpleDialog(
-                       elevation: 20,
-                      backgroundColor: Theme.of(context).cardColor,
-                      children: [
-                        Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(left: 16, top: 16, right: 16),
-                                child: CircularProgressIndicator(),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Text(
-                                  'Cargando menú...', 
-                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
-                                  ),
-                              )
-                            ],
-                          ),
-                        )
-                      ] ,
-                    ),
-                  );
-                }
-              },
-            ),
-      
-              FutureBuilder(
-                future: historial,
-                builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-                  if (snapshot.hasData) {
-                    List<dynamic> plantilla2 = snapshot.data!;
-                      return Column(
+                  WillPopScope(
+                      onWillPop: () async => false,
+                      child: SimpleDialog(
+                         elevation: 20,
+                        backgroundColor: Theme.of(context).cardColor,
                         children: [
-                          if(snapshot.data!.length>0)
-                            SizedBox(height: 50),
-      
-                          if(snapshot.data!.length>0)
-                          Padding(
-                            padding: const EdgeInsets.only(right: 25.0, left: 25, bottom: 0),
-                            child: Row(
+                          Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                Expanded(
-                                  child: Text(
-                                    'Últimos viajes',
-                                    style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 18),
-                                  ),
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                  child: CircularProgressIndicator(),
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                   Navigator.push(
-                                    context,
-                                    PageRouteBuilder(
-                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
-                                      pageBuilder: (_, __, ___) => DetailScreenHistoryTrip(plantilla: plantilla[1]),
-                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                                        return SlideTransition(
-                                          position: Tween<Offset>(
-                                            begin: Offset(1.0, 0.0),
-                                            end: Offset.zero,
-                                          ).animate(animation),
-                                          child: child,
-                                        );
-                                      },
+                                Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Text(
+                                    'Cargando advertencia...', 
+                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
                                     ),
-                                  );
-                                  },
-                                  child: Text(
-                                    'Ver historial',
-                                    style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 12),
-                                  ),
-                                ),
+                                )
                               ],
                             ),
-                          ),
-      
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: List.generate(plantilla2.length, (index) {
-                              var trip = plantilla2[index];
+                          )
+                        ] ,
+                      ),
+                    ),
+
+                  SizedBox(height: 15)
+                },                                    
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //       color: backgroundColor2,
+                //       borderRadius: BorderRadius.circular(15)
+                //     ),
+                //     child: Padding(
+                //       padding: const EdgeInsets.all(10.0),
+                //       child: Text('Tiene viaje(s) donde confirmó y no salió a tomar el transporte. Si esto ocurre por 3ra vez, el sistema le dará de baja y no será agendado para el servicio de transporte. Deberá justificar el caso enviando un ticket solicitando el uso de transporte.',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+                //     ),
+                //   ),
+                // ),
+                
+                //future builder para hacer la validación que aparezcan 3 o las 4 cards
+                // las que necesarias a mostrar
+                FutureBuilder<DataAgent>(
+                future: item,
+                builder: (BuildContext context, abc) {
+                  if (abc.connectionState == ConnectionState.done) {
+                    //validación
+                    if (abc.data!.companyId != 7) {
+                      return GridView.count(
+                        crossAxisCount: 2,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        //todas las cards
+                        children: List.generate(plantilla.length, (index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8.0, left: 8, bottom: 8),
+                            child: ItemCard(
+                              plantilla: plantilla[index],
+                              press: () {
+                                setState(() {
+                                  if (plantilla[index] == plantilla[0]) {
+                                    Navigator.push(
+                                      context,
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                        pageBuilder: (_, __, ___) => DetailScreen(plantilla: plantilla[index]),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0),
+                                              end: Offset.zero,
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  } else if (plantilla[index] == plantilla[1]) {
+                                    Navigator.push(
+                                      context,
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                        pageBuilder: (_, __, ___) => DetailScreenHistoryTrip(plantilla: plantilla[index]),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0),
+                                              end: Offset.zero,
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  } else if (plantilla[index] == plantilla[2]) {
+                                    Navigator.push(
+                                      context,
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                        pageBuilder: (_, __, ___) => DetailScreenQr(plantilla: plantilla[index]),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0),
+                                              end: Offset.zero,
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  } else if (plantilla[index] == plantilla[3]) {
+                                    Navigator.push(
+                                      context,
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                        pageBuilder: (_, __, ___) => DetailScreenChanges(plantilla: plantilla[index]),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0),
+                                              end: Offset.zero,
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  }
+                                });
+                              },
+                            ),
+                          );
+                        }),
+                      );
+                    } else {
+                      return Column(
+                        children: [
+                          GridView.count(
+                            crossAxisCount: 2,
+                            shrinkWrap: true,
+                            //todas las cards
+                            physics: NeverScrollableScrollPhysics(),
+                            children: List.generate(2, (index) {
                               return Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                            color: Theme.of(context).cardColor,
-                                            borderRadius: BorderRadius.circular(20),
-                                            border: Border.all(
-                                              width: 2,
-                                              color: Theme.of(context).disabledColor
-                                            )
+                                padding: const EdgeInsets.only(right: 8.0, left: 8, bottom: 8),
+                                child: ItemCard(
+                                  plantilla: plantilla[index],
+                                  press: () {
+                                    setState(() {
+                                      if (plantilla[index] == plantilla[0]) {
+                                        Navigator.push(
+                                          context,
+                                          PageRouteBuilder(
+                                            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                            pageBuilder: (_, __, ___) => DetailScreen(plantilla: plantilla[index]),
+                                            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                              return SlideTransition(
+                                                position: Tween<Offset>(
+                                                  begin: Offset(1.0, 0.0),
+                                                  end: Offset.zero,
+                                                ).animate(animation),
+                                                child: child,
+                                              );
+                                            },
                                           ),
-                                  child: Container(
-                                    width: 240,
-                                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).cardColor,
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        SizedBox(height: 5),
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                width: 15,
-                                                height: 15,
-                                                child: SvgPicture.asset(
-                                                  "assets/icons/Numeral.svg",
-                                                  color: Theme.of(context).primaryIconTheme.color,
-                                                ),
-                                              ),
-                                              Text(
-                                                ' Viaje: ${trip["tripId"]}',
-                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
-                                              ),
-                                            ],
+                                        );
+                                      } else if (plantilla[index] == plantilla[1]) {
+                                        Navigator.push(
+                                          context,
+                                          PageRouteBuilder(
+                                            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                            pageBuilder: (_, __, ___) => DetailScreenHistoryTrip(plantilla: plantilla[index]),
+                                            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                              return SlideTransition(
+                                                position: Tween<Offset>(
+                                                  begin: Offset(1.0, 0.0),
+                                                  end: Offset.zero,
+                                                ).animate(animation),
+                                                child: child,
+                                              );
+                                            },
                                           ),
-                                        ),
-                                        Container(
-                                          height: 1,
-                                          color: Theme.of(context).dividerColor,
-                                        ),
-                                        SizedBox(height: 8),
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                width: 18,
-                                                height: 18,
-                                                child: SvgPicture.asset(
-                                                  "assets/icons/calendar-note-svgrepo-com.svg",
-                                                  color: Theme.of(context).primaryIconTheme.color,
-                                                ),
-                                              ),
-                                              Text(
-                                                ' Fecha: ${trip["tripDate"]}',
-                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          height: 1,
-                                          color: Theme.of(context).dividerColor,
-                                        ),
-                                        SizedBox(height: 8),
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                width: 18,
-                                                height: 18,
-                                                child: SvgPicture.asset(
-                                                  "assets/icons/warning-circle-svgrepo-com.svg",
-                                                  color: Theme.of(context).primaryIconTheme.color,
-                                                ),
-                                              ),
-                                              Text(
-                                                ' Tipo: ${trip["tripType"]}',
-                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          height: 1,
-                                          color: Theme.of(context).dividerColor,
-                                        ),
-                                        SizedBox(height: 8),
-                                        Padding(
-                                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                width: 15,
-                                                height: 15,
-                                                child: SvgPicture.asset(
-                                                  "assets/icons/hora.svg",
-                                                  color: Theme.of(context).primaryIconTheme.color,
-                                                ),
-                                              ),
-                                              Text(
-                                                ' Abordó: ${trip["traveled"]}',
-                                                style:  Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          height: 1,
-                                          color: Theme.of(context).dividerColor,
-                                        ),
-                                        SizedBox(height: 5),
-                                      ],
-                                    ),
-                                  ),
+                                        );
+                                      }
+                                    });
+                                  },
                                 ),
                               );
                             }),
                           ),
-                        ),
-                      ],
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('');
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 8.0, left: 8, bottom: 8),
+                              child: ItemCard(
+                                plantilla: plantilla[2],
+                                press: () {
+                                  Navigator.push(
+                                          context,
+                                          PageRouteBuilder(
+                                            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                            pageBuilder: (_, __, ___) => DetailScreenQr(plantilla: plantilla[2]),
+                                            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                              return SlideTransition(
+                                                position: Tween<Offset>(
+                                                  begin: Offset(1.0, 0.0),
+                                                  end: Offset.zero,
+                                                ).animate(animation),
+                                                child: child,
+                                              );
+                                            },
+                                          ),
+                                        );
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
                   } else {
                     return WillPopScope(
-                    onWillPop: () async => false,
-                    child: SimpleDialog(
-                       elevation: 20,
-                      backgroundColor: Theme.of(context).cardColor,
-                      children: [
-                        Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(left: 16, top: 16, right: 16),
-                                child: CircularProgressIndicator(),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Text(
-                                  'Cargando últimos viajes...', 
-                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
-                                  ),
-                              )
-                            ],
-                          ),
-                        )
-                      ] ,
-                    ),
-                  );
+                      onWillPop: () async => false,
+                      child: SimpleDialog(
+                         elevation: 20,
+                        backgroundColor: Theme.of(context).cardColor,
+                        children: [
+                          Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                  child: CircularProgressIndicator(),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Text(
+                                    'Cargando menú...', 
+                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                    ),
+                                )
+                              ],
+                            ),
+                          )
+                        ] ,
+                      ),
+                    );
                   }
                 },
               ),
-      
         
-            ],
+                FutureBuilder(
+                  future: historial,
+                  builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+                    if (snapshot.hasData) {
+                      List<dynamic> plantilla2 = snapshot.data!;
+                        return Column(
+                          children: [
+                            if(snapshot.data!.length>0)
+                              SizedBox(height: 50),
+        
+                            if(snapshot.data!.length>0)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 25.0, left: 25, bottom: 0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'Últimos viajes',
+                                      style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 18),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                     Navigator.push(
+                                      context,
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                        pageBuilder: (_, __, ___) => DetailScreenHistoryTrip(plantilla: plantilla[1]),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0),
+                                              end: Offset.zero,
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                    },
+                                    child: Text(
+                                      'Ver historial',
+                                      style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 12),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+        
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: List.generate(plantilla2.length, (index) {
+                                var trip = plantilla2[index];
+                                return Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                              color: Theme.of(context).cardColor,
+                                              borderRadius: BorderRadius.circular(20),
+                                              border: Border.all(
+                                                width: 2,
+                                                color: Theme.of(context).disabledColor
+                                              )
+                                            ),
+                                    child: Container(
+                                      width: 240,
+                                      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).cardColor,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: 5),
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 15,
+                                                  height: 15,
+                                                  child: SvgPicture.asset(
+                                                    "assets/icons/Numeral.svg",
+                                                    color: Theme.of(context).primaryIconTheme.color,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  ' Viaje: ${trip["tripId"]}',
+                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 1,
+                                            color: Theme.of(context).dividerColor,
+                                          ),
+                                          SizedBox(height: 8),
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 18,
+                                                  height: 18,
+                                                  child: SvgPicture.asset(
+                                                    "assets/icons/calendar-note-svgrepo-com.svg",
+                                                    color: Theme.of(context).primaryIconTheme.color,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  ' Fecha: ${trip["tripDate"]}',
+                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 1,
+                                            color: Theme.of(context).dividerColor,
+                                          ),
+                                          SizedBox(height: 8),
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 18,
+                                                  height: 18,
+                                                  child: SvgPicture.asset(
+                                                    "assets/icons/warning-circle-svgrepo-com.svg",
+                                                    color: Theme.of(context).primaryIconTheme.color,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  ' Tipo: ${trip["tripType"]}',
+                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 1,
+                                            color: Theme.of(context).dividerColor,
+                                          ),
+                                          SizedBox(height: 8),
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 15,
+                                                  height: 15,
+                                                  child: SvgPicture.asset(
+                                                    "assets/icons/hora.svg",
+                                                    color: Theme.of(context).primaryIconTheme.color,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  ' Abordó: ${trip["traveled"]}',
+                                                  style:  Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 1,
+                                            color: Theme.of(context).dividerColor,
+                                          ),
+                                          SizedBox(height: 5),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ),
+                          ),
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('');
+                    } else {
+                      return WillPopScope(
+                      onWillPop: () async => false,
+                      child: SimpleDialog(
+                         elevation: 20,
+                        backgroundColor: Theme.of(context).cardColor,
+                        children: [
+                          Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                  child: CircularProgressIndicator(),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Text(
+                                    'Cargando últimos viajes...', 
+                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                    ),
+                                )
+                              ],
+                            ),
+                          )
+                        ] ,
+                      ),
+                    );
+                    }
+                  },
+                ),
+        
+          
+              ],
+            ),
           ),
         ),
       ),

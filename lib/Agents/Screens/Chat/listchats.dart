@@ -101,17 +101,22 @@ class _ChatsListState extends State<ChatsList> {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
-                        child: Container(
-                          width: size.width,
-                          decoration: BoxDecoration(
-                            border: Border.all( 
-                              color: Theme.of(context).disabledColor,
-                              width: 2
-                            ),
-                            color: Theme.of(context).cardColor,
-                            borderRadius: BorderRadius.circular(20)
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxWidth: 700.0, // Aquí defines el ancho máximo deseado
                           ),
-                          child: SingleChildScrollView(child: body())
+                          child: Container(
+                            width: size.width,
+                            decoration: BoxDecoration(
+                              border: Border.all( 
+                                color: Theme.of(context).disabledColor,
+                                width: 2
+                              ),
+                              color: Theme.of(context).cardColor,
+                              borderRadius: BorderRadius.circular(20)
+                            ),
+                            child: SingleChildScrollView(child: body())
+                          ),
                         ),
                       )
                     ),

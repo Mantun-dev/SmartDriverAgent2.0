@@ -96,99 +96,104 @@ class _NotificationPage extends State<NotificationPage> {
     Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(12.0),
-      child: Container(
-        width: size.width,
-        decoration: BoxDecoration(
-          border: Border.all( 
-            color: Theme.of(context).disabledColor,
-            width: 2
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+        maxWidth: 700.0, // Aquí defines el ancho máximo deseado
+      ),
+        child: Container(
+          width: size.width,
+          decoration: BoxDecoration(
+            border: Border.all( 
+              color: Theme.of(context).disabledColor,
+              width: 2
+            ),
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.circular(20)
           ),
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(20)
-        ),
 
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          child: listaNotificaciones != null ?
-            listaNotificaciones.length <=0 
-              ? Center(
-                child: Column(
-                  children: [
-                    Text("No hay notificaciones pendientes",
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 17)
-                    ),
-                    Container(
-                      height: 1,
-                      color: Theme.of(context).dividerColor,
-                    ),
-                  ],
-                ),
-              ):
-            SingleChildScrollView(
-              child: ListView.builder(
-                itemCount: listaNotificaciones.length,
-                shrinkWrap: true,
-                padding: EdgeInsets.only(top: 16),
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            child: listaNotificaciones != null ?
+              listaNotificaciones.length <=0 
+                ? Center(
+                  child: Column(
                     children: [
-                      Text(
-                        getFecha(listaNotificaciones[index]['notificationCreated']),
-                        style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 15),
-                        textAlign: TextAlign.left,
+                      Text("No hay notificaciones pendientes",
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 17)
                       ),
-                      SizedBox(height: 10),
-            
-                      Text(
-                        '${listaNotificaciones[index]['notificationDescription']}',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
-                        textAlign: TextAlign.left,
+                      Container(
+                        height: 1,
+                        color: Theme.of(context).dividerColor,
                       ),
-                      SizedBox(height: 5),
-            
-                      Text(
-                        getHora(listaNotificaciones[index]['notificationCreated']),
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
-                        textAlign: TextAlign.left,
-                      ),
-                      SizedBox(height: 20),
-                      
                     ],
-                  );
-                },
-              ),
-            ):WillPopScope(
-                    onWillPop: () async => false,
-                    child: SimpleDialog(
-                       elevation: 20,
-                      backgroundColor: Theme.of(context).cardColor,
-                      children: [
-                        Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(left: 16, top: 16, right: 16),
-                                child: CircularProgressIndicator(),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Text(
-                                  'Cargando...', 
-                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
-                                  ),
-                              )
-                            ],
-                          ),
-                        )
-                      ] ,
-                    ),
                   ),
+                ):
+              SingleChildScrollView(
+                child: ListView.builder(
+                  itemCount: listaNotificaciones.length,
+                  shrinkWrap: true,
+                  padding: EdgeInsets.only(top: 16),
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                  
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          getFecha(listaNotificaciones[index]['notificationCreated']),
+                          style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 15),
+                          textAlign: TextAlign.left,
+                        ),
+                        SizedBox(height: 10),
+              
+                        Text(
+                          '${listaNotificaciones[index]['notificationDescription']}',
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
+                          textAlign: TextAlign.left,
+                        ),
+                        SizedBox(height: 5),
+              
+                        Text(
+                          getHora(listaNotificaciones[index]['notificationCreated']),
+                          style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
+                          textAlign: TextAlign.left,
+                        ),
+                        SizedBox(height: 20),
+                        
+                      ],
+                    );
+                  },
+                ),
+              ):WillPopScope(
+                      onWillPop: () async => false,
+                      child: SimpleDialog(
+                         elevation: 20,
+                        backgroundColor: Theme.of(context).cardColor,
+                        children: [
+                          Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                  child: CircularProgressIndicator(),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Text(
+                                    'Cargando...', 
+                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                    ),
+                                )
+                              ],
+                            ),
+                          )
+                        ] ,
+                      ),
+                    ),
+          ),
+          
         ),
-        
       ),
     );
   }
