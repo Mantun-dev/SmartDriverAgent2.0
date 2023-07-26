@@ -337,11 +337,12 @@ class _BodyState extends State<Body> {
             decoration: InputDecoration(
               hintText: "Contraseña",
               hintStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.normal),
-              icon: Icon(
-                Icons.lock_outline,
-                color: Colors.white,
-                size: 30,
-              ),
+              icon: SvgPicture.asset(  
+                  "assets/icons/candado.svg",
+                  color: Colors.white,
+                  width: 25,
+                  height: 25,
+                ),
               suffixIcon: IconButton(
                 padding: EdgeInsets.only(left: 10),
                 tooltip: 'Ver contraseña',

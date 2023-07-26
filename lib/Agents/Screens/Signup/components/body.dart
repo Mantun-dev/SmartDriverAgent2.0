@@ -348,10 +348,11 @@ class _BodyState extends State<Body> {
               decoration: InputDecoration(
                 hintText: "Contraseña",
                 hintStyle: TextStyle(color: camposVaciosAlerta==true?Colors.red:Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
-                icon: Icon(
-                  Icons.lock_outline,
+                icon: SvgPicture.asset(  
+                  "assets/icons/candado.svg",
                   color: Color.fromRGBO(40, 93, 169, 1),
-                  size: 30,
+                  width: 25,
+                  height: 25,
                 ),
                 suffixIcon: IconButton(
                   padding: EdgeInsets.only(left: 10),
@@ -400,10 +401,11 @@ class _BodyState extends State<Body> {
               decoration: InputDecoration(
                 hintText: "Confirmar contraseña",
                 hintStyle: TextStyle(color: camposVaciosAlerta==true?Colors.red:Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
-                icon: Icon(
-                  Icons.lock_outline,
+                icon: SvgPicture.asset(  
+                  "assets/icons/candado.svg",
                   color: Color.fromRGBO(40, 93, 169, 1),
-                  size: 30,
+                  width: 25,
+                  height: 25,
                 ),
                 suffixIcon: IconButton(
                   padding: EdgeInsets.only(left: 10),

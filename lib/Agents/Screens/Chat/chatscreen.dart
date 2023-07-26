@@ -547,7 +547,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             ),
                             padding: const EdgeInsets.all(12.0),
                             child: Text(
-                              "Viene en camino?",
+                              "¿Viene en camino?",
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
@@ -583,7 +583,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               margin: EdgeInsets.only(top: 0),
                               onPressed: () {
                                 _messageInputController.text =
-                                    "Estoy buscandole";
+                                    "Estoy buscándolo";
                                 if (_messageInputController.text
                                     .trim()
                                     .isNotEmpty) {
@@ -602,7 +602,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             ),
                               padding: const EdgeInsets.all(12.0),
                               child: Text(
-                                "¡Entendido!",
+                                "Estoy buscándolo",
                                 style: TextStyle(color: Colors.white),
                               )),
 

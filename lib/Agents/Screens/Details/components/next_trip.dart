@@ -1528,7 +1528,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         SizedBox(width: 5),
                         Flexible(
                           child: Text(
-                            'Se ha notificado al motorista que usted no necesitará el transporte',
+                            'Se ha notificado al conductor que no necesitarás el transporte',
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.red,
@@ -2797,7 +2797,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                               SizedBox(width: 5),
                               Flexible(
                                 child: Text(
-                                  'Se ha notificado al motorista que usted no necesitará el transporte',
+                                  'Se ha notificado al conductor que no necesitarás el transporte',
                                   style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.red,
