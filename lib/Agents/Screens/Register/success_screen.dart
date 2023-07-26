@@ -84,7 +84,7 @@ class _BodyState extends State<Body> {
               ),
             ),
     
-            Center(child: Text("Registro completado",style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1), fontSize: 22),),),
+            Center(child: Text("   Registro completado",style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1), fontSize: 22),),),
           ],
         ),
         SizedBox(height: 20),

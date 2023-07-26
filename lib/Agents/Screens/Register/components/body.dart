@@ -153,7 +153,7 @@ class _BodyState extends State<Body> {
               ),
             ),
   
-            Center(child: Text("Ingresar código",style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1), fontSize: 27),),),
+            Center(child: Text("  Ingresar código",style: TextStyle(color: Color.fromRGBO(40, 93, 169, 1), fontSize: 27),),),
           ],
         ),
         
