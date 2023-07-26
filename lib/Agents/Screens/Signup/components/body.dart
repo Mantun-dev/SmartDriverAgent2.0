@@ -8,7 +8,6 @@ import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/components/progress_indicator.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:lottie/lottie.dart';
 import 'dart:convert' show json;
 import 'package:quickalert/quickalert.dart';
 

@@ -87,6 +87,7 @@ Future<List<Story>> fetchTripsStory() async {
   final data = json.decode(response.body);
   final paymentList = data as List;
   if (response.statusCode == 200) {
+    print(response.body);
     //print(paymentList.length);
     return paymentList.map((data) => Story.fromJson(data)).toList();
   } else {

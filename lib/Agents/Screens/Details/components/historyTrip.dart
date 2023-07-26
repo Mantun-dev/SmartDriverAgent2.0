@@ -261,11 +261,57 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                         ),
                                       ),
                                       TextSpan(
-                                        text: '${abc.data![index].hora}',
+                                        text:abc.data![index].hora==null?'--':'${abc.data![index].hora}',
                                         style: TextStyle(
                                           fontWeight: FontWeight.normal,
                                           fontSize: 14,
                                           color: Colors.green
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 1,
+                          color: Theme.of(context).dividerColor,
+                        ),
+
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 18,
+                                height: 18,
+                                child: SvgPicture.asset(
+                                  "assets/icons/warning-circle-svgrepo-com.svg",
+                                  color: Theme.of(context).primaryIconTheme.color,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Flexible(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: DefaultTextStyle.of(context).style,
+                                    children: [
+                                      TextSpan(
+                                        text: 'Viajo: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text:abc.data![index].abordo==null?'No':'Si',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 14,
+                                          color: abc.data![index].abordo==null? Colors.red : Colors.green
                                         ),
                                       ),
                                     ],
