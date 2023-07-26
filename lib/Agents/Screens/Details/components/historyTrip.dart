@@ -300,7 +300,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                     style: DefaultTextStyle.of(context).style,
                                     children: [
                                       TextSpan(
-                                        text: 'Viajo: ',
+                                        text: 'Viajó: ',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 14,
