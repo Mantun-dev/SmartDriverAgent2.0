@@ -405,11 +405,10 @@ class _ChatScreenState extends State<ChatScreen> {
                             if(fecha('${message.mes}/${message.dia}/${message.ao}')==true ){
                               message.mostrarF=true;
                             }
-                            //print(message.user);
-                            //print(widget.nombre);
+
                             return Wrap(
                               alignment:
-                                  message.user == widget.nombre.toUpperCase()
+                                  message.id == widget.id
                                       ? WrapAlignment.end
                                       : WrapAlignment.start,
                               children: [
@@ -443,12 +442,12 @@ class _ChatScreenState extends State<ChatScreen> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.only(
                                         topLeft: Radius.circular(8.0),
-                                        topRight: message.user == widget.nombre.toUpperCase()?Radius.zero:Radius.circular(8.0),
-                                        bottomLeft:  message.user == widget.nombre.toUpperCase()? Radius.circular(8.0):Radius.zero,
+                                        topRight: message.id == widget.id?Radius.zero:Radius.circular(8.0),
+                                        bottomLeft:  message.id == widget.id? Radius.circular(8.0):Radius.zero,
                                         bottomRight: Radius.circular(8.0),
                                       ),
                                     ),
-                                    color: message.user == widget.nombre.toUpperCase()
+                                    color: message.id == widget.id
                                         ? Theme.of(context).focusColor
                                         : Theme.of(context).cardColor,
                                     child: Padding(
@@ -461,8 +460,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                             Text(
                                               message.mensaje!,
                                               style: TextStyle(
-                                                  color: message.user ==
-                                                      widget.nombre.toUpperCase()
+                                                  color: message.id ==
+                                                      widget.id
                                                   ? Colors.white
                                                   : Theme.of(context).primaryColorDark,
                                                   fontSize: 17),
@@ -471,16 +470,16 @@ class _ChatScreenState extends State<ChatScreen> {
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Expanded(child: SizedBox()),
-                                                if (message.user ==
-                                                    widget.nombre.toUpperCase())
+                                                if (message.id ==
+                                                    widget.id)
                                                   Text(
                                                     message.hora,
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 8),
                                                   ),
-                                                if (message.user !=
-                                                    widget.nombre.toUpperCase())
+                                                if (message.id !=
+                                                    widget.id)
                                                   Text(
                                                     message.hora,
                                                     style: TextStyle(
@@ -490,8 +489,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                                 SizedBox(
                                                   width: 5,
                                                 ),
-                                                if (message.user ==
-                                                    widget.nombre.toUpperCase())
+                                                if (message.id ==
+                                                    widget.id)
                                                   Icon(
                                                     message.leido == true
                                                         ? Icons.done_all
