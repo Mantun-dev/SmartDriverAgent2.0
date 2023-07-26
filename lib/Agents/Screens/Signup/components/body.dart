@@ -139,19 +139,6 @@ class _BodyState extends State<Body> {
           ],
         ),
         SizedBox(height: 20),
-        
-        Positioned(
-            top: 80,
-            right: 0,
-            left: 0,
-            child: Container(
-              constraints: BoxConstraints(
-                maxWidth: 120,
-                maxHeight: 120,
-              ),
-              child: Lottie.asset('assets/videos/registrar.json')
-            ),
-          ),
 
         Padding(
           padding: const EdgeInsets.all(30.0),
