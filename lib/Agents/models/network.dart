@@ -63,8 +63,6 @@ Future<TripsList> fetchTrips() async {
 
   if (response.statusCode == 200) {
     final trip = TripsList.fromJson(json.decode(response.body));
-    print('$ip/api/trips/${prefs.nombreUsuario}');
-    print(response.body);
     return trip;
   } else {
     throw Exception('Failed to load Data');
@@ -89,6 +87,7 @@ Future<List<Story>> fetchTripsStory() async {
   final data = json.decode(response.body);
   final paymentList = data as List;
   if (response.statusCode == 200) {
+    print(response.body);
     //print(paymentList.length);
     return paymentList.map((data) => Story.fromJson(data)).toList();
   } else {

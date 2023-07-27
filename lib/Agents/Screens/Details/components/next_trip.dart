@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
 import 'package:flutter_auth/Agents/Screens/Chat/socketChat.dart';
-import 'package:flutter_auth/Agents/Screens/Details/components/loader.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/models/dataAgent.dart';
@@ -18,13 +17,16 @@ import 'package:flutter_auth/Agents/models/rating.dart';
 import 'package:flutter_auth/Agents/models/tripAgent.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/constants.dart';
+import 'package:flutter_auth/main.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
 import 'package:quickalert/quickalert.dart';
 //import 'package:sweetalert/sweetalert.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+import '../../../../components/ConfirmationDialog.dart';
+import '../../../../components/progress_indicator.dart';
 
 class NextTripScreen extends StatefulWidget {
   //creación de instancias de clases de Json con sus variables
@@ -43,19 +45,16 @@ class _NextTripScreenState extends State<NextTripScreen>
   //variables globales para cada función
   late Future<TripsList> item;
   late Future<DataAgent> itemx;
-  late Future<List<dynamic>> item2;
   var mensajeAlerta;
   final prefs = new PreferenciasUsuario();
   //variable para comentario
-  String comment = ' ';
+  String comment = '';
 
   //variables para las condiciones
   String condition = 'Confirmed';
   String conditionC = 'Canceled';
 
   TextEditingController message = new TextEditingController();
-
-  bool viajesProceso=true;
 
   //variables para rating
   late double rating1;
@@ -64,6 +63,13 @@ class _NextTripScreenState extends State<NextTripScreen>
   late double rating4;
   late double rating5;
   late double rating6;
+
+  String razonCancelar = "";
+
+  bool razon1 = false;
+  bool razon2 = false;
+  bool razon3 = false;
+  bool razon4 = false;
 
   TextEditingController comentario1 = new TextEditingController();
   TextEditingController comentario2 = new TextEditingController();
@@ -79,13 +85,9 @@ class _NextTripScreenState extends State<NextTripScreen>
   String rating55 = "5";
   String rating66 = "6";
 
-  String razonCancelar = "";
+  bool viajesProceso=true;
 
-  bool razon1 = false;
-  bool razon2 = false;
-  bool razon3 = false;
-  bool razon4 = false;
-
+  late Future<List<dynamic>> item2;
   int totalSolicitudes = 0;
   int totalViajes = 0;
 
@@ -98,8 +100,8 @@ class _NextTripScreenState extends State<NextTripScreen>
     item = fetchTrips();
     itemx = fetchRefres();
     item2=getSolicitudes();
-    getMensajeAlerta();
     obtenerLongitud();
+    getMensajeAlerta();
     //función callback para mostrar automáticamente el mensaje de alerta de rating
     SchedulerBinding.instance.addPostFrameCallback((_) {
       // if (mounted) {
@@ -139,7 +141,7 @@ class _NextTripScreenState extends State<NextTripScreen>
           totalSolicitudes++;
         }
       }
-
+      print(totalSolicitudes);
       setState(() {});
       return dataR["requests"]; // Retornar la lista de la propiedad "data"
     } else {
@@ -148,6 +150,7 @@ class _NextTripScreenState extends State<NextTripScreen>
   }
 
   void getMensajeAlerta() async {
+
     Map data = {
       "agentId": prefs.usuarioId.toString()
     };
@@ -173,7 +176,6 @@ class _NextTripScreenState extends State<NextTripScreen>
     });
   }
 
-
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // setState(() {
     // });
@@ -189,7 +191,6 @@ class _NextTripScreenState extends State<NextTripScreen>
   Future<TripsList> fetchTripsButton() async {
     http.Response response =
         await http.get(Uri.parse('$ip/api/trips/${prefs.nombreUsuario}'));
-  
     if (response.statusCode == 200) {
       final trip = TripsList.fromJson(json.decode(response.body));
       for (var i = 0; i < trip.trips.length; i++) {
@@ -231,8 +232,8 @@ class _NextTripScreenState extends State<NextTripScreen>
   }
 
 //función para confirmar trip
-  Future<dynamic> fetchConfirm(
-      String agentUser, String tripId, String condition, String comment) async {
+  Future<dynamic> fetchConfirm(String agentUser, String tripId, String condition, String comment) async {
+    LoadingIndicatorDialog().show(context);
     //<List<Map<String, dynamic>>>
     prefs.tripId = tripId;
     Map data = {
@@ -249,31 +250,38 @@ class _NextTripScreenState extends State<NextTripScreen>
         .get(Uri.parse('$ip/api/refreshingAgentData/${prefs.nombreUsuario}'));
     final resps = DataAgent.fromJson(json.decode(responses.body));
     //alertas y redirecciones
-    if (response.statusCode == 200) {
-      Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => DetailScreen(plantilla: plantilla[0])))
-          .then((_) => DetailScreen(plantilla: plantilla[0]));
-      QuickAlert.show(
-          context: context,
-          title: "Enviado",
-          text: 'Su viaje ha sido confirmado',
-          type: QuickAlertType.success);
-      final algo =
-          await http.get(Uri.parse('$ip/api/getMaskReminder/${resps.agentId}'));
 
-      Map data2 = {"idU": resps.agentId.toString(), "Estado": 'CONFIRMADO'};
-      String sendData2 = json.encode(data2);
-      await http.put(Uri.parse('https://apichat.smtdriver.com/api/salas/$tripId'), body: sendData2, headers: {"Content-Type": "application/json"});
+    if(mounted){
+      LoadingIndicatorDialog().dismiss();
+      if (response.statusCode == 200) {
+        Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => DetailScreen(plantilla: plantilla[0])))
+            .then((_) => DetailScreen(plantilla: plantilla[0]));
+        QuickAlert.show(
+            context: context,
+            title: "Enviado",
+            text: 'Tu viaje ha sido confirmado',
+            type: QuickAlertType.success,
+            confirmBtnText: "Ok"
+          );
 
-      //print(algo.body);
-    } else if (response.statusCode == 500) {
-      QuickAlert.show(
+        Map data2 = {"idU": resps.agentId.toString(), "Estado": 'CONFIRMADO'};
+        String sendData2 = json.encode(data2);
+        await http.put(Uri.parse('https://apichat.smtdriver.com/api/salas/$tripId'), body: sendData2, headers: {"Content-Type": "application/json"});
+
+        //print(algoe.body);
+        //showAlertDialog();
+      } else if (response.statusCode == 500) {
+        QuickAlert.show(
           context: context,
           title: "Alerta",
           text: resp.message,
-          type: QuickAlertType.error);
+          type: QuickAlertType.error,
+          confirmBtnText: "Ok"
+        );
+      }
     }
     return Message.fromJson(json.decode(response.body));
   }
@@ -281,6 +289,7 @@ class _NextTripScreenState extends State<NextTripScreen>
   //función para cancel trip
   Future<dynamic> fetchCancel(String agentUser, String tripId,
       String conditionC, String message) async {
+    LoadingIndicatorDialog().show(context);
     //<List<Map<String, dynamic>>>
     Map data = {
       'agentUser': agentUser,
@@ -301,9 +310,12 @@ class _NextTripScreenState extends State<NextTripScreen>
       String sendData2 = json.encode(data2);
       await http.put(Uri.parse('https://apichat.smtdriver.com/api/salas/$tripId'), body: sendData2, headers: {"Content-Type": "application/json"});
 
-    razonCancelar="";
     //redirección y alertas
-    if (response.statusCode == 200) {
+    razonCancelar="";
+    
+    if(mounted){
+      LoadingIndicatorDialog().dismiss();
+      if (response.statusCode == 200) {
       Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -313,14 +325,16 @@ class _NextTripScreenState extends State<NextTripScreen>
           context: context,
           title: "Cancelación éxitosa",
           text:
-              "El motorista será notificado que usted no hará uso del transporte",
+              "Le hemos notificado al conductor",
           type: QuickAlertType.success);
     } else if (response.statusCode == 500) {
       QuickAlert.show(
           context: context,
           title: "Alerta",
           text: resp.message,
-          type: QuickAlertType.error);
+          type: QuickAlertType.error,
+          confirmBtnText: "Ok");
+    }
     }
     return Message.fromJson(json.decode(response.body));
   }
@@ -346,7 +360,7 @@ class _NextTripScreenState extends State<NextTripScreen>
       'commentPunctualityB': comment5,
       'commentVehicleStatus': comment6,
     };
-
+    print(data);
     //api rating
     http.Response response =
         await http.post(Uri.parse('https://admin.smtdriver.com/registerRating'), body: data);
@@ -361,13 +375,15 @@ class _NextTripScreenState extends State<NextTripScreen>
           context: context,
           title: 'Enviado',
           text: resp.message,
-          type: QuickAlertType.success);
+          type: QuickAlertType.success,
+          confirmBtnText: "Ok");
     } else if (response.statusCode == 200 && resp.ok != true) {
       QuickAlert.show(
           context: context,
           title: 'Error',
           text: resp.message,
-          type: QuickAlertType.error);
+          type: QuickAlertType.error,
+          confirmBtnText: "Ok");
     }
   
   }
@@ -375,6 +391,7 @@ class _NextTripScreenState extends State<NextTripScreen>
     //función para skipear calificación
   Future<dynamic>fetchSkipRating2(String agentId, String tripId, int rating1, int rating2, int rating3, String comment) async {
       //<List<Map<String, dynamic>>>
+      LoadingIndicatorDialog().show(context);
       Map data = {
         'agentId' : agentId,
         'tripId'    : tripId,
@@ -387,19 +404,24 @@ class _NextTripScreenState extends State<NextTripScreen>
     http.Response response = await http.post(Uri.parse('$ip/api/ratingTrip'), body: data);
     final resp = MessageAccount.fromJson(json.decode(response.body));
       //alertas
-      if (response.statusCode == 200 && resp.ok == true) {   
-        QuickAlert.show(
-          context: context,
-          title: 'Enviado',
-          text: resp.message,
-          type: QuickAlertType.success);  
-      } 
-      else if(response.statusCode == 200 && resp.ok != true){
-        QuickAlert.show(
-          context: context,
-          title: 'Error',
-          text: resp.message,
-          type: QuickAlertType.error);
+      LoadingIndicatorDialog().dismiss();
+      if(mounted){
+        if (response.statusCode == 200 && resp.ok == true) {   
+          QuickAlert.show(
+            context: context,
+            title: 'Enviado',
+            text: resp.message,
+            type: QuickAlertType.success,
+            confirmBtnText: "Ok");  
+        } 
+        else if(response.statusCode == 200 && resp.ok != true){
+          QuickAlert.show(
+            context: context,
+            title: 'Error',
+            text: resp.message,
+            type: QuickAlertType.error,
+            confirmBtnText: "Ok");
+        }
       }
     return MessageAccount.fromJson(json.decode(response.body));
   }  
@@ -408,1156 +430,2844 @@ class _NextTripScreenState extends State<NextTripScreen>
 
   @override
   Widget build(BuildContext context) {
+    
     return Column(
       children: [
-      Card(
-      elevation: 5,
-      color: const Color.fromRGBO(87, 94, 113, 1) ,
-      shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
+        Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).cardTheme.color,
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: Center(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: viajesProceso ? Theme.of(context).primaryColor: Colors.transparent,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                margin: const EdgeInsets.all(20),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    onPressed: () {
+                      setState(() {
+                        viajesProceso = true;
+                      });
+                    },
+                    child: Row(
                       children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: viajesProceso ? backgroundColor : Colors.transparent,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              viajesProceso = true;
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              Text(
-                                'Viajes programados',
-                                style: TextStyle(
-                                  color: Colors.white
-                                ),
-                              ),
-                                      
-                                Container(
-                                  margin: const EdgeInsets.only(left: 5),
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    color: viajesProceso ? Colors.white: Colors.red,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Text(
-                                    totalViajes.toString(),
-                                    style: TextStyle(
-                                      color: !viajesProceso ? Colors.white: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 10,
-                                    ),
-                                  ),
-                                ),
-                            ],
+                        Text(
+                          'Viajes programados',
+                          style: TextStyle(
+                            color: viajesProceso ? Colors.white : Theme.of(context).primaryColorDark,
                           ),
                         ),
-                  
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: viajesProceso ? Colors.transparent : backgroundColor,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 5),
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: viajesProceso ? Colors.white : Theme.of(context).primaryColor,
+                            shape: BoxShape.circle,
                           ),
-                          onPressed: () {
-                            setState(() {
-                              viajesProceso = false;
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              Text(
-                                'Solicitudes',
-                                style: TextStyle(
-                                  color:Colors.white,
-                                ),
-                              ),
-                                      
-                                Container(
-                                  margin: const EdgeInsets.only(left: 5),
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    color: !viajesProceso ? Colors.white: Colors.red,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Text(
-                                    totalSolicitudes.toString(),
-                                    style: TextStyle(
-                                      color: viajesProceso ? Colors.white: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 10,
-                                    ),
-                                  ),
-                                ),
-                            ],
+                          child: Text(
+                            totalViajes.toString(),
+                            style: TextStyle(
+                              color: !viajesProceso ? Colors.white : Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 10,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                ),
+                  ),
+                  SizedBox(width: 10),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: viajesProceso ? Colors.transparent : Theme.of(context).primaryColor,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        viajesProceso = false;
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          'Confirmaciones',
+                          style: TextStyle(
+                            color: !viajesProceso ? Colors.white : Theme.of(context).primaryColorDark,
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(left: 5),
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: !viajesProceso ? Colors.white : Theme.of(context).primaryColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            totalSolicitudes.toString(),
+                            style: TextStyle(
+                              color: viajesProceso ? Colors.white : Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  
+                ],
               ),
+            ),
+          ),
+        ),             
       viajesProceso==false?
         Column(
           children: [
 
-            Align(
-                alignment: Alignment.center,
-                child: Text(
-                  mensajeAlerta,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15.0,
-                  ),
-                ),
-              ),
-
-            Padding(
-              padding: const EdgeInsets.all(14.0),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Row(
+            FutureBuilder<List<dynamic>>(
+              future: item2,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return WillPopScope(
+                    onWillPop: () async => false,
+                    child: SimpleDialog(
+                       elevation: 20,
+                      backgroundColor: Theme.of(context).cardColor,
                       children: [
-                        Container(
-                          width: 18,
-                          height: 18,
-                           child: SvgPicture.asset(
-                            "assets/icons/advertencia.svg",
-                            color: GradiantV1,
+                        Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  'Cargando..', 
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                  ),
+                              )
+                            ],
                           ),
+                        )
+                      ] ,
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Error al cargar los datos', style: Theme.of(context).textTheme.bodyMedium,);
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Column(
+                    children: [
+            
+                      SizedBox(height: 15),
+                      Center(
+                        child: Text(
+                          'No hay solicitudes de viajes',
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
                         ),
-                        SizedBox(width: 5),
-                        Flexible(
-                          child: Text(
+                      ),
+                      Container(
+                        height: 1,
+                        color: Theme.of(context).dividerColor,
+                      ),
+                    ],
+                  );
+                } else {
+                  return Column(
+                    children: [
+                      Column(
+                        children: [
+                          SizedBox(height: 15),
+                          Container(
+                            width: 40,
+                            height: 40,
+                            child: SvgPicture.asset(
+                              "assets/icons/advertencia.svg",
+                              color: Theme.of(context).primaryIconTheme.color,
+                            ),
+                          ),
+                          SizedBox(height: 5),
+
+                          Text(
+                            mensajeAlerta,
+                            textAlign: TextAlign.left,
+                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 18),
+                          ),
+
+                          SizedBox(height: 5),
+                          Text(
                             "Nos gustaría saber si necesitarás transporte" ,
                             textAlign: TextAlign.left,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 15.0,
-                            ),
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  FutureBuilder<List<dynamic>>(
-                    future: item2,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Text('Error al cargar los datos');
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return Card(
-                          elevation: 10,
-                          color: backgroundColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Text(
-                              'No hay solicitudes de viajes',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15.0,
-                              ),
-                            ),
-                          ),
-                        );
-                      } else {
-                        return Column(
-                          children: List.generate(snapshot.data!.length, (index) {
-                            Map<String, dynamic> tripData = snapshot.data![index];
-                            return buildTripCard(tripData);
-                          }),
-                        );
-                      }
-                    },
-                  ),
-
-                ],
-              ),
+                          SizedBox(height: 15),
+                        ],
+                      ),
+                      Column(
+                        children: List.generate(snapshot.data!.length, (index) {
+                          Map<String, dynamic> tripData = snapshot.data![index];
+                          return buildTripCard(tripData);
+                        }),
+                      ),
+                    ],
+                  );
+                }
+              },
             ),
+        
           ],
         )
-
+        
     :FutureBuilder<TripsList>(
           future: item,
           builder: (context, abc) {
             if (abc.connectionState == ConnectionState.done) {
               //validación si el arreglo viene vacío
               if (abc.data?.trips.length == 0) {
-                return Container(
-                  decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                        blurStyle: BlurStyle.normal,
-                        color: Colors.white.withOpacity(0.2),
-                        blurRadius: 30,
-                        spreadRadius: -13,
-                        offset: Offset(-15, -6)),
-                    BoxShadow(
-                        blurStyle: BlurStyle.normal,
-                        color: Colors.black.withOpacity(0.6),
-                        blurRadius: 18,
-                        spreadRadius: -15,
-                        offset: Offset(18, 5)),
-                  ], borderRadius: BorderRadius.circular(15)),
-                  child: Card(
-                    elevation: 10,
-                    color: backgroundColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    margin: EdgeInsets.symmetric(vertical: 15),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        ListTile(
-                          leading: Icon(
-                            Icons.bus_alert,
-                            size: 50,
-                            color: Colors.white,
-                          ),
-                          title: Text('Próximo viaje',
-                              style: TextStyle(
-                                  color: thirdColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.0)),
-                          subtitle: Text('No tiene viajes asignados',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 15.0)),
-                        ),
-                      ],
+                return Column(
+                  children: [
+                    SizedBox(height: 15),
+                    Center(
+                      child: Text(
+                        'No tiene viajes asignados',
+                    
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                      ),
                     ),
-                  ),
+                    Container(
+                      height: 1,
+                      color: Theme.of(context).dividerColor,
+                    ),
+                  ],
                 );
                 //validación si el arreglo contiene información
               } else {
                 if (abc.connectionState == ConnectionState.done) {
                   //desplegar data dinámica con LisView builder
-                  return ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
-                          itemCount: abc.data?.trips.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 20),
-                          decoration: BoxDecoration(boxShadow: [
-                            BoxShadow(
-                                blurStyle: BlurStyle.normal,
-                                color: Colors.white.withOpacity(0.1),
-                                blurRadius: 10,
-                                spreadRadius: 1,
-                                offset: Offset(-5, 12)),
-                            BoxShadow(
-                                blurStyle: BlurStyle.normal,
-                                color: Colors.black.withOpacity(1),
-                                blurRadius: 18,
-                                spreadRadius: -15,
-                                offset: Offset(18, 5)),
-                          ], borderRadius: BorderRadius.circular(15)),
-                          child: Card(
-                            elevation: 10,
-                            color: backgroundColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                                  child: Column(
-                                    children: [
-                                
-                                      SizedBox(height: 8),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              width: 18,
-                                              height: 18,
-                                              child: SvgPicture.asset(
-                                                "assets/icons/Numeral.svg",
-                                                color: GradiantV1,
-                                              ),
-                                            ),
-                                            SizedBox(width: 5),
-                                            Flexible(
-                                              child: Text(
-                                                'Viaje: ${abc.data?.trips[index].tripId}',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 10),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              width: 18,
-                                              height: 18,
-                                              child: SvgPicture.asset(
-                                                "assets/icons/calendar2.svg",
-                                                color: GradiantV1,
-                                              ),
-                                            ),
-                                            SizedBox(width: 5),
-                                            Flexible(
-                                              child: Text(
-                                                'Fecha: ${abc.data?.trips[index].fecha}',
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.normal,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),  
-                                  SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/hora.svg",
-                                          color: GradiantV1,
-                                        ),
-                                      ),
-                                      SizedBox(width: 5),
-                                      Flexible(
-                                        child: Text(
-                                          'Hora: ${abc.data?.trips[index].horaEntrada}',
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                  return Column(
+                    children: [
 
-                                  SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/motorista.svg",
-                                          color: GradiantV1,
-                                        ),
-                                      ),
-                                      SizedBox(width: 5),
-                                      Flexible(
-                                        child: Text(
-                                          'Motorista: ${abc.data?.trips[index].conductor}',
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                      SizedBox(height: 15),
 
-                                  SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/motorista.svg",
-                                          color: GradiantV1,
-                                        ),
-                                      ),
-                                      SizedBox(width: 5),
-                                      Flexible(
-                                        child: Text(
-                                          'Vehiculo: ${abc.data?.trips[index].tripVehicle}',
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                    
-                                  SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/telefono_num.svg",
-                                          color: GradiantV1,
-                                        ),
-                                      ),
-                                      SizedBox(width: 5),
-                                      Flexible(
-                                        child: Text(
-                                          'Teléfono: ${abc.data?.trips[index].telefono}',
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                    
-                                  SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/Casa.svg",
-                                          color: GradiantV1,
-                                        ),
-                                      ),
-                                      SizedBox(width: 5),
-                                      Flexible(
-                                        child: Text(
-                                          'Dirección: ${abc.data?.trips[index].direccion}',
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                    
-                                   SizedBox(height: 10),
-                                    Row(
+                      Text('Total de viajes',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 20, fontWeight: FontWeight.normal),
+                      ),
+                  
+                  SizedBox(height: 15),
+                  
+                  abc.data?.trips.length==1?ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  itemCount: abc.data?.trips.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                  children: [
+                    Padding(
+                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 18,
+                        height: 18,
+                        child: SvgPicture.asset(
+                          "assets/icons/Numeral.svg",
+                          color: Theme.of(context).primaryIconTheme.color,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Flexible(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
                                       children: [
-                                        Container(
-                                          width: 18,
-                                          height: 18,
-                                          child: SvgPicture.asset(
-                                            "assets/icons/warning.svg",
-                                            color: GradiantV1,
-                                          ),
+                                        TextSpan(
+                                          text: 'Viaje: ',
+                                          style: TextStyle(fontWeight: FontWeight.w500),
                                         ),
-                                        SizedBox(width: 5),
-                                        Flexible(
-                                          child: Text(
-                                            'Acceso autorizado: ${abc.data?.trips[index].neighborhoodReferencePoint}',
+                                        TextSpan(
+                                          text: '${abc.data?.trips[index].tripId}',
+                                          style: TextStyle(fontWeight: FontWeight.normal),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+
+                    ],
+                  ),
+                    ),
+                    Container(
+                      height: 1,
+                      color: Theme.of(context).dividerColor,
+                    ),
+                    SizedBox(height: 20),
+                    Padding(
+                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 18,
+                        height: 18,
+                        child: SvgPicture.asset(
+                          "assets/icons/calendar2.svg",
+                          color: Theme.of(context).primaryIconTheme.color,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Flexible(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                                      children: [
+                                        TextSpan(
+                                          text: 'Fecha: ',
+                                          style: TextStyle(fontWeight: FontWeight.w500),
+                                        ),
+                                        TextSpan(
+                                          text: '${abc.data?.trips[index].fecha}',
+                                          style: TextStyle(fontWeight: FontWeight.normal),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                    ],
+                  ),
+                    ),
+                    Container(
+                      height: 1,
+                      color: Theme.of(context).dividerColor,
+                    ),
+                    SizedBox(height: 20),
+                    Padding(
+                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 18,
+                        height: 18,
+                        child: SvgPicture.asset(
+                          "assets/icons/hora.svg",
+                          color: Theme.of(context).primaryIconTheme.color,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Flexible(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                                      children: [
+                                        TextSpan(
+                                          text: 'Hora: ',
+                                          style: TextStyle(fontWeight: FontWeight.w500),
+                                        ),
+                                        TextSpan(
+                                          text: '${abc.data?.trips[index].horaEntrada}',
                                             style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.white,
+                                              fontSize: 14,
+                                              color: Color.fromRGBO(40, 169, 83, 1),
                                               fontWeight: FontWeight.normal,
                                             ),
-                                          ),
                                         ),
                                       ],
                                     ),
-                                      
-                                  SizedBox(height: 10),
-                                  
-                                  //validación de mostrar si la condición está empty mostrar texto de necesita confirmación
-                                  if ('${abc.data?.trips[index].condition}' ==
-                                      'empty') ...{
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                width: 18,
-                                                height: 18,
-                                                child: SvgPicture.asset(
-                                                  "assets/icons/hora.svg",
-                                                  color: GradiantV1,
-                                                ),
-                                              ),
-                                              SizedBox(width: 5),
-                                              Text(
-                                                'Hora de encuentro: ',
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left:16),
-                                            child: Text(
-                                              'Necesita confirmación para poder asignarle una hora de encuentro',
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                      
-                                    SizedBox(height: 10),
-                                    Row(
-                                      children: [   
-                                        
-                                        Expanded(
-                                          child: OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(12.0),
-                                              ),
-                                              backgroundColor: Colors.green,
-                                            ),
-                                            onPressed: () => {
-                                              ChatApis().confirmOrCancel('CONFIRMADO'),
-                                              fetchConfirm(
-                                                prefs.nombreUsuario,
-                                                '${abc.data?.trips[index].tripId}',
-                                                condition,comment
-                                              ),
-                                            },
-                                            child: Text(
-                                              'Confirmar',
-                                               style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                  
-                                        ),
-
-                                        SizedBox(width: 10),
-
-                                        Expanded(
-                                          child: OutlinedButton(
-                                            style: OutlinedButton.styleFrom(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(12.0),
-                                              ),
-                                              backgroundColor: Colors.red,
-                                            ),
-                                            onPressed: () {
-                                               showGeneralDialog(
-                                                                barrierColor: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        0.5),
-                                                                transitionBuilder:
-                                                                    (context,
-                                                                        a1,
-                                                                        a2,
-                                                                        widget) {
-                                                                  return Transform
-                                                                      .scale(
-                                                                    scale: a1
-                                                                        .value,
-                                                                    child:
-                                                                        Opacity(
-                                                                      opacity: a1
-                                                                          .value,
-                                                                      child:
-                                                                          AlertDialog(
-                                                                        backgroundColor:
-                                                                            backgroundColor,
-                                                                        shape: OutlineInputBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(16.0)),
-                                                                        title: Center(
-                                                                            child: Text('¿Razón por la cual no hará uso del transporte?',
-                                                                                textAlign: TextAlign.center,
-                                                                                style: TextStyle(color: Colors.white))),
-                                                                                content: StatefulBuilder(
-                                                                                  builder: (context, setState) {
-                                                                                    return SingleChildScrollView(
-                                                                                      child: Column(
-                                                                                        children: [
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Checkbox(
-                                                                                                value: razon1,
-                                                                                                onChanged: (value) {
-                                                                                                  if(razon1==true)
-                                                                                                    return;
-                                                                                                  setState(() {
-
-                                                                                                    razonCancelar = "Trabajo desde casa";
-
-                                                                                                    razon1 = !razon1;
-                                                                                                    razon2 = false;
-                                                                                                    razon3 = false;
-                                                                                                    razon4 = false;
-                                                                                                  });
-                                                                                                },
-                                                                                              ),
-                                                                                              Text(
-                                                                                                " Trabajo desde casa",
-                                                                                                style: TextStyle(color: Colors.white),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                          SizedBox(height: 5),
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Checkbox(
-                                                                                                value: razon2,
-                                                                                                onChanged: (value) {
-                                                                                                  if(razon2==true)
-                                                                                                    return;
-                                                                                                  setState(() {
-                                                                                                    razonCancelar = "Incapacidad";
-
-                                                                                                    razon1 = false;
-                                                                                                    razon2 = !razon2;
-                                                                                                    razon3 = false;
-                                                                                                    razon4 = false;
-                                                                                                  });
-                                                                                                },
-                                                                                              ),
-                                                                                              Text(
-                                                                                                " Incapacidad",
-                                                                                                style: TextStyle(color: Colors.white),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                          SizedBox(height: 5),
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Checkbox(
-                                                                                                value: razon3,
-                                                                                                onChanged: (value) {
-                                                                                                  if(razon3==true)
-                                                                                                    return;
-                                                                                                  setState((){
-                                                                                                    razonCancelar = "Vacaciones";
-
-                                                                                                    razon1 = false;
-                                                                                                    razon2 = false;
-                                                                                                    razon3 = !razon3;
-                                                                                                    razon4 = false;
-                                                                                                  });
-                                                                                                },
-                                                                                              ),
-                                                                                              Text(
-                                                                                                " Vacaciones",
-                                                                                                style: TextStyle(color: Colors.white),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                          SizedBox(height: 5),
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Checkbox(
-                                                                                                value: razon4,
-                                                                                                onChanged: (value) {
-                                                                                                  if(razon4==true)
-                                                                                                    return;
-                                                                                                  setState((){
-                                                                                                    razonCancelar = "Motivo personal";
-
-                                                                                                    razon1 = false;
-                                                                                                    razon2 = false;
-                                                                                                    razon3 = false;
-                                                                                                    razon4 = !razon4;
-                                                                                                  });
-                                                                                                },
-                                                                                              ),
-                                                                                              Text(
-                                                                                                " Motivo personal",
-                                                                                                style: TextStyle(color: Colors.white),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ],
-                                                                                      ),
-                                                                                    );
-                                                                          },
-                                                                        ),
-
-                                                                        actions: [
-                                                                          Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.spaceAround,
-                                                                            children: [
-                                                                              TextButton(
-                                                                                style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: firstColor),
-                                                                                onPressed: () {
-
-                                                                                  if(razonCancelar.isEmpty){
-                                                                                    QuickAlert.show(
-                                                                                      context: context,
-                                                                                      title: "Alerta",
-                                                                                      text: 'Debe de seleccioanr una opcion',
-                                                                                      type: QuickAlertType.error
-                                                                                    );
-                                                                                    return;
-                                                                                  };
-                                                                                  
-                                                                                  ChatApis().confirmOrCancel('RECHAZADO');
-
-                                                                                  //función fetch cancel
-                                                                                  fetchCancel(prefs.nombreUsuario, '${abc.data?.trips[index].tripId}', conditionC, razonCancelar);
-                                                                                  Navigator.pop(context);
-                                                                                },
-                                                                                child: Text('Enviar', style: TextStyle(color: Colors.black)),
-                                                                              ),
-                                                                              TextButton(
-                                                                                style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: GradiantV_1),
-                                                                                onPressed: () => {
-                                                                                  Navigator.pop(context),
-                                                                                },
-                                                                                child: Text('Cerrar', style: TextStyle(color: Colors.black)),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  );
-                                                                },
-                                                                transitionDuration:
-                                                                    Duration(
-                                                                        milliseconds:
-                                                                            200),
-                                                                barrierDismissible:
-                                                                    true,
-                                                                barrierLabel:
-                                                                    '',
-                                                                context:
-                                                                    context,
-                                                                pageBuilder: (context,
-                                                                    animation1,
-                                                                    animation2) {
-                                                                  return widget;
-                                                                });
-                                            },
-                                            child: Text(
-                                              'Cancelar',
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                  
-                                        ),
-                                        
-                                      ],
-                                    ),
-                                    //validación de condition in canceled
-                                  },
-                                  if ('${abc.data?.trips[index].condition}' ==
-                                      'Canceled') ...{
-                                    if ('${abc.data?.trips[index].commentDriver}' ==
-                                        'No confirmó') ...{
-                                      ListTile(
-                                        contentPadding:
-                                            EdgeInsets.fromLTRB(5, 5, 10, 0),
-                                        title: Text('Viaje cancelado: ',
-                                            style: TextStyle(color: Colors.white)),
-                                        subtitle: Text('No confirmó a tiempo',
-                                            style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 15.0)),
-                                        leading: Icon(Icons.timer,
-                                            color: GradiantV1, size: 35),
-                                      ),
-                                    } else ...{
-                                      Row(
-                                        children: [
-                                          Container(
-                                            width: 18,
-                                            height: 18,
-                                            child: SvgPicture.asset(
-                                              "assets/icons/hora.svg",
-                                              color: GradiantV1,
-                                            ),
-                                          ),
-                                          SizedBox(width: 5),
-                                          Flexible(
-                                            child: Text(
-                                              'Se ha notificado al motorista que usted no necesitará el transporte',
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-
-                                    SizedBox(height: 10),
-                                    },
-                                    //validación de horaConductor in empty
-                                  },
-                                  if ('${abc.data?.trips[index].horaConductor}' ==
-                                      'empty') ...{
-                                    if ('${abc.data?.trips[index].condition}' ==
-                                        'Confirmed') ...{
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                width: 18,
-                                                height: 18,
-                                                child: SvgPicture.asset(
-                                                  "assets/icons/hora.svg",
-                                                  color: GradiantV1,
-                                                ),
-                                              ),
-                                              SizedBox(width: 5),
-                                              Text(
-                                                'Hora de encuentro: ',
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(left:16),
-                                            child: Text(
-                                              'Viaje confirmado, espere a que el motorista asigne la hora a la que pasará por usted',
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.green,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-
-                                    SizedBox(height: 10),
-                                    },
-                                  },
-                                  if ('${abc.data?.trips[index].horaConductor}' !=
-                                      'empty') ...{
-                                    Row(
+                                  ),
+                                )
+                    ],
+                  ),
+                    ),
+                    Container(
+                      height: 1,
+                      color: Theme.of(context).dividerColor,
+                    ),
+                  
+                     SizedBox(height: 20),
+                    Padding(
+                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 20,
+                        height: 20,
+                        child: SvgPicture.asset(
+                          "assets/icons/motorista.svg",
+                          color: Theme.of(context).primaryIconTheme.color,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Flexible(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
                                       children: [
-                                        Container(
-                                          width: 18,
-                                          height: 18,
-                                          child: SvgPicture.asset(
-                                            "assets/icons/hora.svg",
-                                            color: GradiantV1,
-                                          ),
+                                        TextSpan(
+                                          text: 'Conductor: ',
+                                          style: TextStyle(fontWeight: FontWeight.w500),
                                         ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          'Hora de encuentro: ',
-                                          style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        Text(
-                                         '${abc.data?.trips[index].horaConductor}',
-                                          style: TextStyle(
-                                           fontSize: 15,
-                                            color: Color.fromRGBO(40, 169, 83, 1),
-                                            fontWeight: FontWeight.normal,
-                                          ),
+                                        TextSpan(
+                                          text: '${abc.data?.trips[index].conductor}',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal
+                                            ),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 10),
-                                  },
-                                  if ('${abc.data?.trips[index].condition}' ==
-                                      'Confirmed') ...{
-                                    if (abc.data?.trips[index].companyId == 1 ||
-                                        abc.data?.trips[index].companyId == 7 ||
-                                        abc.data?.trips[index].companyId == 3 ||
-                                        abc.data?.trips[index].companyId == 5 ||
-                                        abc.data?.trips[index].companyId == 9 ||
-                                        abc.data?.trips[index].companyId == 11 ||
-                                        abc.data?.trips[index].companyId == 12) ...{
-                                      if (abc.data?.trips[index].btnCancelTrip ==
-                                          true) ...{
-                                        TextButton(
-                                          style: TextButton.styleFrom(
-                                              foregroundColor: Colors.white,
-                                              backgroundColor: Colors.red),
-                                          child: Text('Cancelar viaje'),
-                                          onPressed: () => {
-                                            showGeneralDialog(
-                                                barrierColor:
-                                                    Colors.black.withOpacity(0.5),
-                                                transitionBuilder:
-                                                    (context, a1, a2, widget) {
-                                                  return Transform.scale(
-                                                    scale: a1.value,
-                                                    child: Opacity(
-                                                      opacity: a1.value,
-                                                      child: AlertDialog(
-                                                                        backgroundColor:
-                                                                            backgroundColor,
-                                                                        shape: OutlineInputBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(16.0)),
-                                                                        title: Center(
-                                                                            child: Text('¿Razón por la cual no hará uso del transporte?',
-                                                                                textAlign: TextAlign.center,
-                                                                                style: TextStyle(color: Colors.white))),
-                                                                                content: StatefulBuilder(
-                                                                                  builder: (context, setState) {
-                                                                                    return SingleChildScrollView(
-                                                                                      child: Column(
-                                                                                        children: [
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Checkbox(
-                                                                                                value: razon1,
-                                                                                                onChanged: (value) {
-                                                                                                  if(razon1==true)
-                                                                                                    return;
+                                  ),
+                                )
+                    ],
+                  ),
+                    ),
+                    Container(
+                  height: 1,
+                  color: Theme.of(context).dividerColor,
+                    ),
 
-                                                                                                  setState(() {
-
-                                                                                                    razonCancelar = "Trabajo desde casa";
-
-                                                                                                    razon1 = !razon1;
-                                                                                                    razon2 = false;
-                                                                                                    razon3 = false;
-                                                                                                    razon4 = false;
-                                                                                                  });
-                                                                                                },
-                                                                                              ),
-                                                                                              Text(
-                                                                                                " Trabajo desde casa",
-                                                                                                style: TextStyle(color: Colors.white),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                          SizedBox(height: 5),
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Checkbox(
-                                                                                                value: razon2,
-                                                                                                onChanged: (value) {
-                                                                                                  if(razon2==true)
-                                                                                                    return;
-
-                                                                                                  setState(() {
-                                                                                                    razonCancelar = "Incapacidad";
-
-                                                                                                    razon1 = false;
-                                                                                                    razon2 = !razon2;
-                                                                                                    razon3 = false;
-                                                                                                    razon4 = false;
-                                                                                                  });
-                                                                                                },
-                                                                                              ),
-                                                                                              Text(
-                                                                                                " Incapacidad",
-                                                                                                style: TextStyle(color: Colors.white),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                          SizedBox(height: 5),
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Checkbox(
-                                                                                                value: razon3,
-                                                                                                onChanged: (value) {
-                                                                                                  if(razon3==true)
-                                                                                                    return;
-
-                                                                                                  setState((){
-                                                                                                    razonCancelar = "Vacaciones";
-
-                                                                                                    razon1 = false;
-                                                                                                    razon2 = false;
-                                                                                                    razon3 = !razon3;
-                                                                                                    razon4 = false;
-                                                                                                  });
-                                                                                                },
-                                                                                              ),
-                                                                                              Text(
-                                                                                                " Vacaciones",
-                                                                                                style: TextStyle(color: Colors.white),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                          SizedBox(height: 5),
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Checkbox(
-                                                                                                value: razon4,
-                                                                                                onChanged: (value) {
-
-                                                                                                  if(razon4==true)
-                                                                                                    return;
-                                                                                                  setState((){
-                                                                                                    razonCancelar = "Motivo personal";
-
-                                                                                                    razon1 = false;
-                                                                                                    razon2 = false;
-                                                                                                    razon3 = false;
-                                                                                                    razon4 = !razon4;
-                                                                                                  });
-                                                                                                },
-                                                                                              ),
-                                                                                              Text(
-                                                                                                " Motivo personal",
-                                                                                                style: TextStyle(color: Colors.white),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ],
-                                                                                      ),
-                                                                                    );
-                                                                          },
-                                                                        ),
-
-                                                                        actions: [
-                                                                          Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.spaceAround,
-                                                                            children: [
-                                                                              TextButton(
-                                                                                style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: firstColor),
-                                                                                onPressed: () {
-
-                                                                                  if(razonCancelar.isEmpty){
-                                                                                    QuickAlert.show(
-                                                                                      context: context,
-                                                                                      title: "Alerta",
-                                                                                      text: 'Debe de seleccioanr una opcion',
-                                                                                      type: QuickAlertType.error
-                                                                                    );
-                                                                                    return;
-                                                                                  };
-
-                                                                                  ChatApis().confirmOrCancel('RECHAZADO');
-
-                                                                                  //función fetch cancel
-                                                                                  fetchCancel(prefs.nombreUsuario, '${abc.data?.trips[index].tripId}', conditionC, razonCancelar);
-                                                                                  Navigator.pop(context);
-                                                                                },
-                                                                                child: Text('Enviar', style: TextStyle(color: Colors.black)),
-                                                                              ),
-                                                                              TextButton(
-                                                                                style: TextButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 20), foregroundColor: Colors.white, backgroundColor: GradiantV_1),
-                                                                                onPressed: () => {
-                                                                                  Navigator.pop(context),
-                                                                                },
-                                                                                child: Text('Cerrar', style: TextStyle(color: Colors.black)),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ],
+                    SizedBox(height: 20),
+                    Padding(
+                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                  child: Row(
+                    children: [
+                      Container(
+                              width: 20,
+                              height: 20,
+                              child: SvgPicture.asset(
+                                "assets/icons/vehiculo.svg",
+                                color: Theme.of(context).primaryIconTheme.color,
+                              ),
+                            ),
+                      SizedBox(width: 5),
+                      Flexible(
+                        child: RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                            children: [
+                              TextSpan(
+                                text: 'Vehiculo: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '${abc.data?.trips[index].tripVehicle != null ? abc.data?.trips[index].tripVehicle : '---'}',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                    ),
+                    Container(
+                  height: 1,
+                  color: Theme.of(context).dividerColor,
+                    ),
+                  
+                     SizedBox(height: 20),
+                    Padding(
+                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 18,
+                        height: 18,
+                        child: SvgPicture.asset(
+                          "assets/icons/telefono_num.svg",
+                          color: Theme.of(context).primaryIconTheme.color,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Flexible(
+                        child: RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                            children: [
+                              TextSpan(
+                                text: 'Teléfono: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '${abc.data?.trips[index].telefono}',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                    ),
+                    Container(
+                  height: 1,
+                  color: Theme.of(context).dividerColor,
+                    ),
+                  
+                     SizedBox(height: 20),
+                    Padding(
+                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 18,
+                        height: 18,
+                        child: SvgPicture.asset(
+                          "assets/icons/Casa.svg",
+                          color: Theme.of(context).primaryIconTheme.color,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Flexible(
+                        child: RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                            children: [
+                              TextSpan(
+                                text: 'Dirección: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '${abc.data?.trips[index].direccion}',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                    ),
+                    Container(
+                  height: 1,
+                  color: Theme.of(context).dividerColor,
+                    ),
+                  
+                     SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 18,
+                          height: 18,
+                          child: SvgPicture.asset(
+                            "assets/icons/warning.svg",
+                            color: Theme.of(context).primaryIconTheme.color,
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Flexible(
+                        child: RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                            children: [
+                              TextSpan(
+                                text: 'Acceso autorizado: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '${abc.data?.trips[index].neighborhoodReferencePoint}',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 1,
+                    color: Theme.of(context).dividerColor,
+                  ),
+                    
+                  SizedBox(height: 20),
+                        
+                    //validación de mostrar si la condición está empty mostrar texto de necesita confirmación
+                    if ('${abc.data?.trips[index].condition}' ==
+                    'empty') ...{
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 18,
+                              height: 18,
+                              child: SvgPicture.asset(
+                                "assets/icons/hora.svg",
+                                color: Theme.of(context).primaryIconTheme.color,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            RichText(
+                            text: TextSpan(
+                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                              children: [
+                                TextSpan(
+                                  text: 'Hora de encuentro: ',
+                                  style: TextStyle(fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                          )
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left:16),
+                          child: Text(
+                            'Necesitas confirmar para que te asignen una hora de encuentro',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.red,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 1,
+                    color: Theme.of(context).dividerColor,
+                  ),
+                    
+                  SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                      child: Row(
+                      children: [   
+                        Expanded(
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              backgroundColor: Colors.transparent,
+                            ),
+                            onPressed: () {
+                              showGeneralDialog(
+                                      barrierColor: Colors.black.withOpacity(0.5),
+                                      transitionBuilder: (context, a1, a2, widget) {
+                                        return Transform.scale(
+                                          scale: a1.value,
+                                          child: Opacity(
+                                            opacity: a1.value,
+                                            child: AlertDialog(
+                                              backgroundColor: Colors.transparent,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(16.0),
+                                              ),
+                                              content: StatefulBuilder(
+                                                builder:(context, setState) {
+                                                  return  Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Theme.of(navigatorKey.currentContext!).cardColor,
+                                                      borderRadius: BorderRadius.circular(16.0),
+                                                    ),
+                                                    child: Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            color: Theme.of(navigatorKey.currentContext!).primaryColor,
+                                                            borderRadius: BorderRadius.only(
+                                                              topLeft: Radius.circular(16.0),
+                                                              topRight: Radius.circular(16.0),
+                                                            ),
+                                                          ),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.all(20.0),
+                                                            child: Text(
+                                                              'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
+                                                              textAlign: TextAlign.center,
+                                                              style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight.normal,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                            padding: const EdgeInsets.all(20.0),
+                                                            child: SingleChildScrollView(
+                                                              child: Column(
+                                                                children: [
+                                                                  Row(
+                                                                    children: [
+                                                                      Checkbox(
+                                                                        value: razon1,
+                                                                        onChanged: (value) {
+                                                                          if(razon1==true)
+                                                                            return;
+                                                            
+                                                                          setState(() {
+                                                                            razonCancelar = "Trabajo desde casa";
+                                                                            razon1 = !razon1;
+                                                                            razon2 = false;
+                                                                            razon3 = false;
+                                                                            razon4 = false;
+                                                                          });
+                                                                        },
                                                                       ),
+                                                                      Text(
+                                                                        " Trabajo desde casa",
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                      ),
+                                                                    ]
+                                                                  ),
+                                                            
+                                                                  Row(
+                                                                    children: [
+                                                                      Checkbox(
+                                                                        value: razon2,
+                                                                        onChanged: (value) {
+                                                                          if(razon2==true)
+                                                                            return;
+                                                            
+                                                                          setState(() {
+                                                                            razonCancelar = "Incapacidad";
+                                                                            razon1 = false;
+                                                                            razon2 = !razon2;
+                                                                            razon3 = false;
+                                                                            razon4 = false;
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      Text(
+                                                                        " Incapacidad",
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                            
+                                                                  Row(
+                                                                    children: [
+                                                                      Checkbox(
+                                                                        value: razon3,
+                                                                        onChanged: (value) {
+                                                                          if(razon3==true)
+                                                                            return;
+                                                            
+                                                                          setState(() {
+                                                                            razonCancelar = "Vacaciones";
+                                                                            razon1 = false;
+                                                                            razon2 = false;
+                                                                            razon3 = !razon3;
+                                                                            razon4 = false;
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      Text(
+                                                                        " Vacaciones",
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                            
+                                                                  Row(
+                                                                    children: [
+                                                                      Checkbox(
+                                                                        value: razon4,
+                                                                        onChanged: (value) {
+                                                                          if(razon4==true)
+                                                                            return;
+                                                            
+                                                                          setState(() {
+                                                                            razonCancelar = "Motivo personal";
+                                                                            razon1 = false;
+                                                                            razon2 = false;
+                                                                            razon3 = false;
+                                                                            razon4 = !razon4;
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      Text(
+                                                                        " Motivo personal",
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ),
+                                                        SizedBox(height: 16),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                          children: [
+                                                            OutlinedButton(
+                                                              style: OutlinedButton.styleFrom(
+                                                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                foregroundColor: Colors.white,
+                                                                side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                                ),
+                                                              ),
+                                                              onPressed: () {
+                                                                Navigator.pop(context);
+                                                              },
+                                                              child: Text(
+                                                                'Cancelar',
+                                                                style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                              ),
+                                                            ),
+                              
+                                                            OutlinedButton(
+                                                              style: OutlinedButton.styleFrom(
+                                                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                                ),
+                                                              ),
+                                                              onPressed: () {
+
+                                                                if(razonCancelar.isEmpty){
+                                                                  QuickAlert.show(
+                                                                    context: context,
+                                                                    title: "Alerta",
+                                                                    text: 'Debe de seleccionar un motivo.',
+                                                                    type: QuickAlertType.error,
+                                                                    confirmBtnText: "Ok"
+                                                                  );
+
+                                                                  return;
+                                                                }
+
+                                                                Navigator.pop(context);
+                                                                
+                                                                if(mounted){
+                                                                  ChatApis().confirmOrCancel('RECHAZADO');
+                                                                  fetchCancel(
+                                                                    prefs.nombreUsuario,
+                                                                    '${abc.data?.trips[index].tripId}',
+                                                                    conditionC,
+                                                                    razonCancelar,
+                                                                  );
+                                                                }
+
+                                                              },
+                                                              child: Text(
+                                                                'Enviar',
+                                                                style: TextStyle(color: Colors.white),
+                                                              ),
+                                                            ),
+                                                            
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 12)
+                                                      ],
                                                     ),
                                                   );
                                                 },
-                                                transitionDuration:
-                                                    Duration(milliseconds: 200),
-                                                barrierDismissible: true,
-                                                barrierLabel: '',
-                                                context: context,
-                                                pageBuilder: (context, animation1,
-                                                    animation2) {
-                                                  return widget;
-                                                }),
-                                          },
+                                              )
+                                            ),
+                          
+                                          ),
+                                        );
+                                      },
+                                      transitionDuration: Duration(milliseconds: 200),
+                                      barrierDismissible: true,
+                                      barrierLabel: '',
+                                      context: context,
+                                      pageBuilder: (context, animation1, animation2) {
+                                        return widget;
+                                      },
+                                    );
+                            },
+                            child: Text(
+                              'Cancelar',
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
+                            ),
+                          ),
+                          
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                            ),
+                            onPressed: () {
+                              showGeneralDialog(
+                                      barrierColor: Colors.black.withOpacity(0.5),
+                                      transitionBuilder: (context, a1, a2, widget) {
+                                        return Transform.scale(
+                                          scale: a1.value,
+                                          child: Opacity(
+                                            opacity: a1.value,
+                                            child: AlertDialog(
+                                              backgroundColor: Colors.transparent,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(16.0),
+                                              ),
+                                              content: StatefulBuilder(
+                                                builder:(context, setState) {
+                                                  return  SingleChildScrollView(
+                                                    child: Column(
+                                                      children: [
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.only(
+                                                              topLeft: Radius.circular(10.0),
+                                                              topRight: Radius.circular(10.0),
+                                                            ),
+                                                            color: Color.fromRGBO(40, 169, 83, 1),
+                                                          ),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(right: 100.0, left: 100, bottom: 30, top: 30),
+                                                            child: CircleAvatar(
+                                                              backgroundColor: Color.fromRGBO(0, 191, 95, 1),
+                                                              radius: 30.0 + 10.0, 
+                                                              child: Padding(
+                                                                padding: EdgeInsets.all(15.0), 
+                                                                child: SvgPicture.asset(
+                                                                  "assets/icons/check.svg",
+                                                                  color: Colors.white,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                  
+                                                  
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.only(
+                                                              bottomLeft: Radius.circular(10.0),
+                                                              bottomRight: Radius.circular(10.0),
+                                                            ),
+                                                            color: Colors.white, 
+                                                          ),
+                                                          child: Column(children: [
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(top: 20),
+                                                              child: Text(
+                                                                '¿Deseas confirmar el viaje?',
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(
+                                                                  fontWeight: FontWeight.bold,
+                                                                  color: Colors.black,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(top: 20, bottom: 20),
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                children: [
+                                                                  TextButton(
+                                                                    style: ButtonStyle(
+                                                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                                        RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(10.0),
+                                                                          side: BorderSide(color: Colors.black),
+                                                                        ),
+                                                                      ),
+                                                                      backgroundColor: MaterialStateProperty.all(Colors.transparent),
+                                                                    ),
+                                                                    onPressed: () {
+                                                                      Navigator.pop(context);
+                                                                    },
+                                                                    child: Text(
+                                                                      'No',
+                                                                      style: TextStyle(
+                                                                        color: Colors.black,
+                                                                        fontWeight: FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(width: 20),
+                                                                  TextButton(
+                                                                    style: ButtonStyle(
+                                                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                                        RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(10.0),
+                                                                          side: BorderSide(color: Color.fromRGBO(40, 93, 169, 1)),
+                                                                        ),
+                                                                      ),
+                                                                      backgroundColor: MaterialStateProperty.all(Color.fromRGBO(40, 93, 169, 1)),
+                                                                    ),
+                                                                    onPressed: () {
+                                                                      Navigator.pop(context);
+                                                                  
+                                                                      if(mounted){
+                                                                        ChatApis().confirmOrCancel('CONFIRMADO');
+                                                                        fetchConfirm(
+                                                                          prefs.nombreUsuario,
+                                                                          '${abc.data?.trips[index].tripId}',
+                                                                          condition,comment
+                                                                        );
+                                                                      }
+                                                                    },
+                                                                    child: Text(
+                                                                      'Sí',
+                                                                      style: TextStyle(
+                                                                        color: Colors.white,
+                                                                        fontWeight: FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ]),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                            ),
+                          
+                                          ),
+                                        );
+                                      },
+                                      transitionDuration: Duration(milliseconds: 200),
+                                      barrierDismissible: true,
+                                      barrierLabel: '',
+                                      context: context,
+                                      pageBuilder: (context, animation1, animation2) {
+                                        return widget;
+                                      },
+                                    );                    
+                            },
+                            child: Text(
+                              'Confirmar',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          
+                        ),
+                      ],
+                    ),
+                  ),
+                  //validación de condition in canceled
+                    },
+                    if ('${abc.data?.trips[index].condition}' ==
+                    'Canceled') ...{
+                  if ('${abc.data?.trips[index].commentDriver}' ==
+                      'No confirmó') ...{
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 18,
+                            height: 18,
+                            child: SvgPicture.asset(
+                              "assets/icons/hora.svg",
+                              color: Theme.of(context).primaryIconTheme.color,
+                            ),
+                          ),
+                          SizedBox(width: 5),
+                          Flexible(
+                            child: Text(
+                              'No confirmó a tiempo',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.red,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  Container(
+                    height: 1,
+                    color: Theme.of(context).dividerColor,
+                  ),
+                  } else ...{
+                    Padding(
+                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 18,
+                          height: 18,
+                          child: SvgPicture.asset(
+                            "assets/icons/hora.svg",
+                            color: Theme.of(context).primaryIconTheme.color,
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Flexible(
+                          child: Text(
+                            'Se ha notificado al conductor que no necesitarás el transporte',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.red,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 1,
+                    color: Theme.of(context).dividerColor,
+                  ),
+                    
+                  SizedBox(height: 20),
+                  },
+                  //validación de horaConductor in empty
+                    },
+                    if ('${abc.data?.trips[index].horaConductor}' ==
+                    'empty') ...{
+                  if ('${abc.data?.trips[index].condition}' ==
+                      'Confirmed') ...{
+                    Padding(
+                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              width: 18,
+                              height: 18,
+                              child: SvgPicture.asset(
+                                "assets/icons/hora.svg",
+                                color: Theme.of(context).primaryIconTheme.color,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            RichText(
+                              text: TextSpan(
+                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                                children: [
+                                  TextSpan(
+                                    text: 'Hora de encuentro: ',
+                                    style: TextStyle(fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left:16),
+                          child: Text(
+                            '¡Viaje confirmado! Te notificaremos cuando el conductor asigne la hora en la que pasará por ti',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.green,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 1,
+                    color: Theme.of(context).dividerColor,
+                  ),
+                    
+                  SizedBox(height: 20),
+                  },
+                    },
+                    if ('${abc.data?.trips[index].horaConductor}' !=
+                    'empty') ...{
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 18,
+                          height: 18,
+                          child: SvgPicture.asset(
+                            "assets/icons/hora.svg",
+                            color: Theme.of(context).primaryIconTheme.color,
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          'Hora de encuentro: ',
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14, fontWeight: FontWeight.w500)
+                        ),
+                        Text(
+                         '${abc.data?.trips[index].horaConductor}',
+                          style: TextStyle(
+                           fontSize: 14,
+                            color: Color.fromRGBO(40, 169, 83, 1),
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 1,
+                    color: Theme.of(context).dividerColor,
+                  ),
+                    
+                  SizedBox(height: 20),
+                    },
+                    if ('${abc.data?.trips[index].condition}' ==
+                    'Confirmed') ...{
+                  if (abc.data?.trips[index].companyId == 1 ||
+                      abc.data?.trips[index].companyId == 7 ||
+                      abc.data?.trips[index].companyId == 3 ||
+                      abc.data?.trips[index].companyId == 5 ||
+                      abc.data?.trips[index].companyId == 9 ||
+                      abc.data?.trips[index].companyId == 11 ||
+                      abc.data?.trips[index].companyId == 12) ...{
+                    if (abc.data?.trips[index].btnCancelTrip ==
+                        true) ...{
+                      TextButton(
+                        style: TextButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            backgroundColor: Colors.red),
+                        child: Text('Cancelar viaje'),
+                        onPressed: () => {
+                          showGeneralDialog(
+                              barrierColor:
+                                  Colors.black.withOpacity(0.5),
+                              transitionBuilder:
+                                  (context, a1, a2, widget) {
+                                return Transform.scale(
+                                  scale: a1.value,
+                                  child: Opacity(
+                                    opacity: a1.value,
+                                    child: AlertDialog(
+                                              backgroundColor: Colors.transparent,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(16.0),
+                                              ),
+                                              content: StatefulBuilder(
+                                                builder:(context, setState) {
+                                                  return Container(
+                                                    decoration: BoxDecoration(
+                                                      color: Theme.of(navigatorKey.currentContext!).cardColor,
+                                                      borderRadius: BorderRadius.circular(16.0),
+                                                    ),
+                                                    child: Column(
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: [
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            color: Theme.of(navigatorKey.currentContext!).primaryColor,
+                                                            borderRadius: BorderRadius.only(
+                                                              topLeft: Radius.circular(16.0),
+                                                              topRight: Radius.circular(16.0),
+                                                            ),
+                                                          ),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.all(20.0),
+                                                            child: Text(
+                                                              'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
+                                                              textAlign: TextAlign.center,
+                                                              style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontWeight: FontWeight.normal,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                                padding: const EdgeInsets.all(20.0),
+                                                                child: SingleChildScrollView(
+                                                                  child: Column(
+                                                                    children: [
+                                                                      Row(
+                                                                        children: [
+                                                                          Checkbox(
+                                                                            value: razon1,
+                                                                            onChanged: (value) {
+                                                                              if(razon1==true)
+                                                                                return;
+                                                                
+                                                                              setState(() {
+                                                                                razonCancelar = "Trabajo desde casa";
+                                                                                razon1 = !razon1;
+                                                                                razon2 = false;
+                                                                                razon3 = false;
+                                                                                razon4 = false;
+                                                                              });
+                                                                            },
+                                                                          ),
+                                                                          Text(
+                                                                            " Trabajo desde casa",
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                          ),
+                                                                        ]
+                                                                      ),
+                                                                
+                                                                      Row(
+                                                                        children: [
+                                                                          Checkbox(
+                                                                            value: razon2,
+                                                                            onChanged: (value) {
+                                                                              if(razon2==true)
+                                                                                return;
+                                                                
+                                                                              setState(() {
+                                                                                razonCancelar = "Incapacidad";
+                                                                                razon1 = false;
+                                                                                razon2 = !razon2;
+                                                                                razon3 = false;
+                                                                                razon4 = false;
+                                                                              });
+                                                                            },
+                                                                          ),
+                                                                          Text(
+                                                                            " Incapacidad",
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                
+                                                                      Row(
+                                                                        children: [
+                                                                          Checkbox(
+                                                                            value: razon3,
+                                                                            onChanged: (value) {
+                                                                              if(razon3==true)
+                                                                                return;
+                                                                
+                                                                              setState(() {
+                                                                                razonCancelar = "Vacaciones";
+                                                                                razon1 = false;
+                                                                                razon2 = false;
+                                                                                razon3 = !razon3;
+                                                                                razon4 = false;
+                                                                              });
+                                                                            },
+                                                                          ),
+                                                                          Text(
+                                                                            " Vacaciones",
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                
+                                                                      Row(
+                                                                        children: [
+                                                                          Checkbox(
+                                                                            value: razon4,
+                                                                            onChanged: (value) {
+                                                                              if(razon4==true)
+                                                                                return;
+                                                                
+                                                                              setState(() {
+                                                                                razonCancelar = "Motivo personal";
+                                                                                razon1 = false;
+                                                                                razon2 = false;
+                                                                                razon3 = false;
+                                                                                razon4 = !razon4;
+                                                                              });
+                                                                            },
+                                                                          ),
+                                                                          Text(
+                                                                            " Motivo personal",
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                )
+                                                              ),
+                                                        SizedBox(height: 16),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                          children: [
+                                                            OutlinedButton(
+                                                              style: OutlinedButton.styleFrom(
+                                                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                foregroundColor: Colors.white,
+                                                                side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                                ),
+                                                              ),
+                                                              onPressed: () {
+                                                                Navigator.pop(context);
+                                                              },
+                                                              child: Text(
+                                                                'Cancelar',
+                                                                style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                              ),
+                                                            ),
+                        
+                                                            OutlinedButton(
+                                                              style: OutlinedButton.styleFrom(
+                                                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                                ),
+                                                              ),
+                                                              onPressed: () {
+                                                                if(razonCancelar.isEmpty){
+                                                                  QuickAlert.show(
+                                                                    context: context,
+                                                                    title: "Alerta",
+                                                                    text: 'Debe de seleccionar un motivo.',
+                                                                    type: QuickAlertType.error,
+                                                                    confirmBtnText: "Ok"
+                                                                  );
+
+                                                                  return;
+                                                                }
+
+                                                                Navigator.pop(context);
+                                                                
+                                                                if(mounted){
+                                                                  ChatApis().confirmOrCancel('RECHAZADO');
+                                                                  fetchCancel(
+                                                                    prefs.nombreUsuario,
+                                                                    '${abc.data?.trips[index].tripId}',
+                                                                    conditionC,
+                                                                    razonCancelar,
+                                                                  );
+                                                                }
+                                                              },
+                                                              child: Text(
+                                                                'Enviar',
+                                                                style: TextStyle(color: Colors.white),
+                                                              ),
+                                                            ),
+                                                            
+                                                          ],
+                                                        ),
+                                                        SizedBox(height: 12)
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                            ),
+                                  ),
+                                );
+                              },
+                              transitionDuration:
+                                  Duration(milliseconds: 200),
+                              barrierDismissible: true,
+                              barrierLabel: '',
+                              context: context,
+                              pageBuilder: (context, animation1,
+                                  animation2) {
+                                return widget;
+                              }),
+                        },
+                      ),
+                    } else ...{
+                      Padding(
+                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                          width: 18,
+                          height: 18,
+                          child: SvgPicture.asset(
+                            "assets/icons/cronometro.svg",
+                            color: Theme.of(context).primaryIconTheme.color,
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          'Viaje: ',
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14, fontWeight: FontWeight.w500)
+                        ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left:16),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Su tiempo para cancelar el viaje ha expirado',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                    }
+                  }
+                    } else
+                  ...{},
+                  ],
+                    );
+                  }):
+                    ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  itemCount: abc.data?.trips.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                  padding: const EdgeInsets.only(top:10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0), // Establece un radio de esquinas redondeadas de 8.0
+                      border: Border.all(color: Theme.of(context).dividerColor), // Establece el color del borde
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 2, left: 2),
+                      child: ExpansionTile(
+                        collapsedIconColor: Theme.of(context).primaryColorDark,
+                        tilePadding: const EdgeInsets.only(right: 0, left: 0),
+                        title: Column(
+                          children: [
+                            SizedBox(height: 8),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 5, left: 10),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 18,
+                                    height: 18,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/Numeral.svg",
+                                      color: Theme.of(context).primaryIconTheme.color,
+                                    ),
+                                  ),
+                                  SizedBox(width: 5),
+                                  Flexible(
+                                    child: RichText(
+                                      text: TextSpan(
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                                        children: [
+                                          TextSpan(
+                                            text: 'Viaje: ',
+                                            style: TextStyle(fontWeight: FontWeight.w500),
+                                          ),
+                                          TextSpan(
+                                            text: '${abc.data?.trips[index].tripId}',
+                                            style: TextStyle(fontWeight: FontWeight.normal),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Container(
+                              height: 1,
+                              color: Theme.of(context).dividerColor,
+                            ),
+                            SizedBox(height: 10),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 5, left: 10),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 18,
+                                    height: 18,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/proximo_viaje.svg",
+                                      color: Theme.of(context).primaryIconTheme.color,
+                                    ),
+                                  ),
+                                  SizedBox(width: 5),
+                                  Flexible(
+                                    child: RichText(
+                                      text: TextSpan(
+                                        style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                                        children: [
+                                          TextSpan(
+                                            text: 'Fecha: ',
+                                            style: TextStyle(fontWeight: FontWeight.w500),
+                                          ),
+                                          TextSpan(
+                                            text: '${abc.data?.trips[index].fecha}',
+                                            style: TextStyle(fontWeight: FontWeight.normal),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        children: [
+                      Container(
+                        height: 1,
+                        color: Theme.of(context).dividerColor,
+                      ),    
+                      SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 18,
+                              height: 18,
+                              child: SvgPicture.asset(
+                                "assets/icons/hora.svg",
+                                color: Theme.of(context).primaryIconTheme.color,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Flexible(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                                      children: [
+                                        TextSpan(
+                                          text: 'Hora: ',
+                                          style: TextStyle(fontWeight: FontWeight.w500),
                                         ),
-                                      } else ...{
-                                        Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Container(
-                                              width: 18,
-                                              height: 18,
-                                              child: SvgPicture.asset(
-                                                "assets/icons/cronometro.svg",
-                                                color: GradiantV1,
-                                              ),
+                                        TextSpan(
+                                          text: '${abc.data?.trips[index].horaEntrada}',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Color.fromRGBO(40, 169, 83, 1),
+                                              fontWeight: FontWeight.normal,
                                             ),
-                                            SizedBox(width: 5),
-                                            Text(
-                                              'Viaje: ',
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                              ],
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(left:16),
-                                              child: Text(
-                                                'Su tiempo para cancelar el viaje ha expirado',
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: Colors.red,
-                                                  fontWeight: FontWeight.normal,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
                                         ),
-                                      }
-                                    }
-                                  } else
-                                    ...{},
-                                    
-                                    SizedBox(height: 8),
-                                    ],
+                                      ],
+                                    ),
+                                  ),
+                                )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 1,
+                        color: Theme.of(context).dividerColor,
+                      ),
+                        
+                       SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 20,
+                              height: 20,
+                              child: SvgPicture.asset(
+                                "assets/icons/motorista.svg",
+                                color: Theme.of(context).primaryIconTheme.color,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                           Flexible(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                                      children: [
+                                        TextSpan(
+                                          text: 'Conductor: ',
+                                          style: TextStyle(fontWeight: FontWeight.w500),
+                                        ),
+                                        TextSpan(
+                                          text: '${abc.data?.trips[index].conductor}',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.normal
+                                            ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 1,
+                        color: Theme.of(context).dividerColor,
+                      ),
+                        
+                    SizedBox(height: 20),
+                    Padding(
+                  padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                  child: Row(
+                    children: [
+                      Container(
+                              width: 20,
+                              height: 20,
+                              child: SvgPicture.asset(
+                                "assets/icons/vehiculo.svg",
+                                color: Theme.of(context).primaryIconTheme.color,
+                              ),
+                            ),
+                      SizedBox(width: 5),
+                      Flexible(
+                        child: RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                            children: [
+                              TextSpan(
+                                text: 'Vehiculo: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '${abc.data?.trips[index].tripVehicle != null ? abc.data?.trips[index].tripVehicle : '---'}',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                    ),
+                    Container(
+                  height: 1,
+                  color: Theme.of(context).dividerColor,
+                    ),
+
+                       SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 18,
+                              height: 18,
+                              child: SvgPicture.asset(
+                                "assets/icons/telefono_num.svg",
+                                color: Theme.of(context).primaryIconTheme.color,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Flexible(
+                              child: RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                                  children: [
+                                    TextSpan(
+                                      text: 'Teléfono: ',
+                                      style: TextStyle(fontWeight: FontWeight.w500),
+                                    ),
+                                    TextSpan(
+                                      text: '${abc.data?.trips[index].telefono}',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 1,
+                        color: Theme.of(context).dividerColor,
+                      ),
+                        
+                       SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 18,
+                              height: 18,
+                              child: SvgPicture.asset(
+                                "assets/icons/Casa.svg",
+                                color: Theme.of(context).primaryIconTheme.color,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Flexible(
+                              child: RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                                  children: [
+                                    TextSpan(
+                                      text: 'Dirección: ',
+                                      style: TextStyle(fontWeight: FontWeight.w500),
+                                    ),
+                                    TextSpan(
+                                      text: '${abc.data?.trips[index].direccion}',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 1,
+                        color: Theme.of(context).dividerColor,
+                      ),
+                        
+                       SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 18,
+                                height: 18,
+                                child: SvgPicture.asset(
+                                  "assets/icons/warning.svg",
+                                  color: Theme.of(context).primaryIconTheme.color,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Flexible(
+                              child: RichText(
+                                text: TextSpan(
+                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                                  children: [
+                                    TextSpan(
+                                      text: 'Acceso autorizado: ',
+                                      style: TextStyle(fontWeight: FontWeight.w500),
+                                    ),
+                                    TextSpan(
+                                      text: '${abc.data?.trips[index].neighborhoodReferencePoint}',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 1,
+                          color: Theme.of(context).dividerColor,
+                        ),
+                          
+                        SizedBox(height: 20),
+                      
+                      //validación de mostrar si la condición está empty mostrar texto de necesita confirmación
+                      if ('${abc.data?.trips[index].condition}' ==
+                          'empty') ...{
+                        Padding(
+                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 18,
+                                    height: 18,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/hora.svg",
+                                      color: Theme.of(context).primaryIconTheme.color,
+                                    ),
+                                  ),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    'Hora de encuentro: ',
+                                    style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14, fontWeight: FontWeight.w500)
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left:16),
+                                child: Text(
+                                  'Necesitas confirmar para que te asignen una hora de encuentro',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.normal,
                                   ),
                                 ),
                               ),
-                            );
-                          });
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 1,
+                          color: Theme.of(context).dividerColor,
+                        ),
+                          
+                        SizedBox(height: 20),
+                        Padding(
+                           padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                          child: Row(
+                            children: [   
+                              Expanded(
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                  onPressed: () {
+                                    showGeneralDialog(
+                                            barrierColor: Colors.black.withOpacity(0.5),
+                                            transitionBuilder: (context, a1, a2, widget) {
+                                              return Transform.scale(
+                                                scale: a1.value,
+                                                child: Opacity(
+                                                  opacity: a1.value,
+                                                  child: AlertDialog(
+                                                    backgroundColor: Colors.transparent,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(16.0),
+                                                    ),
+                                                    content: StatefulBuilder(
+                                                      builder:(context, setState) {
+                                                        return Container(
+                                                          decoration: BoxDecoration(
+                                                            color: Theme.of(navigatorKey.currentContext!).cardColor,
+                                                            borderRadius: BorderRadius.circular(16.0),
+                                                          ),
+                                                          child: Column(
+                                                            mainAxisSize: MainAxisSize.min,
+                                                            children: [
+                                                              Container(
+                                                                decoration: BoxDecoration(
+                                                                  color: Theme.of(navigatorKey.currentContext!).primaryColor,
+                                                                  borderRadius: BorderRadius.only(
+                                                                    topLeft: Radius.circular(16.0),
+                                                                    topRight: Radius.circular(16.0),
+                                                                  ),
+                                                                ),
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets.all(20.0),
+                                                                  child: Text(
+                                                                    'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(
+                                                                      color: Colors.white,
+                                                                      fontWeight: FontWeight.normal,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding: const EdgeInsets.all(20.0),
+                                                                child: SingleChildScrollView(
+                                                                  child: Column(
+                                                                    children: [
+                                                                      Row(
+                                                                        children: [
+                                                                          Checkbox(
+                                                                            value: razon1,
+                                                                            onChanged: (value) {
+                                                                              if(razon1==true)
+                                                                                return;
+                                                                
+                                                                              setState(() {
+                                                                                razonCancelar = "Trabajo desde casa";
+                                                                                razon1 = !razon1;
+                                                                                razon2 = false;
+                                                                                razon3 = false;
+                                                                                razon4 = false;
+                                                                              });
+                                                                            },
+                                                                          ),
+                                                                          Text(
+                                                                            " Trabajo desde casa",
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                          ),
+                                                                        ]
+                                                                      ),
+                                                                
+                                                                      Row(
+                                                                        children: [
+                                                                          Checkbox(
+                                                                            value: razon2,
+                                                                            onChanged: (value) {
+                                                                              if(razon2==true)
+                                                                                return;
+                                                                
+                                                                              setState(() {
+                                                                                razonCancelar = "Incapacidad";
+                                                                                razon1 = false;
+                                                                                razon2 = !razon2;
+                                                                                razon3 = false;
+                                                                                razon4 = false;
+                                                                              });
+                                                                            },
+                                                                          ),
+                                                                          Text(
+                                                                            " Incapacidad",
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                
+                                                                      Row(
+                                                                        children: [
+                                                                          Checkbox(
+                                                                            value: razon3,
+                                                                            onChanged: (value) {
+                                                                              if(razon3==true)
+                                                                                return;
+                                                                
+                                                                              setState(() {
+                                                                                razonCancelar = "Vacaciones";
+                                                                                razon1 = false;
+                                                                                razon2 = false;
+                                                                                razon3 = !razon3;
+                                                                                razon4 = false;
+                                                                              });
+                                                                            },
+                                                                          ),
+                                                                          Text(
+                                                                            " Vacaciones",
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                
+                                                                      Row(
+                                                                        children: [
+                                                                          Checkbox(
+                                                                            value: razon4,
+                                                                            onChanged: (value) {
+                                                                              if(razon4==true)
+                                                                                return;
+                                                                
+                                                                              setState(() {
+                                                                                razonCancelar = "Motivo personal";
+                                                                                razon1 = false;
+                                                                                razon2 = false;
+                                                                                razon3 = false;
+                                                                                razon4 = !razon4;
+                                                                              });
+                                                                            },
+                                                                          ),
+                                                                          Text(
+                                                                            " Motivo personal",
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                )
+                                                              ),
+                                                              SizedBox(height: 16),
+                                                              Row(
+                                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                children: [
+                                                                  OutlinedButton(
+                                                                    style: OutlinedButton.styleFrom(
+                                                                      padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                      foregroundColor: Colors.white,
+                                                                      side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
+                                                                      shape: RoundedRectangleBorder(
+                                                                        borderRadius: BorderRadius.circular(12.0),
+                                                                      ),
+                                                                    ),
+                                                                    onPressed: () {
+                                                                      Navigator.pop(context);
+                                                                    },
+                                                                    child: Text(
+                                                                      'Cancelar',
+                                                                      style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                    ),
+                                                                  ),
+                            
+                                                                  OutlinedButton(
+                                                                    style: OutlinedButton.styleFrom(
+                                                                      padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                      backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                                      shape: RoundedRectangleBorder(
+                                                                        borderRadius: BorderRadius.circular(12.0),
+                                                                      ),
+                                                                    ),
+                                                                    onPressed: () {
+                                                                      if(razonCancelar.isEmpty){
+                                                                        QuickAlert.show(
+                                                                          context: context,
+                                                                          title: "Alerta",
+                                                                          text: 'Debe de seleccionar un motivo.',
+                                                                          type: QuickAlertType.error,
+                                                                          confirmBtnText: "Ok"
+                                                                        );
+
+                                                                        return;
+                                                                      }
+                                                                      
+                                                                      Navigator.pop(context);
+                                                                
+                                                                      if(mounted){
+                                                                        ChatApis().confirmOrCancel('RECHAZADO');
+                                                                        fetchCancel(
+                                                                          prefs.nombreUsuario,
+                                                                          '${abc.data?.trips[index].tripId}',
+                                                                          conditionC,
+                                                                          razonCancelar,
+                                                                        );
+                                                                      }
+                                                                    },
+                                                                    child: Text(
+                                                                      'Enviar',
+                                                                      style: TextStyle(color: Colors.white),
+                                                                    ),
+                                                                  ),
+                                                                  
+                                                                ],
+                                                              ),
+                                                              SizedBox(height: 12)
+                                                            ],
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+
+                                                  ),
+                        
+                                                ),
+                                              );
+                                            },
+                                            transitionDuration: Duration(milliseconds: 200),
+                                            barrierDismissible: true,
+                                            barrierLabel: '',
+                                            context: context,
+                                            pageBuilder: (context, animation1, animation2) {
+                                              return widget;
+                                            },
+                                          );
+                                  },
+                                  child: Text(
+                                    'Cancelar',
+                                    style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 15),
+                                  ),
+                                ),
+                        
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                    ),
+                                    backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                  ),
+                                  onPressed: () {
+                                    showGeneralDialog(
+                                      barrierColor: Colors.black.withOpacity(0.5),
+                                      transitionBuilder: (context, a1, a2, widget) {
+                                        return Transform.scale(
+                                          scale: a1.value,
+                                          child: Opacity(
+                                            opacity: a1.value,
+                                            child: AlertDialog(
+                                              backgroundColor: Colors.transparent,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(16.0),
+                                              ),
+                                              content: StatefulBuilder(
+                                                builder:(context, setState) {
+                                                  return  SingleChildScrollView(
+                                                    child: Column(
+                                                      children: [
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.only(
+                                                              topLeft: Radius.circular(10.0),
+                                                              topRight: Radius.circular(10.0),
+                                                            ),
+                                                            color: Color.fromRGBO(40, 169, 83, 1),
+                                                          ),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.only(right: 100.0, left: 100, bottom: 30, top: 30),
+                                                            child: CircleAvatar(
+                                                              backgroundColor: Color.fromRGBO(0, 191, 95, 1),
+                                                              radius: 30.0 + 10.0, 
+                                                              child: Padding(
+                                                                padding: EdgeInsets.all(15.0), 
+                                                                child: SvgPicture.asset(
+                                                                  "assets/icons/check.svg",
+                                                                  color: Colors.white,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                  
+                                                  
+                                                        Container(
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.only(
+                                                              bottomLeft: Radius.circular(10.0),
+                                                              bottomRight: Radius.circular(10.0),
+                                                            ),
+                                                            color: Colors.white, 
+                                                          ),
+                                                          child: Column(children: [
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(top: 20),
+                                                              child: Text(
+                                                                '¿Deseas confirmar el viaje?',
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(
+                                                                  fontWeight: FontWeight.bold,
+                                                                  color: Colors.black,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(top: 20, bottom: 20),
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                children: [
+                                                                  TextButton(
+                                                                    style: ButtonStyle(
+                                                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                                        RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(10.0),
+                                                                          side: BorderSide(color: Colors.black),
+                                                                        ),
+                                                                      ),
+                                                                      backgroundColor: MaterialStateProperty.all(Colors.transparent),
+                                                                    ),
+                                                                    onPressed: () {
+                                                                      Navigator.pop(context);
+                                                                    },
+                                                                    child: Text(
+                                                                      'No',
+                                                                      style: TextStyle(
+                                                                        color: Colors.black,
+                                                                        fontWeight: FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  SizedBox(width: 20),
+                                                                  TextButton(
+                                                                    style: ButtonStyle(
+                                                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                                        RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(10.0),
+                                                                          side: BorderSide(color: Color.fromRGBO(40, 93, 169, 1)),
+                                                                        ),
+                                                                      ),
+                                                                      backgroundColor: MaterialStateProperty.all(Color.fromRGBO(40, 93, 169, 1)),
+                                                                    ),
+                                                                    onPressed: () {
+                                                                      Navigator.pop(context);
+                                                                  
+                                                                      if(mounted){
+                                                                        ChatApis().confirmOrCancel('CONFIRMADO');
+                                                                        fetchConfirm(
+                                                                          prefs.nombreUsuario,
+                                                                          '${abc.data?.trips[index].tripId}',
+                                                                          condition,comment
+                                                                        );
+                                                                      }
+                                                                    },
+                                                                    child: Text(
+                                                                      'Sí',
+                                                                      style: TextStyle(
+                                                                        color: Colors.white,
+                                                                        fontWeight: FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ]),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                            ),
+                          
+                                          ),
+                                        );
+                                      },
+                                      transitionDuration: Duration(milliseconds: 200),
+                                      barrierDismissible: true,
+                                      barrierLabel: '',
+                                      context: context,
+                                      pageBuilder: (context, animation1, animation2) {
+                                        return widget;
+                                      },
+                                    );  
+                                  },
+                                  child: Text(
+                                    'Confirmar',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ),
+                        
+                              ),
+                            ],
+                          ),
+                        ),
+                        //validación de condition in canceled
+                      },
+                      if ('${abc.data?.trips[index].condition}' ==
+                          'Canceled') ...{
+                        if ('${abc.data?.trips[index].commentDriver}' ==
+                            'No confirmó') ...{
+                          Padding(
+                            padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 18,
+                                  height: 18,
+                                  child: SvgPicture.asset(
+                                    "assets/icons/hora.svg",
+                                    color: Theme.of(context).primaryIconTheme.color
+                                  ),
+                                ),
+                                SizedBox(width: 5),
+                                Flexible(
+                                  child: Text(
+                                    'No confirmó a tiempo',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        } else ...{
+                          Padding(
+                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 18,
+                                height: 18,
+                                child: SvgPicture.asset(
+                                  "assets/icons/hora.svg",
+                                  color: Theme.of(context).primaryIconTheme.color,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Flexible(
+                                child: Text(
+                                  'Se ha notificado al conductor que no necesitarás el transporte',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 1,
+                          color: Theme.of(context).dividerColor,
+                        ),
+                          
+                        SizedBox(height: 20),
+                        },
+                        //validación de horaConductor in empty
+                      },
+                      if ('${abc.data?.trips[index].horaConductor}' ==
+                          'empty') ...{
+                        if ('${abc.data?.trips[index].condition}' ==
+                            'Confirmed') ...{
+                          Padding(
+                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 18,
+                                    height: 18,
+                                    child: SvgPicture.asset(
+                                      "assets/icons/hora.svg",
+                                      color: Theme.of(context).primaryIconTheme.color,
+                                    ),
+                                  ),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    'Hora de encuentro: ',
+                                    style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14, fontWeight: FontWeight.w600)
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left:16),
+                                child: Text(
+                                  '¡Viaje confirmado! Te notificaremos cuando el conductor asigne la hora en la que pasará por ti',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 1,
+                          color: Theme.of(context).dividerColor
+                        ),
+                          
+                        SizedBox(height: 20),
+                        },
+                      },
+                      if ('${abc.data?.trips[index].horaConductor}' !=
+                          'empty') ...{
+                        Padding(
+                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 18,
+                                height: 18,
+                                child: SvgPicture.asset(
+                                  "assets/icons/hora.svg",
+                                  color: Theme.of(context).primaryIconTheme.color
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Text(
+                                'Hora de encuentro: ',
+                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14, fontWeight: FontWeight.w500)
+                              ),
+                              Text(
+                               '${abc.data?.trips[index].horaConductor}',
+                                style: TextStyle(
+                                 fontSize: 15,
+                                  color: Color.fromRGBO(40, 169, 83, 1),
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 1,
+                          color: Theme.of(context).dividerColor
+                        ),
+                          
+                        SizedBox(height: 20),
+                      },
+                      if ('${abc.data?.trips[index].condition}' ==
+                          'Confirmed') ...{
+                        if (abc.data?.trips[index].companyId == 1 ||
+                            abc.data?.trips[index].companyId == 7 ||
+                            abc.data?.trips[index].companyId == 3 ||
+                            abc.data?.trips[index].companyId == 5 ||
+                            abc.data?.trips[index].companyId == 9 ||
+                            abc.data?.trips[index].companyId == 11 ||
+                            abc.data?.trips[index].companyId == 12) ...{
+                          if (abc.data?.trips[index].btnCancelTrip ==
+                              true) ...{
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: Colors.red),
+                              child: Text('Cancelar viaje'),
+                              onPressed: () => {
+                                showGeneralDialog(
+                                    barrierColor:
+                                        Colors.black.withOpacity(0.5),
+                                    transitionBuilder:
+                                        (context, a1, a2, widget) {
+                                      return Transform.scale(
+                                        scale: a1.value,
+                                        child: Opacity(
+                                          opacity: a1.value,
+                                          child: AlertDialog(
+                                                  backgroundColor: Colors.transparent,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(16.0),
+                                                  ),
+                                                  content: StatefulBuilder(
+                                                    builder:(context, setState) {
+                                                      return Container(
+                                                        decoration: BoxDecoration(
+                                                          color: Theme.of(navigatorKey.currentContext!).cardColor,
+                                                          borderRadius: BorderRadius.circular(16.0),
+                                                        ),
+                                                        child: Column(
+                                                          mainAxisSize: MainAxisSize.min,
+                                                          children: [
+                                                            Container(
+                                                              decoration: BoxDecoration(
+                                                                color: Theme.of(navigatorKey.currentContext!).primaryColor,
+                                                                borderRadius: BorderRadius.only(
+                                                                  topLeft: Radius.circular(16.0),
+                                                                  topRight: Radius.circular(16.0),
+                                                                ),
+                                                              ),
+                                                              child: Padding(
+                                                                padding: const EdgeInsets.all(20.0),
+                                                                child: Text(
+                                                                  'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
+                                                                  textAlign: TextAlign.center,
+                                                                  style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontWeight: FontWeight.normal,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                                padding: const EdgeInsets.all(20.0),
+                                                                child: SingleChildScrollView(
+                                                                  child: Column(
+                                                                    children: [
+                                                                      Row(
+                                                                        children: [
+                                                                          Checkbox(
+                                                                            value: razon1,
+                                                                            onChanged: (value) {
+                                                                              if(razon1==true)
+                                                                                return;
+                                                                
+                                                                              setState(() {
+                                                                                razonCancelar = "Trabajo desde casa";
+                                                                                razon1 = !razon1;
+                                                                                razon2 = false;
+                                                                                razon3 = false;
+                                                                                razon4 = false;
+                                                                              });
+                                                                            },
+                                                                          ),
+                                                                          Text(
+                                                                            " Trabajo desde casa",
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                          ),
+                                                                        ]
+                                                                      ),
+                                                                
+                                                                      Row(
+                                                                        children: [
+                                                                          Checkbox(
+                                                                            value: razon2,
+                                                                            onChanged: (value) {
+                                                                              if(razon2==true)
+                                                                                return;
+                                                                
+                                                                              setState(() {
+                                                                                razonCancelar = "Incapacidad";
+                                                                                razon1 = false;
+                                                                                razon2 = !razon2;
+                                                                                razon3 = false;
+                                                                                razon4 = false;
+                                                                              });
+                                                                            },
+                                                                          ),
+                                                                          Text(
+                                                                            " Incapacidad",
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                
+                                                                      Row(
+                                                                        children: [
+                                                                          Checkbox(
+                                                                            value: razon3,
+                                                                            onChanged: (value) {
+                                                                              if(razon3==true)
+                                                                                return;
+                                                                
+                                                                              setState(() {
+                                                                                razonCancelar = "Vacaciones";
+                                                                                razon1 = false;
+                                                                                razon2 = false;
+                                                                                razon3 = !razon3;
+                                                                                razon4 = false;
+                                                                              });
+                                                                            },
+                                                                          ),
+                                                                          Text(
+                                                                            " Vacaciones",
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                
+                                                                      Row(
+                                                                        children: [
+                                                                          Checkbox(
+                                                                            value: razon4,
+                                                                            onChanged: (value) {
+                                                                              if(razon4==true)
+                                                                                return;
+                                                                
+                                                                              setState(() {
+                                                                                razonCancelar = "Motivo personal";
+                                                                                razon1 = false;
+                                                                                razon2 = false;
+                                                                                razon3 = false;
+                                                                                razon4 = !razon4;
+                                                                              });
+                                                                            },
+                                                                          ),
+                                                                          Text(
+                                                                            " Motivo personal",
+                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                )
+                                                              ),
+                                                            SizedBox(height: 16),
+                                                            Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                              children: [
+                                                                OutlinedButton(
+                                                                  style: OutlinedButton.styleFrom(
+                                                                    padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                    foregroundColor: Colors.white,
+                                                                    side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
+                                                                    shape: RoundedRectangleBorder(
+                                                                      borderRadius: BorderRadius.circular(12.0),
+                                                                    ),
+                                                                  ),
+                                                                  onPressed: () {
+                                                                    Navigator.pop(context);
+                                                                  },
+                                                                  child: Text(
+                                                                    'Cancelar',
+                                                                    style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                  ),
+                                                                ),
+                          
+                                                                OutlinedButton(
+                                                                  style: OutlinedButton.styleFrom(
+                                                                    padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                    backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                                    shape: RoundedRectangleBorder(
+                                                                      borderRadius: BorderRadius.circular(12.0),
+                                                                    ),
+                                                                  ),
+                                                                  onPressed: () {
+                                                                    if(razonCancelar.isEmpty){
+                                                                      QuickAlert.show(
+                                                                        context: context,
+                                                                        title: "Alerta",
+                                                                        text: 'Debe de seleccionar un motivo.',
+                                                                        type: QuickAlertType.error,
+                                                                        confirmBtnText: "Ok"
+                                                                      );
+
+                                                                      return;
+                                                                    }
+
+                                                                    Navigator.pop(context);
+                                                                
+                                                                    if(mounted){
+                                                                      ChatApis().confirmOrCancel('RECHAZADO');
+                                                                      fetchCancel(
+                                                                        prefs.nombreUsuario,
+                                                                        '${abc.data?.trips[index].tripId}',
+                                                                        conditionC,
+                                                                        razonCancelar,
+                                                                      );
+                                                                    }
+                                                                  },
+                                                                  child: Text(
+                                                                    'Enviar',
+                                                                    style: TextStyle(color: Colors.white),
+                                                                  ),
+                                                                ),
+                                                                
+                                                              ],
+                                                            ),
+                                                            SizedBox(height: 12)
+                                                          ],
+                                                        ),
+                                                      );
+                                                    },
+                                                  )
+                                                ),
+                                        ),
+                                      );
+                                    },
+                                    transitionDuration:
+                                        Duration(milliseconds: 200),
+                                    barrierDismissible: true,
+                                    barrierLabel: '',
+                                    context: context,
+                                    pageBuilder: (context, animation1,
+                                        animation2) {
+                                      return widget;
+                                    }),
+                              },
+                            ),
+                          } else ...{
+                            Padding(
+                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                width: 18,
+                                height: 18,
+                                child: SvgPicture.asset(
+                                  "assets/icons/cronometro.svg",
+                                  color: Theme.of(context).primaryIconTheme.color
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Text(
+                                'Viaje: ',
+                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14, fontWeight: FontWeight.w500)
+                              ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left:16),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Su tiempo para cancelar el viaje ha expirado',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                          }
+                        }
+                      } else
+                        ...{},
+                        
+                        SizedBox(height: 8),
+                        ],
+                      ),
+                    ),
+                  ),
+                    );
+                  })
+                    ],
+                  );
                 } else {
-                  return CircularProgressIndicator();
+                  return WillPopScope(
+                    onWillPop: () async => false,
+                    child: SimpleDialog(
+                       elevation: 20,
+                      backgroundColor: Theme.of(context).cardColor,
+                      children: [
+                        Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  'Cargando..', 
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                  ),
+                              )
+                            ],
+                          ),
+                        )
+                      ] ,
+                    ),
+                  );
                 }
               }
             } else {
-              return ColorLoader3();
+              return WillPopScope(
+                    onWillPop: () async => false,
+                    child: SimpleDialog(
+                       elevation: 20,
+                      backgroundColor: Theme.of(context).cardColor,
+                      children: [
+                        Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  'Cargando..', 
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                  ),
+                              )
+                            ],
+                          ),
+                        )
+                      ] ,
+                    ),
+                  );
             }
             //return SizedBox();
           },
@@ -1565,6 +3275,961 @@ class _NextTripScreenState extends State<NextTripScreen>
       ],
     );
   }
+
+  Widget buildTripCard(Map<String, dynamic> tripData) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom:10),
+    child: Card(
+      elevation: 0,
+      color: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).dividerColor,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 18,
+                        height: 18,
+                        child: SvgPicture.asset(
+                          "assets/icons/proximo_viaje.svg",
+                          color: Theme.of(context).primaryIconTheme.color,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Flexible(
+                        child: RichText(
+                          text: TextSpan( 
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                            children: [
+                              TextSpan(
+                                text: 'Fecha: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '${tripData["dateToTravel"]}',
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 1,
+                color: Theme.of(context).dividerColor,
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 18,
+                        height: 18,
+                        child: SvgPicture.asset(
+                          "assets/icons/advertencia.svg",
+                          color: Theme.of(context).primaryIconTheme.color,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Flexible(
+                        child: RichText(
+                          text: TextSpan( 
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                            children: [
+                              TextSpan(
+                                text: 'Transporte para: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '${tripData["tripType"]}',
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 1,
+                color: Theme.of(context).dividerColor,
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 18,
+                        height: 18,
+                        child: SvgPicture.asset(
+                          "assets/icons/hora.svg",
+                          color: Theme.of(context).primaryIconTheme.color,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Flexible(
+                        child: RichText(
+                          text: TextSpan( 
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                            children: [
+                              TextSpan(
+                                text: 'Hora: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '${tripData["hour"]}',
+                                style: TextStyle(fontWeight: FontWeight.normal, color: Color.fromRGBO(40, 169, 83, 1)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 1,
+                color: Theme.of(context).dividerColor,
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 18,
+                        height: 18,
+                        child: SvgPicture.asset(
+                          "assets/icons/Casa.svg",
+                          color: Theme.of(context).primaryIconTheme.color,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Flexible(
+                        child: RichText(
+                          text: TextSpan( 
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                            children: [
+                              TextSpan(
+                                text: 'Dirección: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '${tripData["agentAddress"]}',
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 1,
+                color: Theme.of(context).dividerColor,
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 18,
+                        height: 18,
+                        child: SvgPicture.asset(
+                          "assets/icons/warning.svg",
+                          color: Theme.of(context).primaryIconTheme.color,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Flexible(
+                        child: RichText(
+                          text: TextSpan( 
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                            children: [
+                              TextSpan(
+                                text: 'Acceso autorizado: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '${tripData["authorizedAccess"]}',
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 1,
+                color: Theme.of(context).dividerColor,
+              ),
+              SizedBox(height: 10),
+              if (tripData["confirmation"] == true)
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Row(
+                          children: [
+                            Container(
+                              width: 18,
+                              height: 18,
+                               child: SvgPicture.asset(
+                                "assets/icons/advertencia.svg",
+                                color: Theme.of(context).primaryIconTheme.color,
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Flexible(
+                              child: Text(
+                                '¡Solicitud confirmada! Te notificaremos cuando tengas el viaje programado',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14.0,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                    ),
+
+                      if(tripData["hideCancelButton"]!=true)
+                        SizedBox(height: 10),
+                      
+                      if(tripData["hideCancelButton"]!=true)
+                      TextButton(
+                      onPressed: () {
+                        showGeneralDialog(
+                                            barrierColor: Colors.black.withOpacity(0.5),
+                                            transitionBuilder: (context, a1, a2, widget) {
+                                              return Transform.scale(
+                                                scale: a1.value,
+                                                child: Opacity(
+                                                  opacity: a1.value,
+                                                  child: AlertDialog(
+                                                    backgroundColor: Colors.transparent,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(16.0),
+                                                    ),
+                                                    content: StatefulBuilder(
+                                                      builder:(context, setState) {
+                                                        return  Container(
+                                                      decoration: BoxDecoration(
+                                                        color: Theme.of(navigatorKey.currentContext!).cardColor,
+                                                        borderRadius: BorderRadius.circular(16.0),
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        children: [
+                                                          Container(
+                                                            decoration: BoxDecoration(
+                                                              color: Theme.of(navigatorKey.currentContext!).primaryColor,
+                                                              borderRadius: BorderRadius.only(
+                                                                topLeft: Radius.circular(16.0),
+                                                                topRight: Radius.circular(16.0),
+                                                              ),
+                                                            ),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(20.0),
+                                                              child: Text(
+                                                                'Nos encantaría conocer tu razón',
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontWeight: FontWeight.normal,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.all(20.0),
+                                                            child: SingleChildScrollView(
+                                                              child: Column(
+                                                                children: [
+                                                                  Row(
+                                                                    children: [
+                                                                      Checkbox(
+                                                                        value: razon1,
+                                                                        onChanged: (value) {
+                                                                          if(razon1==true)
+                                                                            return;
+                                                            
+                                                                          setState(() {
+                                                                            razonCancelar = "Trabajo desde casa";
+                                                                            razon1 = !razon1;
+                                                                            razon2 = false;
+                                                                            razon3 = false;
+                                                                            razon4 = false;
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      Text(
+                                                                        " Trabajo desde casa",
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                      ),
+                                                                    ]
+                                                                  ),
+                                                            
+                                                                  Row(
+                                                                    children: [
+                                                                      Checkbox(
+                                                                        value: razon2,
+                                                                        onChanged: (value) {
+                                                                          if(razon2==true)
+                                                                            return;
+                                                            
+                                                                          setState(() {
+                                                                            razonCancelar = "Incapacidad";
+                                                                            razon1 = false;
+                                                                            razon2 = !razon2;
+                                                                            razon3 = false;
+                                                                            razon4 = false;
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      Text(
+                                                                        " Incapacidad",
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                            
+                                                                  Row(
+                                                                    children: [
+                                                                      Checkbox(
+                                                                        value: razon3,
+                                                                        onChanged: (value) {
+                                                                          if(razon3==true)
+                                                                            return;
+                                                            
+                                                                          setState(() {
+                                                                            razonCancelar = "Vacaciones";
+                                                                            razon1 = false;
+                                                                            razon2 = false;
+                                                                            razon3 = !razon3;
+                                                                            razon4 = false;
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      Text(
+                                                                        " Vacaciones",
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                            
+                                                                  Row(
+                                                                    children: [
+                                                                      Checkbox(
+                                                                        
+                                                                        value: razon4,
+                                                                        onChanged: (value) {
+                                                                          if(razon4==true)
+                                                                            return;
+                                                            
+                                                                          setState(() {
+                                                                            razonCancelar = "Motivo personal";
+                                                                            razon1 = false;
+                                                                            razon2 = false;
+                                                                            razon3 = false;
+                                                                            razon4 = !razon4;
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      Text(
+                                                                        " Motivo personal",
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ),
+                                                          SizedBox(height: 16),
+                                                          Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                            children: [
+                                                              OutlinedButton(
+                                                                style: OutlinedButton.styleFrom(
+                                                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                  foregroundColor: Theme.of(navigatorKey.currentContext!).cardColor,
+                                                                  side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(12.0),
+                                                                  ),
+                                                                ),
+                                                                onPressed: () {
+                                                                  Navigator.pop(context);
+                                                                },
+                                                                child: Text(
+                                                                  'Cancelar',
+                                                                  style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium
+                                                                ),
+                                                              ),
+                
+                                                              OutlinedButton(
+                                                                style: OutlinedButton.styleFrom(
+                                                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                  backgroundColor: const Color.fromRGBO(40, 93, 169, 1),
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(12.0),
+                                                                  ),
+                                                                ),
+                                                                onPressed: () async{
+                                                                  if (razonCancelar.isEmpty) {
+                                                                    QuickAlert.show(
+                                                                      context: context,
+                                                                      title: "Comentario Requerido",
+                                                                      text: "Debes elegir una opcion antes de enviar",
+                                                                      type: QuickAlertType.error,
+                                                                      confirmBtnText: "Ok"
+                                                                    );  
+                                                                    return;        
+                                                                  } else {
+                                                                    
+                                                                    LoadingIndicatorDialog().show(context);
+                                                                    Map data = {
+                                                                      "agentForTravelId": tripData["agentForTravelId"].toString(),
+                                                                      "confirmation": "0",
+                                                                      "agentComment": razonCancelar
+                                                                    };
+                                                                    print(data);
+                                                                    http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
+                                                                    print(response.body);
+                                                    
+                                                                    var dataR = json.decode(response.body);
+
+                                                                    
+                                                                    if (dataR["ok"] == true) {
+                                                                        LoadingIndicatorDialog().dismiss();    
+                                                                        Navigator.of(context).pop();   
+                                                                        QuickAlert.show(
+                                                                          context: context,
+                                                                          title: "Enviado",
+                                                                          text: dataR["message"],
+                                                                          type: QuickAlertType.success,
+                                                                          confirmBtnText: "Ok"
+                                                                        );
+                                                                      setState(() {
+                                                                        razonCancelar="";
+                                                                        item2=getSolicitudes();
+                                                                      });
+                                                                    } else {
+                                                                      LoadingIndicatorDialog().dismiss();
+                                                                      Navigator.of(context).pop();
+                                                                      QuickAlert.show(
+                                                                        context: context,
+                                                                        title: "Error",
+                                                                        text: dataR["message"],
+                                                                        type: QuickAlertType.error,
+                                                                        confirmBtnText: "Ok"
+                                                                      );
+                                                                    }
+                                                                    
+                                                                  }
+                                                                },
+                                                                child: Text(
+                                                                  'Enviar',
+                                                                  style: TextStyle(color: Colors.white),
+                                                                ),
+                                                              ),
+                                                              
+                                                            ],
+                                                          ),
+                                                          SizedBox(height: 12)
+                                                        ],
+                                                      ),
+                                                    );
+                                                      }
+                                                    ),    
+                                                  ),
+                
+                                                ),
+                                              );
+                                            },
+                                            transitionDuration: Duration(milliseconds: 200),
+                                            barrierDismissible: true,
+                                            barrierLabel: '',
+                                            context: context,
+                                            pageBuilder: (context, animation1, animation2) {
+                                              return widget;
+                                            },
+                                          );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                      ),
+                      child: Text(
+                        'Cancelar',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              if (tripData["confirmation"] == false)
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Row(
+                      children: [
+                        Container(
+                          width: 18,
+                          height: 18,
+                           child: SvgPicture.asset(
+                            "assets/icons/advertencia.svg",
+                            color: Theme.of(context).primaryIconTheme.color,
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Flexible(
+                          child: Text(
+                            'Solicitud cancelada con éxito',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                ),
+              if (tripData["confirmation"] != true && tripData["confirmation"] != false)
+                tripData["systemComment"]==null?
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        showGeneralDialog(
+                                            barrierColor: Colors.black.withOpacity(0.5),
+                                            transitionBuilder: (context, a1, a2, widget) {
+                                              return Transform.scale(
+                                                scale: a1.value,
+                                                child: Opacity(
+                                                  opacity: a1.value,
+                                                  child: AlertDialog(
+                                                    backgroundColor: Colors.transparent,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(16.0),
+                                                    ),
+                                                    content: StatefulBuilder(
+                                                      builder:(context, setState) {
+                                                        return  Container(
+                                                      decoration: BoxDecoration(
+                                                        color: Theme.of(navigatorKey.currentContext!).cardColor,
+                                                        borderRadius: BorderRadius.circular(16.0),
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        children: [
+                                                          Container(
+                                                            decoration: BoxDecoration(
+                                                              color: Theme.of(navigatorKey.currentContext!).primaryColor,
+                                                              borderRadius: BorderRadius.only(
+                                                                topLeft: Radius.circular(16.0),
+                                                                topRight: Radius.circular(16.0),
+                                                              ),
+                                                            ),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(20.0),
+                                                              child: Text(
+                                                                'Nos encantaría conocer tu razón',
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontWeight: FontWeight.normal,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.all(20.0),
+                                                            child: SingleChildScrollView(
+                                                              child: Column(
+                                                                children: [
+                                                                  Row(
+                                                                    children: [
+                                                                      Checkbox(
+                                                                        value: razon1,
+                                                                        onChanged: (value) {
+                                                                          if(razon1==true)
+                                                                            return;
+                                                            
+                                                                          setState(() {
+                                                                            razonCancelar = "Trabajo desde casa";
+                                                                            razon1 = !razon1;
+                                                                            razon2 = false;
+                                                                            razon3 = false;
+                                                                            razon4 = false;
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      Text(
+                                                                        " Trabajo desde casa",
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                      ),
+                                                                    ]
+                                                                  ),
+                                                            
+                                                                  Row(
+                                                                    children: [
+                                                                      Checkbox(
+                                                                        value: razon2,
+                                                                        onChanged: (value) {
+                                                                          if(razon2==true)
+                                                                            return;
+                                                            
+                                                                          setState(() {
+                                                                            razonCancelar = "Incapacidad";
+                                                                            razon1 = false;
+                                                                            razon2 = !razon2;
+                                                                            razon3 = false;
+                                                                            razon4 = false;
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      Text(
+                                                                        " Incapacidad",
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                            
+                                                                  Row(
+                                                                    children: [
+                                                                      Checkbox(
+                                                                        value: razon3,
+                                                                        onChanged: (value) {
+                                                                          if(razon3==true)
+                                                                            return;
+                                                            
+                                                                          setState(() {
+                                                                            razonCancelar = "Vacaciones";
+                                                                            razon1 = false;
+                                                                            razon2 = false;
+                                                                            razon3 = !razon3;
+                                                                            razon4 = false;
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      Text(
+                                                                        " Vacaciones",
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                            
+                                                                  Row(
+                                                                    children: [
+                                                                      Checkbox(
+                                                                        value: razon4,
+                                                                        onChanged: (value) {
+                                                                          if(razon4==true)
+                                                                            return;
+                                                            
+                                                                          setState(() {
+                                                                            razonCancelar = "Motivo personal";
+                                                                            razon1 = false;
+                                                                            razon2 = false;
+                                                                            razon3 = false;
+                                                                            razon4 = !razon4;
+                                                                          });
+                                                                        },
+                                                                      ),
+                                                                      Text(
+                                                                        " Motivo personal",
+                                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ),
+                                                          SizedBox(height: 16),
+                                                          Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                            children: [
+                                                              OutlinedButton(
+                                                                style: OutlinedButton.styleFrom(
+                                                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                  foregroundColor: Theme.of(navigatorKey.currentContext!).cardColor,
+                                                                  side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(12.0),
+                                                                  ),
+                                                                ),
+                                                                onPressed: () {
+                                                                  Navigator.pop(context);
+                                                                },
+                                                                child: Text(
+                                                                  'Cancelar',
+                                                                  style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium
+                                                                ),
+                                                              ),
+                
+                                                              OutlinedButton(
+                                                                style: OutlinedButton.styleFrom(
+                                                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                  backgroundColor: const Color.fromRGBO(40, 93, 169, 1),
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(12.0),
+                                                                  ),
+                                                                ),
+                                                                onPressed: () async{
+                                                                  if (razonCancelar.isEmpty) {
+                                                                    QuickAlert.show(
+                                                                      context: context,
+                                                                      title: "Comentario Requerido",
+                                                                      text: "Debes elegir una opcion antes de enviar",
+                                                                      type: QuickAlertType.error,
+                                                                      confirmBtnText: "Ok"
+                                                                    );  
+                                                                    return;        
+                                                                  } else {
+                                                                    
+                                                                    LoadingIndicatorDialog().show(context);
+                                                                    Map data = {
+                                                                      "agentForTravelId": tripData["agentForTravelId"].toString(),
+                                                                      "confirmation": "0",
+                                                                      "agentComment": razonCancelar
+                                                                    };
+                                                                    print(data);
+                                                                    http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
+                                                                    print(response.body);
+                                                    
+                                                                    var dataR = json.decode(response.body);
+
+                                                                    
+                                                                    if (dataR["ok"] == true) {
+                                                                        LoadingIndicatorDialog().dismiss();    
+                                                                        Navigator.of(context).pop();   
+                                                                        QuickAlert.show(
+                                                                          context: context,
+                                                                          title: "Enviado",
+                                                                          text: dataR["message"],
+                                                                          type: QuickAlertType.success,
+                                                                          confirmBtnText: "Ok"
+                                                                        );
+                                                                      setState(() {
+                                                                        razonCancelar="";
+                                                                        item2=getSolicitudes();
+                                                                      });
+                                                                    } else {
+                                                                      LoadingIndicatorDialog().dismiss();
+                                                                      Navigator.of(context).pop();
+                                                                      QuickAlert.show(
+                                                                        context: context,
+                                                                        title: "Error",
+                                                                        text: dataR["message"],
+                                                                        type: QuickAlertType.error,
+                                                                        confirmBtnText: "Ok"
+                                                                      );
+                                                                    }
+                                                                    
+                                                                  }
+                                                                },
+                                                                child: Text(
+                                                                  'Enviar',
+                                                                  style: TextStyle(color: Colors.white),
+                                                                ),
+                                                              ),
+                                                              
+                                                            ],
+                                                          ),
+                                                          SizedBox(height: 12)
+                                                        ],
+                                                      ),
+                                                    );
+                                                      }
+                                                    ),     
+                                                  ),
+                
+                                                ),
+                                              );
+                                            },
+                                            transitionDuration: Duration(milliseconds: 200),
+                                            barrierDismissible: true,
+                                            barrierLabel: '',
+                                            context: context,
+                                            pageBuilder: (context, animation1, animation2) {
+                                              return widget;
+                                            },
+                                          );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Theme.of(context).primaryColorDark),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 8.0, bottom: 8, right: 20, left: 20),
+                          child: Text(
+                            'No',
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColorDark,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(width: 30),
+                    InkWell(
+                      onTap: () async{
+                        final ConfirmationLoadingDialog loadingDialog = ConfirmationLoadingDialog();
+                        ConfirmationDialog confirmationDialog = ConfirmationDialog();
+                        confirmationDialog.show(
+                          context,
+                          title: '¿Deseas confirmar la solicitud?',
+                          type: "0",
+                          onConfirm: () async {
+                            loadingDialog.show(context);
+
+                            Map data = {
+                              "agentForTravelId": tripData["agentForTravelId"].toString(),
+                              "confirmation": "1",
+                              "agentComment": "null",
+                            };
+
+                            http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
+                            print(response.body);
+
+                            var dataR = json.decode(response.body);
+
+                            if (dataR["ok"] == true) {
+                              setState(() {
+                                item2 = getSolicitudes();
+                              });
+                              loadingDialog.dismiss();
+                              confirmationDialog.dismiss();
+                              QuickAlert.show(
+                                context: context,
+                                title: "Enviado",
+                                text: dataR["message"],
+                                type: QuickAlertType.success,
+                                confirmBtnText: "Ok"
+                              );
+                            } else {
+                              loadingDialog.dismiss();
+                              confirmationDialog.dismiss();
+                              QuickAlert.show(
+                                context: context,
+                                title: "Error",
+                                text: dataR["message"],
+                                type: QuickAlertType.error,
+                                confirmBtnText: "Ok"
+                              );
+                            }
+                            
+                          },
+                          onCancel: () {
+
+                          },
+                        );
+
+
+                      
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Color.fromRGBO(40, 93, 169, 1)),
+                          color: Color.fromRGBO(40, 93, 169, 1)
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 8.0, bottom: 8, right: 22, left: 20),
+                          child: Text(
+                            'Sí',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                  
+                  ],
+                ) :
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Row(
+                      children: [
+                        Container(
+                          width: 18,
+                          height: 18,
+                           child: SvgPicture.asset(
+                            "assets/icons/advertencia.svg",
+                            color: Theme.of(context).primaryIconTheme.color,
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Flexible(
+                          child: Text(
+                            'El tiempo de confirmación ha expirado',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 14.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
 //mostra y validaciones de para alert mask
   _showMaskAlert() async {
@@ -1576,12 +4241,9 @@ class _NextTripScreenState extends State<NextTripScreen>
     final resp1 = Mask.fromJson(json.decode(response.body));
     //validacion si fué visto la alerta
     //print(resp1.viewed);
-    
-    if(mounted){
-      if (resp1.viewed != null) {
+    if (resp1.viewed != null) {
       await http
           .get(Uri.parse('$ip/api/markAsViewedMaskReminder/${resp.agentId}'));
-    }
     }
   }
 
@@ -1632,687 +4294,6 @@ class _NextTripScreenState extends State<NextTripScreen>
               ),
             ));
   }
-
-  Widget buildTripCard(Map<String, dynamic> tripData) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom:10),
-      child: Card(
-        elevation: 10,
-        color: backgroundColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  children: [
-                    Container(
-                      width: 18,
-                      height: 18,
-                      child: SvgPicture.asset(
-                        "assets/icons/calendar-note-svgrepo-com.svg",
-                        color: GradiantV1,
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      'Fecha: ${tripData["dateToTravel"]}',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15.0,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  children: [
-                    Container(
-                      width: 18,
-                      height: 18,
-                      child: SvgPicture.asset(
-                        "assets/icons/advertencia.svg",
-                        color: GradiantV1,
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      'Transporte para: ${tripData["tripType"]}',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15.0,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  children: [
-                    Container(
-                      width: 18,
-                      height: 18,
-                      child: SvgPicture.asset(
-                        "assets/icons/hora.svg",
-                        color: GradiantV1,
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      'Hora: ${tripData["hour"]}',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15.0,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  children: [
-                    Container(
-                      width: 18,
-                      height: 18,
-                      child: SvgPicture.asset(
-                        "assets/icons/Casa.svg",
-                        color: GradiantV1,
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    Text(
-                      'Dirección: ${tripData["agentAddress"]}',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15.0,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  children: [
-                    Container(
-                      width: 18,
-                      height: 18,
-                      child: SvgPicture.asset(
-                        "assets/icons/warning.svg",
-                        color: GradiantV1,
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                    Flexible(
-                      child: Text(
-                        'Acceso autorizado: ${tripData["authorizedAccess"]}',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 15.0,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              if (tripData["confirmation"] == true)
-                Column(
-                  children: [
-                    Row(
-                        children: [
-                          Container(
-                            width: 18,
-                            height: 18,
-                            child: SvgPicture.asset(
-                              "assets/icons/advertencia.svg",
-                              color: GradiantV1,
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          Flexible(
-                            child: Text(
-                              '¡Solicitud confirmada! Te notificaremos cuando tengas el viaje programado',
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Colors.green,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15.0,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      
-                      if(tripData["hideCancelButton"]!=true)
-                      SizedBox(height: 10),
-                      
-                      if(tripData["hideCancelButton"]!=true)
-                      TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            String comment = '';
-
-                            return AlertDialog(
-                              backgroundColor: backgroundColor,
-                              title: Text('Nos encantaría conocer tu razón', style: TextStyle(color: Colors.white),),
-                              content: StatefulBuilder(
-                                builder: (context, setState) {
-                                  return SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Checkbox(
-                                              value: razon1,
-                                              onChanged: (value) {
-                                                if(razon1==true)
-                                                  return;
-
-                                                setState(() {
-                                                  razonCancelar = "Trabajo desde casa";
-                                                  razon1 = !razon1;
-                                                  razon2 = false;
-                                                  razon3 = false;
-                                                  razon4 = false;
-                                                  });
-                                                },
-                                              ),
-                                              Text(
-                                                " Trabajo desde casa",
-                                                style: TextStyle(color: Colors.white),
-                                              ),
-                                            ],
-                                                                                          ),
-                                                                                          SizedBox(height: 5),
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Checkbox(
-                                                                                                value: razon2,
-                                                                                                onChanged: (value) {
-                                                                                                  if(razon2==true)
-                                                                                                    return;
-
-                                                                                                  setState(() {
-                                                                                                    razonCancelar = "Incapacidad";
-
-                                                                                                    razon1 = false;
-                                                                                                    razon2 = !razon2;
-                                                                                                    razon3 = false;
-                                                                                                    razon4 = false;
-                                                                                                  });
-                                                                                                },
-                                                                                              ),
-                                                                                              Text(
-                                                                                                " Incapacidad",
-                                                                                                style: TextStyle(color: Colors.white),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                          SizedBox(height: 5),
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Checkbox(
-                                                                                                value: razon3,
-                                                                                                onChanged: (value) {
-                                                                                                  if(razon3==true)
-                                                                                                    return;
-
-                                                                                                  setState((){
-                                                                                                    razonCancelar = "Vacaciones";
-
-                                                                                                    razon1 = false;
-                                                                                                    razon2 = false;
-                                                                                                    razon3 = !razon3;
-                                                                                                    razon4 = false;
-                                                                                                  });
-                                                                                                },
-                                                                                              ),
-                                                                                              Text(
-                                                                                                " Vacaciones",
-                                                                                                style: TextStyle(color: Colors.white),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                          SizedBox(height: 5),
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Checkbox(
-                                                                                                value: razon4,
-                                                                                                onChanged: (value) {
-                                                                                                  if(razon4==true)
-                                                                                                    return;
-
-                                                                                                  setState((){
-                                                                                                    razonCancelar = "Motivo personal";
-
-                                                                                                    razon1 = false;
-                                                                                                    razon2 = false;
-                                                                                                    razon3 = false;
-                                                                                                    razon4 = !razon4;
-                                                                                                  });
-                                                                                                },
-                                                                                              ),
-                                                                                              Text(
-                                                                                                " Motivo personal",
-                                                                                                style: TextStyle(color: Colors.white),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ],
-                                                                                      ),
-                                                                                    );
-                                }
-                              ),
-                              
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(); // Cierra la ventana emergente sin realizar ninguna acción
-                                  },
-                                  child: Text('Cerrar', style: TextStyle(color: Colors.white),),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    if (razonCancelar.isEmpty) {
-                                    Navigator.of(context).pop(); 
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            backgroundColor: backgroundColor,
-                                            title: Text('Comentario requerido', style: TextStyle(color: Colors.white)),
-                                            content: Text('Debes ingresar un comentario antes de enviar.', style: TextStyle(color: Colors.white)),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop(); 
-                                                },
-                                                child: Text('Aceptar', style: TextStyle(color: Colors.white)),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    } else {
-                                      Map data = {
-                                        "agentForTravelId":tripData["agentForTravelId"].toString(), 
-                                        "confirmation": "0",
-                                        "agentComment": razonCancelar
-                                      };
-                                    
-                                      http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
-                                    
-
-                                      var dataR = json.decode(response.body);
-                                      Navigator.pop(context);
-                                      if(dataR["ok"]==true){
-                                        
-                                        QuickAlert.show(
-                                          context: context,
-                                          title: "Enviado",
-                                          text: dataR["message"],
-                                          type: QuickAlertType.success
-                                        );
-
-                                        setState(() {
-                                            razonCancelar="";
-                                            item2=getSolicitudes();
-                                        });
-                                      }else{
-                                        QuickAlert.show(
-                                          context: context,
-                                          title: "Lo sentimos",
-                                          text: dataR["message"],
-                                          type: QuickAlertType.error
-                                        );
-                                      }
-
-                                    }
-                                  },
-                                  child: Text('Enviar'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
-                      ),
-                      child: Text(
-                        'Cancelar',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              if (tripData["confirmation"] == false)
-                Row(
-                    children: [
-                      Container(
-                        width: 18,
-                        height: 18,
-                        child: SvgPicture.asset(
-                          "assets/icons/advertencia.svg",
-                          color: GradiantV1,
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Flexible(
-                        child: Text(
-                          'Solicitud cancelada con éxito',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15.0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-              if (tripData["confirmation"] != true && tripData["confirmation"] != false)
-                tripData["systemComment"]==null?
-                  Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () async{
-                        Map data = {
-                        "agentForTravelId":tripData["agentForTravelId"].toString(), 
-                        "confirmation": "1",
-                        "agentComment": "null"
-                      };
-
-                      http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
-
-                       
-
-                      var dataR = json.decode(response.body);
-
-                      if(dataR["ok"]==true){
-                        QuickAlert.show(
-                          context: context,
-                          title: "Enviado",
-                          text: dataR["message"],
-                          type: QuickAlertType.success
-                        );
-
-                        setState(() {
-                          item2=getSolicitudes();
-                        });
-                      }else{
-                         
-                        QuickAlert.show(
-                          context: context,
-                          title: "Lo sentimos",
-                          text: dataR["message"],
-                          type: QuickAlertType.error
-                        );
-                      }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.green,
-                      ),
-                      child: Text(
-                        'Sí',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    TextButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            String comment = '';
-
-                            return AlertDialog(
-                              backgroundColor: backgroundColor,
-                              title: Text('Nos encantaría conocer tu razón', style: TextStyle(color: Colors.white),),
-                              content: StatefulBuilder(
-                                builder: (context, setState) {
-                                  return SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Checkbox(
-                                              value: razon1,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  razonCancelar = "Trabajo desde casa";
-                                                  razon1 = !razon1;
-                                                  razon2 = false;
-                                                  razon3 = false;
-                                                  razon4 = false;
-                                                  });
-                                                },
-                                              ),
-                                              Text(
-                                                " Trabajo desde casa",
-                                                style: TextStyle(color: Colors.white),
-                                              ),
-                                            ],
-                                                                                          ),
-                                                                                          SizedBox(height: 5),
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Checkbox(
-                                                                                                value: razon2,
-                                                                                                onChanged: (value) {
-                                                                                                  setState(() {
-                                                                                                    razonCancelar = "Incapacidad";
-
-                                                                                                    razon1 = false;
-                                                                                                    razon2 = !razon2;
-                                                                                                    razon3 = false;
-                                                                                                    razon4 = false;
-                                                                                                  });
-                                                                                                },
-                                                                                              ),
-                                                                                              Text(
-                                                                                                " Incapacidad",
-                                                                                                style: TextStyle(color: Colors.white),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                          SizedBox(height: 5),
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Checkbox(
-                                                                                                value: razon3,
-                                                                                                onChanged: (value) {
-                                                                                                  setState((){
-                                                                                                    razonCancelar = "Vacaciones";
-
-                                                                                                    razon1 = false;
-                                                                                                    razon2 = false;
-                                                                                                    razon3 = !razon3;
-                                                                                                    razon4 = false;
-                                                                                                  });
-                                                                                                },
-                                                                                              ),
-                                                                                              Text(
-                                                                                                " Vacaciones",
-                                                                                                style: TextStyle(color: Colors.white),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                          SizedBox(height: 5),
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Checkbox(
-                                                                                                value: razon4,
-                                                                                                onChanged: (value) {
-                                                                                                  setState((){
-                                                                                                    razonCancelar = "Motivo personal";
-
-                                                                                                    razon1 = false;
-                                                                                                    razon2 = false;
-                                                                                                    razon3 = false;
-                                                                                                    razon4 = !razon4;
-                                                                                                  });
-                                                                                                },
-                                                                                              ),
-                                                                                              Text(
-                                                                                                " Motivo personal",
-                                                                                                style: TextStyle(color: Colors.white),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ],
-                                                                                      ),
-                                                                                    );
-                                }
-                              ),
-                              
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(); // Cierra la ventana emergente sin realizar ninguna acción
-                                  },
-                                  child: Text('Cerrar', style: TextStyle(color: Colors.white),),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    if (razonCancelar.isEmpty) {
-                                    Navigator.of(context).pop(); 
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            backgroundColor: backgroundColor,
-                                            title: Text('Comentario requerido', style: TextStyle(color: Colors.white)),
-                                            content: Text('Debes ingresar un comentario antes de enviar.', style: TextStyle(color: Colors.white)),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop(); 
-                                                },
-                                                child: Text('Aceptar', style: TextStyle(color: Colors.white)),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    } else {
-                                      Map data = {
-                                        "agentForTravelId":tripData["agentForTravelId"].toString(), 
-                                        "confirmation": "0",
-                                        "agentComment": razonCancelar
-                                      };
-                                    
-                                      http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
-                                    
-
-                                      var dataR = json.decode(response.body);
-                                      Navigator.pop(context);
-                                      if(dataR["ok"]==true){
-                                        
-                                        QuickAlert.show(
-                                          context: context,
-                                          title: "Enviado",
-                                          text: dataR["message"],
-                                          type: QuickAlertType.success
-                                        );
-
-                                        setState(() {
-                                            razonCancelar="";
-                                            item2=getSolicitudes();
-                                        });
-                                      }else{
-                                        QuickAlert.show(
-                                          context: context,
-                                          title: "Lo sentimos",
-                                          text: dataR["message"],
-                                          type: QuickAlertType.error
-                                        );
-                                      }
-
-                                    }
-                                  },
-                                  child: Text('Enviar'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
-                      ),
-                      child: Text(
-                        'No',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ) :
-                Row(
-                    children: [
-                      Container(
-                        width: 18,
-                        height: 18,
-                        child: SvgPicture.asset(
-                          "assets/icons/advertencia.svg",
-                          color: GradiantV1,
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Flexible(
-                        child: Text(
-                          'El tiempo de confirmación ha expirado',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 15.0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-
 
 //función para el valor de rating 1
   void onChanged1(double value) async {
@@ -2368,38 +4349,9 @@ class _NextTripScreenState extends State<NextTripScreen>
       //print(getData['tripId']);
       if (getData['tripId'] != 0 && responsex.body.isNotEmpty) {
         showAlertDialogRatingOld();       
-      }
-    }
-    //final resp1 = Rating.fromJson(json.decode(responsex.body));
-    //print(getData[0]);
-    
-    // if (response.body.isNotEmpty && getData[0]['tripId'].toString()!='0') {
-    //   //validación para mostrar alerta
-    //   // if (mounted) {        
-    //   // }
-    //     //showAlertDialogRating(resp, getData[0]['tripId'].toString(), getData[0]['driverFullname'].toString());
-    // }
-  }
+      }  
+    }   
 
-
-//creación de alerta
-  showAlertDialogRating(dynamic data, String tripId, String nameDriver) async {
-    
-    showGeneralDialog(
-
-        barrierColor: Colors.black.withOpacity(0.5),
-        transitionBuilder: (context, a1, a2, widget) {
-          //final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
-          return Transform.scale(scale: a1.value, child: encuestaP1(data, context, widget, tripId, nameDriver));
-        },
-        transitionDuration: Duration(milliseconds: 200),
-        barrierDismissible: false,
-        barrierLabel: '',
-        context: context,
-        pageBuilder: (context, animation1, animation2) {
-          return widget;
-        }
-    );
   }
 
   //creación de alerta
@@ -2409,97 +4361,109 @@ class _NextTripScreenState extends State<NextTripScreen>
     final resp = DataAgent.fromJson(json.decode(responses.body));
     http.Response response = await http.get(Uri.parse('$ip/api/ratingTrip/${resp.agentId}'));
     final resp1 = Rating.fromJson(json.decode(response.body));
-    showGeneralDialog(barrierColor: Colors.black.withOpacity(0.5),transitionBuilder: (context, a1, a2, widget) {
+
+    showGeneralDialog(
+      barrierColor: Colors.black.withOpacity(0.5),
+      transitionBuilder: (context, a1, a2, widget) {
       final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
+      
       return Transform(transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
         child: Opacity(opacity: a1.value,
           child: AlertDialog(shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
-            backgroundColor: backgroundColor,
-            title: Center(child: Text('😄 ¿Cómo calificaría su último viaje con\n${resp1.driverFullname}? 😁 ', style: TextStyle(color: Colors.white),)), 
+            backgroundColor: Theme.of(navigatorKey.currentContext!).cardColor,
+            title: Text(
+              '¿Cómo calificarías tu último viaje con\n${resp1.driverFullname}?',
+              textAlign: TextAlign.center, 
+              style: Theme.of(navigatorKey.currentContext!).textTheme.titleMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+            ), 
             content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState){
-              return Container(height: 300,width: 500,
-              color: backgroundColor,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      //creación reacciones para conducción
-                      Divider(),
-                      SizedBox(height: 10.0),
-                      Text('Conducción', style: TextStyle(color: Colors.white),),
-                      SizedBox(height: 5.0),
-                      RatingBar.builder(initialRating: 0,itemCount: 5,
-                        itemBuilder: (context, index) {
-                          switch (index) {
-                              case 0:
-                                return Icon(Icons.sentiment_very_dissatisfied,color: Colors.red);
-                              case 1:
-                                return Icon(Icons.sentiment_dissatisfied,color: Colors.redAccent);
-                              case 2:
-                                return Icon(Icons.sentiment_neutral,color: Colors.amber);
-                              case 3:
-                                return Icon(Icons.sentiment_satisfied,color: Colors.lightGreen);
-                              case 4:
-                                return Icon(Icons.sentiment_very_satisfied,color: Colors.green);
-                          }
-                          return SizedBox();
-                        },
-                        onRatingUpdate: (rating1) {
-                          onChanged1(rating1);                          
-                        },
-                      ),
-                      Divider(),
-                      SizedBox(height: 10.0),
-                      //creación reacciones para amabilidad
-                      Text('Amabilidad del motorista', style: TextStyle(color: Colors.white),),
-                      SizedBox(height: 5.0),
-                      RatingBar.builder(initialRating: 0,itemCount: 5,
-                        itemBuilder: (context, index) {
-                          switch (index) {
-                              case 0:
-                                return Icon(Icons.sentiment_very_dissatisfied,color: Colors.red);
-                              case 1:
-                                return Icon(Icons.sentiment_dissatisfied,color: Colors.redAccent);
-                              case 2:
-                                return Icon(Icons.sentiment_neutral,color: Colors.amber);
-                              case 3:
-                                return Icon(Icons.sentiment_satisfied,color: Colors.lightGreen,);
-                              case 4:
-                                return Icon(Icons.sentiment_very_satisfied,color: Colors.green);
-                          }
-                          return SizedBox();
-                        },
-                        onRatingUpdate: (rating2) {
-                          onChanged2(rating2);                          
-                        },
-                      ),
-                      Divider(),
-                      SizedBox(height: 10.0),
-                      //creación reacciones para condiciones
-                      Text('Condiciones del vehículo', style: TextStyle(color: Colors.white),),
-                      SizedBox(height: 5.0),
-                      RatingBar.builder(initialRating: 0,itemCount: 5,
-                        itemBuilder: (context, index) {
-                          switch (index) {
-                              case 0:
-                                return Icon(Icons.sentiment_very_dissatisfied,color: Colors.red);
-                              case 1:
-                                return Icon(Icons.sentiment_dissatisfied,color: Colors.redAccent);
-                              case 2:
-                                return Icon(Icons.sentiment_neutral,color: Colors.amber);
-                              case 3:
-                                return Icon(Icons.sentiment_satisfied,color: Colors.lightGreen);
-                              case 4:
-                                return Icon(Icons.sentiment_very_satisfied,color: Colors.green);
-                          }
-                          return SizedBox();
-                        },                              
-                        onRatingUpdate: (rating3) {
-                          onChanged3(rating3);                          
-                        },
-                      ),
-                    ]
-                          ),
+              return SingleChildScrollView(
+                child: Container(height: 300,width: 500,
+                color: Colors.transparent,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        //creación reacciones para conducción
+              
+                        SizedBox(height: 10.0),
+                        Text('Conducción', style:Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.normal)),
+                        SizedBox(height: 5.0),
+                        RatingBar.builder(
+                          initialRating: 0,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            switch (index) {
+                                case 0:
+                                  return Icon(Icons.sentiment_very_dissatisfied,color: Colors.red);
+                                case 1:
+                                  return Icon(Icons.sentiment_dissatisfied,color: Colors.redAccent);
+                                case 2:
+                                  return Icon(Icons.sentiment_neutral,color: Colors.amber);
+                                case 3:
+                                  return Icon(Icons.sentiment_satisfied,color: Colors.lightGreen);
+                                case 4:
+                                  return Icon(Icons.sentiment_very_satisfied,color: Colors.green);
+                            }
+                            return SizedBox();
+                          },
+                          onRatingUpdate: (rating1) {
+                            onChanged1(rating1);                          
+                          },
+                        ),
+               
+                        SizedBox(height: 40.0),
+                        //creación reacciones para amabilidad
+                        Text('Amabilidad del motorista', style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.normal)),
+                        SizedBox(height: 5.0),
+                        RatingBar.builder(initialRating: 0,itemCount: 5,
+                          itemBuilder: (context, index) {
+                            switch (index) {
+                                case 0:
+                                  return Icon(Icons.sentiment_very_dissatisfied,color: Colors.red);
+                                case 1:
+                                  return Icon(Icons.sentiment_dissatisfied,color: Colors.redAccent);
+                                case 2:
+                                  return Icon(Icons.sentiment_neutral,color: Colors.amber);
+                                case 3:
+                                  return Icon(Icons.sentiment_satisfied,color: Colors.lightGreen,);
+                                case 4:
+                                  return Icon(Icons.sentiment_very_satisfied,color: Colors.green);
+                            }
+                            return SizedBox();
+                          },
+                          onRatingUpdate: (rating2) {
+                            onChanged2(rating2);                          
+                          },
+                        ),
+                 
+                        SizedBox(height: 40.0),
+                        //creación reacciones para condiciones
+                        Text('Condiciones del vehículo', style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.normal)),
+                        SizedBox(height: 5.0),
+                        RatingBar.builder(initialRating: 0,itemCount: 5,
+                          itemBuilder: (context, index) {
+                            switch (index) {
+                                case 0:
+                                  return Icon(Icons.sentiment_very_dissatisfied,color: Colors.red);
+                                case 1:
+                                  return Icon(Icons.sentiment_dissatisfied,color: Colors.redAccent);
+                                case 2:
+                                  return Icon(Icons.sentiment_neutral,color: Colors.amber);
+                                case 3:
+                                  return Icon(Icons.sentiment_satisfied,color: Colors.lightGreen);
+                                case 4:
+                                  return Icon(Icons.sentiment_very_satisfied,color: Colors.green);
+                            }
+                            return SizedBox();
+                          },                              
+                          onRatingUpdate: (rating3) {
+                            onChanged3(rating3);                          
+                          },
+                        ),
+                      ]
+                            ),
+                  ),
                 ),
               );
             }
@@ -2509,53 +4473,101 @@ class _NextTripScreenState extends State<NextTripScreen>
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   //SizedBox(width: 15.0), 
-                  ButtonTheme(minWidth: 60.0,child: TextButton(style: TextButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: secondColor),
-                    onPressed: () => {
-                      //fetch skip Rating
-                      fetchSkipRating2(resp.agentId.toString(), resp1.tripId.toString(), rating1.toInt(), rating2.toInt(), rating3.toInt(), message.text),
-                      Navigator.pop(context),                              
-                    },
-                    child: Text('Omitir'),                              
-                  )),  
+                  ButtonTheme(
+                    minWidth: 60.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0), // Ajusta el radio según tus preferencias
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor : Colors.orange,
+                        foregroundColor : Colors.white,
+                      ),
+                      onPressed: () {
+                        // Acción al presionar el botón
+                        fetchSkipRating2(
+                          resp.agentId.toString(),
+                          resp1.tripId.toString(),
+                          rating1.toInt(),
+                          rating2.toInt(),
+                          rating3.toInt(),
+                          message.text,
+                        );
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Omitir',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+ 
                   //SizedBox(width: 5.0),                                   
-                  ButtonTheme(minWidth: 60.0,child: TextButton(style: TextButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: kgray),
-                    onPressed: () => {
-                      Navigator.pop(context),
-                    },
-                    child: Text('Ahora no'),                              
-                  )),
+                  ButtonTheme(
+                    minWidth: 60.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0), // Ajusta el radio según tus preferencias
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor : Colors.grey,
+                        foregroundColor : Colors.white,
+                      ),
+                      onPressed: () {
+                        // Acción al presionar el botón
+                         Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Ahora no',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+
                   //SizedBox(width: 5.0),                                   
-                  ButtonTheme(minWidth: 60.0,child: TextButton(style: TextButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: GradiantV1),
-                    onPressed: () => {
-                      Navigator.pop(context),
-                      showGeneralDialog(barrierColor: Colors.black.withOpacity(0.5),
+                  ButtonTheme(
+                    minWidth: 60.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0), // Ajusta el radio según tus preferencias
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor : Color.fromRGBO(40, 93, 169, 1),
+                        foregroundColor : Colors.white,
+                      ),
+                      onPressed: () => {
+                        Navigator.pop(context),
+                        showGeneralDialog(
+                          barrierColor: Colors.black.withOpacity(0.5),
                           transitionBuilder: (context, a1, a2, widget) {
                             return Transform.scale(scale: a1.value,
                               child: Opacity(opacity: a1.value,
                                 child: AlertDialog(
-                                  backgroundColor: backgroundColor,
+                                  backgroundColor: Theme.of(navigatorKey.currentContext!).cardColor,
                                   shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
                                   title: Center(
-                                    child: Text('Estamos evaluando a nuestros \nmotoristas, para esto es \nmuy importante su comentario.',textAlign: TextAlign.center, style: TextStyle(color: Colors.white),)),
-                                  content: TextField(controller: message,decoration: InputDecoration(labelText: 'Escriba aquí')),
+                                    child: Text('Estamos evaluando a nuestros \nmotoristas, para esto es \nmuy importante tu comentario.',textAlign: TextAlign.center, style:Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium)),
+                                  content: TextField(
+                                    style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                    controller: message,
+                                    decoration: InputDecoration(   
+                                      hintText: 'Comentario', 
+                                      hintStyle: Theme.of(navigatorKey.currentContext!).textTheme.bodySmall!.copyWith(fontSize: 15),
+                                    )
+                                  ),
                                   actions: [
                                     //SizedBox(width: 60.0),
                                     Center(
                                       child: TextButton(style: TextButton.styleFrom(
                                             foregroundColor: Colors.white,
-                                            backgroundColor: GradiantV1),
+                                            backgroundColor: Color.fromRGBO(40, 93, 169, 1)),
                                         onPressed: () => {
                                           //fetch skip rating
-                                          fetchSkipRating2(resp.agentId.toString(), resp1.tripId.toString(), rating1.toInt(), rating2.toInt(), rating3.toInt(), message.text),
                                           Navigator.pop(context),
+                                          fetchSkipRating2(resp.agentId.toString(), resp1.tripId.toString(), rating1.toInt(), rating2.toInt(), rating3.toInt(), message.text),
+                                          
                                         },
-                                        child: Text('Enviar'),                                                  
+                                        child: Text('Enviar', style: TextStyle(fontWeight: FontWeight.bold)),                                                    
                                       ),
                                     ),
                                     //SizedBox(width: 70.0),
@@ -2564,15 +4576,19 @@ class _NextTripScreenState extends State<NextTripScreen>
                               ),
                             );
                           },
-                        transitionDuration: Duration(milliseconds: 200),
-                        barrierDismissible: false,
-                        barrierLabel: '',
-                        context: context,
-                        pageBuilder: (context, animation1, animation2) {
-                        return Text('');}),
+                          transitionDuration: Duration(milliseconds: 200),
+                          barrierDismissible: false,
+                          barrierLabel: '',
+                          context: context,
+                          pageBuilder: (context, animation1, animation2) {
+                          return Text('');}
+                        ),
                       },
-                    child: Text('Enviar'),                              
-                  ),
+                      child: Text(
+                        'Enviar',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ),
                     
                 ],
@@ -2592,556 +4608,6 @@ class _NextTripScreenState extends State<NextTripScreen>
       return Text('');});      
   }
 
-  AlertDialog encuestaP3(DataAgent resp, BuildContext context, Widget widget, String tripId, String driverFullname) {
-    return AlertDialog(
-          //scrollable: true,
-          backgroundColor: backgroundColor,
-          shape: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16.0)),
-          title: Center(
-              child: Text(
-            '😄 ¿Cómo calificaría su último viaje con $driverFullname? 😁 ',
-            style: TextStyle(color: Colors.white),
-          )),
-          content: SizedBox(
-            height: 900,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                 SizedBox(height: 10.0),
-                  //creación reacciones para condiciones
-                  Text('4. El motorista actual de su viaje cumple puntual con la llegadas a las instalaciones de su empresa.',style: TextStyle(color: Colors.white)),
-                  SizedBox(height: 5.0),
-                  RatingBar.builder(
-                    initialRating: 0,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      switch (index) {
-              case 0:
-                return Icon(Icons.sentiment_very_dissatisfied,
-                    color: Colors.red);
-              case 1:
-                return Icon(Icons.sentiment_dissatisfied,
-                    color: Colors.redAccent);
-              case 2:
-                return Icon(Icons.sentiment_neutral,
-                    color: Colors.amber);
-              case 3:
-                return Icon(Icons.sentiment_satisfied,
-                    color: Colors.lightGreen);
-              case 4:
-                return Icon(Icons.sentiment_very_satisfied,
-                    color: Colors.green);
-                      }
-                      return SizedBox();
-                    },
-                    onRatingUpdate: (rating4) {
-                      onChanged4(rating4);
-                    },
-                  ),
-                  SizedBox(height: 10.0),
-                  TextField(
-                    style: TextStyle(color: Colors.white),
-                    controller: comentario4,
-                    decoration: const InputDecoration(
-              filled: true,
-              fillColor: Color.fromARGB(96, 0, 0, 0),
-              hintStyle: TextStyle(color: Colors.white),
-              contentPadding: EdgeInsets.all(1),
-              hintText: 'Escriba un comentario...',
-              border: InputBorder.none,
-                    ),
-                    maxLines: 5,
-                  ),
-                  SizedBox(height: 10.0),
-                  //creación reacciones para condiciones
-                  Text('5. En caso de tener entrada, el motorista actual de su viaje, pasa a la hora acordada en la plataforma.',style: TextStyle(color: Colors.white)),
-                  SizedBox(height: 5.0),
-                  RatingBar.builder(
-                    initialRating: 0,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      switch (index) {
-              case 0:
-                return Icon(Icons.sentiment_very_dissatisfied,
-                    color: Colors.red);
-              case 1:
-                return Icon(Icons.sentiment_dissatisfied,
-                    color: Colors.redAccent);
-              case 2:
-                return Icon(Icons.sentiment_neutral,
-                    color: Colors.amber);
-              case 3:
-                return Icon(Icons.sentiment_satisfied,
-                    color: Colors.lightGreen);
-              case 4:
-                return Icon(Icons.sentiment_very_satisfied,
-                    color: Colors.green);
-                      }
-                      return SizedBox();
-                    },
-                    onRatingUpdate: (rating5) {
-                      onChanged5(rating5);
-                    },
-                  ),
-                  SizedBox(height: 10.0),
-                  TextField(
-                    style: TextStyle(color: Colors.white),
-                    controller: comentario5,
-                    decoration: const InputDecoration(
-              filled: true,
-              fillColor: Color.fromARGB(96, 0, 0, 0),
-              hintStyle: TextStyle(color: Colors.white),
-              contentPadding: EdgeInsets.all(1),
-              hintText: 'Escriba un comentario...',
-              border: InputBorder.none,
-                    ),
-                    maxLines: 5,
-                  ),
-                  SizedBox(height: 10.0),
-                  //creación reacciones para condiciones
-                  Text('6. ¿Considera que la unidad actual de su viaje, está en buenas condiciones y limpia ?',style: TextStyle(color: Colors.white)),
-                  SizedBox(height: 5.0),
-                  RatingBar.builder(
-                    initialRating: 0,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      switch (index) {
-              case 0:
-                return Icon(Icons.sentiment_very_dissatisfied,
-                    color: Colors.red);
-              case 1:
-                return Icon(Icons.sentiment_dissatisfied,
-                    color: Colors.redAccent);
-              case 2:
-                return Icon(Icons.sentiment_neutral,
-                    color: Colors.amber);
-              case 3:
-                return Icon(Icons.sentiment_satisfied,
-                    color: Colors.lightGreen);
-              case 4:
-                return Icon(Icons.sentiment_very_satisfied,
-                    color: Colors.green);
-                      }
-                      return SizedBox();
-                    },
-                    onRatingUpdate: (rating6) {
-                      onChanged6(rating6);
-                    },
-                ),
-                SizedBox(height: 10.0),
-                TextField(
-                  style: TextStyle(color: Colors.white),
-                  controller: comentario6,
-                  decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromARGB(96, 0, 0, 0),
-                    hintStyle: TextStyle(color: Colors.white),
-                    contentPadding: EdgeInsets.all(1),
-                    hintText: 'Escriba un comentario...',
-                    border: InputBorder.none,
-                  ),
-                  maxLines: 5,
-                ),
-                ],
-              ),
-            ),
-          ),
-          actions: <Widget>[  
-            botones(resp, context, widget, tripId),
-            SizedBox(width: 15.0),
-          ],
-        );
-  }
-
-  AlertDialog encuestaP2(DataAgent resp, BuildContext context, Widget widget, String tripId, String driverFullname) {
-    
-    return AlertDialog(
-          //scrollable: true,
-          backgroundColor: backgroundColor,
-          shape: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16.0)),
-          title: Center(
-              child: Text(
-            '😄 ¿Cómo calificaría su último viaje con $driverFullname? 😁 ',
-            style: TextStyle(color: Colors.white),
-          )),
-          content: SizedBox(
-            height: 900,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: 10.0),
-                  Text('Califica en la escala del 1 al 5 , siendo 1 muy malo y 5 excelente\n',style: TextStyle(color: Colors.white)),
-                  Text('1. ¿Cual es el nivel de satisfacción con el trato recibido por el motorista que brinda tu transporte actualmente?',style: TextStyle(color: Colors.white)),
-                  SizedBox(height: 5.0),
-                  RatingBar.builder(
-                    initialRating: 0,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      switch (index) {
-                        case 0:
-                          return Icon(Icons.sentiment_very_dissatisfied,
-                              color: Colors.red);
-                        case 1:
-                          return Icon(Icons.sentiment_dissatisfied,
-                              color: Colors.redAccent);
-                        case 2:
-                          return Icon(Icons.sentiment_neutral,
-                              color: Colors.amber);
-                        case 3:
-                          return Icon(Icons.sentiment_satisfied,
-                              color: Colors.lightGreen);
-                        case 4:
-                          return Icon(Icons.sentiment_very_satisfied,
-                              color: Colors.green);
-                      }
-                      return SizedBox();
-                    },
-                    onRatingUpdate: (rating1) {
-                      onChanged1(rating1);
-                    },
-                  ),
-                  SizedBox(height: 10.0),
-                  TextField(
-                    style: TextStyle(color: Colors.white),
-                    controller: comentario1,
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: Color.fromARGB(96, 0, 0, 0),
-                      hintStyle: TextStyle(color: Colors.white),
-                      contentPadding: EdgeInsets.all(1),
-                      hintText: 'Escriba un comentario...',
-                      border: InputBorder.none,
-                    ),
-                    maxLines: 5,
-                  ),
-                  SizedBox(height: 10.0),
-                //creación reacciones para amabilidad
-                Text('2.¿El motorista que te brinda tu transporte está siempre atento y no utiliza el celular al conducir?',style: TextStyle(color: Colors.white)),
-                SizedBox(height: 5.0),
-                RatingBar.builder(
-                  initialRating: 0,
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    switch (index) {
-                      case 0:
-                        return Icon(Icons.sentiment_very_dissatisfied,
-                            color: Colors.red);
-                      case 1:
-                        return Icon(Icons.sentiment_dissatisfied,
-                            color: Colors.redAccent);
-                      case 2:
-                        return Icon(Icons.sentiment_neutral,
-                            color: Colors.amber);
-                      case 3:
-                        return Icon(
-                          Icons.sentiment_satisfied,
-                          color: Colors.lightGreen,
-                        );
-                      case 4:
-                        return Icon(Icons.sentiment_very_satisfied,
-                            color: Colors.green);
-                    }
-                    return SizedBox();
-                  },
-                  onRatingUpdate: (rating2) {
-                    onChanged2(rating2);
-                  },
-                ),
-                SizedBox(height: 10.0),
-                  TextField(
-                    style: TextStyle(color: Colors.white),
-                    controller: comentario2,
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: Color.fromARGB(96, 0, 0, 0),
-                      hintStyle: TextStyle(color: Colors.white),
-                      contentPadding: EdgeInsets.all(1),
-                      hintText: 'Escriba un comentario...',
-                      border: InputBorder.none,
-                    ),
-                    maxLines: 5,
-                  ),
-                SizedBox(height: 10.0),
-                  //creación reacciones para condiciones
-                  Text('3. El motorista que brinda tu transporte, es prudente en el manejo de la unidad y cuidadoso con los tumulos y agujeros de la calles durante su recorrido.',style: TextStyle(color: Colors.white)),
-                  SizedBox(height: 5.0),
-                  RatingBar.builder(
-                    initialRating: 0,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      switch (index) {
-                        case 0:
-                          return Icon(Icons.sentiment_very_dissatisfied,
-                              color: Colors.red);
-                        case 1:
-                          return Icon(Icons.sentiment_dissatisfied,
-                              color: Colors.redAccent);
-                        case 2:
-                          return Icon(Icons.sentiment_neutral,
-                              color: Colors.amber);
-                        case 3:
-                          return Icon(Icons.sentiment_satisfied,
-                              color: Colors.lightGreen);
-                        case 4:
-                          return Icon(Icons.sentiment_very_satisfied,
-                              color: Colors.green);
-                      }
-                      return SizedBox();
-                    },
-                    onRatingUpdate: (rating3) {
-                      onChanged3(rating3);
-                    },
-                  ),
-                  SizedBox(height: 10.0),
-                  TextField(
-                    style: TextStyle(color: Colors.white),
-                    controller: comentario3,
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: Color.fromARGB(96, 0, 0, 0),
-                      hintStyle: TextStyle(color: Colors.white),
-                      contentPadding: EdgeInsets.all(1),
-                      hintText: 'Escriba un comentario...',
-                      border: InputBorder.none,
-                    ),
-                    maxLines: 5,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          actions: <Widget>[  
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ButtonTheme(
-                  minWidth: 60.0,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: secondColor),
-                    onPressed: () => {
-                      QuickAlert.show(
-                        context: context,
-                        title: "Está seguro que desea omitir la encuesta?",          
-                        type: QuickAlertType.success,
-                        confirmBtnText: 'Confirmar',
-                        cancelBtnText: 'Cancelar',
-                        showCancelBtn: true,  
-                        confirmBtnTextStyle: TextStyle(fontSize: 15, color: Colors.white),
-                        cancelBtnTextStyle:TextStyle(color: Colors.red, fontSize: 15, fontWeight:FontWeight.bold ), 
-                        onConfirmBtnTap:() {
-                          fetchSkipRating(resp.agentId.toString(),'',0,0,0,0,0,0,'','','','','','',true);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        },
-                        onCancelBtnTap: (() {
-                          Navigator.pop(context);
-                        })
-                      ),
-                        
-                    },
-                  child: Text('Omitir'),
-                  )
-                ),
-                ButtonTheme(
-                  minWidth: 60.0,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: kgray),
-                    onPressed: () => {                           
-                      if(rating1 != 0 && rating2 !=0 && rating3 != 0)...{
-                      Navigator.pop(context),
-                      showGeneralDialog(
-                        barrierColor: Colors.black.withOpacity(0.5),
-                        transitionBuilder: (context, a1, a2, widget) {
-                          return Transform.scale(
-                            scale: a1.value,
-                            child: Opacity(
-                              opacity: a1.value,
-                              child: Transform.scale(scale: a1.value, child: encuestaP3(resp, context, widget, tripId, driverFullname)),
-                            ),
-                          );
-                        },
-                        transitionDuration: Duration(milliseconds: 220),
-                        barrierDismissible: false,
-                        barrierLabel: '',
-                        context: context,
-                        pageBuilder: (context, animation1, animation2) {
-                          return widget;
-                        }
-                      )                      
-                      }else...{
-                        if(rating1== 0){
-                          QuickAlert.show(
-                            context: context,
-                            title: 'Pendiente',
-                            confirmBtnText: "Aceptar",
-                            text: 'Hace falta que califique la pregunta $rating11, los comentarios son opcionales.',
-                            type: QuickAlertType.info
-                          ),
-                        }else if(rating2== 0){
-                          QuickAlert.show(
-                            context: context,
-                            title: 'Pendiente',
-                            confirmBtnText: "Aceptar",
-                            text: 'Hace falta que califique la pregunta $rating22, los comentarios son opcionales.',
-                            type: QuickAlertType.info
-                          ),
-                        }else if(rating3== 0){
-                          QuickAlert.show(
-                            context: context,
-                            title: 'Pendiente',
-                            confirmBtnText: "Aceptar",
-                            text: 'Hace falta que califique la pregunta $rating33, los comentarios son opcionales.',
-                            type: QuickAlertType.info
-                          ),
-                        }                     
-                      }
-
-                    },
-                  child: Text('Siguiente'),
-                  )
-                ),
-              ],
-            ),
-            SizedBox(width: 15.0),
-          ],
-        );
-  }
-
-  AlertDialog encuestaP1(DataAgent resp, BuildContext context, Widget widget, String tripId, String driverFullname) {
-    return AlertDialog(
-      //scrollable: true,
-      backgroundColor: backgroundColor,
-      shape: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(16.0)),
-      title: Center(
-        child: Text(
-          '😄 ¡Responde y gana por calificarnos! 😁',
-          style: TextStyle(color: Colors.white, fontSize: 22),
-        )
-      ),
-      content: SizedBox(
-        height: 500,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 10.0),
-              Text(
-                textAlign: TextAlign.justify,
-                'Gracias por viajar con nosotros, queremos seguir mejorando y tu opinion es muy importante. Le agradeceremos unos minutos para compartirnos tu experiencia con la siguiente encuesta.\n\nSi calificas cada uno de los puntos durante todos tus viajes cuando utilizas el transporte durante 5 días seguidos, estarás participando en un sorteo por cualquiera de los regalos 🎁 que te mostraremos en el siguiente enlance: ',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20
-                ) 
-              ),
-        
-              SizedBox(height: 10.0),
-              ButtonTheme(
-                    minWidth: 60.0,
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color.fromARGB(157, 0, 247, 255)),
-                      onPressed: () => launchUrl(Uri.parse('https://giveaway.smtdriver.com/')),
-                    child: Text(
-                      'Ver Premios 🎁', 
-                      style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20
-                      ) 
-                    ),
-                    )
-                  ),
-        
-              SizedBox(height: 10.0),
-        
-              Text(
-                textAlign: TextAlign.justify,
-                'Toda información que brindes es totalmente confidencial.',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20
-                ) 
-              ),
-            ],
-          ),
-        ),
-      ),
-      actions: <Widget>[  
-        Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ButtonTheme(
-                  minWidth: 60.0,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: secondColor),
-                    onPressed: () => {
-                      QuickAlert.show(
-                        context: context,
-                        title: "Está seguro que desea omitir la encuesta?",          
-                        type: QuickAlertType.success,
-                        confirmBtnText: 'Confirmar',
-                        cancelBtnText: 'Cancelar',
-                        showCancelBtn: true,  
-                        confirmBtnTextStyle: TextStyle(fontSize: 15, color: Colors.white),
-                        cancelBtnTextStyle:TextStyle(color: Colors.red, fontSize: 15, fontWeight:FontWeight.bold ), 
-                        onConfirmBtnTap:() {
-                          fetchSkipRating(resp.agentId.toString(),'',0,0,0,0,0,0,'','','','','','',true);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        },
-                        onCancelBtnTap: (() {
-                          Navigator.pop(context);
-                        })
-                      ),
-                    },
-                  child: Text('Omitir'),
-                  )
-                ),
-                ButtonTheme(
-                  minWidth: 60.0,
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: kgray),
-                    onPressed: () => {
-                      Navigator.pop(context),
-                      showGeneralDialog(
-                          barrierColor: Colors.black.withOpacity(0.5),
-                          transitionBuilder: (context, a1, a2, widget) {
-                            return Transform.scale(
-                              scale: a1.value,
-                              child: Opacity(
-                                opacity: a1.value,
-                                child: Transform.scale(scale: a1.value, child: encuestaP2(resp, context, widget, tripId, driverFullname)),
-                              ),
-                            );
-                          },
-                          transitionDuration: Duration(milliseconds: 220),
-                          barrierDismissible: false,
-                          barrierLabel: '',
-                          context: context,
-                          pageBuilder: (context, animation1, animation2) {
-                            return widget;
-                          })
-                    },
-                  child: Text('Siguiente'),
-                  )
-                ),
-              ],
-            ),
-        SizedBox(width: 15.0),
-      ],
-    );
-  }
-
   Row botones(DataAgent resp, BuildContext context, Widget widget, String tripId) {
     return Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -3155,7 +4621,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                       onPressed: () => {
                         QuickAlert.show(
                           context: context,
-                          title: "Está seguro que desea omitir la encuesta?",          
+                          title: "Estás seguro que deseas omitir la encuesta?",          
                           type: QuickAlertType.success,
                           confirmBtnText: 'Confirmar',
                           cancelBtnText: 'Cancelar',
@@ -3190,7 +4656,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                   child: TextButton(
                     style: TextButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: GradiantV1),
+                        backgroundColor: const Color.fromRGBO(40, 93, 169, 1)),
                     onPressed: () => {
                       if(rating1 != 0 && rating2 !=0 && rating3 != 0 && rating4 != 0&& rating5 != 0 &&rating6 != 0)...{
                         Navigator.pop(context),
@@ -3202,7 +4668,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                             title: 'Pendiente',
                             confirmBtnText: "Aceptar",
                             text: 'Hace falta que califique la pregunta $rating44, los comentarios son opcionales.',
-                            type: QuickAlertType.info
+                            type: QuickAlertType.info,
                           ),
                         }else if(rating5== 0){
                           QuickAlert.show(
