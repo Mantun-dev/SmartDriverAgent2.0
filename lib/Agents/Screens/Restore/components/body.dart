@@ -5,8 +5,8 @@ import 'package:flutter_auth/Agents/Screens/Login/login_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Restore/components/background.dart';
 import 'package:flutter_auth/Agents/models/register.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
-import 'package:flutter_auth/components/rounded_button.dart';
-import 'package:gradient_borders/box_borders/gradient_box_border.dart';
+import 'package:flutter_auth/components/progress_indicator.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 import 'dart:convert' show json;
@@ -25,6 +25,8 @@ class _BodyState extends State<Body> {
   final prefs = new PreferenciasUsuario();
   TextEditingController user = new TextEditingController();
   String ip = "https://smtdriver.com";
+  bool camposVaciosAlerta = false;
+
   @override
   void initState() {
     super.initState();
@@ -33,6 +35,7 @@ class _BodyState extends State<Body> {
 
 //función fetch para restore pass
   Future<dynamic> fetchUserResetPass(String agentUser) async {
+    LoadingIndicatorDialog().show(context);
     //<List<Map<String,Register>>>
     Map data = {'agentUser': agentUser};
 
@@ -42,23 +45,29 @@ class _BodyState extends State<Body> {
     final no = Register.fromJson(json.decode(responses.body));
     //alertas y redirecciones
     //print(responses.body);
-    if (responses.statusCode == 200 && no.ok == true) {
-      setState(() {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
-            (Route<dynamic> route) => false);
-      });
-      QuickAlert.show(
-        context: context,
-          title: no.title,
-          text: no.message,
-          type: QuickAlertType.success);
-    } else if (no.ok != true) {
-      QuickAlert.show(
-        context: context,
-          title: no.title,
-          text: no.message,
-          type: QuickAlertType.error);
+
+    LoadingIndicatorDialog().dismiss();
+    if(mounted){
+      if (responses.statusCode == 200 && no.ok == true) {
+        setState(() {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (BuildContext context) => LoginScreen()),
+              (Route<dynamic> route) => false);
+        });
+        QuickAlert.show(
+          context: context,
+            title: no.title,
+            text: no.message,
+            type: QuickAlertType.success,
+            confirmBtnText: "Ok");
+      } else if (no.ok != true) {
+        QuickAlert.show(
+          context: context,
+            title: no.title,
+            text: no.message,
+            type: QuickAlertType.error,
+            confirmBtnText: "Ok");
+      }
     }
     return Register.fromJson(json.decode(responses.body));
   }
@@ -67,76 +76,182 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Background(
-      child: SingleChildScrollView(
+      child: Container(
+        height: size.height,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: 20),
-            Text(
-              "REESTABLECER CONTRASEÑA",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 30, color: firstColor),
+
+        children: [
+          SizedBox(height: 20),
+          Container(
+            width: size.width,
+            child: Stack(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 40, right: 40),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                          pageBuilder: (_, __, ___) => LoginScreen(),
+                          transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                            return SlideTransition(
+                              position: Tween<Offset>(
+                                begin: Offset(-1.0, 0.0),
+                                end: Offset.zero,
+                              ).animate(animation),
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color.fromRGBO(40, 93, 169, 1),
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: SvgPicture.asset(
+                          "assets/icons/flecha_atras_oscuro.svg",
+                          color: Color.fromRGBO(40, 93, 169, 1),
+                          width: 5,
+                          height: 10,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+  
+                Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        "Reestablecer",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal, fontSize: 27, color: Color.fromRGBO(40, 93, 169, 1)),
+                      ),
+                      Text(
+                        "Contraseña",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal, fontSize: 27, color: Color.fromRGBO(40, 93, 169, 1)),
+                      ),
+
+                      SizedBox(height: 20),
+                      Container(
+                        constraints: BoxConstraints(
+                          maxWidth: 180,
+                          maxHeight: 180,
+                        ),
+                        child: Lottie.asset('assets/videos/contraR.json')
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            Lottie.asset('assets/videos/reestablecer.json'),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Text(
-                'Escribe tu nombre de usuario, se enviará un enlace al correo para reestablecer tu contraseña',
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: (15.0),
-                    color: Colors.white),
-                textAlign: TextAlign.center,
+          ),
+
+          Container(
+            margin: EdgeInsets.only(left: 40, right: 40),
+            child: Column(
+                children: [
+                  SizedBox(height: 30),
+                  Text(
+                    'Escribe tu número de empleado asignado o identidad, te enviaremos un enlace al correo para que puedas restablecer tu contraseña.',
+                    style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: (14.0),
+                        color: Colors.black),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 30),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5.0),
+                    child: _crearUsuario(),
+                  ),
+                  SizedBox(height: size.height * 0.04),
+                  OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                side: BorderSide(color: const Color.fromRGBO(40, 93, 169, 1)),
+                                fixedSize: Size(size.width-80, 50),
+                                backgroundColor: const Color.fromRGBO(40, 93, 169, 1)
+                              ),
+                              onPressed: () {
+                                if(user.text.isEmpty){
+                                  QuickAlert.show(
+                                  context: context,
+                                  title: "Alerta",
+                                  text: "Campos Vacios",
+                                  type: QuickAlertType.error,
+                                  confirmBtnText: "Ok"
+                                );
+
+                                setState(() {
+                                  camposVaciosAlerta = true;
+                                });
+                            return;
+                                }
+                                fetchUserResetPass(user.text);
+                              },
+                              child: Text(
+                                "Enviar",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.normal
+                                ),
+                              ),
+                            ),
+                ],
               ),
-            ),
-            SizedBox(height: size.height * 0.01),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5.0),
-              child: _crearUsuario(),
-            ),
-            RoundedButton(
-                color: thirdColor,
-                text: 'ENVIAR',
-                press: () {
-                  fetchUserResetPass(user.text);
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  //   return SecondRestoreScreen();
-                  // }));
-                }),
-          ],
-        ),
+          ),
+
+        ],
+      ),
       ),
     );
   }
 
 //Widgets fields
   Widget _crearUsuario() {
-    return Container(
-      margin: EdgeInsets.only(left: 35, right: 35),
-      padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 50),
-      decoration: BoxDecoration(
-          border: const GradientBoxBorder(
-            gradient: LinearGradient(colors: [GradiantV_2, GradiantV_1]),
-            width: 4,
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 10, right: 10),
+          child: TextField(
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.normal),
+            controller: user,
+            //onChanged: onChanged,
+            cursorColor: thirdColor,
+            decoration: InputDecoration(
+              icon: SvgPicture.asset(  
+                  "assets/icons/usuario.svg",
+                  color: Color.fromRGBO(40, 93, 169, 1),
+                  width: 20,
+                  height: 20,
+                ),
+              hintText: "Número de empleado o identidad",
+              hintStyle: TextStyle(color: camposVaciosAlerta==true?Colors.red:Color.fromRGBO(134, 134, 134, 1), fontWeight: FontWeight.normal),
+              border: InputBorder.none,
+            ),
           ),
-          borderRadius: BorderRadius.circular(50)),
-      child: TextField(
-        style: TextStyle(color: Colors.white),
-        controller: user,
-        //onChanged: onChanged,
-        cursorColor: thirdColor,
-        decoration: InputDecoration(
-          icon: Icon(
-            Icons.person,
-            color: thirdColor,
-            size: 30,
-          ),
-          hintText: "Ingrese su usuario",
-          hintStyle: TextStyle(color: Colors.white),
-          border: InputBorder.none,
         ),
-      ),
+        Divider(
+          color: Color.fromRGBO(158, 158, 158, 1),
+          thickness: 1.0,
+        )
+      ],
     );
   }
 }

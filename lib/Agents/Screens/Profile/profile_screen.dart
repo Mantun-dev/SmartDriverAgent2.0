@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/Agents/Screens/Details/components/loader.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen_changes.dart';
-import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
-import 'package:flutter_auth/Agents/Screens/Signup/components/background.dart';
 import 'package:flutter_auth/Agents/models/dataAgent.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 //import 'package:flutter_auth/Agents/models/dataAgent.dart';
@@ -10,9 +7,10 @@ import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/Agents/models/profileAgent.dart';
 //import 'package:flutter_auth/Agents/models/profileAgent.dart';
 //import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
-import 'package:flutter_auth/components/menu_lateral.dart';
-import 'package:flutter_auth/components/solictud_cambio.dart';
-import '../../../constants.dart';
+import 'package:flutter_auth/components/AppBarSuperior.dart';
+import 'package:flutter_auth/components/backgroundB.dart';
+import 'package:flutter_svg/svg.dart';
+import '../../../components/AppBarPosterior.dart';
 
 void main() {
   runApp(ProfilePage());
@@ -44,292 +42,885 @@ class _DataTableExample extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-          drawer: MenuLateral(),
-          appBar: AppBar(
-            backgroundColor: backgroundColor,
-            elevation: 15,
-            iconTheme: IconThemeData(color: secondColor, size: 35),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.arrow_circle_left,
-                  size: 40,
-                  color: thirdColor,
+    return BackgroundBody(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+                appBar: PreferredSize(
+                  preferredSize: Size.fromHeight(56),
+                  child: AppBarSuperior(item: 1,)
                 ),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return HomeScreen();
-                  }));
-                },
+                body: Column(
+                  children: [
+                    Expanded(
+                      child: body(),
+                    ),
+                    SafeArea(child: AppBarPosterior(item:1)),
+                  ],
+                ),
               ),
-              SizedBox(width: kDefaultPadding / 2)
-            ],
+    );
+  }
+
+  Padding body() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+        maxWidth: 700.0, // Aquí defines el ancho máximo deseado
+      ),
+        child: Container(
+
+          decoration: BoxDecoration(
+            border: Border.all( 
+              color: Theme.of(context).disabledColor,
+              width: 2
+            ),
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.circular(20)
           ),
-          body: Background(
-            child: ListView(children: <Widget>[
-              SizedBox(height: 20.0),
-              //future builder para Profile
-              FutureBuilder<Profile>(
-                future: item,
-                builder: (BuildContext context, abc) {
-                  if (abc.connectionState == ConnectionState.done) {
-                    //ingreso de data
-                    return SingleChildScrollView(
-                      child: Container(
-                        decoration: BoxDecoration(boxShadow: [
-                          BoxShadow(
-                            color: Colors.white.withOpacity(0.2),
-                            spreadRadius: -20,
-                            blurRadius: 20,
-                            offset: Offset(-15, -6),
-                          ),
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.5),
-                            spreadRadius: -15,
-                            blurRadius: 18,
-                            offset: Offset(18, 5),
-                          ),
-                        ]),
-                        child: Card(
-                          color: backgroundColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          margin: EdgeInsets.all(15),
-                          elevation: 10,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(10)),
-                            margin: EdgeInsets.symmetric(horizontal: 15.0),
-                            width: 500,
-                            height: 460,
-                            child: DataTable(columns: [
-                              DataColumn(
-                                label: Text(
-                                  'Datos Personales',
-                                  style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: firstColor,
-                                  ),
+          child: ListView(
+            children: [
+                SizedBox(height: 20.0),
+                //future builder para Profile
+                FutureBuilder<Profile>(
+                  future: item,
+                  builder: (BuildContext context, abc) {
+                    if (abc.connectionState == ConnectionState.done) {
+                      //ingreso de data
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start, // Alinea los textos a la izquierda
+                            children: [
+                                            
+                              Center(
+                                child: Stack(
+                                  children: [
+                                    
+                                    Container(
+                                      width: 100,
+                                      height: 100,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/Perfil_Usuario.svg",
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                            
+                                    Positioned(
+                                      top: 0,
+                                      bottom: 0,
+                                      right: 0,
+                                      left: 0,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(25.0),
+                                        child: Container(
+                                          child: SvgPicture.asset(
+                                            "assets/icons/usuario.svg",
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ], rows: [
+                               SizedBox(height: 10),
+                              Center(
+                                child: Text(
+                                  '${abc.data!.agentFullname}',
+                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                  ),
+                              ),
+                              SizedBox(height: 30),
+                                            
                               if (prefs.companyId == "8") ...{
                                 if (abc.data == null) ...{
-                                  DataRow(cells: [
-                                    DataCell(Text('No. empleado: ',
-                                        style: TextStyle(color: Colors.white))),
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text('Usuario: ',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text('Nombre: ',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text('Teléfono: ',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text('Email: ',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text('Dirección:',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text('Acceso autorizado: ',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/Numeral.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          'No. empleado: ',
+                                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/telefono_num.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          'Teléfono: ',
+                                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/correo.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          'Email: ',
+                                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/Casa.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          'Dirección: ',
+                                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/warning.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Flexible(
+                                          child: Text(
+                                            'Acceso autorizado: ',
+                                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
                                 } else ...{
-                                  DataRow(cells: [
-                                    DataCell(Text(
-                                        'No. empleado: ${abc.data!.agentUser}',
-                                        style: TextStyle(color: Colors.white))),
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text(
-                                        'Usuario: ${abc.data!.agentUser}',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text(
-                                        'Nombre: ${abc.data!.agentFullname}',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text(
-                                        'Teléfono: ${abc.data!.agentPhone}',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text(
-                                        'Email: ${abc.data!.agentEmail}',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text(
-                                        'Dirección: ${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, \n${abc.data!.townName}',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  if (abc.data!.neighborhoodReferencePoint ==
-                                      null)
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/Numeral.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Flexible(
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "No. empleado: ",
+                                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                                ),
+                                                TextSpan(
+                                                  text: "${abc.data!.agentUser}",
+                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+
+                                  SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/telefono_num.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Flexible(
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Teléfono: ",
+                                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                                ),
+                                                TextSpan(
+                                                  text: "${abc.data!.agentPhone}",
+                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/correo.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Flexible(
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Email: ",
+                                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                                ),
+                                                TextSpan(
+                                                  text: "${abc.data!.agentEmail}",
+                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/Casa.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Flexible(
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Dirección: ",
+                                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                                ),
+                                                TextSpan(
+                                                  text: "${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}",
+                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                  
+                                  if (abc.data!.neighborhoodReferencePoint == null)
                                     ...{}
                                   else ...{
-                                    DataRow(cells: [
-                                      DataCell(Text(
-                                          'Acceso autorizado: ${abc.data!.neighborhoodReferencePoint}',
-                                          style:
-                                              TextStyle(color: Colors.white)))
-                                    ]),
+                                    Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/warning.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: "Acceso autorizado: ",
+                                                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                              ),
+                                              TextSpan(
+                                                text: "${abc.data!.neighborhoodReferencePoint}",
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
                                   }
                                 },
                               } else ...{
                                 if (abc.data == null) ...{
-                                  DataRow(cells: [
-                                    DataCell(Text('No. empleado: ',
-                                        style: TextStyle(color: Colors.white))),
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text('Cuenta: ',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text('Usuario: ',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text('Nombre: ',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text('Teléfono: ',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text('Email: ',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text('Dirección:',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text('Acceso autorizado: ',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/Numeral.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          'No. empleado: ',
+                                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 20,
+                                          height: 20,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/compania.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          'Cuenta: ',
+                                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/telefono_num.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          'Teléfono: ',
+                                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/correo.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          'Email: ',
+                                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/Casa.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          'Dirección: ',
+                                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/warning.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          'Acceso autorizado: ',
+                                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
                                 } else ...{
-                                  DataRow(cells: [
-                                    DataCell(Text(
-                                        'No. empleado: ${abc.data!.agentUser}',
-                                        style: TextStyle(color: Colors.white))),
-                                  ]),
-                                  if (abc.data!.countName == null) ...{
-                                    DataRow(cells: [
-                                      DataCell(Text('Cuenta: ',
-                                          style:
-                                              TextStyle(color: Colors.white)))
-                                    ]),
-                                  } else ...{
-                                    DataRow(cells: [
-                                      DataCell(Text(
-                                          'Cuenta: ${abc.data!.countName}',
-                                          style:
-                                              TextStyle(color: Colors.white)))
-                                    ]),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/Numeral.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Flexible(
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "No. empleado: ",
+                                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                                ),
+                                                TextSpan(
+                                                  text: "${abc.data!.agentUser}",
+                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                  if (abc.data!.countName == null)
+                                    ...{
+                                      Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 20,
+                                          height: 20,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/compania.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          'Cuenta: ',
+                                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                    }
+                                  else ...{
+                                    Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 20,
+                                          height: 20,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/compania.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Flexible(
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Cuenta: ",
+                                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                                ),
+                                                TextSpan(
+                                                  text: "${abc.data!.countName}",
+                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
                                   },
-                                  DataRow(cells: [
-                                    DataCell(Text(
-                                        'Usuario: ${abc.data!.agentUser}',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text(
-                                        'Nombre: ${abc.data!.agentFullname}',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text(
-                                        'Teléfono: ${abc.data!.agentPhone}',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text(
-                                        'Email: ${abc.data!.agentEmail}',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  DataRow(cells: [
-                                    DataCell(Text(
-                                        'Dirección: ${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, \n${abc.data!.townName}',
-                                        style: TextStyle(color: Colors.white)))
-                                  ]),
-                                  if (abc.data!.neighborhoodReferencePoint ==
-                                      null)
+
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/telefono_num.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Flexible(
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Teléfono: ",
+                                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                                ),
+                                                TextSpan(
+                                                  text: "${abc.data!.agentPhone}",
+                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/correo.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Flexible(
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Email: ",
+                                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                                ),
+                                                TextSpan(
+                                                  text: "${abc.data!.agentEmail}",
+                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/Casa.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Flexible(
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Dirección: ",
+                                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                                ),
+                                                TextSpan(
+                                                  text: "${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}",
+                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
+                                  if (abc.data!.neighborhoodReferencePoint == null)
                                     ...{}
                                   else ...{
-                                    DataRow(cells: [
-                                      DataCell(Text(
-                                          'Acceso autorizado: ${abc.data!.neighborhoodReferencePoint}',
-                                          style:
-                                              TextStyle(color: Colors.white)))
-                                    ]),
+                                    Padding(
+                                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/warning.svg",
+                                            color: Theme.of(context).primaryIconTheme.color,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Flexible(
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Acceso autorizado: ",
+                                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                                ),
+                                                TextSpan(
+                                                  text: "${abc.data!.neighborhoodReferencePoint}",
+                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    color: Theme.of(context).dividerColor,
+                                  ),
+                                  SizedBox(height: 20),
                                   }
                                 },
                               },
-                            ]),
+                            ],
                           ),
                         ),
+                      );
+                    } else {
+                      return WillPopScope(
+                      onWillPop: () async => false,
+                      child: SimpleDialog(
+                         elevation: 20,
+                        backgroundColor: Theme.of(context).cardColor,
+                        children: [
+                          Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                  child: CircularProgressIndicator(),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Text(
+                                    'Cargando..', 
+                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                    ),
+                                )
+                              ],
+                            ),
+                          )
+                        ] ,
                       ),
                     );
-                  } else {
-                    return ColorLoader3();
-                  }
-                },
-              ),
-              SizedBox(height: 30.0),
-              Center(
-                  child: Text(
-                'Horario laboral',
-                style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    color: firstColor),
-              )),
-              //ingreso de data por el future builder horario
-              FutureBuilder<Profile>(
-                future: item,
-                builder: (BuildContext context, abc) {
-                  if (abc.connectionState == ConnectionState.done) {
-                    //data
-                    return SingleChildScrollView(
-                      child: Container(
-                        decoration: BoxDecoration(boxShadow: [
-                          BoxShadow(
-                              blurStyle: BlurStyle.normal,
-                              color: Colors.white.withOpacity(0.2),
-                              blurRadius: 30,
-                              spreadRadius: -13,
-                              offset: Offset(-15, -6)),
-                          BoxShadow(
-                              blurStyle: BlurStyle.normal,
-                              color: Colors.black.withOpacity(0.6),
-                              blurRadius: 18,
-                              spreadRadius: -15,
-                              offset: Offset(18, 5)),
-                        ], borderRadius: BorderRadius.circular(15)),
+                    }
+                  },
+                ),
+                SizedBox(height: 20.0),
+                Center(
+                    child: Text(
+                  'Horario laboral',
+                  style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                )),
+                //ingreso de data por el future builder horario
+                FutureBuilder<Profile>(
+                  future: item,
+                  builder: (BuildContext context, abc) {
+                    if (abc.connectionState == ConnectionState.done) {
+                      //data
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15)),
                         child: Card(
-                          color: backgroundColor,
+                          color: Theme.of(context).cardColor,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
-                          margin: EdgeInsets.all(15),
-                          elevation: 10,
+                          elevation: 0,
                           child: Container(
                             decoration: BoxDecoration(
                                 shape: BoxShape.rectangle,
@@ -344,66 +935,52 @@ class _DataTableExample extends State<ProfilePage> {
                                     columns: [
                                       DataColumn(
                                           label: Text('Día',
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Gradiant2))),
+                                              style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14, fontWeight: FontWeight.w500))),
                                       DataColumn(
                                           label: Text('Salida',
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Gradiant2))),
+                                              style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14, fontWeight: FontWeight.w500))),
                                     ],
                                     rows: [
                                       if (abc.data == null) ...{
                                         DataRow(cells: [
                                           DataCell(Text('Lunes',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(Text(''))
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Martes',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(Text(''))
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Miercoles',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(Text(''))
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Jueves',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(Text(''))
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Viernes',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(Text(''))
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Sábado',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(Text(''))
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Domingo',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(Text(''))
                                         ]),
                                       } else ...{
                                         DataRow(cells: [
                                           DataCell(Text('Lunes',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(FutureBuilder<Profile>(
                                               future: item,
                                               builder: (context, abc) {
@@ -411,14 +988,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.mondayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.mondayOut}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -428,8 +1002,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Martes',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(FutureBuilder<Profile>(
                                               future: item,
                                               builder: (context, abc) {
@@ -437,14 +1010,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.tuesdayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.tuesdayOut}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -454,8 +1024,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Miercoles',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(FutureBuilder<Profile>(
                                               future: item,
                                               builder: (context, abc) {
@@ -463,26 +1032,22 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.wednesdayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.wednesdayOut}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
                                                 }
-
+                    
                                                 return CircularProgressIndicator();
                                               }))
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Jueves',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(FutureBuilder<Profile>(
                                               future: item,
                                               builder: (context, abc) {
@@ -490,14 +1055,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.thursdayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.thursdayOut}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -507,8 +1069,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Viernes',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(FutureBuilder<Profile>(
                                               future: item,
                                               builder: (context, abc) {
@@ -516,14 +1077,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.fridayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.fridayOut}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -542,14 +1100,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.saturdayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.saturdayOut}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -560,7 +1115,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         DataRow(cells: [
                                           DataCell(Text('Domingo',
                                               style: TextStyle(
-                                                  color: Colors.white))),
+                                                  color: Colors.black))),
                                           DataCell(FutureBuilder<Profile>(
                                               future: item,
                                               builder: (context, abc) {
@@ -568,14 +1123,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.sundayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.sundayOut}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -591,79 +1143,62 @@ class _DataTableExample extends State<ProfilePage> {
                                     columns: [
                                       DataColumn(
                                           label: Text('Día',
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Gradiant2))),
+                                              style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14, fontWeight: FontWeight.w500))),
                                       DataColumn(
                                           label: Text('Entrada',
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Gradiant2))),
+                                              style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14, fontWeight: FontWeight.w500))),
                                       DataColumn(
                                           label: Text('Salida',
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Gradiant2))),
+                                              style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14, fontWeight: FontWeight.w500))),
                                     ],
                                     rows: [
                                       if (abc.data == null) ...{
                                         DataRow(cells: [
                                           DataCell(Text('Lunes',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(Text('')),
                                           DataCell(Text(''))
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Martes',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(Text('')),
                                           DataCell(Text(''))
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Miercoles',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(Text('')),
                                           DataCell(Text(''))
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Jueves',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(Text('')),
                                           DataCell(Text(''))
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Viernes',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(Text('')),
                                           DataCell(Text(''))
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Sábado',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style:Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(Text('')),
                                           DataCell(Text(''))
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Domingo',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(Text('')),
                                           DataCell(Text(''))
                                         ]),
                                       } else ...{
                                         DataRow(cells: [
                                           DataCell(Text('Lunes',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(FutureBuilder<Profile>(
                                               future: item,
                                               builder: (context, abc) {
@@ -672,15 +1207,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   if ('${abc.data!.mondayIn}' ==
                                                       'null') {
                                                     return Text('Día libre',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.mondayIn}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -696,15 +1227,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                       'null') {
                                                     return Text(
                                                       'Día libre',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    );
+                                                      style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.mondayOut}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -714,8 +1241,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Martes',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(FutureBuilder<Profile>(
                                               future: item,
                                               builder: (context, abc) {
@@ -724,15 +1250,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   if ('${abc.data!.tuesdayIn}' ==
                                                       'null') {
                                                     return Text('Día libre',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.tuesdayIn}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -747,15 +1269,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                   if ('${abc.data!.tuesdayOut}' ==
                                                       'null') {
                                                     return Text('Día libre',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.tuesdayOut}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -765,8 +1283,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Miercoles',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(FutureBuilder<Profile>(
                                               future: item,
                                               builder: (context, abc) {
@@ -774,14 +1291,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.wednesdayIn}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.wednesdayIn}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -795,26 +1309,22 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.wednesdayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.wednesdayOut}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
                                                 }
-
+                    
                                                 return CircularProgressIndicator();
                                               }))
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Jueves',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(FutureBuilder<Profile>(
                                               future: item,
                                               builder: (context, abc) {
@@ -822,14 +1332,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.thursdayIn}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.thursdayIn}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -843,14 +1350,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.thursdayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.thursdayOut}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -860,8 +1364,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Viernes',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(FutureBuilder<Profile>(
                                               future: item,
                                               builder: (context, abc) {
@@ -869,14 +1372,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.fridayIn}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.fridayIn}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -890,14 +1390,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.fridayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.fridayOut}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -907,8 +1404,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Sábado',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(FutureBuilder<Profile>(
                                               future: item,
                                               builder: (context, abc) {
@@ -916,14 +1412,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.saturdayIn}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.saturdayIn}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -937,14 +1430,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.saturdayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.saturdayOut}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -954,8 +1444,7 @@ class _DataTableExample extends State<ProfilePage> {
                                         ]),
                                         DataRow(cells: [
                                           DataCell(Text('Domingo',
-                                              style: TextStyle(
-                                                  color: Colors.white))),
+                                              style: Theme.of(context).textTheme.bodyMedium)),
                                           DataCell(FutureBuilder<Profile>(
                                               future: item,
                                               builder: (context, abc) {
@@ -963,14 +1452,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.sundayIn}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.sundayIn}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -984,14 +1470,11 @@ class _DataTableExample extends State<ProfilePage> {
                                                     ConnectionState.done) {
                                                   if ('${abc.data!.sundayOut}' ==
                                                       'null') {
-                                                    return Text('Día libre',style: TextStyle(
-                                          color: Colors.white));
+                                                    return Text('Día libre',style: Theme.of(context).textTheme.bodyMedium);
                                                   } else if (abc.hasData) {
                                                     return Text(
                                                         '${abc.data!.sundayOut}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white));
+                                                        style: Theme.of(context).textTheme.bodyMedium);
                                                   }
                                                 } else {
                                                   return CircularProgressIndicator();
@@ -1007,41 +1490,82 @@ class _DataTableExample extends State<ProfilePage> {
                             ),
                           ),
                         ),
+                      );
+                    } else {
+                      return WillPopScope(
+                      onWillPop: () async => false,
+                      child: SimpleDialog(
+                         elevation: 20,
+                        backgroundColor: Theme.of(context).cardColor,
+                        children: [
+                          Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                  child: CircularProgressIndicator(),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Text(
+                                    'Cargando..', 
+                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                    ),
+                                )
+                              ],
+                            ),
+                          )
+                        ] ,
                       ),
                     );
-                  } else {
-                    return ColorLoader3();
-                  }
-                },
-              ),
-              FutureBuilder<DataAgent>(
-                  future: itemx,
-                  builder: (context, abc) {
-                    if (abc.connectionState == ConnectionState.done) {
-                      if (abc.data!.companyId != 7) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10.0, vertical: 10),
-                          child: SolicitudCambio(
-                            press: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return DetailScreenChanges(plantilla: plantilla[3]);
-                              }));
-                            },
-                          ),
-                        );
+                    }
+                  },
+                ),
+
+                FutureBuilder<DataAgent>(
+                    future: itemx,
+                    builder: (context, abc) {
+                      if (abc.connectionState == ConnectionState.done) {
+                        if (abc.data!.companyId != 7) {
+                          return Center(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return DetailScreenChanges(plantilla: plantilla[3]);
+                                }));
+                              },
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "¿Tu información es incorrecta? ",
+                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12)
+                                    ),
+                                    TextSpan(
+                                      text: "Solicita un cambio aquí",
+                                      style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 12)
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        } else {
+                          Text('');
+                        }
                       } else {
-                        Text('');
+                        return Text("");
                       }
-                    } else {
                       return Text("");
                     }
-                    return Text("");
-                  }),
+                          ),
               SizedBox(height: 50)
-            ]),
-          )),
+            ]
+          ),
+        ),
+      ),
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
-import 'package:flutter_svg/svg.dart';
 import '../constants.dart';
 
 class PlantillaTitleWithImage extends StatelessWidget {
@@ -30,20 +29,6 @@ class PlantillaTitleWithImage extends StatelessWidget {
                       fontSize: 18,
                       color: backgroundColor,
                       fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                child: Column(
-                  children: [
-                    Hero(
-                      tag: "${plantilla.id}",
-                      child: SvgPicture.asset(
-                        plantilla.imageMain,
-                        fit: BoxFit.contain,
-                        height: 120,
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ],

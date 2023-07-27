@@ -5,7 +5,6 @@ import 'package:flutter_auth/Agents/Screens/Details/components/qr_Screen.dart';
 import 'package:flutter_auth/Agents/Screens/Details/components/tickets.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
-import 'package:flutter_auth/constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Description extends StatefulWidget {
@@ -24,14 +23,7 @@ class _DescriptionState extends State<Description> {
   bool radioShowAndHide = true;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        children: [
-          _processCards(context),
-        ],
-      ),
-    );
+    return _processCards(context);
   }
 
   Widget _processCards(BuildContext context) {
@@ -50,16 +42,12 @@ class _DescriptionState extends State<Description> {
             },
           },
           _mostrarPrimerventana(),
-          SizedBox(height: 50),
         ] else if (widget.plantilla.id == 2) ...[
           _mostrarSegundaVentana(),
-          SizedBox(height: 50.0),
         ] else if (widget.plantilla.id == 3) ...[
           _mostrarCuartaVentana(),
-          SizedBox(height: 100.0),
         ] else if (widget.plantilla.id == 4) ...[
           _mostrarTerceraVentana(),
-          SizedBox(height: 20.0),
         ]
       ],
     );
@@ -91,7 +79,7 @@ class _DescriptionState extends State<Description> {
             ),
             margin: EdgeInsets.only(top: 13.0, right: 8.0),
             decoration: BoxDecoration(
-                color: backgroundColor2,
+                color: Colors.white,
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(16.0),
                 boxShadow: <BoxShadow>[
@@ -109,7 +97,7 @@ class _DescriptionState extends State<Description> {
                   height: 20.0,
                 ),
                 TextButton(onPressed: () => id=='2'?launchUrl(Uri.parse('tel://3317-4537')):launchUrl(Uri.parse('tel://8871-6819')),child: RichText(textAlign: TextAlign.center,text: TextSpan(children: <TextSpan>[
-                    TextSpan(text: id=='2'?"Si tiene algún inconveniente con su programación, puede escribir al número: ":"Para consultas o sugerencias de 9:00am a 5:00pm puede escribirnos al número: ",style: TextStyle(color: Colors.white)),
+                    TextSpan(text: id=='2'?"Si tiene algún inconveniente con su programación, puede escribir al número: ":"Para consultas o sugerencias de 9:00am a 5:00pm puede escribirnos al número: ",style: TextStyle(color: Colors.black)),
                     TextSpan(text: id=='2'?"3317-4537":'8871-6819' ,style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold)),]),
                     )),
 

@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
-import 'package:flutter_auth/Agents/Screens/Login/components/background.dart';
 import 'package:flutter_auth/Agents/Screens/Restore/restore_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Signup/signup_screen.dart';
 import 'package:flutter_auth/Agents/models/dataAgent.dart';
@@ -12,14 +11,16 @@ import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/Agents/sharePrefers/services.dart';
 import 'package:flutter_auth/components/already_have_an_account_acheck.dart';
 import 'package:flutter_auth/components/forgot_password.dart';
-import 'package:flutter_auth/components/rounded_button.dart';
-import 'package:gradient_borders/gradient_borders.dart';
+import 'package:flutter_auth/components/progress_indicator.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:quickalert/quickalert.dart';
 import '../../../../constants.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
+
+import '../../Welcome/welcome_screen.dart';
 
 class Body extends StatefulWidget {
   const Body({
@@ -46,13 +47,16 @@ class _BodyState extends State<Body> {
   Future<dynamic> fetchUser(String agentUser, String agentPassword) async {
     Map data = {'agentUser': agentUser, 'agentPassword': agentPassword};
     String device = "mobile";
-    if (agentUser == "" && agentPassword == "") {
+    if (agentUser == "" || agentPassword == "") {
+      
       QuickAlert.show(
         context: context,
           title: "Alerta",
           text: "Campos vacios",
-          type: QuickAlertType.error);
+          type: QuickAlertType.error,
+          confirmBtnText: "Ok");
     } else {
+      LoadingIndicatorDialog().show(context);
       //Api post refresca la informacion enviada desde el backend hacia el login
       http.Response responses = await http
           .get(Uri.parse('$ip/api/refreshingAgentData/${data['agentUser']}'));
@@ -82,20 +86,30 @@ class _BodyState extends State<Body> {
         prefs.passwordUsuario = agentPassword;
         prefs.nombreUsuario = agentUser;
         prefs.tokenAndroid = claro.data![0].token!;
-        Navigator.of(context).pushAndRemoveUntil(
+
+        LoadingIndicatorDialog().dismiss();
+        if(mounted){
+          Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => HomeScreen()),
             (Route<dynamic> route) => false);
              QuickAlert.show(
-        context: context,
-          title: "\nBienvenido(a)",
-          text: si.agentFullname,
-          type: QuickAlertType.success);
+          context: context,
+            title: "\nBienvenido(a)",
+            text: si.agentFullname,
+            type: QuickAlertType.success,
+            confirmBtnText: "Ok");
+          }
       } else if (no.ok != true) {
-        QuickAlert.show(
-        context: context,
-          title: "\nError",
-          text: no.message,
-          type: QuickAlertType.error);
+        LoadingIndicatorDialog().dismiss();
+        
+        if(mounted){
+          QuickAlert.show(
+          context: context,
+            title: "\nError",
+            text: no.message,
+            type: QuickAlertType.error,
+            confirmBtnText: "Ok");
+        }
       }
       return DataAgents.fromJson(json.decode(response.body));
     }
@@ -110,132 +124,252 @@ class _BodyState extends State<Body> {
 
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Background(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: size.height * 0.03),
-            Text(
-              "INGRESA",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 30, color: firstColor),
-            ),
-            Lottie.asset('assets/videos/Ingresa.json'),
-            _crearUsuario(),
-            SizedBox(height: 10),
-            _crearPassword(),
-            RoundedButton(
-                color: thirdColor,
-                text: "INGRESA ",
-                press: () {
-                  //Llamada de función fetch login
-                  fetchUser(userName.text, userPassword.text);
-                }),
-            SizedBox(height: size.height * 0.03),
-            AlreadyHaveAnAccountCheck(
-              press: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return SignUpScreen();
-                    },
+    return Container(
+      height: size.height,
+      child: Stack(
+
+        children: [
+
+          Positioned(
+            top: 20,
+            child: Container(
+              width: size.width,
+              child: Stack(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 40, right: 40),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                            pageBuilder: (_, __, ___) => WelcomeScreen(),
+                            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                              return SlideTransition(
+                                position: Tween<Offset>(
+                                  begin: Offset(-1.0, 0.0),
+                                  end: Offset.zero,
+                                ).animate(animation),
+                                child: child,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 1.0,
+                          ),
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: SvgPicture.asset(
+                            "assets/icons/flecha_atras_oscuro.svg",
+                            color: Colors.white,
+                            width: 5,
+                            height: 10,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                );
-              },
+  
+                  Center(child: Text("Iniciar sesión",style: TextStyle(color: Colors.white,fontSize: 27),)),
+                ],
+              ),
             ),
-            SizedBox(height: size.height * 0.01),
-            ForgotPassword(
-              press: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return RestoreScreen();
-                }));
-              },
+          ),
+
+          Positioned(
+            top: 80,
+            right: 0,
+            left: 0,
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: 180,
+                maxHeight: 180,
+              ),
+              child: Lottie.asset('assets/videos/100966-login-successful.json')
             ),
-            SizedBox(
-              height: 20,
-            )
-          ],
-        ),
+          ),
+
+          Positioned.fill(
+            top: 120,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: size.width,
+                  margin: EdgeInsets.only(left: 40, right: 40),
+                  child: Stack(
+                    children: [
+                      Column(children: [
+                        _crearUsuario(size),
+                        SizedBox(height: 10),
+                        _crearPassword(),
+                        SizedBox(height: 20),
+                      ]),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Column(
+                          children: [
+                            ForgotPassword(
+                              press: () {
+                                Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                      pageBuilder: (_, __, ___) => RestoreScreen(),
+                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                        return SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: Offset(1.0, 0.0),
+                                            end: Offset.zero,
+                                          ).animate(animation),
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ]
+                  ),
+                ),
+                SizedBox(height: 15),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  side: BorderSide(color: Colors.white),
+                  fixedSize: Size(size.width-80, 50)
+                  ),
+                  onPressed: () {
+                    fetchUser(userName.text, userPassword.text);
+                  },
+                  child: Text(
+                    "Ingresar",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 19,
+                      fontWeight: FontWeight.normal
+                    ),
+                  ),
+                ),
+                SizedBox(height: 15),
+                AlreadyHaveAnAccountCheck(
+                  press: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return SignUpScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
+            
+              ],
+            ),
+          ),
+
+          Positioned(
+            bottom: 10,
+            child: Text('')
+          )
+        ],
       ),
     );
   }
 
 //Widgets de field usuario y contraseña
-  Widget _crearUsuario() {
-    return Container(
-      margin: EdgeInsets.only(left: 35, right: 35),
-      padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 50),
-      decoration: BoxDecoration(
-          border: const GradientBoxBorder(
-            gradient: LinearGradient(colors: [Gradiant1, Gradiant2]),
-            width: 4,
+  Widget _crearUsuario(size) {
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 10, right: 10),
+          child: TextField(
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.normal),
+            controller: userName,
+            cursorColor: firstColor,
+            decoration: InputDecoration(
+              icon: SvgPicture.asset(  
+                  "assets/icons/usuario.svg",
+                  color: Colors.white,
+                  width: 20,
+                  height: 20,
+                ),
+              hintText: "Número de empleado o identidad",
+              hintStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.normal),
+              border: InputBorder.none,
+            ),
           ),
-          borderRadius: BorderRadius.circular(50)),
-      child: TextField(
-        style: TextStyle(color: Colors.white),
-        controller: userName,
-        cursorColor: firstColor,
-        decoration: InputDecoration(
-          icon: Icon(
-            Icons.person,
-            color: thirdColor,
-            size: 30,
-          ),
-          hintText: "Usuario",
-          hintStyle: TextStyle(color: Colors.white),
-          border: InputBorder.none,
         ),
-      ),
+        Divider(
+          color: Color.fromRGBO(158, 158, 158, 1),
+          thickness: 1.0,
+        )
+      ],
     );
   }
 
   Widget _crearPassword() {
-    return Container(
-      margin: EdgeInsets.only(left: 35, right: 35),
-      padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
-      decoration: BoxDecoration(
-          border: const GradientBoxBorder(
-            gradient: LinearGradient(colors: [Gradiant1, Gradiant2]),
-            width: 4,
-          ),
-          borderRadius: BorderRadius.circular(50)),
-      child: TextField(
-        style: TextStyle(color: Colors.white),
-        //keyboardType: TextInputType.,
-        controller: userPassword,
-        obscureText: _passwordVisible!,
-        cursorColor: Colors.white,
-        decoration: InputDecoration(
-          hintText: "Contraseña",
-          hintStyle: TextStyle(color: Colors.white),
-          icon: Icon(
-            Icons.lock,
-            color: thirdColor,
-            size: 30,
-          ),
-          suffixIcon: IconButton(
-            padding: EdgeInsets.only(left: 10),
-            tooltip: 'Ver contraseña',
-            icon: Icon(
-              // Based on passwordVisible state choose the icon
-              _passwordVisible ?? false
-                  ? Icons.visibility_off
-                  : Icons.visibility,
-              color: thirdColor,
-              size: 30,
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 10, right: 10),
+          child: TextField(
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.normal),
+            //keyboardType: TextInputType.,
+            controller: userPassword,
+            obscureText: _passwordVisible!,
+            cursorColor: Colors.white,
+            decoration: InputDecoration(
+              hintText: "Contraseña",
+              hintStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.normal),
+              icon: SvgPicture.asset(  
+                  "assets/icons/candado.svg",
+                  color: Colors.white,
+                  width: 25,
+                  height: 25,
+                ),
+              suffixIcon: IconButton(
+                padding: EdgeInsets.only(left: 10),
+                tooltip: 'Ver contraseña',
+                icon: Icon(
+                  // Based on passwordVisible state choose the icon
+                  _passwordVisible ?? false
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  color: Colors.white,
+                  size: 30,
+                ),
+                onPressed: () {
+                  // Update the state i.e. toogle the state of passwordVisible variable
+                  setState(() {
+                    _passwordVisible = !_passwordVisible!;
+                  });
+                },
+              ),
+              border: InputBorder.none,
             ),
-            onPressed: () {
-              // Update the state i.e. toogle the state of passwordVisible variable
-              setState(() {
-                _passwordVisible = !_passwordVisible!;
-              });
-            },
           ),
-          border: InputBorder.none,
         ),
-      ),
+        Divider(
+          color: Color.fromRGBO(158, 158, 158, 1),
+          thickness: 1.0,
+        )
+      ],
     );
   }
 }

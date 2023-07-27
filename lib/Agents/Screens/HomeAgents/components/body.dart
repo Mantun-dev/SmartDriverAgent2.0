@@ -12,7 +12,7 @@ import 'package:flutter_auth/Agents/models/messageCount.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
-import 'package:flutter_auth/constants.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:package_info/package_info.dart';
 import 'package:http/http.dart' as http;
@@ -20,8 +20,11 @@ import 'dart:convert' show json;
 
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../Chat/listchats.dart';
 import '../../Details/details_screen_changes.dart';
 import '../../Details/details_screen_qr.dart';
+import '../../Notifications/notification.dart';
+import '../../Profile/profile_screen.dart';
 
 class Body extends StatefulWidget {
   //declaración de la clase data agen y su variable item
@@ -42,6 +45,52 @@ class _BodyState extends State<Body> {
   String ip2 = "https://admin.smtdriver.com";
   String? msgtoShow;
   int? display;
+  Future<List<dynamic>>? historial;
+  bool isMenuOpen = false;
+  TextEditingController buscarText = TextEditingController();
+  FocusNode _focusNode = FocusNode();
+  bool cargarM = false;
+  List<dynamic> ventanas = [
+  {
+    'nombre': 'Próximos viajes',
+    'icono': 'assets/icons/proximo_viaje.svg',
+    'ruta': 0,
+  },
+  {
+    'nombre': 'Historial de viajes',
+    'icono': 'assets/icons/historial_de_viaje.svg',
+    'ruta': 1,
+  },
+  {
+    'nombre': 'Generar código QR',
+    'icono': 'assets/icons/QR.svg',
+    'ruta': 2,
+  },
+  {
+    'nombre': 'Solicitud de cambios',
+    'icono': 'assets/icons/solicitud_de_cambio.svg',
+    'ruta': 3,
+  },
+  {
+    'nombre': 'Notificaciones',
+    'icono': 'assets/icons/notificacion.svg',
+    'ruta': 4,
+  },
+  {
+    'nombre': 'Chats',
+    'icono': 'assets/icons/chats.svg',
+    'ruta': 5,
+  },
+  {
+    'nombre': 'Perfil',
+    'icono': 'assets/icons/usuario2.svg',
+    'ruta': 6,
+  },
+];
+
+BuildContext? contextP;
+
+  List<dynamic>? ventanas2;
 
   PackageInfo _packageInfo = PackageInfo(
     appName: 'Unknown',
@@ -55,6 +104,9 @@ class _BodyState extends State<Body> {
   void initState() {
     super.initState();
     _value = 0;
+    _focusNode.addListener(_onFocusChange);
+    ventanas2=ventanas;
+    contextP=context;
     //realización callback para mostrar cuentas en agentes
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -77,6 +129,224 @@ class _BodyState extends State<Body> {
     getMessage();
 
     item = fetchRefres();
+    historial = getLast5();
+  }
+
+  void _onFocusChange() {
+    if (_focusNode.hasFocus) {
+      // TextField está en foco
+      isMenuOpen=true;
+    } else {
+      // TextField ya no está en foco
+      isMenuOpen=false;
+    }
+    setState(() { });
+  }
+
+  Container menu(size, contextP) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(30.0),
+          bottomRight: Radius.circular(30.0),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: ventanas2!.asMap().entries.map((entry) {
+              dynamic ventana = entry.value;
+              String nombre = ventana['nombre'];
+              String icono = ventana['icono'];
+              int index = ventana['ruta'];
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: GestureDetector(
+                  onTap: () {
+                    rutas(index);
+                  },
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            width: 25,
+                            height: 25,
+                            child: SvgPicture.asset(
+                              icono,
+                              color: Theme.of(context).primaryIconTheme.color,
+                            ),
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            nombre,
+                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 15, fontWeight: FontWeight.normal),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12)
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void rutas(int i){
+    switch (i) {
+      case 0:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+            pageBuilder: (_, __, ___) => DetailScreen(plantilla: plantilla[0]),
+            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        );                                    
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+            pageBuilder: (_, __, ___) => DetailScreenHistoryTrip(plantilla: plantilla[1]),
+            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        );  
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+            pageBuilder: (_, __, ___) => DetailScreen(plantilla: plantilla[2]),
+            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        ); 
+        break;
+      case 3:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+            pageBuilder: (_, __, ___) => DetailScreen(plantilla: plantilla[3]),
+            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        ); 
+        break;
+      case 4:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+            pageBuilder: (_, __, ___) => NotificationPage(),
+            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        ); 
+        break;
+      case 5:
+        fetchProfile().then((value) {
+          Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+            pageBuilder: (_, __, ___) => ChatsList(id: '${value.agentId}',rol: 'agente',nombre: '${value.agentFullname}'),
+            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        ); 
+        });
+        break;
+      case 6:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+            pageBuilder: (_, __, ___) => ProfilePage(),
+            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        ); 
+        break;
+    }
+  }
+
+  Future<List<dynamic>> getLast5() async {
+    Map data = {
+        "agentUser": prefs.nombreUsuario,
+        "getTopFive": 1.toString() 
+    };
+    http.Response response =
+        await http.post(Uri.parse('$ip/api/history'), body: data);
+
+    if (response.statusCode == 200) {
+      final trip = json.decode(response.body);
+
+      return trip;
+    } else {
+      throw Exception('Failed to load Data');
+    }
   }
 
   Future<void> _initPackageInfo() async {
@@ -181,14 +451,16 @@ class _BodyState extends State<Body> {
       QuickAlert.show(
         context: context,
           title: 'Cuentas',
-          text: ' No ha seleccionado una cuenta valida\n si no desea hacerlo presione cancelar.',
-          type: QuickAlertType.error);
+          text: ' No has seleccionado una cuenta valida\n si no deseas hacerlo presione cancelar.',
+          type: QuickAlertType.error,
+          confirmBtnText: "Ok");
     } else if (yep.ok == true && respons.statusCode == 200) {
       QuickAlert.show(
         context: context,
           title: yep.title,
           text: yep.message,
-          type: QuickAlertType.success);
+          type: QuickAlertType.success,
+          confirmBtnText: "Ok");
     }
     return Map<String, dynamic>.from(json.decode(response.body));
   }
@@ -201,7 +473,8 @@ class _BodyState extends State<Body> {
     http.Response responses2 = await http.post(Uri.parse('$ip2/agents/warning/transportation'), body: data);    
     var msg = json.decode(responses2.body);
     if (mounted) {      
-      setState(() {            
+      setState(() { 
+        cargarM = true;           
         msgtoShow = msg['msg'];
         display = msg['display'];    
       });
@@ -212,155 +485,600 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     RateMyApp();
-    return Center(
-      child: Container(
-        height: size.height,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Text(
-                'SMART DRIVER',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4!
-                    .copyWith(fontWeight: FontWeight.w400, color: firstColor),
-              ),
-            ),
-            SizedBox(height: 20),            
-            if (display == 1)... {                        
-              Padding(
-                padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: backgroundColor2,
-                    borderRadius: BorderRadius.circular(15)
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text('🔺$msgtoShow',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _focusNode.unfocus();
+        });
+      },
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: 700.0, // Aquí defines el ancho máximo deseado
+        ),
+        child: Container(
+          height: size.height,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 25.0),
+                  child: Text(
+                    'Hola, ${prefs.nombreUsuarioFull}',
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
-              )
-            },                                          
-            // Padding(
-            //   padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
-            //   child: Container(
-            //     decoration: BoxDecoration(
-            //       color: backgroundColor2,
-            //       borderRadius: BorderRadius.circular(15)
-            //     ),
-            //     child: Padding(
-            //       padding: const EdgeInsets.all(10.0),
-            //       child: Text('Tiene viaje(s) donde confirmó y no salió a tomar el transporte. Si esto ocurre por 3ra vez, el sistema le dará de baja y no será agendado para el servicio de transporte. Deberá justificar el caso enviando un ticket solicitando el uso de transporte.',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
-            //     ),
-            //   ),
-            // ),
-            
-            //future builder para hacer la validación que aparezcan 3 o las 4 cards
-            // las que necesarias a mostrar
-            FutureBuilder<DataAgent>(
-              future: item,
-              builder: (BuildContext context, abc) {
-                if (abc.connectionState == ConnectionState.done) {
-                  //validación
-                  if (abc.data!.companyId != 7) {
-                    return Expanded(
-                      child: GridView.builder(
-                        shrinkWrap: true,
-                        //todas las cards
-                        itemCount: plantilla.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 1,
-                          mainAxisExtent: 180,
+          
+                SizedBox(height: 25),      
+          
+                Padding(
+                  padding: const EdgeInsets.only(right: 12, left: 12),
+                  child: Stack(
+                    children: [
+                      if(isMenuOpen==true && ventanas2!.length>0)
+                        Padding(
+                          padding: const EdgeInsets.only(top:40.0),
+                          child: menu(size, context),
                         ),
-                        itemBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: ItemCard(
+    
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(
+                            width: 2,
+                            color: Theme.of(context).disabledColor
+                          )
+                        ),
+                        child: TextField(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          controller: buscarText,
+                          onChanged: (value) {
+
+                            if(value.isEmpty)
+                              ventanas2=ventanas;
+                            else
+                              ventanas2=ventanas.where((ventana) {
+                                String nombre = ventana['nombre'].toString().toLowerCase();
+                                return nombre.contains(value.toLowerCase());
+                              }).toList();
+
+                            setState(() {});
+                          },
+                          focusNode: _focusNode,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryIconTheme.color),
+                            hintText: 'Buscar',
+                            hintStyle: TextStyle(
+                              color: Theme.of(context).hintColor, fontSize: 15, fontFamily: 'Roboto'
+                            ),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      
+                    ],
+                  ),
+                ),
+                
+          
+                SizedBox(height: 15),            
+                if (display == 1)... {                        
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: Theme.of(context).disabledColor,
+                          width: 2
+                        )
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.warning,
+                              color: Colors.orangeAccent,
+                            ),
+                            SizedBox(width: 10), // Espacio entre el icono y el texto
+                            Expanded( // Usar Expanded para que el texto tome el espacio disponible
+                              child: Text(
+                                '$msgtoShow',
+                                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 15)
+                },
+                if(cargarM == false)...{
+
+                  WillPopScope(
+                      onWillPop: () async => false,
+                      child: SimpleDialog(
+                         elevation: 20,
+                        backgroundColor: Theme.of(context).cardColor,
+                        children: [
+                          Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                  child: CircularProgressIndicator(),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Text(
+                                    'Cargando advertencia...', 
+                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                    ),
+                                )
+                              ],
+                            ),
+                          )
+                        ] ,
+                      ),
+                    ),
+
+                  SizedBox(height: 15)
+                },                                    
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(27, 0, 27, 0),
+                //   child: Container(
+                //     decoration: BoxDecoration(
+                //       color: backgroundColor2,
+                //       borderRadius: BorderRadius.circular(15)
+                //     ),
+                //     child: Padding(
+                //       padding: const EdgeInsets.all(10.0),
+                //       child: Text('Tiene viaje(s) donde confirmó y no salió a tomar el transporte. Si esto ocurre por 3ra vez, el sistema le dará de baja y no será agendado para el servicio de transporte. Deberá justificar el caso enviando un ticket solicitando el uso de transporte.',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+                //     ),
+                //   ),
+                // ),
+                
+                //future builder para hacer la validación que aparezcan 3 o las 4 cards
+                // las que necesarias a mostrar
+                FutureBuilder<DataAgent>(
+                future: item,
+                builder: (BuildContext context, abc) {
+                  if (abc.connectionState == ConnectionState.done) {
+                    //validación
+                    if (abc.data!.companyId != 7) {
+                      return GridView.count(
+                        crossAxisCount: 2,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        //todas las cards
+                        children: List.generate(plantilla.length, (index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8.0, left: 8, bottom: 8),
+                            child: ItemCard(
                               plantilla: plantilla[index],
                               press: () {
                                 setState(() {
                                   if (plantilla[index] == plantilla[0]) {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return DetailScreen(
-                                          plantilla: plantilla[index]);
-                                    }));
+                                    Navigator.push(
+                                      context,
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                        pageBuilder: (_, __, ___) => DetailScreen(plantilla: plantilla[index]),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0),
+                                              end: Offset.zero,
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
                                   } else if (plantilla[index] == plantilla[1]) {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) {
-                                        return DetailScreenHistoryTrip(
-                                            plantilla: plantilla[index]);
-                                      }),
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                        pageBuilder: (_, __, ___) => DetailScreenHistoryTrip(plantilla: plantilla[index]),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0),
+                                              end: Offset.zero,
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
                                     );
                                   } else if (plantilla[index] == plantilla[2]) {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) {
-                                        return DetailScreenQr(
-                                            plantilla: plantilla[index]);
-                                      }),
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                        pageBuilder: (_, __, ___) => DetailScreenQr(plantilla: plantilla[index]),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0),
+                                              end: Offset.zero,
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
                                     );
                                   } else if (plantilla[index] == plantilla[3]) {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) {
-                                        return DetailScreenChanges(
-                                            plantilla: plantilla[index]);
-                                      }),
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                        pageBuilder: (_, __, ___) => DetailScreenChanges(plantilla: plantilla[index]),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0),
+                                              end: Offset.zero,
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
                                     );
                                   }
                                 });
-                              }),
-                        ),
-                      ),
-                    );
-                  } else {
-                    return Expanded(
-                      child: GridView.builder(
-                        shrinkWrap: true,
-                        //todas las cards
-                        itemCount: 3,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 1,
-                          mainAxisExtent: 180,                          
-                        ),
-                        itemBuilder: (context, index) => ItemCard(
-                            plantilla: plantilla[index],
-                            press: () {
-                              setState(() {
-                                if (plantilla[index] == plantilla[0]) {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return DetailScreen(
-                                        plantilla: plantilla[0]);
-                                  }));
-                                } else if (plantilla[index] == plantilla[1]) {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return DetailScreenHistoryTrip(
-                                        plantilla: plantilla[1]);
-                                  }));
-                                }else if (plantilla[index] == plantilla[2]) {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return DetailScreenQr(
-                                        plantilla: plantilla[2]);
-                                  }));
-                                }
-                              });
+                              },
+                            ),
+                          );
+                        }),
+                      );
+                    } else {
+                      return Column(
+                        children: [
+                          GridView.count(
+                            crossAxisCount: 2,
+                            shrinkWrap: true,
+                            //todas las cards
+                            physics: NeverScrollableScrollPhysics(),
+                            children: List.generate(2, (index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 8.0, left: 8, bottom: 8),
+                                child: ItemCard(
+                                  plantilla: plantilla[index],
+                                  press: () {
+                                    setState(() {
+                                      if (plantilla[index] == plantilla[0]) {
+                                        Navigator.push(
+                                          context,
+                                          PageRouteBuilder(
+                                            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                            pageBuilder: (_, __, ___) => DetailScreen(plantilla: plantilla[index]),
+                                            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                              return SlideTransition(
+                                                position: Tween<Offset>(
+                                                  begin: Offset(1.0, 0.0),
+                                                  end: Offset.zero,
+                                                ).animate(animation),
+                                                child: child,
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      } else if (plantilla[index] == plantilla[1]) {
+                                        Navigator.push(
+                                          context,
+                                          PageRouteBuilder(
+                                            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                            pageBuilder: (_, __, ___) => DetailScreenHistoryTrip(plantilla: plantilla[index]),
+                                            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                              return SlideTransition(
+                                                position: Tween<Offset>(
+                                                  begin: Offset(1.0, 0.0),
+                                                  end: Offset.zero,
+                                                ).animate(animation),
+                                                child: child,
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      }
+                                    });
+                                  },
+                                ),
+                              );
                             }),
+                          ),
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 8.0, left: 8, bottom: 8),
+                              child: ItemCard(
+                                plantilla: plantilla[2],
+                                press: () {
+                                  Navigator.push(
+                                          context,
+                                          PageRouteBuilder(
+                                            transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                            pageBuilder: (_, __, ___) => DetailScreenQr(plantilla: plantilla[2]),
+                                            transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                              return SlideTransition(
+                                                position: Tween<Offset>(
+                                                  begin: Offset(1.0, 0.0),
+                                                  end: Offset.zero,
+                                                ).animate(animation),
+                                                child: child,
+                                              );
+                                            },
+                                          ),
+                                        );
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                  } else {
+                    return WillPopScope(
+                      onWillPop: () async => false,
+                      child: SimpleDialog(
+                         elevation: 20,
+                        backgroundColor: Theme.of(context).cardColor,
+                        children: [
+                          Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                  child: CircularProgressIndicator(),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Text(
+                                    'Cargando menú...', 
+                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                    ),
+                                )
+                              ],
+                            ),
+                          )
+                        ] ,
                       ),
                     );
                   }
-                } else {
-                  return Text('');
-                }
-              },
+                },
+              ),
+        
+                FutureBuilder(
+                  future: historial,
+                  builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+                    if (snapshot.hasData) {
+                      List<dynamic> plantilla2 = snapshot.data!;
+                        return Column(
+                          children: [
+                            if(snapshot.data!.length>0)
+                              SizedBox(height: 50),
+        
+                            if(snapshot.data!.length>0)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 25.0, left: 25, bottom: 0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'Últimos viajes',
+                                      style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 18),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                     Navigator.push(
+                                      context,
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                        pageBuilder: (_, __, ___) => DetailScreenHistoryTrip(plantilla: plantilla[1]),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0),
+                                              end: Offset.zero,
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                    },
+                                    child: Text(
+                                      'Ver historial',
+                                      style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 12),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+        
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: List.generate(plantilla2.length, (index) {
+                                var trip = plantilla2[index];
+                                return Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                              color: Theme.of(context).cardColor,
+                                              borderRadius: BorderRadius.circular(20),
+                                              border: Border.all(
+                                                width: 2,
+                                                color: Theme.of(context).disabledColor
+                                              )
+                                            ),
+                                    child: Container(
+                                      width: 240,
+                                      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).cardColor,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: 5),
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 15,
+                                                  height: 15,
+                                                  child: SvgPicture.asset(
+                                                    "assets/icons/Numeral.svg",
+                                                    color: Theme.of(context).primaryIconTheme.color,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  ' Viaje: ${trip["tripId"]}',
+                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 1,
+                                            color: Theme.of(context).dividerColor,
+                                          ),
+                                          SizedBox(height: 8),
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 18,
+                                                  height: 18,
+                                                  child: SvgPicture.asset(
+                                                    "assets/icons/calendar-note-svgrepo-com.svg",
+                                                    color: Theme.of(context).primaryIconTheme.color,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  ' Fecha: ${trip["tripDate"]}',
+                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 1,
+                                            color: Theme.of(context).dividerColor,
+                                          ),
+                                          SizedBox(height: 8),
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 18,
+                                                  height: 18,
+                                                  child: SvgPicture.asset(
+                                                    "assets/icons/warning-circle-svgrepo-com.svg",
+                                                    color: Theme.of(context).primaryIconTheme.color,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  ' Tipo: ${trip["tripType"]}',
+                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 1,
+                                            color: Theme.of(context).dividerColor,
+                                          ),
+                                          SizedBox(height: 8),
+                                          Padding(
+                                            padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 15,
+                                                  height: 15,
+                                                  child: SvgPicture.asset(
+                                                    "assets/icons/hora.svg",
+                                                    color: Theme.of(context).primaryIconTheme.color,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  ' Abordó: ${trip["traveled"]}',
+                                                  style:  Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 1,
+                                            color: Theme.of(context).dividerColor,
+                                          ),
+                                          SizedBox(height: 5),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ),
+                          ),
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('');
+                    } else {
+                      return WillPopScope(
+                      onWillPop: () async => false,
+                      child: SimpleDialog(
+                         elevation: 20,
+                        backgroundColor: Theme.of(context).cardColor,
+                        children: [
+                          Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                                  child: CircularProgressIndicator(),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Text(
+                                    'Cargando últimos viajes...', 
+                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                    ),
+                                )
+                              ],
+                            ),
+                          )
+                        ] ,
+                      ),
+                    );
+                    }
+                  },
+                ),
+        
+          
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -387,7 +1105,7 @@ class _BodyState extends State<Body> {
     if (no['counts'].length == 0 || no['counts'].length == null) {
     } else {
       if (si.countId == null) {
-        showAlertDialog();
+        
       }
     }
   }
@@ -411,9 +1129,10 @@ class _BodyState extends State<Body> {
             child: Opacity(
               opacity: a1.value,
               child: AlertDialog(
+                backgroundColor: Theme.of(contextP!).cardColor,
                 shape: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16.0)),
-                title: Center(child: Text('¿A qué cuenta pertenece?')),
+                title: Center(child: Text('¿A qué cuenta pertenece?', style: Theme.of(contextP!).textTheme.titleMedium!.copyWith(fontSize: 18, fontWeight: FontWeight.bold),)),
                 content: StatefulBuilder(
                     builder: (BuildContext context, StateSetter setState) {
                   return Container(
@@ -425,18 +1144,12 @@ class _BodyState extends State<Body> {
                           ListTile(
                             title: Text(
                               '${no['counts'][i]['countName']}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle1!
-                                  .copyWith(
-                                      color: i == no['counts'].length
-                                          ? Colors.black38
-                                          : Colors.black),
+                              style: Theme.of(contextP!).textTheme.bodyMedium!.copyWith(fontSize: 18),
                             ),
                             leading: Radio<dynamic>(
                               value: no['counts'][i]['countId'],
                               groupValue: _value,
-                              activeColor: Colors.blue,
+                              activeColor: Theme.of(contextP!).focusColor,
                               onChanged: i == no['counts'].length
                                   ? null
                                   : (value) {
@@ -456,7 +1169,7 @@ class _BodyState extends State<Body> {
                   TextButton(
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: Colors.green,
+                      backgroundColor: Color.fromARGB(255, 63, 148, 66),
                     ),
                     onPressed: () => {
                       setState(() {
@@ -471,7 +1184,7 @@ class _BodyState extends State<Body> {
                   TextButton(
                     style: TextButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: Colors.blueAccent),
+                        backgroundColor: Color.fromRGBO(40, 93, 169, 1)),
                     onPressed: () => {
                       Navigator.pop(context),
                     },
@@ -514,15 +1227,13 @@ class _BodyState extends State<Body> {
             child: Opacity(
               opacity: a1.value,
               child: AlertDialog(
+                backgroundColor: Theme.of(contextP!).cardColor,
                 shape: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16.0)),
                 title: Center(
-                  child: Text("🔺¡Usuario no agendado!🔺",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: kCardColor2,
-                      )),
+                  child: Text("🔺¡Usuario no agendado!🔺" ,
+                      style: Theme.of(contextP!).textTheme.titleMedium!.copyWith(fontSize: 18)
+                    ),
                 ),
                 content: StatefulBuilder(
                     builder: (BuildContext context, StateSetter setState) {
@@ -531,7 +1242,7 @@ class _BodyState extends State<Body> {
                     child: SingleChildScrollView(
                       child: Column(children: [
                         SizedBox(height: 5),
-                        Text('Usted no está siendo agendado para el servicio de transporte, debe comunicarse con su supervisor.',style: TextStyle(color: kgray)),
+                        Text('Usted no está siendo agendado para el servicio de transporte, debe comunicarse con su supervisor.',style: Theme.of(contextP!).textTheme.bodyMedium!.copyWith(fontSize: 15)),
                       ]),
                     ),
                   );
@@ -541,7 +1252,7 @@ class _BodyState extends State<Body> {
                     child: TextButton(
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: Colors.green,
+                        backgroundColor: Color.fromARGB(255, 63, 148, 66),
                       ),
                       onPressed: () => {
                         setState(() {

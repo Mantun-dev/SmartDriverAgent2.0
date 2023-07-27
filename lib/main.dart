@@ -1,18 +1,20 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'package:event_bus/event_bus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/sharePrefers/services.dart';
 import 'package:flutter_auth/components/splash_screen.dart';
-import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/providers/chat.dart';
 import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
 import 'Agents/sharePrefers/preferencias_usuario.dart';
+import 'components/Tema.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey(debugLabel: "Main Navigator");
 Future<void> main() async {
   //inicialización de clases y variables necesarias para
   //que la apliación inicie sin problemas
@@ -21,7 +23,12 @@ Future<void> main() async {
   await PushNotificationServices.initializeApp();
   await prefs.initPrefs();
   await Firebase.initializeApp();
-  runApp(MyApp());
+ runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -31,15 +38,17 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   //Variables globales
-  final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey(debugLabel: "Main Navigator");
+
   final prefs = new PreferenciasUsuario();
+  bool menuDesplegable=false;
 
   //función de la clase de notificaciones que necesita ser inicializada
   //para hacer las respectivas notificaciones y redirecciones
   @override
+
   void initState() {
     super.initState();
+
     PushNotificationServices.messageStream.listen((event) {
       if (event == 'PROCESS_TRIP') {
         navigatorKey.currentState?.push(MaterialPageRoute(
@@ -47,10 +56,18 @@ class _MyAppState extends State<MyApp> {
       }
       //print(event);
     });
+
+    eventBus.on<ThemeChangeEvent>().listen((event) {
+      // Actualizar el estado o realizar acciones según el evento recibido
+      setState(() { 
+        prefs.tema = !prefs.tema;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final prefs = new PreferenciasUsuario();
     //Aqui es donde se inicializa la aplicación
     return MultiProvider(
       providers: [
@@ -62,10 +79,7 @@ class _MyAppState extends State<MyApp> {
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'Smart Driver',
-        theme: ThemeData(
-          primaryColor: kPrimaryColor,
-          scaffoldBackgroundColor: backgroundColor,
-        ),
+        theme: prefs.tema!=true? appThemeDataLight : appThemeDataDark,
         //home: prefs.nombreUsuario ==null?WelcomeScreen():HomeScreen(),
         initialRoute: prefs.nombreUsuario == null || prefs.nombreUsuario == ""
             ? 'login'
@@ -77,4 +91,13 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+
+}
+
+EventBus eventBus = EventBus();
+
+class ThemeChangeEvent {
+  final bool newTheme;
+
+  ThemeChangeEvent(this.newTheme);
 }

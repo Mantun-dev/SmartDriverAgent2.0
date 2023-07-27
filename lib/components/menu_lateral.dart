@@ -192,15 +192,28 @@ class _MenuLateralState extends State<MenuLateral> {
             ),
             onTap: () {
               fetchProfile().then((value) {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return ChatScreen(
-                    id: '${value.agentId}',
-                    rol: 'agente',
-                    nombre: '${value.agentFullname}',
-                    sala: '$tripIdTologin',
-                    driverId: '$driverId',
-                  );
-                }));
+             Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                      pageBuilder: (_, __, ___) => ChatScreen(
+                                        id: '${value.agentId}',
+                                        rol: 'agente',
+                                        nombre: '${value.agentFullname}',
+                                        sala: '$tripIdTologin',
+                                        driverId: '$driverId',
+                                      ),
+                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                        return SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: Offset(1.0, 0.0),
+                                            end: Offset.zero,
+                                          ).animate(animation),
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
               });
             },
           ),
@@ -216,7 +229,7 @@ class _MenuLateralState extends State<MenuLateral> {
             onTap: () {
               QuickAlert.show(
                 context: context,
-                title: "Está seguro que desea salir?",          
+                title: "¿Estás seguro que deseas salir?",          
                 type: QuickAlertType.success,
                 confirmBtnText: 'Confirmar',
                 cancelBtnText: 'Cancelar',
@@ -231,6 +244,7 @@ class _MenuLateralState extends State<MenuLateral> {
                     context: context,
                     type: QuickAlertType.success,
                     text: "¡Gracias por usar Smart Driver!",
+                    confirmBtnText: "Ok"
                   );
                   new Future.delayed(new Duration(seconds: 2), () {
                     Navigator.of(context).pushAndRemoveUntil(
@@ -245,6 +259,7 @@ class _MenuLateralState extends State<MenuLateral> {
                     context: context,
                     type: QuickAlertType.success,
                     text: "Cancelado",
+                    confirmBtnText: "Ok"
                   );
                 })
               );

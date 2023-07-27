@@ -2,6 +2,7 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
+import 'package:lottie/lottie.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class QrScannScreen extends StatefulWidget {
@@ -39,25 +40,47 @@ class _QrScannScreenState extends State<QrScannScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        margin: EdgeInsets.all(15),
-        elevation: 10,
-        child: Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            //color: Colors.blueGrey[100],
-            borderRadius: BorderRadius.circular(10),
+
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Text(
+            'Muestra este código QR para poder abordar',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 21, fontWeight: FontWeight.w500),
           ),
-          margin: EdgeInsets.symmetric(horizontal: 15.0),
-          height: 400,
-          child: Column(children: [
-            SizedBox(
-              height: 30,
+        Padding(
+          padding: const EdgeInsets.only(top:20.0, bottom: 2),
+          child: Container(
+              constraints: BoxConstraints(
+                maxWidth: 50,
+                maxHeight: 50,
+              ),
+              child: Lottie.asset('assets/videos/check.json')
             ),
-            Expanded(child: QrImage(data: prefs.nombreUsuario),)
-            //llamado del QrImage para mostrar el qr del usuario actual            
-          ]),
-        ));
+        ),
+        
+          Padding(
+            padding: const EdgeInsets.only(bottom:20.0),
+            child: Text(
+              'Este es un código único.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 20),
+            ),
+          ),
+            
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Container(
+              color: Theme.of(context).highlightColor,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: QrImage(data: prefs.nombreUsuario),
+              )
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

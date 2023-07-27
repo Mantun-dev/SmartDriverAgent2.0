@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_auth/constants.dart';
 
 class SolicitudCambio extends StatelessWidget {
   final bool? profile;
@@ -15,18 +14,20 @@ class SolicitudCambio extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 0),
       margin: EdgeInsets.symmetric(horizontal: 0),
-      child: Row(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                profile != null ? '¿Es su informacion incorrecta?' : "",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: GradiantV_1,
+              child: Flexible(
+                child: Text(
+                  profile != null ? '¿Es su informacion incorrecta?' : "",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.black,
+                  ),
                 ),
               ),
             ),
@@ -35,13 +36,16 @@ class SolicitudCambio extends StatelessWidget {
             onTap: press,
             child: Padding(
               padding: const EdgeInsets.only(right: 10.0),
-              child: Text(
-                profile != null ? "\tSolicita cambio aquí." : "",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: GradiantV_1,
-                  fontWeight: FontWeight.bold,
+              child: Flexible(
+                child: Text(
+                  profile != null ? "\tSolicita un cambio aquí." : "",
+                  textAlign: TextAlign.left,
+                  
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Color.fromRGBO(40, 93, 169, 1),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),

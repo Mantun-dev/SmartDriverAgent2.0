@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/models/dataAgent.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
-import 'package:flutter_auth/constants.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ItemCard extends StatefulWidget {
   final Plantilla plantilla;
@@ -30,81 +30,56 @@ class _ItemCardState extends State<ItemCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: widget.press,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 350,
-            height: 160,
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.white.withOpacity(0.7),
-                      blurRadius: 15,
-                      spreadRadius: 1,
-                      offset: Offset(0, 0)),
-                  BoxShadow(
-                      color: Colors.black,
-                      blurRadius: 20,
-                      spreadRadius: 2,
-                      offset: Offset(5, 5)),
-                ],
-                color: widget.plantilla.color,
-                borderRadius: BorderRadius.circular(20)),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Hero(
-                          tag: "${widget.plantilla.id}",
-                          child: Container(
-                            padding: EdgeInsets.only(top: 15),
-                            // padding: EdgeInsets.only(right: 150),
-                            height: 100,
-                            child: Image.asset(
-                              widget.plantilla.image,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 12, left: 10),
-                          child: Text(
-                            widget.plantilla.title,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                                color: GradiantV_2,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 9, left: 10),
-                          child: Text(
-                            widget.plantilla.description,
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
+      child: Container(
+        decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    width: 2,
+                    color: Theme.of(context).disabledColor
+                  )
                 ),
-              ],
-            ),
+
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).shadowColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                width: 60,
+                height: 60,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: SvgPicture.asset(
+                    widget.plantilla.image,
+                    color: Theme.of(context).primaryIconTheme.color,
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 12),
+
+              Text(
+                widget.plantilla.title,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 14),
+              ),
+
+              SizedBox(height: 6),
+
+              Text(
+                widget.plantilla.description,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      )
+
     );
   }
 }

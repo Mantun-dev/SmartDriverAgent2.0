@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/Welcome/components/body.dart';
-import 'package:flutter_auth/constants.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -10,9 +9,23 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: backgroundColor,
-      body: SafeArea(child: Body()),
+      backgroundColor: Colors.transparent,
+      body: Container(
+        height: size.height,
+        width: size.height,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/fondo.png'), 
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SafeArea(
+          child: Body(),
+        ),
+      ),
     );
   }
 }
+

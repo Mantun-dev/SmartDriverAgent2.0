@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../constants.dart';
 
 class ForgotPassword extends StatelessWidget {
   final bool login;
@@ -12,22 +11,15 @@ class ForgotPassword extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(
-          login
-              ? "¿Olvidaste tu contraseña? "
-              : "¿Quieres reestablecer contraseña? ",
-          style: TextStyle(color: secondColor),
-        ),
         GestureDetector(
           onTap: press,
           child: Text(
-            login ? "Ingresa aquí" : "Ingresa aquí",
-            style: TextStyle(
-              color: secondColor,
-              fontWeight: FontWeight.bold,
-            ),
+            login
+                ? "¿Has olvidado tu contraseña?"
+                : "¿Quieres reestablecer contraseña? ",
+            style: TextStyle(color: Colors.white, fontSize: 14),
           ),
-        )
+        ),
       ],
     );
   }
