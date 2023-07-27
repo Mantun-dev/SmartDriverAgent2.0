@@ -704,7 +704,7 @@ class _DataTableExample extends State<HistoryTicketScreen> {
                                       SizedBox(width: 5),
                                       Flexible(
                                         child: Text(
-                                          'Respuesta de ${abc.data!.trips[1].closed![index].userName}: ${abc.data!.trips[1].closed![index].replyMessage}',
+                                          'Respuesta de ${abc.data!.trips[1].closed![index].userFullname}: ${abc.data!.trips[1].closed![index].replyMessage}',
                                           textAlign: TextAlign.left,
                                           style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12)
                                         ),
