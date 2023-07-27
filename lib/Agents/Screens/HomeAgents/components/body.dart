@@ -50,43 +50,7 @@ class _BodyState extends State<Body> {
   TextEditingController buscarText = TextEditingController();
   FocusNode _focusNode = FocusNode();
   bool cargarM = false;
-  List<dynamic> ventanas = [
-  {
-    'nombre': 'Próximos viajes',
-    'icono': 'assets/icons/proximo_viaje.svg',
-    'ruta': 0,
-  },
-  {
-    'nombre': 'Historial de viajes',
-    'icono': 'assets/icons/historial_de_viaje.svg',
-    'ruta': 1,
-  },
-  {
-    'nombre': 'Generar código QR',
-    'icono': 'assets/icons/QR.svg',
-    'ruta': 2,
-  },
-  {
-    'nombre': 'Solicitud de cambios',
-    'icono': 'assets/icons/solicitud_de_cambio.svg',
-    'ruta': 3,
-  },
-  {
-    'nombre': 'Notificaciones',
-    'icono': 'assets/icons/notificacion.svg',
-    'ruta': 4,
-  },
-  {
-    'nombre': 'Chats',
-    'icono': 'assets/icons/chats.svg',
-    'ruta': 5,
-  },
-  {
-    'nombre': 'Perfil',
-    'icono': 'assets/icons/usuario2.svg',
-    'ruta': 6,
-  },
-];
+  List<dynamic>? ventanas;
 
 BuildContext? contextP;
 
@@ -105,7 +69,6 @@ BuildContext? contextP;
     super.initState();
     _value = 0;
     _focusNode.addListener(_onFocusChange);
-    ventanas2=ventanas;
     contextP=context;
     //realización callback para mostrar cuentas en agentes
 
@@ -130,6 +93,80 @@ BuildContext? contextP;
 
     item = fetchRefres();
     historial = getLast5();
+
+    if(prefs.companyId!='7'){
+      ventanas=[
+        {
+          'nombre': 'Próximos viajes',
+          'icono': 'assets/icons/proximo_viaje.svg',
+          'ruta': 0,
+        },
+        {
+          'nombre': 'Historial de viajes',
+          'icono': 'assets/icons/historial_de_viaje.svg',
+          'ruta': 1,
+        },
+        {
+          'nombre': 'Generar código QR',
+          'icono': 'assets/icons/QR.svg',
+          'ruta': 2,
+        },
+        {
+          'nombre': 'Solicitud de cambios',
+          'icono': 'assets/icons/solicitud_de_cambio.svg',
+          'ruta': 3,
+        },
+        {
+          'nombre': 'Notificaciones',
+          'icono': 'assets/icons/notificacion.svg',
+          'ruta': 4,
+        },
+        {
+          'nombre': 'Chats',
+          'icono': 'assets/icons/chats.svg',
+          'ruta': 5,
+        },
+        {
+          'nombre': 'Perfil',
+          'icono': 'assets/icons/usuario2.svg',
+          'ruta': 6,
+        },
+      ];
+    }else{
+      ventanas=[
+        {
+          'nombre': 'Próximos viajes',
+          'icono': 'assets/icons/proximo_viaje.svg',
+          'ruta': 0,
+        },
+        {
+          'nombre': 'Historial de viajes',
+          'icono': 'assets/icons/historial_de_viaje.svg',
+          'ruta': 1,
+        },
+        {
+          'nombre': 'Generar código QR',
+          'icono': 'assets/icons/QR.svg',
+          'ruta': 2,
+        },
+        {
+          'nombre': 'Notificaciones',
+          'icono': 'assets/icons/notificacion.svg',
+          'ruta': 4,
+        },
+        {
+          'nombre': 'Chats',
+          'icono': 'assets/icons/chats.svg',
+          'ruta': 5,
+        },
+        {
+          'nombre': 'Perfil',
+          'icono': 'assets/icons/usuario2.svg',
+          'ruta': 6,
+        },
+      ];
+    }
+    ventanas2=ventanas;
   }
 
   void _onFocusChange() {
@@ -511,6 +548,7 @@ BuildContext? contextP;
           
                 SizedBox(height: 25),      
           
+                ventanas2!=null?
                 Padding(
                   padding: const EdgeInsets.only(right: 12, left: 12),
                   child: Stack(
@@ -538,7 +576,7 @@ BuildContext? contextP;
                             if(value.isEmpty)
                               ventanas2=ventanas;
                             else
-                              ventanas2=ventanas.where((ventana) {
+                              ventanas2=ventanas!.where((ventana) {
                                 String nombre = ventana['nombre'].toString().toLowerCase();
                                 return nombre.contains(value.toLowerCase());
                               }).toList();
@@ -559,7 +597,7 @@ BuildContext? contextP;
                       
                     ],
                   ),
-                ),
+                ):Text(''),
                 
           
                 SizedBox(height: 15),            

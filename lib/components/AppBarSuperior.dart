@@ -571,61 +571,65 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 18),                                                     
-                              Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 2),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                        
-                                    Navigator.push(
-                                      navigatorKey.currentContext!,
-                                      PageRouteBuilder(
-                                        transitionDuration: Duration(milliseconds: 200),
-                                        pageBuilder: (_, __, ___) => DetailScreenChanges(plantilla: plantilla[3]),
-                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                                          return SlideTransition(
-                                            position: Tween<Offset>(
-                                              begin: Offset(1.0, 0.0), // Cambiar Offset de inicio a (1.0, 0.0)
-                                              end: Offset.zero, // Mantener Offset de final en (0.0, 0.0)
-                                            ).animate(animation),
-                                            child: child,
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              width: 18,
-                                        height: 18,
-                                              child: SvgPicture.asset(
-                                                "assets/icons/solicitud_de_cambio.svg",
-                                                color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                              
+                              if(prefs.companyId!='7')...{
+                                SizedBox(height: 18),                                                     
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 2),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                          
+                                      Navigator.push(
+                                        navigatorKey.currentContext!,
+                                        PageRouteBuilder(
+                                          transitionDuration: Duration(milliseconds: 200),
+                                          pageBuilder: (_, __, ___) => DetailScreenChanges(plantilla: plantilla[3]),
+                                          transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                            return SlideTransition(
+                                              position: Tween<Offset>(
+                                                begin: Offset(1.0, 0.0), // Cambiar Offset de inicio a (1.0, 0.0)
+                                                end: Offset.zero, // Mantener Offset de final en (0.0, 0.0)
+                                              ).animate(animation),
+                                              child: child,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                width: 18,
+                                          height: 18,
+                                                child: SvgPicture.asset(
+                                                  "assets/icons/solicitud_de_cambio.svg",
+                                                  color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                                ),
                                               ),
-                                            ),
-                                            Text(' Solicitud de cambios', 
-                                              style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
-                                            ),
-                                          ],
+                                              Text(' Solicitud de cambios', 
+                                                style: Theme.of(contextP).textTheme.bodyMedium!.copyWith(fontSize: 16, color: prefs.tema ? Colors.white : Colors.black),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Container(
-                                        width: 18,
-                                        height: 18,
-                                        child: SvgPicture.asset(
-                                          "assets/icons/flechader.svg",
-                                          color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                        Container(
+                                          width: 18,
+                                          height: 18,
+                                          child: SvgPicture.asset(
+                                            "assets/icons/flechader.svg",
+                                            color: prefs.tema ? Colors.white : const Color.fromRGBO(40, 93, 169, 1),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
+                              },
+                              
                               SizedBox(height: 12),      
                               Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 2),
