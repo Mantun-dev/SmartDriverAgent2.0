@@ -5,6 +5,7 @@ import 'package:flutter_auth/Agents/models/network.dart';
 //import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/components/AppBarSuperior.dart';
 import 'package:flutter_auth/components/backgroundB.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import '../../../components/AppBarPosterior.dart';
 import 'package:http/http.dart' as http;
@@ -34,8 +35,11 @@ class _NotificationPage extends State<NotificationPage> {
   void getData() async{
     http.Response response2 = await http.get(Uri.parse('https://smtdriver.com/api/getAgentNotifications/${prefs.usuarioId}'));
     var resp2 = json.decode(response2.body);
-    print(response2.body);
+
     if(resp2['ok']==true){
+
+      await http.get(Uri.parse('https://smtdriver.com/api/markAgentNotificationsAsRead/${prefs.usuarioId}'));
+     
       setState(() {
         listaNotificaciones=resp2['agentNotifications'];
       });
@@ -139,27 +143,85 @@ class _NotificationPage extends State<NotificationPage> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          getFecha(listaNotificaciones[index]['notificationCreated']),
-                          style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 15),
-                          textAlign: TextAlign.left,
+                        Row(
+                          children: [
+                            Container(
+                              width: 10,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color:  Colors.transparent,
+                                border: Border.all(
+                                  color: Colors.transparent,
+                                  width: 1.5, // Ancho del borde (ajusta según tus preferencias)
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 12),
+                            Text(
+                              getFecha(listaNotificaciones[index]['notificationCreated']),
+                              style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 15),
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
                         ),
                         SizedBox(height: 10),
-              
-                        Text(
-                          '${listaNotificaciones[index]['notificationDescription']}',
-                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
-                          textAlign: TextAlign.left,
+
+                        // AQUÍ SOLO ESTARÁ ALINEADO EL TEXTO CON EL CÍRCULO
+                        Row(
+                          children: [
+                            
+                            Container(
+                              width: 10,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: listaNotificaciones[index]['isRead'] == true ? Theme.of(context).focusColor : Colors.transparent,
+                                border: Border.all(
+                                  color: Theme.of(context).focusColor,
+                                  width: 1.5, // Ancho del borde (ajusta según tus preferencias)
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 12), // Espacio entre el texto y el círculo
+                            Text(
+                              '${listaNotificaciones[index]['notificationDescription']}',
+                              style: listaNotificaciones[index]['isRead'] != true ? Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15, fontWeight: FontWeight.w500) : Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
+                              textAlign: TextAlign.left,
+                            ),
+                  
+                          ],
                         ),
                         SizedBox(height: 5),
-              
-                        Text(
-                          getHora(listaNotificaciones[index]['notificationCreated']),
-                          style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
-                          textAlign: TextAlign.left,
+
+                        Row(
+                          children: [
+                            Container(
+                              width: 10,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color:  Colors.transparent,
+                                border: Border.all(
+                                  color: Colors.transparent,
+                                  width: 1.5, // Ancho del borde (ajusta según tus preferencias)
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 12), 
+                            Text(
+                              getHora(listaNotificaciones[index]['notificationCreated']),
+                              style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          height: 1,
+                          color: Color.fromRGBO(230, 230, 230, 1),
                         ),
                         SizedBox(height: 20),
-                        
                       ],
                     );
                   },

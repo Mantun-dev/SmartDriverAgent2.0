@@ -24,7 +24,7 @@ class _AppBarPosterior extends State<AppBarPosterior> {
   int? counter;
   String? tripIdTologin;
   String? driverId;
-  int? totalNotificaciones;
+  int totalNotificaciones = 0;
 
   _AppBarPosterior({this.item});
 
@@ -375,12 +375,17 @@ class _AppBarPosterior extends State<AppBarPosterior> {
     var resp2 = json.decode(response2.body);
 
     if(mounted){
-      setState(() {
-        counter= listaChats.length;
-        if(resp2['ok']==true){
-          totalNotificaciones = resp2['totalAgentNotifications'];
+      counter= listaChats.length;
+      if(resp2['ok']==true){
+
+        for(var i=0;i<resp2['agentNotifications'].length;i++){
+
+          if(resp2['agentNotifications'][i]['isRead']!=true){
+            totalNotificaciones++;
+          }
         }
-      });
+      }
+      setState(() { });
     }
   }
 

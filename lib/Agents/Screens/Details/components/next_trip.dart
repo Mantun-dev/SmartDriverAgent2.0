@@ -4485,6 +4485,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                       ),
                       onPressed: () {
                         // Acción al presionar el botón
+                        Navigator.pop(context);
                         fetchSkipRating2(
                           resp.agentId.toString(),
                           resp1.tripId.toString(),
@@ -4493,7 +4494,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                           rating3.toInt(),
                           message.text,
                         );
-                        Navigator.pop(context);
+                        
                       },
                       child: Text(
                         'Omitir',
