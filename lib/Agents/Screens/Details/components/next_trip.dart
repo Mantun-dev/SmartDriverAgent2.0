@@ -844,11 +844,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                   padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.directions_car_outlined,
-                        size: 20,
-                        color:  Theme.of(context).primaryIconTheme.color,
-                      ),
+                      Container(
+                              width: 20,
+                              height: 20,
+                              child: SvgPicture.asset(
+                                "assets/icons/vehiculo.svg",
+                                color: Theme.of(context).primaryIconTheme.color,
+                              ),
+                            ),
                       SizedBox(width: 5),
                       Flexible(
                         child: RichText(
@@ -2125,11 +2128,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                   padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.directions_car_outlined,
-                        size: 20,
-                        color:  Theme.of(context).primaryIconTheme.color,
-                      ),
+                      Container(
+                              width: 20,
+                              height: 20,
+                              child: SvgPicture.asset(
+                                "assets/icons/vehiculo.svg",
+                                color: Theme.of(context).primaryIconTheme.color,
+                              ),
+                            ),
                       SizedBox(width: 5),
                       Flexible(
                         child: RichText(
