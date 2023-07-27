@@ -219,7 +219,7 @@ class _NotificationPage extends State<NotificationPage> {
                         SizedBox(height: 10),
                         Container(
                           height: 1,
-                          color: Color.fromRGBO(230, 230, 230, 1),
+                          color: Color.fromRGBO(241, 239, 239, 1),
                         ),
                         SizedBox(height: 20),
                       ],
