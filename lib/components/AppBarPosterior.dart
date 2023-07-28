@@ -186,7 +186,7 @@ class _AppBarPosterior extends State<AppBarPosterior> {
                       border: Border.all(color: Theme.of(context).hoverColor, width: 1.5)),
                   child: Center(
                     child:   Text(
-                        counter!=null?'$totalNotificaciones':'0',
+                        '$totalNotificaciones',
                         style: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hoverColor)
                       ),
                   ),
