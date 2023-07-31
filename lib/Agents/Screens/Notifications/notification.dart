@@ -176,7 +176,7 @@ class _NotificationPage extends State<NotificationPage> {
                               height: 10,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: listaNotificaciones[index]['isRead'] == true ? Theme.of(context).focusColor : Colors.transparent,
+                                color: listaNotificaciones[index]['isRead'] != true ? Theme.of(context).focusColor : Colors.transparent,
                                 border: Border.all(
                                   color: Theme.of(context).focusColor,
                                   width: 1.5, // Ancho del borde (ajusta según tus preferencias)
