@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 //import 'package:flutter/material.dart';
 
@@ -13,6 +15,7 @@ import 'package:flutter_auth/providers/chat.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:record/record.dart';
 
 
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -59,6 +62,12 @@ class _ChatScreenState extends State<ChatScreen> {
   ScrollController _scrollController = new ScrollController();
   final arrayTemp = [];
   final StreamSocket streamSocket = StreamSocket(host: 'wschat.smtdriver.com');
+   bool activateMic = false;
+
+  late AudioPlayer _audioPlayer;
+  late Record _audioRecord;
+  List<AudioData> _audioList = [];
+  String filePathP = '';
 
   _sendMessage(String text) {
     //print(widget.id);
@@ -86,6 +95,22 @@ class _ChatScreenState extends State<ChatScreen> {
         widget.driverId, nameDriver!);
     //ChatApis().rendV(modid!, sala!);
     _messageInputController.clear();
+  }
+
+  void _sendAudio(String audioPath) async {
+    if (await File(audioPath).exists()) {
+      try {
+
+        ChatApis().sendAudio(File(audioPath), widget.sala, widget.nombre, widget.id, widget.driverId, nameDriver!);
+        _messageInputController.clear();
+      } catch (e) {
+        // Handle any error during compression or sending
+        print('Error al enviar el audio: $e');
+      }
+      // Resto del código
+    } else {
+      print('El archivo de audio no existe en la ruta especificada: $audioPath');
+    }
   }
 
   desconectar(){
@@ -689,4 +714,11 @@ class _ChatScreenState extends State<ChatScreen> {
               );
   }
 
+}
+
+class AudioData {
+  final String filePath;
+  bool isPlaying = false;
+
+  AudioData(this.filePath);
 }
