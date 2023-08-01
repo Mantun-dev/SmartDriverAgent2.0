@@ -1917,12 +1917,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                           padding: const EdgeInsets.only(left:16),
                           child: Row(
                             children: [
-                              Text(
-                                'Su tiempo para cancelar el viaje ha expirado',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.normal,
+                              Flexible(
+                                child: Text(
+                                  'Su tiempo para cancelar el viaje ha expirado',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.normal,
+                                  ),
                                 ),
                               ),
                             ],
@@ -3182,12 +3184,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                                 padding: const EdgeInsets.only(left:16),
                                 child: Row(
                                   children: [
-                                    Text(
-                                      'Su tiempo para cancelar el viaje ha expirado',
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.normal,
+                                    Flexible(
+                                      child: Text(
+                                        'Su tiempo para cancelar el viaje ha expirado',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.normal,
+                                        ),
                                       ),
                                     ),
                                   ],
