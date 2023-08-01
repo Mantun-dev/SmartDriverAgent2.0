@@ -24,6 +24,7 @@ import 'package:record/record.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:provider/provider.dart';
 
+import '../../../components/warning_dialog.dart';
 import '../../models/message_chat.dart';
 
 import '../../models/network.dart';
