@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -67,8 +68,7 @@ class _ChatScreenState extends State<ChatScreen> {
   ScrollController _scrollController = new ScrollController();
   final arrayTemp = [];
   final StreamSocket streamSocket = StreamSocket(host: 'wschat.smtdriver.com');
-   bool activateMic = false;
-
+  bool activateMic = false;
   late AudioPlayer _audioPlayer;
   late Record _audioRecord;
   List<AudioData> _audioList = [];
@@ -198,7 +198,7 @@ class _ChatScreenState extends State<ChatScreen> {
         if (mounted) {
           Provider.of<ChatProvider>(context, listen: false).mensaje2.clear();
           listM.forEach((value) {
-            print(value);
+            //print(value);
             Provider.of<ChatProvider>(context, listen: false)
                 .addNewMessage(Message.fromJson(value));
           });
@@ -210,7 +210,7 @@ class _ChatScreenState extends State<ChatScreen> {
       'enviar-mensaje2',
       ((data) {
         //print('******************enviarMensaje');
-        print(data);
+        //print(data);
         if (mounted) {
           Provider.of<ChatProvider>(context, listen: false)
               .addNewMessage(Message.fromJson(data));
@@ -796,6 +796,7 @@ class _ChatScreenState extends State<ChatScreen> {
         filePathP = filePath;
         activateMic = true;
       });
+
     } catch (e) {
       // Handle any error during recording
       print('Error al iniciar la grabación: $e');
@@ -817,7 +818,7 @@ class _ChatScreenState extends State<ChatScreen> {
       // Verificar si el archivo existe
       File audioFile = File(recordedFilePath);
       if (await audioFile.exists()) {
-        print('El archivo de audio existe');
+
       } else {
         print('El archivo de audio no existe');
       }

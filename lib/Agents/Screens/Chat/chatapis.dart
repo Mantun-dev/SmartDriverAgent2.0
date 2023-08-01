@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter_auth/Agents/Screens/Chat/socketChat.dart';
 import 'package:flutter_auth/helpers/base_client.dart';
 import 'package:flutter_auth/helpers/res_apis.dart';
-import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -117,22 +116,8 @@ class ChatApis {
     var formatter3 = DateFormat('yy');
     String anio = formatter3.format(now);
 
-    // Compress the audio file
-    final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
-    final String outputPath = "${audioFile.path}.compressed.aac";
-    final int returnCode = await _flutterFFmpeg.execute(
-      "-i ${audioFile.path} -c:a aac -b:a 64k $outputPath",
-    );
-
-    if (returnCode != 0) {
-      print('Audio compression failed.');
-      return;
-    }
-
-    final File compressedAudioFile = File(outputPath);
-
     // Convert the compressed audio file to base64
-    final audioBytes = compressedAudioFile.readAsBytesSync();
+    final audioBytes = audioFile.readAsBytesSync();
     final encodedAudio = base64.encode(audioBytes);
 
     // Enviar el mensaje a través de BaseClient().post() si es necesario
@@ -149,8 +134,6 @@ class ChatApis {
       "Año": anio,
       "Hora": formattedHour
     };
-
-    print(sendMessage);
 
     var ok = await BaseClient().post(RestApis.messages, sendMessage, {"Content-Type": "application/json"});
 
