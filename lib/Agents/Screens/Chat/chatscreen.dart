@@ -28,6 +28,7 @@ import '../../../components/warning_dialog.dart';
 import '../../models/message_chat.dart';
 
 import '../../models/network.dart';
+import 'component/audio.dart';
 import 'listchats.dart';
 import 'socketChat.dart';
 
@@ -490,6 +491,14 @@ class _ChatScreenState extends State<ChatScreen> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           if (message.mensaje != null) ...{
+                                            message.tipo=='AUDIO'?
+                                              AudioContainer(
+                                                base64Audio: message.mensaje!,
+                                                colorIcono: message.user == widget.nombre.toUpperCase()
+                                                    ? Colors.white
+                                                    : Theme.of(context).primaryColorDark,
+                                              )
+                                            :
                                             Text(
                                               message.mensaje!,
                                               style: TextStyle(
