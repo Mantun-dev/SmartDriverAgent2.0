@@ -9,6 +9,7 @@ import 'package:flutter_auth/components/splash_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/providers/chat.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
 import 'Agents/sharePrefers/preferencias_usuario.dart';
@@ -48,7 +49,7 @@ class _MyAppState extends State<MyApp> {
 
   void initState() {
     super.initState();
-
+    checkAudioPermission();
     PushNotificationServices.messageStream.listen((event) {
       if (event == 'PROCESS_TRIP') {
         navigatorKey.currentState?.push(MaterialPageRoute(
@@ -86,10 +87,23 @@ class _MyAppState extends State<MyApp> {
             : 'home',
         routes: {
           'login': (BuildContext context) => UpgradeAlert(child: SplashView()),
-          'home': (BuildContext context) => UpgradeAlert(child: HomeScreen()),
+          'home': (BuildContext context) => UpgradeAlert(child: HomeScreen(),),
         },
       ),
     );
+  }
+
+  void checkAudioPermission() async {
+    // Verificar si se tiene el permiso de grabación de audio
+    var status = await Permission.microphone.status;
+    
+    if (status.isGranted) {
+      // Permiso concedido
+
+    } else {
+      // No se ha solicitado el permiso, solicitarlo al usuario
+      await Permission.microphone.request();
+    }
   }
 
 }
