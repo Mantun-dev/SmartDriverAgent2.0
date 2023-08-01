@@ -317,13 +317,13 @@ class _ChatsListState extends State<ChatsList> {
                                         ),
                                       ),
                                       Text(
-                                        ' Tu: ${listaChats[index]['UltimoM']}',
+                                        listaChats[index]['Tipo']=='MENSAJE'?' Tu: ${listaChats[index]['UltimoM']}': 'Tu: Mensaje de voz',
                                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12),
                                       ),
                                     ],
                                   ):
                                   Text(
-                                    '${listaChats[index]['UltimoM']}',
+                                    listaChats[index]['Tipo']=='MENSAJE'?'${listaChats[index]['UltimoM']}': 'Mensaje de voz',
                                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12),
                                   ),
                           ),
