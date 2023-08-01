@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_auth/Agents/Screens/Chat/socketChat.dart';
 import 'package:flutter_auth/helpers/base_client.dart';
 import 'package:flutter_auth/helpers/res_apis.dart';
+import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -101,6 +103,81 @@ class ChatApis {
         {"Content-Type": "application/json"});
     //print('adsadasdsaaasddsad');
     //print(se);
+
+    if (ok == null) return null;
+  }
+
+  void sendAudio(File audioFile, String sala, String nombre, String id, String motId, String nameDriver) async {
+    DateTime now = DateTime.now();
+    String formattedHour = DateFormat('hh:mm a').format(now);
+    var formatter = DateFormat('dd');
+    String dia = formatter.format(now);
+    var formatter2 = DateFormat('MM');
+    String mes = formatter2.format(now);
+    var formatter3 = DateFormat('yy');
+    String anio = formatter3.format(now);
+
+    // Compress the audio file
+    final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
+    final String outputPath = "${audioFile.path}.compressed.aac";
+    final int returnCode = await _flutterFFmpeg.execute(
+      "-i ${audioFile.path} -c:a aac -b:a 64k $outputPath",
+    );
+
+    if (returnCode != 0) {
+      print('Audio compression failed.');
+      return;
+    }
+
+    final File compressedAudioFile = File(outputPath);
+
+    // Convert the compressed audio file to base64
+    final audioBytes = compressedAudioFile.readAsBytesSync();
+    final encodedAudio = base64.encode(audioBytes);
+
+    // Enviar el mensaje a través de BaseClient().post() si es necesario
+    Map sendMessage = {
+      "id_emisor": id,
+      "Nombre_emisor": nombre,
+      "Sala": sala,
+      "id_receptor": motId,
+      "Nombre_receptor": nameDriver,
+      "Tipo": "AUDIO",
+      "Mensaje": encodedAudio,
+      "Dia": dia,
+      "Mes": mes,
+      "Año": anio,
+      "Hora": formattedHour
+    };
+
+    print(sendMessage);
+
+    var ok = await BaseClient().post(RestApis.messages, sendMessage, {"Content-Type": "application/json"});
+
+    // Enviar el archivo de audio a través de streamSocket.socket.emit()
+
+    streamSocket.socket.emit('enviar-mensaje2', {
+      'mensaje': encodedAudio,
+      'sala': sala,
+      'user': nombre,
+      'id': id,
+      'hora': formattedHour,
+      'dia': dia,
+      'mes': mes,
+      'año': anio,
+      'leido': false,
+      'tipo': 'AUDIO'
+    });
+    // Enviar la notificación si es necesario
+    Map sendNotification = {
+      "receiverId": motId,
+      "receiverRole": "motorista",
+      "textMessage": 'Audio',
+      "hourMessage": formattedHour,
+      "nameSender": nombre
+    };
+    await BaseClient().post('https://admin.smtdriver.com/sendMessageNotification', sendNotification,
+        {"Content-Type": "application/json"});
 
     if (ok == null) return null;
   }
