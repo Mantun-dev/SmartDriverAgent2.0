@@ -15,6 +15,8 @@ import 'package:flutter_auth/providers/chat.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 
 
@@ -123,6 +125,8 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+    _audioPlayer = AudioPlayer();
+    _audioRecord = Record();
     //Important: If your server is running on localhost and you are testing your app on Android then replace http://localhost:3000 with http://10.0.2.2:3000
     ChatApis().dataLogin(
         widget.id, widget.rol, widget.nombre, widget.sala, widget.driverId);
@@ -224,6 +228,8 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     super.dispose();
+    _audioPlayer.dispose();
+    _audioRecord.dispose();
     _messageInputController.dispose();
 
     //creación del dispose para removerlo después del evento
@@ -712,6 +718,62 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ],
               );
+  }
+
+  Future<bool> checkAudioPermission() async {
+    // Verificar si se tiene el permiso de grabación de audio
+    var status = await Permission.microphone.status;
+    
+    if (status.isGranted) {
+      // Permiso concedido
+      return true;
+    } else {
+      // No se ha solicitado el permiso, solicitarlo al usuario
+      return false;
+    }
+  }
+
+  void startRecording() async {
+    try {
+      final cacheDir = await getTemporaryDirectory();
+      String filePath = '${cacheDir.path}/recording${_audioList.length + 1}.wav';
+      await _audioRecord.start(path: filePath);
+
+      setState(() {
+        filePathP = filePath;
+        activateMic = true;
+      });
+    } catch (e) {
+      // Handle any error during recording
+      print('Error al iniciar la grabación: $e');
+    }
+  }
+
+  void stopRecording() async {
+    try {
+
+      await _audioRecord.stop();
+
+      String recordedFilePath = filePathP; // Obtén la ruta del archivo grabado
+
+      setState(() {
+        activateMic = false;
+        _audioList.add(AudioData(recordedFilePath));
+      });
+
+      // Verificar si el archivo existe
+      File audioFile = File(recordedFilePath);
+      if (await audioFile.exists()) {
+        print('El archivo de audio existe');
+      } else {
+        print('El archivo de audio no existe');
+      }
+
+      _sendAudio(recordedFilePath); // Enviar la ruta del archivo de audio
+    } catch (e) {
+      // Handle any error when stopping recording
+      print('Error al detener la grabación: $e');
+    }
   }
 
 }
