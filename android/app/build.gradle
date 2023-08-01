@@ -27,7 +27,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 31 // Incrementar la versión a 33 o a la más alta que sea compatible con tus dependencias
+    compileSdkVersion 33 // Incrementar la versión a 33 o a la más alta que sea compatible con tus dependencias
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         applicationId "com.smartdriver.devs"
-        minSdkVersion 19
+        minSdkVersion 24
         targetSdkVersion 31 // Incrementar la versión a 33 o a la más alta que sea compatible con tus dependencias
         multiDexEnabled true // Habilitar el soporte multidex
         versionCode 88
