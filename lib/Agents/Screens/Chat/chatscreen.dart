@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 //import 'package:flutter/material.dart';
@@ -676,45 +677,87 @@ class _ChatScreenState extends State<ChatScreen> {
                       horizontal: 16,
                     ),
                     child: SafeArea(
-                      child: Container(
-                        margin: EdgeInsets.only(top: 15, bottom: 15),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Theme.of(context).cardTheme.color,
-                          border: Border.all(color: Theme.of(context).disabledColor)
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
-                                controller: _messageInputController,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(left: 10),
-                                  hintText: 'Mensaje',
-                                          hintStyle: TextStyle(
-                                    color: Theme.of(context).hintColor, fontSize: 15, fontFamily: 'Roboto'
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.only(top: 15, bottom: 15),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Theme.of(context).cardTheme.color,
+                                border: Border.all(color: Theme.of(context).disabledColor),
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: TextField(
+                                      enabled: !activateMic ? true : false,
+                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
+                                      controller: _messageInputController,
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(left: 10),
+                                        hintText: !activateMic ? 'Mensaje' : 'Grabando audio...',
+                                        hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
                                   ),
-                                  border: InputBorder.none,
-                                ),
+                                  IconButton(
+                                    color: chatSecond,
+                                    onPressed: () {
+                                      if (activateMic) return;
+                                      if (_messageInputController.text.trim().isNotEmpty) {
+                                        _sendMessage(_messageInputController.text.trim());
+                                      }
+                                    },
+                                    icon: Icon(Icons.send, color: Theme.of(context).primaryIconTheme.color),
+                                  ),
+                                ],
                               ),
                             ),
-                            IconButton(
-                              color: chatSecond,
-                              onPressed: () {
-                                if (_messageInputController.text
-                                    .trim()
-                                    .isNotEmpty) {
-                                  _sendMessage(
-                                      _messageInputController.text.trim());
-                                }
-                              },
-                              icon: Icon(Icons.send, color: Theme.of(context).primaryIconTheme.color),
-                            )
-                          ],
-                        ),
+                          ),
+                          
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Container(
+                              width: 48,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color.fromRGBO(40, 93, 169, 1),
+                              ),
+                              child: IconButton(
+                                onPressed: () async {
+                                  bool permiso= await checkAudioPermission();
+                          
+                                  if(permiso){
+                                    if(!activateMic){
+                                      startRecording();
+                                    }else{
+                                      stopRecording();
+                                    }
+                                  }else{
+                                    WarningDialog().show(
+                                      context,
+                                      title: 'No dio permiso del uso del microfono',
+                                      onOkay: () {
+                                        try{
+                                          AppSettings.openAppSettings();
+                                        }catch(error){
+                                          print(error);
+                                        }
+                                      },
+                                    );
+                                  }
+                                },
+                                icon: !activateMic ? Icon(Icons.mic, color: Colors.white) : Icon(Icons.mic_off, color: Colors.red),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                    ),
+                    )
+
                   ),
                 ],
               );
