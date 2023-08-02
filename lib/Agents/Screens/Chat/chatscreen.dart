@@ -143,7 +143,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void getMessagesDB() async {
-   
+    print('*******************************************cargarM*****************************');
     Provider.of<ChatProvider>(context, listen: false).mensaje2.clear();
     var messages = await BaseClient().get(
         RestApis.messages +
@@ -158,25 +158,24 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       nameDriver = data["nombreM"];
     });
-    for (var i = 0; i<data["listM"].length; i++) {
+    data["listM"].forEach((element) {
       arrayStructure.add({
-        "mensaje": data["listM"][i]["Mensaje"],
-        "sala": data["listM"][i]["Sala"],
-        "user": data["listM"][i]["Nombre_emisor"],
-        "id": data["listM"][i]["id_emisor"],
-        "hora": data["listM"][i]["Hora"],
-        "dia": data["listM"][i]["Dia"],
-        "mes": data["listM"][i]["Mes"],
-        "año": data["listM"][i]["Año"],
-        "tipo": data["listM"][i]["Tipo"],
-        "leido": data["listM"][i]["Leido"]
+        "mensaje": element["Mensaje"],
+        "sala": element["Sala"],
+        "user": element["Nombre_emisor"],
+        "id": element["id_emisor"],
+        "hora": element["Hora"],
+        "dia": element["Dia"],
+        "mes": element["Mes"],
+        "año": element["Año"],
+        "tipo": element["Tipo"],
+        "leido": element["Leido"]
       });
 
-      if (data["listM"][i]["Tipo"] == 'AUDIO') {
+      if(element["Tipo"]=='AUDIO'){
         _audioList.add('audio');
       }
-    }
-
+    });
     controllerLoading(true);
     arrayStructure.forEach((result) {
       if (mounted) {
