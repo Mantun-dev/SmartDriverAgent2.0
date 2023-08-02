@@ -13,6 +13,7 @@ import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/helpers/base_client.dart';
 import 'package:flutter_auth/helpers/res_apis.dart';
 import 'package:flutter_auth/providers/chat.dart';
+import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
 import 'package:flutter_svg/svg.dart';
 
@@ -71,7 +72,7 @@ class _ChatScreenState extends State<ChatScreen> {
   bool activateMic = false;
   late AudioPlayer _audioPlayer;
   late Record _audioRecord;
-  List<AudioData> _audioList = [];
+  List<String> _audioList = [];
   String filePathP = '';
 
   _sendMessage(String text) {
@@ -123,6 +124,7 @@ class _ChatScreenState extends State<ChatScreen> {
     streamSocket.socket.disconnect();
     streamSocket.socket.close();
     streamSocket.socket.dispose();
+    deleteAllTempAudioFiles();
   }
 
   @override
@@ -141,6 +143,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void getMessagesDB() async {
+   
     Provider.of<ChatProvider>(context, listen: false).mensaje2.clear();
     var messages = await BaseClient().get(
         RestApis.messages +
@@ -155,20 +158,25 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {
       nameDriver = data["nombreM"];
     });
-    data["listM"].forEach((element) {
+    for (var i = 0; i<data["listM"].length; i++) {
       arrayStructure.add({
-        "mensaje": element["Mensaje"],
-        "sala": element["Sala"],
-        "user": element["Nombre_emisor"],
-        "id": element["id_emisor"],
-        "hora": element["Hora"],
-        "dia": element["Dia"],
-        "mes": element["Mes"],
-        "año": element["Año"],
-        "tipo": element["Tipo"],
-        "leido": element["Leido"]
+        "mensaje": data["listM"][i]["Mensaje"],
+        "sala": data["listM"][i]["Sala"],
+        "user": data["listM"][i]["Nombre_emisor"],
+        "id": data["listM"][i]["id_emisor"],
+        "hora": data["listM"][i]["Hora"],
+        "dia": data["listM"][i]["Dia"],
+        "mes": data["listM"][i]["Mes"],
+        "año": data["listM"][i]["Año"],
+        "tipo": data["listM"][i]["Tipo"],
+        "leido": data["listM"][i]["Leido"]
       });
-    });
+
+      if (data["listM"][i]["Tipo"] == 'AUDIO') {
+        _audioList.add('audio');
+      }
+    }
+
     controllerLoading(true);
     arrayStructure.forEach((result) {
       if (mounted) {
@@ -805,28 +813,26 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void stopRecording() async {
     try {
-
       await _audioRecord.stop();
 
-      String recordedFilePath = filePathP; // Obtén la ruta del archivo grabado
-
-      setState(() {
-        activateMic = false;
-        _audioList.add(AudioData(recordedFilePath));
-      });
+      String recordedFilePath = filePathP;
 
       // Verificar si el archivo existe
       File audioFile = File(recordedFilePath);
       if (await audioFile.exists()) {
+        _sendAudio(recordedFilePath);
+        print(filePathP);
+        setState(() {
+          activateMic = false;
+          _audioList.add('audio');
+        });
 
       } else {
         print('El archivo de audio no existe');
       }
-
-      _sendAudio(recordedFilePath); // Enviar la ruta del archivo de audio
     } catch (e) {
-      // Handle any error when stopping recording
-      print('Error al detener la grabación: $e');
+      // Manejo más detallado de errores
+      print('Error al detener la grabación o enviar el audio: $e');
     }
   }
 
