@@ -108,7 +108,7 @@ class _ChatScreenState extends State<ChatScreen> {
       try {
 
         ChatApis().sendAudio(File(audioPath), widget.sala, widget.nombre, widget.id, widget.driverId, nameDriver!);
-        _messageInputController.clear();
+
       } catch (e) {
         // Handle any error during compression or sending
         print('Error al enviar el audio: $e');
@@ -501,7 +501,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                             message.tipo=='AUDIO'?
                                               AudioContainer(
                                                 base64Audio: message.mensaje!,
-                                                colorIcono: message.user == widget.nombre.toUpperCase()
+                                                colorIcono: message.id == widget.id
                                                     ? Colors.white
                                                     : Theme.of(context).primaryColorDark,
                                               )
