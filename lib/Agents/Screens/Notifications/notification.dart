@@ -71,6 +71,8 @@ class _NotificationPage extends State<NotificationPage> {
     DateTime dateTime = DateTime.parse(dataFecha);
     DateTime now = DateTime.now();
     DateTime yesterday = DateTime(now.year, now.month, now.day - 1);
+    DateTime startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+    DateTime endOfWeek = startOfWeek.add(Duration(days: 6));
 
     String formattedDate;
 
@@ -82,11 +84,18 @@ class _NotificationPage extends State<NotificationPage> {
         dateTime.month == yesterday.month &&
         dateTime.day == yesterday.day) {
       formattedDate = 'Ayer';
+    } else if (dateTime.isAfter(startOfWeek) && dateTime.isBefore(endOfWeek)) {
+      formattedDate = 'Esta semana';
     } else {
       formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
     }
 
     return formattedDate;
+  }
+
+  String getFechaSemana(String dataFecha) {
+    DateTime dateTime = DateTime.parse(dataFecha);
+    return DateFormat('dd/MM/yyyy').format(dateTime);
   }
 
   String getHora(String dataFecha) {
@@ -237,11 +246,19 @@ class _NotificationPage extends State<NotificationPage> {
                               ),
                             ),
                             SizedBox(width: 12), 
-                            Text(
-                              getHora(listaNotificaciones[index]['notificationCreated']),
-                              style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
-                              textAlign: TextAlign.left,
-                            ),
+                            if(getFecha(listaNotificaciones[index]['notificationCreated'])=='Esta semana')...{
+                              Text(
+                                '${getFechaSemana(listaNotificaciones[index]['notificationCreated'])} a las ${getHora(listaNotificaciones[index]['notificationCreated'])}',
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
+                                textAlign: TextAlign.left
+                              ),
+                            }else...{
+                              Text(
+                                getHora(listaNotificaciones[index]['notificationCreated']),
+                                style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
+                                textAlign: TextAlign.left
+                              ),
+                            }    
                           ],
                         ),
                         SizedBox(height: 10),
