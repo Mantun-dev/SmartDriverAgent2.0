@@ -143,7 +143,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void getMessagesDB() async {
-    print('*******************************************cargarM*****************************');
+
     Provider.of<ChatProvider>(context, listen: false).mensaje2.clear();
     var messages = await BaseClient().get(
         RestApis.messages +
