@@ -168,10 +168,12 @@ class _NotificationPage extends State<NotificationPage> {
                                   ),
                                 ),
                                 SizedBox(width: 12),
-                                Text(
-                                  getFecha(listaNotificaciones[index]['notificationCreated']),
-                                  style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 15),
-                                  textAlign: TextAlign.left,
+                                Flexible(
+                                  child: Text(
+                                    getFecha(listaNotificaciones[index]['notificationCreated']),
+                                    style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 15),
+                                    textAlign: TextAlign.left,
+                                  ),
                                 ),
                               ],
                             ),
@@ -193,10 +195,12 @@ class _NotificationPage extends State<NotificationPage> {
                               ),
                             ),
                             SizedBox(width: 12),
-                            Text(
-                              getFecha(listaNotificaciones[index]['notificationCreated']),
-                              style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 15),
-                              textAlign: TextAlign.left,
+                            Flexible(
+                              child: Text(
+                                getFecha(listaNotificaciones[index]['notificationCreated']),
+                                style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 15),
+                                textAlign: TextAlign.left,
+                              ),
                             ),
                           ],
                         ),
@@ -220,10 +224,12 @@ class _NotificationPage extends State<NotificationPage> {
                               ),
                             ),
                             SizedBox(width: 12), // Espacio entre el texto y el círculo
-                            Text(
-                              '${listaNotificaciones[index]['notificationDescription']}',
-                              style: listaNotificaciones[index]['isRead'] != true ? Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15, fontWeight: FontWeight.w500) : Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
-                              textAlign: TextAlign.left,
+                            Flexible(
+                              child: Text(
+                                '${listaNotificaciones[index]['notificationDescription']}',
+                                style: listaNotificaciones[index]['isRead'] != true ? Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15, fontWeight: FontWeight.w500) : Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
+                                textAlign: TextAlign.left,
+                              ),
                             ),
                   
                           ],
@@ -246,17 +252,21 @@ class _NotificationPage extends State<NotificationPage> {
                             ),
                             SizedBox(width: 12), 
                             if(getFecha(listaNotificaciones[index]['notificationCreated'])=='Esta semana')...{
-                              Text(
+                              Flexible(
+                                child: Text(
                                 '${getFechaSemana(listaNotificaciones[index]['notificationCreated'])} a las ${getHora(listaNotificaciones[index]['notificationCreated'])}',
                                 style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
                                 textAlign: TextAlign.left
                               ),
+                              )
                             }else...{
-                              Text(
+                              Flexible(
+                                child: Text(
                                 getHora(listaNotificaciones[index]['notificationCreated']),
                                 style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
                                 textAlign: TextAlign.left
                               ),
+                              )
                             }    
                           ],
                         ),
