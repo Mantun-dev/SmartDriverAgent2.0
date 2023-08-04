@@ -49,6 +49,21 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
     return true;
   }
 
+  String convertDateFormat(String inputDate) {
+    final List<String> months = [
+      '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+
+    List<String> parts = inputDate.split(' ');
+
+    String day = parts[0];
+    String month = months.indexOf(parts[1]).toString().padLeft(2, '0');
+    String year = '20${parts[2]}';
+
+    return '$day/$month/$year';
+  }
+
   @override
   Widget build(BuildContext context) {
     //future builder de Story trip
@@ -172,7 +187,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                           ),
                                         ),
                                         TextSpan(
-                                          text: '${abc.data![index].fecha}',
+                                          text: '${convertDateFormat(abc.data![index].fecha!)}',
                                           style: TextStyle(
                                             fontWeight: FontWeight.normal,
                                             fontSize: 14,
@@ -439,10 +454,11 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                         pageBuilder: (_, __, ___) => TripCalification(
                                           nombreMotorista: abc.data![index].conductor,
                                           idViaje: abc.data![index].tripId,
-                                          fechaViaje: abc.data![index].fecha,
-                                          calificacionConduccion: 1,
-                                          calificacionAmabilidad: 3,
+                                          fechaViaje: convertDateFormat(abc.data![index].fecha!),
+                                          calificacionConduccion: 4,
+                                          calificacionAmabilidad: 2,
                                           calificacionVehiculo: 5,
+                                          calificacion: 1,
                                           comentario: 'Ejemplo de comentario',
                                           fechaComentario: '04/08/2023',
                                           adminComentario: 'Ejemlo comentario admin',
@@ -461,11 +477,14 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                       ),
                                     );
                             },
-                            child: Text(
-                              'Detalles del viaje',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10, right: 10),
+                              child: Text(
+                                'Detalles del viaje',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),  

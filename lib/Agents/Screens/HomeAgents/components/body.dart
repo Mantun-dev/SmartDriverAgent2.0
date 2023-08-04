@@ -1280,7 +1280,7 @@ BuildContext? contextP;
                     child: SingleChildScrollView(
                       child: Column(children: [
                         SizedBox(height: 5),
-                        Text('Usted no está siendo agendado para el servicio de transporte, debe comunicarse con su supervisor.',style: Theme.of(contextP!).textTheme.bodyMedium!.copyWith(fontSize: 15)),
+                        Text('No estás siendo agendado para el servicio de transporte, debes comunicarte con tu supervisor.',style: Theme.of(contextP!).textTheme.bodyMedium!.copyWith(fontSize: 15)),
                       ]),
                     ),
                   );
