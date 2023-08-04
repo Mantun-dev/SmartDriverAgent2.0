@@ -166,7 +166,7 @@ class _DataTableExample extends State<TripCalification> {
                             ),
                             TextSpan(
                               text: "${this.widget.fechaViaje}",
-                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15, fontWeight: FontWeight.w400),
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15, fontWeight: FontWeight.w500),
                             ),
                           ],
                         ),
@@ -257,7 +257,7 @@ class _DataTableExample extends State<TripCalification> {
                           ),
                           TextSpan(
                             text: "${this.widget.fechaViaje}",
-                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12, fontWeight: FontWeight.w400),
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12, fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
@@ -297,7 +297,7 @@ class _DataTableExample extends State<TripCalification> {
                                   
                             Text(
                               '${this.widget.adminComentarioFecha}',
-                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w400),
+                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w500),
                             ),
                           ],
                         ),
