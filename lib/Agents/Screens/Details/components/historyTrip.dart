@@ -7,6 +7,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 
+import '../../../../main.dart';
+import 'historyTripCalification.dart';
+
 class HistoryTripScreen extends StatefulWidget {
   //declaración de clase Story y su variable
   final Story? item;
@@ -44,6 +47,21 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
         MaterialPageRoute(builder: (BuildContext context) => HomeScreen()),
         (Route<dynamic> route) => false);
     return true;
+  }
+
+  String convertDateFormat(String inputDate) {
+    final List<String> months = [
+      '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+
+    List<String> parts = inputDate.split(' ');
+
+    String day = parts[0];
+    String month = months.indexOf(parts[1]).toString().padLeft(2, '0');
+    String year = '20${parts[2]}';
+
+    return '$day/$month/$year';
   }
 
   @override
@@ -169,7 +187,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                           ),
                                         ),
                                         TextSpan(
-                                          text: '${abc.data![index].fecha}',
+                                          text: '${convertDateFormat(abc.data![index].fecha!)}',
                                           style: TextStyle(
                                             fontWeight: FontWeight.normal,
                                             fontSize: 14,
@@ -411,11 +429,66 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                             ],
                           ),
                         ),
-                        Container(
-                          height: 1,
-                          color: Theme.of(context).dividerColor,
-                        ),
-                                                                    
+
+                        if(true==false)...{
+                          Container(
+                            height: 1,
+                            color: Theme.of(context).dividerColor,
+                          ),
+                          SizedBox(height: 20),
+                          TextButton(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  side: BorderSide(color: Color.fromRGBO(40, 93, 169, 1)),
+                                ),
+                              ),
+                              backgroundColor: MaterialStateProperty.all(Color.fromRGBO(40, 93, 169, 1)),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                      navigatorKey.currentContext!,
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200),
+                                        pageBuilder: (_, __, ___) => TripCalification(
+                                          nombreMotorista: abc.data![index].conductor,
+                                          idViaje: abc.data![index].tripId,
+                                          fechaViaje: convertDateFormat(abc.data![index].fecha!),
+                                          calificacionConduccion: 4,
+                                          calificacionAmabilidad: 2,
+                                          calificacionVehiculo: 5,
+                                          calificacion: 1,
+                                          comentario: 'Ejemplo de comentario',
+                                          fechaComentario: '04/08/2023',
+                                          adminComentario: 'Ejemlo comentario admin',
+                                          adminComentarioFecha: '04/08/2023',
+                                          adminNombre: 'Juanito Perez',
+                                        ),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0), // Cambiar Offset de inicio a (1.0, 0.0)
+                                              end: Offset.zero, // Mantener Offset de final en (0.0, 0.0)
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10, right: 10),
+                              child: Text(
+                                'Detalles del viaje',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),  
+                        } ,                                      
                         SizedBox(height: 8),
                       ],
                     ),
