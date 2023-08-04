@@ -5,7 +5,6 @@ import 'package:flutter_auth/Agents/models/network.dart';
 //import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/components/AppBarSuperior.dart';
 import 'package:flutter_auth/components/backgroundB.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import '../../../components/AppBarPosterior.dart';
 import 'package:http/http.dart' as http;

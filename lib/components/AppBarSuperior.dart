@@ -68,6 +68,23 @@ class _AppBarSuperior extends State<AppBarSuperior> {
                                       },
                                     ),
                                   );
+              }else if(item==33){
+                 Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                      pageBuilder: (_, __, ___) => DetailScreenHistoryTrip(plantilla: plantilla[1]),
+                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                        return SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: Offset(-1.0, 0.0),
+                                            end: Offset.zero,
+                                          ).animate(animation),
+                                          child: child,
+                                        );
+                                      },
+                                    ),
+                                  );
               }
               else{
                 Navigator.push(
@@ -152,6 +169,20 @@ class _AppBarSuperior extends State<AppBarSuperior> {
           ),
 
           if(item==3)
+          Expanded(
+            child: Center(
+              child: Text(
+                "Historial de viajes",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 21
+                ),
+              ),
+            ),
+          ),
+
+          if(item==33)
           Expanded(
             child: Center(
               child: Text(

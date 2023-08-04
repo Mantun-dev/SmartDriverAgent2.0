@@ -7,6 +7,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
 
+import '../../../../main.dart';
+import 'historyTripCalification.dart';
+
 class HistoryTripScreen extends StatefulWidget {
   //declaración de clase Story y su variable
   final Story? item;
@@ -411,11 +414,62 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                             ],
                           ),
                         ),
-                        Container(
-                          height: 1,
-                          color: Theme.of(context).dividerColor,
-                        ),
-                                                                    
+
+                        if(true)...{
+                          Container(
+                            height: 1,
+                            color: Theme.of(context).dividerColor,
+                          ),
+                          SizedBox(height: 20),
+                          TextButton(
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  side: BorderSide(color: Color.fromRGBO(40, 93, 169, 1)),
+                                ),
+                              ),
+                              backgroundColor: MaterialStateProperty.all(Color.fromRGBO(40, 93, 169, 1)),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                      navigatorKey.currentContext!,
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200),
+                                        pageBuilder: (_, __, ___) => TripCalification(
+                                          nombreMotorista: abc.data![index].conductor,
+                                          idViaje: abc.data![index].tripId,
+                                          fechaViaje: abc.data![index].fecha,
+                                          calificacionConduccion: 1,
+                                          calificacionAmabilidad: 3,
+                                          calificacionVehiculo: 5,
+                                          comentario: 'Ejemplo de comentario',
+                                          fechaComentario: '04/08/2023',
+                                          adminComentario: 'Ejemlo comentario admin',
+                                          adminComentarioFecha: '04/08/2023',
+                                          adminNombre: 'Juanito Perez',
+                                        ),
+                                        transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: Offset(1.0, 0.0), // Cambiar Offset de inicio a (1.0, 0.0)
+                                              end: Offset.zero, // Mantener Offset de final en (0.0, 0.0)
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
+                            },
+                            child: Text(
+                              'Detalles del viaje',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),  
+                        } ,                                      
                         SizedBox(height: 8),
                       ],
                     ),
