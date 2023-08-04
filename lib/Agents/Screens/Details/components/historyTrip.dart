@@ -430,7 +430,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                           ),
                         ),
 
-                        if(true)...{
+                        if(true==false)...{
                           Container(
                             height: 1,
                             color: Theme.of(context).dividerColor,
