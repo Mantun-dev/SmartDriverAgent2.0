@@ -97,7 +97,7 @@ class Body extends StatelessWidget {
                     );
                   },
                   child: Text(
-                    "Registrate",
+                    "Regístrate",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 22,
