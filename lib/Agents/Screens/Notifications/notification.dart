@@ -143,7 +143,34 @@ class _NotificationPage extends State<NotificationPage> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
+                        if(index!=0)...{
+                          if(getFecha(listaNotificaciones[index]['notificationCreated'])!=getFecha(listaNotificaciones[index-1]['notificationCreated']))...{
+                            Row(
+                              children: [
+                                Container(
+                                  width: 10,
+                                  height: 10,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color:  Colors.transparent,
+                                    border: Border.all(
+                                      color: Colors.transparent,
+                                      width: 1.5, // Ancho del borde (ajusta según tus preferencias)
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 12),
+                                Text(
+                                  getFecha(listaNotificaciones[index]['notificationCreated']),
+                                  style: Theme.of(context).textTheme.labelMedium!.copyWith(fontSize: 15),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                          }
+                        }else...{
+                          Row(
                           children: [
                             Container(
                               width: 10,
@@ -166,6 +193,7 @@ class _NotificationPage extends State<NotificationPage> {
                           ],
                         ),
                         SizedBox(height: 10),
+                        },
 
                         // AQUÍ SOLO ESTARÁ ALINEADO EL TEXTO CON EL CÍRCULO
                         Row(
