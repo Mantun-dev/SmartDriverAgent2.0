@@ -135,7 +135,8 @@ class ChatApis {
       "Hora": formattedHour
     };
 
-    var ok = await BaseClient().post(RestApis.messages, sendMessage, {"Content-Type": "application/json"});
+    String sendDataM = json.encode(sendMessage);
+    await http.post(Uri.parse(RestApis.messages),body: sendDataM, headers: {"Content-Type": "application/json"});
 
     // Enviar el archivo de audio a través de streamSocket.socket.emit()
 
@@ -162,7 +163,7 @@ class ChatApis {
     await BaseClient().post('https://admin.smtdriver.com/sendMessageNotification', sendNotification,
         {"Content-Type": "application/json"});
 
-    if (ok == null) return null;
+    return null;
   }
 
   // void getDataUsuarios(dynamic getData){

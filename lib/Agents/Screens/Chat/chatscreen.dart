@@ -525,7 +525,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                     message.hora,
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontSize: 8),
+                                                        fontSize: 10),
                                                   ),
                                                 if (message.id !=
                                                     widget.id)
