@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
 import 'Agents/sharePrefers/preferencias_usuario.dart';
 import 'components/Tema.dart';
+import 'components/progress_indicator.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey(debugLabel: "Main Navigator");
 
@@ -82,23 +83,24 @@ class _MyAppState extends State<MyApp> {
           value: ChatProvider(),
         ),
       ],
-      child: coneccionInternet == null
-          ? verificandoConexion()
-          : coneccionInternet == false
-              ? sinConexion()
-              : MaterialApp(
-                  navigatorKey: navigatorKey,
-                  debugShowCheckedModeBanner: false,
-                  title: 'Smart Driver',
-                  theme: prefs.tema != true ? appThemeDataLight : appThemeDataDark,
-                  initialRoute: prefs.nombreUsuario == null || prefs.nombreUsuario == ""
-                      ? 'login'
-                      : 'home',
-                  routes: {
-                    'login': (BuildContext context) => UpgradeAlert(child: SplashView()),
-                    'home': (BuildContext context) => UpgradeAlert(child: HomeScreen()),
-                  },
-                ),
+      child: MaterialApp(
+        navigatorKey: navigatorKey,
+        debugShowCheckedModeBanner: false,
+        title: 'Smart Driver',
+        theme: prefs.tema != true ? appThemeDataLight : appThemeDataDark,
+        initialRoute: prefs.nombreUsuario == null || prefs.nombreUsuario == ""
+            ? 'login'
+            : 'home',
+        routes: {
+          'login': (BuildContext context) => UpgradeAlert(child: SplashView()),
+          'home': (BuildContext context) => UpgradeAlert(child: HomeScreen()),
+        },
+        home: coneccionInternet == null
+            ? verificandoConexion()
+            : coneccionInternet == false
+                ? sinConexion()
+                : HomeScreen(), // Cambia esto a tu pantalla principal
+      ),
     );
   }
 
