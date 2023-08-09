@@ -57,7 +57,6 @@ dependencies:
   font_awesome_flutter: ^9.2.0
   dotted_line: ^3.2.2
   event_bus: ^2.0.0
-  connectivity_plus: ^4.0.2
 
 dev_dependencies:
   change_app_package_name: ^1.1.0
