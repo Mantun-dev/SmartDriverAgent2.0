@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
 import 'Agents/sharePrefers/preferencias_usuario.dart';
 import 'components/Tema.dart';
+import 'components/progress_indicator.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey(debugLabel: "Main Navigator");
 Future<void> main() async {
@@ -41,6 +43,8 @@ class _MyAppState extends State<MyApp> {
 
   final prefs = new PreferenciasUsuario();
   bool menuDesplegable=false;
+  bool? coneccionInternet;
+  bool reintentarBoton = true;
 
   //función de la clase de notificaciones que necesita ser inicializada
   //para hacer las respectivas notificaciones y redirecciones
@@ -48,7 +52,7 @@ class _MyAppState extends State<MyApp> {
 
   void initState() {
     super.initState();
-
+    checkInternetConnectivity();
     PushNotificationServices.messageStream.listen((event) {
       if (event == 'PROCESS_TRIP') {
         navigatorKey.currentState?.push(MaterialPageRoute(
@@ -65,6 +69,15 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void checkInternetConnectivity() async {
+    final ConnectivityResult connectivityResult = await Connectivity().checkConnectivity();
+    setState(() {
+      coneccionInternet = connectivityResult != ConnectivityResult.none;
+      reintentarBoton = true;
+      print(coneccionInternet);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final prefs = new PreferenciasUsuario();
@@ -75,7 +88,12 @@ class _MyAppState extends State<MyApp> {
           value: ChatProvider(),
         ),
       ],
-      child: MaterialApp(
+      child: coneccionInternet == null?
+       verificandoConexion(): 
+       coneccionInternet == false? 
+       sinConexion()
+      :
+       MaterialApp(
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'Smart Driver',
@@ -88,6 +106,101 @@ class _MyAppState extends State<MyApp> {
           'login': (BuildContext context) => UpgradeAlert(child: SplashView()),
           'home': (BuildContext context) => UpgradeAlert(child: HomeScreen()),
         },
+      ),
+    );
+  }
+
+  Scaffold verificandoConexion() {
+  return Scaffold(
+    backgroundColor: Colors.white,
+    body: WillPopScope(
+      onWillPop: () async => false,
+      child: SimpleDialog(
+        elevation: 20,
+        backgroundColor: Colors.white,
+        children: [
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 16, top: 16, right: 16),
+                  child: CircularProgressIndicator(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'Verificando Conexión a internet',
+                    style: TextStyle(fontSize: 18, color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+  Scaffold sinConexion() {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'No hay conexion a internet',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Por favor verifique su conexion a internet',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.normal,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 10),  // Espacio vertical entre el texto y el CircularProgressIndicator
+              botonReintentar(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  OutlinedButton botonReintentar() {
+    return OutlinedButton(
+      
+      onPressed: reintentarBoton == false ? null:() {
+        setState(() {
+          reintentarBoton = false;
+        });
+        checkInternetConnectivity();
+      },
+      style: OutlinedButton.styleFrom(
+        backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Text(
+          reintentarBoton == false? 'Verificando Internet...':'Enviar',
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
       ),
     );
   }
