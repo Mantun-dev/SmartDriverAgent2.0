@@ -103,11 +103,11 @@ class _ChatScreenState extends State<ChatScreen> {
     _messageInputController.clear();
   }
 
-  void _sendAudio(String audioPath) async {
+  void _sendAudio(String audioPath, String audioName) async {
     if (await File(audioPath).exists()) {
       try {
 
-        ChatApis().sendAudio(File(audioPath), widget.sala, widget.nombre, widget.id, widget.driverId, nameDriver!);
+        ChatApis().sendAudio(File(audioPath), audioName, widget.sala, widget.nombre, widget.id, widget.driverId, nameDriver!);
 
       } catch (e) {
         // Handle any error during compression or sending
@@ -500,10 +500,11 @@ class _ChatScreenState extends State<ChatScreen> {
                                           if (message.mensaje != null) ...{
                                             message.tipo=='AUDIO'?
                                               AudioContainer(
-                                                base64Audio: message.mensaje!,
+                                                audioName: message.mensaje!,
                                                 colorIcono: message.id == widget.id
                                                     ? Colors.white
                                                     : Theme.of(context).primaryColorDark,
+                                                    idSala: int.parse(message.sala),
                                               )
                                             :
                                             Text(
@@ -819,7 +820,7 @@ class _ChatScreenState extends State<ChatScreen> {
       // Verificar si el archivo existe
       File audioFile = File(recordedFilePath);
       if (await audioFile.exists()) {
-        _sendAudio(recordedFilePath);
+        _sendAudio(recordedFilePath, 'recording${_audioList.length + 1}');
         print(filePathP);
         setState(() {
           activateMic = false;

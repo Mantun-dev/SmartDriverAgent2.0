@@ -106,7 +106,7 @@ class ChatApis {
     if (ok == null) return null;
   }
 
-  void sendAudio(File audioFile, String sala, String nombre, String id, String motId, String nameDriver) async {
+  void sendAudio(File audioFile,String audioName, String sala, String nombre, String id, String motId, String nameDriver) async {
     DateTime now = DateTime.now();
     String formattedHour = DateFormat('hh:mm a').format(now);
     var formatter = DateFormat('dd');
@@ -116,10 +116,6 @@ class ChatApis {
     var formatter3 = DateFormat('yy');
     String anio = formatter3.format(now);
 
-    // Convert the compressed audio file to base64
-    final audioBytes = audioFile.readAsBytesSync();
-    final encodedAudio = base64.encode(audioBytes);
-
     // Enviar el mensaje a través de BaseClient().post() si es necesario
     Map sendMessage = {
       "id_emisor": id,
@@ -128,20 +124,34 @@ class ChatApis {
       "id_receptor": motId,
       "Nombre_receptor": nameDriver,
       "Tipo": "AUDIO",
-      "Mensaje": encodedAudio,
+      "Mensaje": audioName,
       "Dia": dia,
       "Mes": mes,
       "Año": anio,
       "Hora": formattedHour
     };
-
+    //{Sala:269375}
     String sendDataM = json.encode(sendMessage);
     await http.post(Uri.parse(RestApis.messages),body: sendDataM, headers: {"Content-Type": "application/json"});
 
+     // Convert the compressed audio file to base64
+    final audioBytes = audioFile.readAsBytesSync();
+    final encodedAudio = base64.encode(audioBytes);
+
+    // Enviar el mensaje a través de BaseClient().post() si es necesario
+    Map sendAudio = {
+      "IdMensaleSala": sala,
+      "Audio": encodedAudio,
+      "NombreAudio": audioName
+    };
+
+    String sendDataA = json.encode(sendAudio);
+    var response = await http.post(Uri.parse(RestApis.audios),body: sendDataA, headers: {"Content-Type": "application/json"});
+    print(response.body);
     // Enviar el archivo de audio a través de streamSocket.socket.emit()
 
     streamSocket.socket.emit('enviar-mensaje2', {
-      'mensaje': encodedAudio,
+      'mensaje': audioName,
       'sala': sala,
       'user': nombre,
       'id': id,
