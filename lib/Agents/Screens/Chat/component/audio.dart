@@ -27,6 +27,7 @@ class _AudioContainerState extends State<AudioContainer> {
   Duration? audioDuration;
   String base64Audio = '';
   bool cargarAudio = false;
+  String audioPath = '';
 
   _AudioContainerState({required this.audioName, required this.colorIcono, required this.idSala});
 
@@ -81,41 +82,28 @@ Widget build(BuildContext context) {
   );
 }
 
-  void getAudio() async{
-
-    Map sendAudio = {
-      "NombreAudio": audioName
-    };
-
-    String sendDataA = json.encode(sendAudio);
-    var response = await http.post(Uri.parse('https://apichat.smtdriver.com/api/audios/$idSala'),body: sendDataA, headers: {"Content-Type": "application/json"});
-    var resp = json.decode(response.body);
-    print(response.body);
-    if(resp!=null)
-    base64Audio = resp['audios']['Audio'];
-
-    setState(() {
-      cargarAudio = true;
-    });
-
+  void getAudio() async {
+    try {
+      final tempDir = await getTemporaryDirectory();
+      final audioFile = File('${tempDir.path}/$audioName.wav'); // Construct the file path
+      print('${tempDir.path}/$audioName.wav');
+      if (await audioFile.exists()) {
+        setState(() {
+          cargarAudio = true;
+          audioPath = '${tempDir.path}/$audioName.wav';
+          print('audio existe');
+        });
+      } else {
+        print('Cargando audio...');
+      }
+    } catch (e) {
+      print('Error al verificar la existencia del audio: $e');
+    }
   }
 
   void playAudio() async {
     try {
-
-      if (!tempFiles.containsKey(base64Audio)) {
-        List<int> audioBytes = base64.decode(base64Audio);
-        File newTempFile = await _writeTempFile(audioBytes);
-        print(newTempFile);
-        if (newTempFile.existsSync()) {
-          tempFiles[base64Audio] = newTempFile;
-        } else {
-          print('Error al crear el archivo temporal');
-          return;
-        }
-      }
-
-      await _audioPlayer.play(UrlSource(tempFiles[base64Audio]!.path));// Specify that the audio source is local
+      await _audioPlayer.play(UrlSource(audioPath));// Specify that the audio source is local
       final duration = await _audioPlayer.getDuration(); // Get the audio duration
       setState(() {
         audioPlaying = true;
@@ -134,11 +122,6 @@ Widget build(BuildContext context) {
     });
   }
 
-  Future<File> _writeTempFile(List<int> audioBytes) async {
-    final tempDir = await getTemporaryDirectory();
-    final tempPath = '${tempDir.path}/temp_$audioName.wav'; // Mantener la extensión como wav
-    return File(tempPath).writeAsBytes(audioBytes);
-  }
 }
 
 void deleteAllTempAudioFiles() async {
