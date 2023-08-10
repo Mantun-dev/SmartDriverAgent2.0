@@ -797,7 +797,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void startRecording() async {
     try {
       final cacheDir = await getTemporaryDirectory();
-      String filePath = '${cacheDir.path}/recording${_audioList.length + 1}.wav';
+      String filePath = '${cacheDir.path}/${this.widget.sala}_recording${_audioList.length + 1}.wav';
       await _audioRecord.start(path: filePath);
 
       setState(() {
@@ -820,7 +820,7 @@ class _ChatScreenState extends State<ChatScreen> {
       // Verificar si el archivo existe
       File audioFile = File(recordedFilePath);
       if (await audioFile.exists()) {
-        _sendAudio(recordedFilePath, 'recording${_audioList.length + 1}');
+        _sendAudio(recordedFilePath, '${this.widget.sala}_recording${_audioList.length + 1}');
         print(filePathP);
         setState(() {
           activateMic = false;
