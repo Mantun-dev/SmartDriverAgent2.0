@@ -86,15 +86,15 @@ Widget build(BuildContext context) {
     try {
       final tempDir = await getTemporaryDirectory();
       final audioFile = File('${tempDir.path}/$audioName.wav'); // Construct the file path
-      print('${tempDir.path}/$audioName.wav');
+      
       if (await audioFile.exists()) {
         setState(() {
           cargarAudio = true;
           audioPath = '${tempDir.path}/$audioName.wav';
-          print('audio existe');
         });
+        print(audioPath);
       } else {
-        print('Cargando audio...');
+        print('audio no existe...');
       }
     } catch (e) {
       print('Error al verificar la existencia del audio: $e');
