@@ -106,76 +106,92 @@ class ChatApis {
     if (ok == null) return null;
   }
 
-  void sendAudio(File audioFile,String audioName, String sala, String nombre, String id, String motId, String nameDriver) async {
-    DateTime now = DateTime.now();
-    String formattedHour = DateFormat('hh:mm a').format(now);
-    var formatter = DateFormat('dd');
-    String dia = formatter.format(now);
-    var formatter2 = DateFormat('MM');
-    String mes = formatter2.format(now);
-    var formatter3 = DateFormat('yy');
-    String anio = formatter3.format(now);
+  Future<void> sendAudio(
+      File audioFile, String audioName, String sala, String nombre, String id,
+      String motId, String nameDriver) async {
+    try {
+      DateTime now = DateTime.now();
+      String formattedHour = DateFormat('hh:mm a').format(now);
+      String dia = DateFormat('dd').format(now);
+      String mes = DateFormat('MM').format(now);
+      String anio = DateFormat('yy').format(now);
 
-    // Enviar el mensaje a través de BaseClient().post() si es necesario
-    Map sendMessage = {
-      "id_emisor": id,
-      "Nombre_emisor": nombre,
-      "Sala": sala,
-      "id_receptor": motId,
-      "Nombre_receptor": nameDriver,
-      "Tipo": "AUDIO",
-      "Mensaje": audioName,
-      "Dia": dia,
-      "Mes": mes,
-      "Año": anio,
-      "Hora": formattedHour
-    };
-    //{Sala:269375}
-    String sendDataM = json.encode(sendMessage);
-    await http.post(Uri.parse(RestApis.messages),body: sendDataM, headers: {"Content-Type": "application/json"});
+      // Prepare the message to be sent via HTTP
+      Map<String, dynamic> sendMessage = {
+        "id_emisor": id,
+        "Nombre_emisor": nombre,
+        "Sala": sala,
+        "id_receptor": motId,
+        "Nombre_receptor": nameDriver,
+        "Tipo": "AUDIO",
+        "Mensaje": audioName,
+        "Dia": dia,
+        "Mes": mes,
+        "Año": anio,
+        "Hora": formattedHour,
+      };
+      String sendDataM = json.encode(sendMessage);
 
-     // Convert the compressed audio file to base64
-    final audioBytes = audioFile.readAsBytesSync();
-    final encodedAudio = base64.encode(audioBytes);
+      // Send the message to the server
+      await http.post(
+        Uri.parse(RestApis.messages),
+        body: sendDataM,
+        headers: {"Content-Type": "application/json"},
+      );
 
-    // Enviar el mensaje a través de BaseClient().post() si es necesario
-    Map sendAudio = {
-      "IdMensaleSala": sala,
-      "Audio": encodedAudio,
-      "NombreAudio": audioName
-    };
+      // Read and encode the audio file
+      /*final audioBytes = await audioFile.readAsBytes();
+      final encodedAudio = base64Encode(audioBytes);*/
 
-    String sendDataA = json.encode(sendAudio);
-    var response = await http.post(Uri.parse(RestApis.audios),body: sendDataA, headers: {"Content-Type": "application/json"});
-    print(response.body);
-    // Enviar el archivo de audio a través de streamSocket.socket.emit()
+      // Prepare the audio data to be sent via HTTP
+      /*Map<String, dynamic> sendAudio = {
+        "IdMensaleSala": sala,
+        "Audio": encodedAudio,
+        "NombreAudio": audioName,
+      };
+      String sendDataA = json.encode(sendAudio);
 
-    streamSocket.socket.emit('enviar-mensaje2', {
-      'mensaje': audioName,
-      'sala': sala,
-      'user': nombre,
-      'id': id,
-      'hora': formattedHour,
-      'dia': dia,
-      'mes': mes,
-      'año': anio,
-      'leido': false,
-      'tipo': 'AUDIO'
-    });
-    // Enviar la notificación si es necesario
-    Map sendNotification = {
-      "receiverId": motId,
-      "receiverRole": "motorista",
-      "textMessage": 'Mensaje de voz',
-      "hourMessage": formattedHour,
-      "nameSender": nombre
-    };
-    await BaseClient().post('https://admin.smtdriver.com/sendMessageNotification', sendNotification,
-        {"Content-Type": "application/json"});
+      // Send the audio data to the server
+      var audioResponse = await http.post(
+        Uri.parse(RestApis.audios),
+        body: sendDataA,
+        headers: {"Content-Type": "application/json"},
+      );
 
-    return null;
+      print(audioResponse.body);*/
+
+      // Emit the audio message via socket
+      streamSocket.socket.emit('enviar-mensaje2', {
+        'mensaje': audioName,
+        'sala': sala,
+        'user': nombre,
+        'id': id,
+        'hora': formattedHour,
+        'dia': dia,
+        'mes': mes,
+        'año': anio,
+        'leido': false,
+        'tipo': 'AUDIO',
+      });
+
+      // Send a notification if necessary
+      Map<String, dynamic> sendNotification = {
+        "receiverId": motId,
+        "receiverRole": "motorista",
+        "textMessage": 'Mensaje de voz',
+        "hourMessage": formattedHour,
+        "nameSender": nombre,
+      };
+      await BaseClient().post(
+        'https://admin.smtdriver.com/sendMessageNotification',
+        sendNotification,
+        {"Content-Type": "application/json"},
+      );
+    } catch (error) {
+      // Handle errors
+      print("Error sending audio: $error");
+    }
   }
-
   // void getDataUsuarios(dynamic getData){
   //   getDataUsuariosVar = getData;
   //   //print(getDataUsuariosVar);
