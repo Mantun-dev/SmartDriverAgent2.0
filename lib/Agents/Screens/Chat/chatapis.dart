@@ -107,7 +107,7 @@ class ChatApis {
   }
 
   Future<void> sendAudio(
-      File audioFile, String audioName, String sala, String nombre, String id,
+      String audioPath, String audioName, String sala, String nombre, String id,
       String motId, String nameDriver) async {
     try {
       DateTime now = DateTime.now();
@@ -117,6 +117,45 @@ class ChatApis {
       String anio = DateFormat('yy').format(now);
 
       // Prepare the message to be sent via HTTP
+      
+
+      /********************SUBIR ARCHIVO DE AUDIO AL SERVER*********************** */
+      // Crear una solicitud de tipo Multipart/form-data
+      if (await File(audioPath).exists()) {
+        try {
+          print(audioPath);
+          var request = http.MultipartRequest(
+            'POST',
+            Uri.parse(RestApis.audios), // URL sin el nombre del archivo
+          );
+
+          // Agregar el archivo de audio al campo de archivo en la solicitud
+          request.files.add(
+            http.MultipartFile(
+              'audio', // Nombre del campo que se espera en el servidor
+              File(audioPath).readAsBytes().asStream(),
+              File(audioPath).lengthSync(),
+              filename: audioName, // Obtener el nombre del archivo
+            ),
+          );
+
+          var response = await request.send();
+
+          if (response.statusCode != 200) {
+            String responseBody = await response.stream.bytesToString();
+            print(responseBody);
+            return;
+          }
+
+          // Resto del código para enviar el mensaje
+        } catch (e) {
+          print('Error al enviar el audio: $e');
+        }
+      }else{
+        print('audio no encontrado');
+        return;
+      }
+
       Map<String, dynamic> sendMessage = {
         "id_emisor": id,
         "Nombre_emisor": nombre,
@@ -138,27 +177,6 @@ class ChatApis {
         body: sendDataM,
         headers: {"Content-Type": "application/json"},
       );
-
-      // Read and encode the audio file
-      /*final audioBytes = await audioFile.readAsBytes();
-      final encodedAudio = base64Encode(audioBytes);*/
-
-      // Prepare the audio data to be sent via HTTP
-      /*Map<String, dynamic> sendAudio = {
-        "IdMensaleSala": sala,
-        "Audio": encodedAudio,
-        "NombreAudio": audioName,
-      };
-      String sendDataA = json.encode(sendAudio);
-
-      // Send the audio data to the server
-      var audioResponse = await http.post(
-        Uri.parse(RestApis.audios),
-        body: sendDataA,
-        headers: {"Content-Type": "application/json"},
-      );
-
-      print(audioResponse.body);*/
 
       // Emit the audio message via socket
       streamSocket.socket.emit('enviar-mensaje2', {

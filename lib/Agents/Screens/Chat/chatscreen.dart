@@ -107,7 +107,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (await File(audioPath).exists()) {
       try {
 
-        ChatApis().sendAudio(File(audioPath), audioName, widget.sala, widget.nombre, widget.id, widget.driverId, nameDriver!);
+        ChatApis().sendAudio(audioPath, audioName, widget.sala, widget.nombre, widget.id, widget.driverId, nameDriver!);
 
       } catch (e) {
         // Handle any error during compression or sending
