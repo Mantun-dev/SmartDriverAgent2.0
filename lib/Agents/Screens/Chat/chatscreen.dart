@@ -105,14 +105,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _sendAudio(String audioPath, String audioName) async {
     if (await File(audioPath).exists()) {
-      try {
-
-        ChatApis().sendAudio(audioPath, audioName, widget.sala, widget.nombre, widget.id, widget.driverId, nameDriver!);
-
-      } catch (e) {
-        // Handle any error during compression or sending
-        print('Error al enviar el audio: $e');
-      }
+      ChatApis().sendAudio(audioPath, audioName, widget.sala, widget.nombre, widget.id, widget.driverId, nameDriver!);
       // Resto del código
     } else {
       print('El archivo de audio no existe en la ruta especificada: $audioPath');
