@@ -90,19 +90,22 @@ Widget build(BuildContext context) {
       if (await audioFile.exists()) {
         setState(() {
           cargarAudio = true;
-          audioPath = '${tempDir.path}/$audioName.wav';
+          audioPath = audioFile.path;
         });
         print('Audio encontrado en el dispositivo: $audioPath');
       } else {
         // El archivo no existe en el dispositivo, intenta descargarlo del servidor
-        await downloadAudioFromServer(audioFile);
+        final response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/audios/$audioName.wav'));
 
-        // Verificar si el archivo se descargó correctamente
-        if (await audioFile.exists()) {
+        if (response.statusCode == 200) {
+          // Guardar el archivo descargado en el dispositivo
+          await audioFile.writeAsBytes(response.bodyBytes);
+
           setState(() {
             cargarAudio = true;
-            audioPath = '${tempDir.path}/$audioName.wav';
+            audioPath = audioFile.path;
           });
+
           print('Audio descargado desde el servidor y encontrado en el dispositivo: $audioPath');
         } else {
           print('El archivo de audio no existe en el servidor ni en el dispositivo');
@@ -110,20 +113,6 @@ Widget build(BuildContext context) {
       }
     } catch (e) {
       print('Error al verificar la existencia del audio: $e');
-    }
-  }
-
-  Future<void> downloadAudioFromServer(File audioFile) async {
-    try {
-      final response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/audios/$audioName.wav'));
-      if (response.statusCode == 200) {
-        await audioFile.writeAsBytes(response.bodyBytes);
-        print('Audio descargado desde el servidor y guardado en el dispositivo');
-      } else {
-        print('Error al descargar el archivo de audio desde el servidor. Código de estado: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error al descargar el archivo de audio desde el servidor: $e');
     }
   }
 

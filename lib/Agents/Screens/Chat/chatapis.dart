@@ -117,25 +117,32 @@ class ChatApis {
       String anio = DateFormat('yy').format(now);
 
       if (await File(audioPath).exists()) {
-        try {
-          var request = http.MultipartRequest(
-            'POST',
-            Uri.parse(RestApis.audios), // URL sin el nombre del archivo
-          );
+        var request = http.MultipartRequest(
+          'POST',
+          Uri.parse(RestApis.audios), // Reemplaza con la URL correcta
+        );
 
-          request.files.add(
-            http.MultipartFile(
-              'audio', // Nombre del campo en la solicitud
-              File(audioPath).readAsBytes().asStream(),
-              File(audioPath).lengthSync(),
-              filename: audioName,
-            ),
-          );
+        var audioFile = File(audioPath);
+        if (!audioFile.existsSync()) {
+          print('Archivo de audio no encontrado en la ruta especificada.');
+          return;
+        }
 
-          var response = await request.send();
+        // Agregar el archivo de audio al campo de archivo en la solicitud
+        request.files.add(
+          http.MultipartFile(
+            'audio', // Nombre del campo que se espera en el servidor
+            audioFile.readAsBytes().asStream(),
+            audioFile.lengthSync(),
+            filename: audioFile.path.split('/').last, // Obtener el nombre del archivo
+          ),
+        );
 
-          if (response.statusCode != 200) {
-            String responseBody = await response.stream.bytesToString();
+        var response = await request.send();
+          String responseBody = await response.stream.bytesToString();
+          print(responseBody);
+
+        if (response.statusCode != 200) {
             print(responseBody);
             return;
           }
@@ -187,9 +194,6 @@ class ChatApis {
             sendNotification,
             {"Content-Type": "application/json"},
           );
-        } catch (e) {
-          print('Error al enviar el audio: $e');
-        }
       } else {
         print('Audio no encontrado');
         return;
