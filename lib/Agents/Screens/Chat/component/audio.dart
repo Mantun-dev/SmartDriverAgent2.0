@@ -85,8 +85,8 @@ Widget build(BuildContext context) {
   void getAudio() async {
     try {
       final tempDir = await getTemporaryDirectory();
-      final audioFile = File('${tempDir.path}/$audioName.wav'); // Construct the file path
-
+      final audioFile = File('${tempDir.path}/$audioName'); // Construct the file path
+      print(audioName);
       if (await audioFile.exists()) {
         setState(() {
           cargarAudio = true;
@@ -95,7 +95,7 @@ Widget build(BuildContext context) {
         print('Audio encontrado en el dispositivo: $audioPath');
       } else {
         // El archivo no existe en el dispositivo, intenta descargarlo del servidor
-        final response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/audios/$audioName.wav'));
+        final response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/audios/$audioName'));
 
         if (response.statusCode == 200) {
           // Guardar el archivo descargado en el dispositivo

@@ -107,7 +107,7 @@ class ChatApis {
   }
 
   Future<void> sendAudio(
-    String audioPath, String audioName, String sala, String nombre, String id,
+    String audioPath, String sala, String nombre, String id,
     String motId, String nameDriver) async {
     try {
       DateTime now = DateTime.now();
@@ -141,11 +141,13 @@ class ChatApis {
         var response = await request.send();
           String responseBody = await response.stream.bytesToString();
           print(responseBody);
+          var resp = json.decode(responseBody);
 
         if (response.statusCode != 200) {
             print(responseBody);
             return;
           }
+          var audioName = resp['audioName'];
 
           Map<String, dynamic> sendMessage = {
             "id_emisor": id,

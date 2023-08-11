@@ -103,9 +103,9 @@ class _ChatScreenState extends State<ChatScreen> {
     _messageInputController.clear();
   }
 
-  void _sendAudio(String audioPath, String audioName) async {
+  void _sendAudio(String audioPath) async {
     if (await File(audioPath).exists()) {
-      ChatApis().sendAudio(audioPath, audioName, widget.sala, widget.nombre, widget.id, widget.driverId, nameDriver!);
+      ChatApis().sendAudio(audioPath, widget.sala, widget.nombre, widget.id, widget.driverId, nameDriver!);
       // Resto del código
     } else {
       print('El archivo de audio no existe en la ruta especificada: $audioPath');
@@ -813,7 +813,7 @@ class _ChatScreenState extends State<ChatScreen> {
       // Verificar si el archivo existe
       File audioFile = File(recordedFilePath);
       if (await audioFile.exists()) {
-        _sendAudio(recordedFilePath, '${this.widget.sala}_recording${_audioList.length + 1}');
+        _sendAudio(recordedFilePath);
         print(filePathP);
         setState(() {
           activateMic = false;
