@@ -127,7 +127,7 @@ class ChatApis {
           print('Archivo de audio no encontrado en la ruta especificada.');
           return;
         }
-
+        print( audioFile.path.split('/').last);
         // Agregar el archivo de audio al campo de archivo en la solicitud
         request.files.add(
           http.MultipartFile(
