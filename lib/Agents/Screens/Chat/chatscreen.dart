@@ -798,6 +798,12 @@ class _ChatScreenState extends State<ChatScreen> {
         activateMic = true;
       });
 
+      await Future.delayed(Duration(seconds: 61), () {
+        if (activateMic) {
+          stopRecording();
+        }
+      });
+
     } catch (e) {
       // Handle any error during recording
       print('Error al iniciar la grabación: $e');
