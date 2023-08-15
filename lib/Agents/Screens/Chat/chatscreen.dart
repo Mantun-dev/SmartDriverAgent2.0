@@ -798,7 +798,7 @@ class _ChatScreenState extends State<ChatScreen> {
         activateMic = true;
       });
 
-      await Future.delayed(Duration(seconds: 61), () {
+      await Future.delayed(Duration(seconds: 60), () {
         if (activateMic) {
           stopRecording();
         }
