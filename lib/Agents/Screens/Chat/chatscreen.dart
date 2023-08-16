@@ -1,5 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:app_settings/app_settings.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 //import 'package:flutter/material.dart';
 
@@ -9,18 +13,24 @@ import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/helpers/base_client.dart';
 import 'package:flutter_auth/helpers/res_apis.dart';
 import 'package:flutter_auth/providers/chat.dart';
+import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
 import 'package:flutter_svg/svg.dart';
 
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:record/record.dart';
 
 
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:provider/provider.dart';
 
+import '../../../components/warning_dialog.dart';
 import '../../models/message_chat.dart';
 
 import '../../models/network.dart';
+import 'component/audio.dart';
 import 'listchats.dart';
 import 'socketChat.dart';
 
@@ -59,6 +69,11 @@ class _ChatScreenState extends State<ChatScreen> {
   ScrollController _scrollController = new ScrollController();
   final arrayTemp = [];
   final StreamSocket streamSocket = StreamSocket(host: 'wschat.smtdriver.com');
+  bool activateMic = false;
+  late AudioPlayer _audioPlayer;
+  late Record _audioRecord;
+  List<String> _audioList = [];
+  String filePathP = '';
 
   _sendMessage(String text) {
     //print(widget.id);
@@ -88,16 +103,28 @@ class _ChatScreenState extends State<ChatScreen> {
     _messageInputController.clear();
   }
 
+  void _sendAudio(String audioPath) async {
+    if (await File(audioPath).exists()) {
+      ChatApis().sendAudio(audioPath, widget.sala, widget.nombre, widget.id, widget.driverId, nameDriver!);
+      // Resto del código
+    } else {
+      print('El archivo de audio no existe en la ruta especificada: $audioPath');
+    }
+  }
+
   desconectar(){
     streamSocket.socket.emit('salir');
     streamSocket.socket.disconnect();
     streamSocket.socket.close();
     streamSocket.socket.dispose();
+    deleteAllTempAudioFiles();
   }
 
   @override
   void initState() {
     super.initState();
+    _audioPlayer = AudioPlayer();
+    _audioRecord = Record();
     //Important: If your server is running on localhost and you are testing your app on Android then replace http://localhost:3000 with http://10.0.2.2:3000
     ChatApis().dataLogin(
         widget.id, widget.rol, widget.nombre, widget.sala, widget.driverId);
@@ -109,6 +136,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void getMessagesDB() async {
+
     Provider.of<ChatProvider>(context, listen: false).mensaje2.clear();
     var messages = await BaseClient().get(
         RestApis.messages +
@@ -136,6 +164,10 @@ class _ChatScreenState extends State<ChatScreen> {
         "tipo": element["Tipo"],
         "leido": element["Leido"]
       });
+
+      if(element["Tipo"]=='AUDIO'){
+        _audioList.add('audio');
+      }
     });
     controllerLoading(true);
     arrayStructure.forEach((result) {
@@ -166,7 +198,7 @@ class _ChatScreenState extends State<ChatScreen> {
         if (mounted) {
           Provider.of<ChatProvider>(context, listen: false).mensaje2.clear();
           listM.forEach((value) {
-            print(value);
+            //print(value);
             Provider.of<ChatProvider>(context, listen: false)
                 .addNewMessage(Message.fromJson(value));
           });
@@ -178,7 +210,7 @@ class _ChatScreenState extends State<ChatScreen> {
       'enviar-mensaje2',
       ((data) {
         //print('******************enviarMensaje');
-        print(data);
+        //print(data);
         if (mounted) {
           Provider.of<ChatProvider>(context, listen: false)
               .addNewMessage(Message.fromJson(data));
@@ -199,6 +231,8 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     super.dispose();
+    _audioPlayer.dispose();
+    _audioRecord.dispose();
     _messageInputController.dispose();
 
     //creación del dispose para removerlo después del evento
@@ -457,6 +491,15 @@ class _ChatScreenState extends State<ChatScreen> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           if (message.mensaje != null) ...{
+                                            message.tipo=='AUDIO'?
+                                              AudioContainer(
+                                                audioName: message.mensaje!,
+                                                colorIcono: message.id == widget.id
+                                                    ? Colors.white
+                                                    : Theme.of(context).primaryColorDark,
+                                                    idSala: int.parse(message.sala),
+                                              )
+                                            :
                                             Text(
                                               message.mensaje!,
                                               style: TextStyle(
@@ -476,7 +519,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                     message.hora,
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontSize: 8),
+                                                        fontSize: 10),
                                                   ),
                                                 if (message.id !=
                                                     widget.id)
@@ -645,48 +688,158 @@ class _ChatScreenState extends State<ChatScreen> {
                       horizontal: 16,
                     ),
                     child: SafeArea(
-                      child: Container(
-                        margin: EdgeInsets.only(top: 15, bottom: 15),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Theme.of(context).cardTheme.color,
-                          border: Border.all(color: Theme.of(context).disabledColor)
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
-                                controller: _messageInputController,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(left: 10),
-                                  hintText: 'Mensaje',
-                                          hintStyle: TextStyle(
-                                    color: Theme.of(context).hintColor, fontSize: 15, fontFamily: 'Roboto'
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.only(top: 15, bottom: 15),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Theme.of(context).cardTheme.color,
+                                border: Border.all(color: Theme.of(context).disabledColor),
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: TextField(
+                                      enabled: !activateMic ? true : false,
+                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15),
+                                      controller: _messageInputController,
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(left: 10),
+                                        hintText: !activateMic ? 'Mensaje' : 'Grabando audio...',
+                                        hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(color: Theme.of(context).hintColor, fontSize: 15),
+                                        border: InputBorder.none,
+                                      ),
+                                    ),
                                   ),
-                                  border: InputBorder.none,
-                                ),
+                                  IconButton(
+                                    color: chatSecond,
+                                    onPressed: () {
+                                      if (activateMic) return;
+                                      if (_messageInputController.text.trim().isNotEmpty) {
+                                        _sendMessage(_messageInputController.text.trim());
+                                      }
+                                    },
+                                    icon: Icon(Icons.send, color: Theme.of(context).primaryIconTheme.color),
+                                  ),
+                                ],
                               ),
                             ),
-                            IconButton(
-                              color: chatSecond,
-                              onPressed: () {
-                                if (_messageInputController.text
-                                    .trim()
-                                    .isNotEmpty) {
-                                  _sendMessage(
-                                      _messageInputController.text.trim());
-                                }
-                              },
-                              icon: Icon(Icons.send, color: Theme.of(context).primaryIconTheme.color),
-                            )
-                          ],
-                        ),
+                          ),
+                          
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Container(
+                              width: 48,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color.fromRGBO(40, 93, 169, 1),
+                              ),
+                              child: IconButton(
+                                onPressed: () async {
+                                  bool permiso= await checkAudioPermission();
+                          
+                                  if(permiso){
+                                    if(!activateMic){
+                                      startRecording();
+                                    }else{
+                                      stopRecording();
+                                    }
+                                  }else{
+                                    WarningDialog().show(
+                                      context,
+                                      title: 'No dio permiso del uso del microfono',
+                                      onOkay: () {
+                                        try{
+                                          AppSettings.openAppSettings();
+                                        }catch(error){
+                                          print(error);
+                                        }
+                                      },
+                                    );
+                                  }
+                                },
+                                icon: !activateMic ? Icon(Icons.mic, color: Colors.white) : Icon(Icons.mic_off, color: Colors.red),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                    ),
+                    )
+
                   ),
                 ],
               );
   }
 
+  Future<bool> checkAudioPermission() async {
+    // Verificar si se tiene el permiso de grabación de audio
+    var status = await Permission.microphone.status;
+    
+    if (status.isGranted) {
+      // Permiso concedido
+      return true;
+    } else {
+      // No se ha solicitado el permiso, solicitarlo al usuario
+      return false;
+    }
+  }
+
+  void startRecording() async {
+    try {
+      final cacheDir = await getTemporaryDirectory();
+      String filePath = '${cacheDir.path}/${this.widget.sala}_recording${_audioList.length + 1}.m4a';
+      await _audioRecord.start(path: filePath, encoder: AudioEncoder.aacLc);
+
+      setState(() {
+        filePathP = filePath;
+        activateMic = true;
+      });
+
+      await Future.delayed(Duration(seconds: 60), () {
+        if (activateMic) {
+          stopRecording();
+        }
+      });
+
+    } catch (e) {
+      // Handle any error during recording
+      print('Error al iniciar la grabación: $e');
+    }
+  }
+
+  void stopRecording() async {
+    try {
+      await _audioRecord.stop();
+
+      String recordedFilePath = filePathP;
+
+      // Verificar si el archivo existe
+      File audioFile = File(recordedFilePath);
+      if (await audioFile.exists()) {
+        _sendAudio(recordedFilePath);
+        print(filePathP);
+        setState(() {
+          activateMic = false;
+          _audioList.add('audio');
+        });
+
+      } else {
+        print('El archivo de audio no existe');
+      }
+    } catch (e) {
+      // Manejo más detallado de errores
+      print('Error al detener la grabación o enviar el audio: $e');
+    }
+  }
+
+}
+
+class AudioData {
+  final String filePath;
+  bool isPlaying = false;
+
+  AudioData(this.filePath);
 }

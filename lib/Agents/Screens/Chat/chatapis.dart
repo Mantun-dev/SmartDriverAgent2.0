@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_auth/Agents/Screens/Chat/socketChat.dart';
 import 'package:flutter_auth/helpers/base_client.dart';
@@ -103,6 +104,105 @@ class ChatApis {
     //print(se);
 
     if (ok == null) return null;
+  }
+
+  Future<void> sendAudio(
+    String audioPath, String sala, String nombre, String id,
+    String motId, String nameDriver) async {
+    try {
+      DateTime now = DateTime.now();
+      String formattedHour = DateFormat('hh:mm a').format(now);
+      String dia = DateFormat('dd').format(now);
+      String mes = DateFormat('MM').format(now);
+      String anio = DateFormat('yy').format(now);
+
+      if (await File(audioPath).exists()) {
+        var request = http.MultipartRequest(
+          'POST',
+          Uri.parse(RestApis.audios), // Reemplaza con la URL correcta
+        );
+
+        var audioFile = File(audioPath);
+        if (!audioFile.existsSync()) {
+          print('Archivo de audio no encontrado en la ruta especificada.');
+          return;
+        }
+        print( audioFile.path.split('/').last);
+        // Agregar el archivo de audio al campo de archivo en la solicitud
+        request.files.add(
+          http.MultipartFile(
+            'audio', // Nombre del campo que se espera en el servidor
+            audioFile.readAsBytes().asStream(),
+            audioFile.lengthSync(),
+            filename: audioFile.path.split('/').last, // Obtener el nombre del archivo
+          ),
+        );
+
+        var response = await request.send();
+          String responseBody = await response.stream.bytesToString();
+          print(responseBody);
+          var resp = json.decode(responseBody);
+
+        if (response.statusCode != 200) {
+            print(responseBody);
+            return;
+          }
+          var audioName = resp['audioName'];
+
+          Map<String, dynamic> sendMessage = {
+            "id_emisor": id,
+            "Nombre_emisor": nombre,
+            "Sala": sala,
+            "id_receptor": motId,
+            "Nombre_receptor": nameDriver,
+            "Tipo": "AUDIO",
+            "Mensaje": audioName,
+            "Dia": dia,
+            "Mes": mes,
+            "Año": anio,
+            "Hora": formattedHour,
+          };
+          String sendDataM = json.encode(sendMessage);
+
+          await http.post(
+            Uri.parse(RestApis.messages),
+            body: sendDataM,
+            headers: {"Content-Type": "application/json"},
+          );
+
+          // Emitir el mensaje de audio a través del socket
+          streamSocket.socket.emit('enviar-mensaje2', {
+            'mensaje': audioName,
+            'sala': sala,
+            'user': nombre,
+            'id': id,
+            'hora': formattedHour,
+            'dia': dia,
+            'mes': mes,
+            'año': anio,
+            'leido': false,
+            'tipo': 'AUDIO',
+          });
+
+          Map<String, dynamic> sendNotification = {
+            "receiverId": motId,
+            "receiverRole": "motorista",
+            "textMessage": 'Mensaje de voz',
+            "hourMessage": formattedHour,
+            "nameSender": nombre,
+          };
+          await BaseClient().post(
+            'https://admin.smtdriver.com/sendMessageNotification',
+            sendNotification,
+            {"Content-Type": "application/json"},
+          );
+      } else {
+        print('Audio no encontrado');
+        return;
+      }
+    } catch (error) {
+      print("Error sending audio: $error");
+    }
   }
 
   // void getDataUsuarios(dynamic getData){

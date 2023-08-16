@@ -366,26 +366,32 @@ class _AppBarPosterior extends State<AppBarPosterior> {
   }
 
   void getData() async{
-    http.Response response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/salas/agenteId/${prefs.usuarioId}'));
-    var resp = json.decode(response.body);
+    try {
 
-    var listaChats = resp['salas'] as List<dynamic>;
+      http.Response response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/salas/agenteId/${prefs.usuarioId}'));
+      var resp = json.decode(response.body);
 
-    http.Response response2 = await http.get(Uri.parse('https://smtdriver.com/api/getAgentNotifications/${prefs.usuarioId}'));
-    var resp2 = json.decode(response2.body);
+      var listaChats = resp['salas'] as List<dynamic>;
 
-    if(mounted){
-      counter= listaChats.length;
-      if(resp2['ok']==true){
+      http.Response response2 = await http.get(Uri.parse('https://smtdriver.com/api/getAgentNotifications/${prefs.usuarioId}'));
+      var resp2 = json.decode(response2.body);
 
-        for(var i=0;i<resp2['agentNotifications'].length;i++){
+      if(mounted){
+        counter= listaChats.length;
+        if(resp2['ok']==true){
 
-          if(resp2['agentNotifications'][i]['isRead']!=true){
-            totalNotificaciones++;
+          for(var i=0;i<resp2['agentNotifications'].length;i++){
+
+            if(resp2['agentNotifications'][i]['isRead']!=true){
+              totalNotificaciones++;
+            }
           }
         }
+        setState(() { });
       }
-      setState(() { });
+
+    }catch(error){
+      print('Error en funcion getData em app bar posterior $error');
     }
   }
 
