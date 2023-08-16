@@ -790,8 +790,8 @@ class _ChatScreenState extends State<ChatScreen> {
   void startRecording() async {
     try {
       final cacheDir = await getTemporaryDirectory();
-      String filePath = '${cacheDir.path}/${this.widget.sala}_recording${_audioList.length + 1}.wav';
-      await _audioRecord.start(path: filePath);
+      String filePath = '${cacheDir.path}/${this.widget.sala}_recording${_audioList.length + 1}.m4a';
+      await _audioRecord.start(path: filePath, encoder: AudioEncoder.aacLc);
 
       setState(() {
         filePathP = filePath;
