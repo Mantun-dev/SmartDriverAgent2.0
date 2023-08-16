@@ -56,8 +56,14 @@ dependencies:
   flutter_icons: ^1.1.0
   font_awesome_flutter: ^9.2.0
   dotted_line: ^3.2.2
+  permission_handler: ^7.0.0
+  app_settings: ^4.2.0
   event_bus: ^2.0.0
-
+  record: ^4.4.4
+  path_provider: ^2.0.15
+  audioplayers: ^4.1.0
+  flutter_ffmpeg: ^0.4.2
+  
 dev_dependencies:
   change_app_package_name: ^1.1.0
   flutter_launcher_icons: ^0.10.0
