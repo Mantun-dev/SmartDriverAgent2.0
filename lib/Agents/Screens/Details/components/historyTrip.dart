@@ -430,7 +430,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                           ),
                         ),
 
-                        if(true==false)...{
+                       /* if(true)...{
                           Container(
                             height: 1,
                             color: Theme.of(context).dividerColor,
@@ -488,7 +488,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                               ),
                             ),
                           ),  
-                        } ,                                      
+                        } , */                                     
                         SizedBox(height: 8),
                       ],
                     ),
