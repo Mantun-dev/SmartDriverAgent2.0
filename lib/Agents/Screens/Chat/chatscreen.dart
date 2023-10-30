@@ -334,7 +334,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         onTap: () {
                             desconectar();
                             fetchProfile().then((value) {
-                             Navigator.push(
+                            Navigator.push(
                                     context,
                                     PageRouteBuilder(
                                       transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed

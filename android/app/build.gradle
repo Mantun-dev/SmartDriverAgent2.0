@@ -45,10 +45,10 @@ android {
     defaultConfig {
         applicationId "com.smartdriver.devs"
         minSdkVersion 24
-        targetSdkVersion 31 // Incrementar la versión a 33 o a la más alta que sea compatible con tus dependencias
+        targetSdkVersion 33 // Incrementar la versión a 33 o a la más alta que sea compatible con tus dependencias
         multiDexEnabled true // Habilitar el soporte multidex
-        versionCode 100
-        versionName "2.9.1"
+        versionCode 109
+        versionName "2.9.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
