@@ -8,16 +8,18 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 //import 'package:flutter/material.dart';
 
 import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
+import 'package:flutter_auth/Agents/Screens/Details/components/warning_dialog.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/helpers/base_client.dart';
 import 'package:flutter_auth/helpers/res_apis.dart';
 import 'package:flutter_auth/providers/chat.dart';
-import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
+//import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
 import 'package:flutter_svg/svg.dart';
 
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
@@ -74,6 +76,8 @@ class _ChatScreenState extends State<ChatScreen> {
   late Record _audioRecord;
   List<String> _audioList = [];
   String filePathP = '';
+
+   bool? permiso;
 
   _sendMessage(String text) {
     //print(widget.id);
@@ -255,23 +259,17 @@ class _ChatScreenState extends State<ChatScreen> {
     return true;
   }
 
-  // Color _iconsColor(BuildContext context) {
-  //   final theme = NeumorphicTheme.of(context);
-  //   if (theme!.isUsingDark) {
-  //     return theme.current!.accentColor;
-  //   } else {
-  //     return Color(0);
-  //   }
-  // }
 
-  /*Color _textColor(BuildContext context) {
-    if (NeumorphicTheme.isUsingDark(context)) {
-      return Colors.white;
+   Future<bool> checkLocationPermission() async {
+    var status = await Permission.location.status;
+
+    if (status.isGranted) {
+      return true;
     } else {
-      return Colors.black;
+      return false;
     }
   }
-  */
+
 
   @override
   Widget build(BuildContext context) {
@@ -422,6 +420,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Column body(bool fecha(dynamic fechaBs), String hoyayer(dynamic fechaBs), BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    
+
     return Column(
                 children: [
                   Expanded(
@@ -434,7 +434,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           controller: _scrollController,
                           padding: const EdgeInsets.all(16),
                           itemBuilder: (context, index) {
-                            var message = provider.mensaje[index];
+                            var message = provider.mensaje[index];                                                        
 
                             if(fecha('${message.mes}/${message.dia}/${message.ao}')==true ){
                               message.mostrarF=true;
@@ -481,48 +481,54 @@ class _ChatScreenState extends State<ChatScreen> {
                                         bottomRight: Radius.circular(8.0),
                                       ),
                                     ),
-                                    color: message.id == widget.id
-                                        ? Theme.of(context).focusColor
-                                        : Theme.of(context).cardColor,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                    color: message.id == widget.id? Theme.of(context).focusColor: Theme.of(context).cardColor,
+                                    child: Padding(padding: const EdgeInsets.all(8.0),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          if (message.mensaje != null) ...{
-                                            message.tipo=='AUDIO'?
+                                          if (message.mensaje != null) ...{ 
+                                            if (message.tipo == 'AUDIO')... {
                                               AudioContainer(
                                                 audioName: message.mensaje!,
-                                                colorIcono: message.id == widget.id
-                                                    ? Colors.white
-                                                    : Theme.of(context).primaryColorDark,
-                                                    idSala: int.parse(message.sala),
+                                                colorIcono: message.id == widget.id ? 
+                                                 Colors.white: Theme.of(context).primaryColorDark,
+                                                idSala: int.parse(message.sala),
+                                              )  
+                                            }else...{
+                                              if(message.mensaje!.contains('position'))...{
+                                                TextButton(
+                                                onPressed: () {
+                                                  // Lógica para manejar la posición
+                                                  // Puedes abrir un mapa, por ejemplo
+                                                  // o ejecutar alguna acción relacionada con la posición.
+                                                },
+                                                child: Text('Posición enviada'),
                                               )
-                                            :
-                                            Text(
+                                              }else...{
+                                                Text(
                                               message.mensaje!,
                                               style: TextStyle(
-                                                  color: message.id ==
-                                                      widget.id
+                                                  color: message.id == widget.id
                                                   ? Colors.white
                                                   : Theme.of(context).primaryColorDark,
-                                                  fontSize: 17),
+                                              fontSize: 17),
                                             ),
+                                              }
+                                            },
+                                                                                        
                                             Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Expanded(child: SizedBox()),
-                                                if (message.id ==
-                                                    widget.id)
+                                                if (message.id == widget.id)
                                                   Text(
                                                     message.hora,
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 10),
                                                   ),
-                                                if (message.id !=
-                                                    widget.id)
+                                                if (message.id != widget.id)
                                                   Text(
                                                     message.hora,
                                                     style: TextStyle(
@@ -532,8 +538,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                 SizedBox(
                                                   width: 5,
                                                 ),
-                                                if (message.id ==
-                                                    widget.id)
+                                                if (message.id ==widget.id)
                                                   Icon(
                                                     message.leido == true
                                                         ? Icons.done_all
@@ -655,9 +660,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               onPressed: () {
                                 _messageInputController.text =
                                     "Lo estoy viendo";
-                                if (_messageInputController.text
-                                    .trim()
-                                    .isNotEmpty) {
+                                if (_messageInputController.text.trim().isNotEmpty) {
                                   _sendMessage(_messageInputController.text);
                                 }
                               },
@@ -713,6 +716,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       ),
                                     ),
                                   ),
+                                  
                                   IconButton(
                                     color: chatSecond,
                                     onPressed: () {
@@ -727,7 +731,41 @@ class _ChatScreenState extends State<ChatScreen> {
                               ),
                             ),
                           ),
-                          
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Container(
+                              width: 48,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color.fromRGBO(40, 93, 169, 1),
+                              ),
+                              child: IconButton(
+                                onPressed: () async {
+                                  permiso = await checkLocationPermission();
+                                  if (!permiso!) {
+                                    WarningSuccessDialog().show(
+                                      context,
+                                      title: "Usted negó el acceso a la ubicación. Esto es necesario para poder abordar agentes. Si no da acceso en configuraciones, no podrá abordar agentes.",
+                                      tipo: 1,
+                                      onOkay: () async {
+                                        try {
+                                          AppSettings.openLocationSettings();
+                                        } catch (error) {
+                                          print(error);
+                                        }
+                                      },
+                                    ); 
+                                    return;
+                                  }
+                                  Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+                                  print("position: {${position.latitude}, ${position.longitude}}");
+                                  _sendMessage("position: {${position.latitude}, ${position.longitude}}");
+                                },
+                                icon: Icon(Icons.location_pin, color: Colors.white) ,
+                              ),
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
                             child: Container(
