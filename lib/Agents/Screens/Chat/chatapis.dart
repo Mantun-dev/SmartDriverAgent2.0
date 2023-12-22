@@ -93,7 +93,8 @@ class ChatApis {
       "receiverRole": "motorista",
       "textMessage": message,
       "hourMessage": formattedHour,
-      "nameSender": nombre
+      "nameSender": nombre,
+      "tripId": sala
     };
     //print(motId);
     await BaseClient().post(
@@ -190,6 +191,7 @@ class ChatApis {
             "textMessage": 'Mensaje de voz',
             "hourMessage": formattedHour,
             "nameSender": nombre,
+            "tripId": sala
           };
           await BaseClient().post(
             'https://admin.smtdriver.com/sendMessageNotification',

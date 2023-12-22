@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen_changes.dart';
 import 'package:flutter_auth/Agents/models/dataAgent.dart';
@@ -9,8 +11,13 @@ import 'package:flutter_auth/Agents/models/profileAgent.dart';
 //import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/components/AppBarSuperior.dart';
 import 'package:flutter_auth/components/backgroundB.dart';
+import 'package:flutter_auth/main.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:quickalert/quickalert.dart';
 import '../../../components/AppBarPosterior.dart';
+import 'package:http/http.dart' as http;
+
+import '../../../components/progress_indicator.dart';
 
 void main() {
   runApp(ProfilePage());
@@ -31,6 +38,7 @@ class _DataTableExample extends State<ProfilePage> {
   //variables
   Future<Profile>? item;
   Future<DataAgent>? itemx;
+  int indexWithIsChosenTrue = 0;
 
   @override
   void initState() {
@@ -62,6 +70,7 @@ class _DataTableExample extends State<ProfilePage> {
   }
 
   Padding body() {
+    Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: ConstrainedBox(
@@ -125,7 +134,7 @@ class _DataTableExample extends State<ProfilePage> {
                                   ],
                                 ),
                               ),
-                               SizedBox(height: 10),
+                              SizedBox(height: 10),
                               Center(
                                 child: Text(
                                   '${abc.data!.agentFullname}',
@@ -378,34 +387,64 @@ class _DataTableExample extends State<ProfilePage> {
                                   SizedBox(height: 20),
                                   Padding(
                                     padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 18,
-                                          height: 18,
-                                          child: SvgPicture.asset(
-                                            "assets/icons/Casa.svg",
-                                            color: Theme.of(context).primaryIconTheme.color,
-                                          ),
-                                        ),
-                                        SizedBox(width: 5),
-                                        Flexible(
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: "Dirección: ",
-                                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
-                                                ),
-                                                TextSpan(
-                                                  text: "${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}",
-                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
-                                                ),
-                                              ],
+                                    child: GestureDetector(
+                                      onTap: () async{
+                                        LoadingIndicatorDialog().show(context);
+                                        http.Response responses = await http.get(Uri.parse('https://admin.smtdriver.com/multipleAgentLocations/${abc.data!.agentId}'));
+                                        final resp = json.decode(responses.body);
+                                                                               
+                                        if(resp['ok']==true){
+                                          LoadingIndicatorDialog().dismiss();
+                                          direcciones(size, context, resp);
+                                        }else{
+                                          LoadingIndicatorDialog().dismiss();
+                                          QuickAlert.show(
+                                            context: context,
+                                            title: "Alerta",
+                                            text: '${resp['message']}',
+                                            type: QuickAlertType.error,
+                                            confirmBtnText: "Ok"
+                                          );
+                                        }
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 18,
+                                            height: 18,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/Casa.svg",
+                                              color: Theme.of(context).primaryIconTheme.color,
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                          SizedBox(width: 5),
+                                          Flexible(
+                                            child: RichText(
+                                              text: TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: "Dirección: ",
+                                                    style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                                  ),
+                                                  TextSpan(
+                                                    text: "${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}",
+                                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 5),
+                                          Container(
+                                            width: 18,
+                                            height: 18,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/flechahaciaabajo.svg",
+                                              color: Theme.of(context).primaryIconTheme.color,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -788,34 +827,65 @@ class _DataTableExample extends State<ProfilePage> {
                                   SizedBox(height: 20),
                                   Padding(
                                     padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 18,
-                                          height: 18,
-                                          child: SvgPicture.asset(
-                                            "assets/icons/Casa.svg",
-                                            color: Theme.of(context).primaryIconTheme.color,
-                                          ),
-                                        ),
-                                        SizedBox(width: 5),
-                                        Flexible(
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: "Dirección: ",
-                                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
-                                                ),
-                                                TextSpan(
-                                                  text: "${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}",
-                                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
-                                                ),
-                                              ],
+                                    child: GestureDetector(
+                                      onTap: () async{
+                                        LoadingIndicatorDialog().show(context);
+                                        http.Response responses = await http.get(Uri.parse('https://admin.smtdriver.com/multipleAgentLocations/${abc.data!.agentId}'));
+                                        final resp = json.decode(responses.body);
+                                                                               
+                                        if(resp['ok']==true){
+                                          LoadingIndicatorDialog().dismiss();
+                                          direcciones(size, context, resp);
+                                        }else{
+                                          LoadingIndicatorDialog().dismiss();
+                                          QuickAlert.show(
+                                            context: context,
+                                            title: "Alerta",
+                                            text: '${resp['message']}',
+                                            type: QuickAlertType.error,
+                                            confirmBtnText: "Ok"
+                                          );
+                                        }
+                                        
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 18,
+                                            height: 18,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/Casa.svg",
+                                              color: Theme.of(context).primaryIconTheme.color,
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                          SizedBox(width: 5),
+                                          Flexible(
+                                            child: RichText(
+                                              text: TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: "Dirección: ",
+                                                    style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                                  ),
+                                                  TextSpan(
+                                                    text: "${abc.data!.agentReferencePoint}, ${abc.data!.neighborhoodName}, ${abc.data!.townName}",
+                                                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 5),
+                                          Container(
+                                            width: 18,
+                                            height: 18,
+                                            child: SvgPicture.asset(
+                                              "assets/icons/flechahaciaabajo.svg",
+                                              color: Theme.of(context).primaryIconTheme.color,
+                                            ),
+                                          ),                                       
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   Container(
@@ -1567,5 +1637,190 @@ class _DataTableExample extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  Future<Object?> direcciones(Size size, BuildContext context, var resp) {
+  
+    if( resp['res'].length>0){
+      for (int i = 0; i < resp['res'].length; i++) {
+        if (resp['res'][i]['isChosen'] == true) {
+          indexWithIsChosenTrue = i;
+          break; // Termina el bucle una vez que se encuentra el elemento deseado
+        }
+      }
+    }
+
+    return showGeneralDialog(
+                                          barrierColor: Colors.black.withOpacity(0.6),
+                                          transitionBuilder: (context, a1, a2, widget) {
+                                            final curvedValue = Curves.easeInOut.transform(a1.value);
+                                            return StatefulBuilder(
+                                              builder: (context, setState){
+                                                return Transform.translate(
+                                              offset: Offset(0.0, (1 - curvedValue) * size.height / 2),
+                                              child: Opacity(
+                                                opacity: a1.value,
+                                                child: Align(
+                                                  alignment: Alignment.bottomCenter,
+                                                  child: Container(
+                                                    width: size.width,
+                                                    decoration: BoxDecoration(
+                                                      color: Theme.of(navigatorKey.currentContext!).cardColor,
+                                                      borderRadius: BorderRadius.only(
+                                                        topLeft: Radius.circular(30.0),
+                                                        topRight: Radius.circular(30.0),
+                                                      ),
+                                                    ),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                                                      child: SingleChildScrollView(
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(
+                                                                  right: 120, left: 120, top: 15, bottom: 20),
+                                                              child: GestureDetector(
+                                                                onTap: () => Navigator.pop(context),
+                                                                child: Container(
+                                                                  decoration: BoxDecoration(
+                                                                      color: Theme.of(navigatorKey.currentContext!).dividerColor,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(80)),
+                                                                  height: 6,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            SizedBox(height: 10),
+                                                            Center(
+                                                              child: Text(
+                                                                'Tus direcciones',
+                                                                style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 20, fontWeight: FontWeight.w500),
+                                                              ),
+                                                            ),
+                                                            SizedBox(height: 30),
+                                                            resp['res'].length>0?
+                                                            Column(
+                                                              children: List.generate(
+                                                              resp['res'].length,
+                                                              (index) {
+                                                                return Padding(
+                                                                  padding: const EdgeInsets.only(bottom: 10),
+                                                                  child: Column(
+                                                                    children: [
+                                                                      GestureDetector(
+                                                                        onTap: () async{
+                                                                
+                                                                          if(index!=indexWithIsChosenTrue){
+                                                                            LoadingIndicatorDialog().show(context);
+                                                                            var data = {
+                                                                              'agentLocationId': resp['res'][index]['agentLocationId'].toString(), 
+                                                                              'userId' : resp['res'][index]['agentId'].toString(), 
+                                                                              'userAgent': 'mobile'
+                                                                            };
+                                                                
+                                                                            http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/chooseLocationAgent'), body: data);
+                                                                
+                                                                            var dataR = json.decode(response.body);
+                                                                            
+                                                                            if(dataR['ok']==true){
+                                                                              LoadingIndicatorDialog().dismiss();
+                                                                              setState(() {
+                                                                                resp['res'][indexWithIsChosenTrue]['isChosen']=false;
+                                                                                resp['res'][index]['isChosen']=true;
+                                                                
+                                                                                indexWithIsChosenTrue = index;                                                                                                                                         
+                                                                              });
+                                                                
+                                                                              QuickAlert.show(
+                                                                                context: navigatorKey.currentContext!,
+                                                                                title: dataR['message'].toString(),
+                                                                                text: dataR['db'][0]['msg'].toString(),
+                                                                                type: QuickAlertType.success,
+                                                                                confirmBtnText: "Ok"
+                                                                              );
+                                                                            }else{
+                                                                              LoadingIndicatorDialog().dismiss();
+                                                                              QuickAlert.show(
+                                                                                context: navigatorKey.currentContext!,
+                                                                                title: dataR['message'].toString(),
+                                                                                text: dataR['db'][0]['msg'].toString(),
+                                                                                type: QuickAlertType.error,
+                                                                                confirmBtnText: "Ok"
+                                                                              );
+                                                                            }
+                                                                          }                                                                    
+                                                                        },
+                                                                        child: Row(
+                                                                          children: [
+                                                                            Container(
+                                                                              width: 24,
+                                                                              height: 24,
+                                                                              child: SvgPicture.asset(
+                                                                                "assets/icons/accesoautorizado.svg",
+                                                                                color: Theme.of(navigatorKey.currentContext!).primaryIconTheme.color,
+                                                                              ),
+                                                                            ),
+                                                                            SizedBox(width: 5),
+                                                                            Flexible(
+                                                                              child: Text(
+                                                                                '${resp['res'][index]['locationReferencePoint']}, ${resp['res'][index]['neighborhoodReferencePoint']}, ${resp['res'][index]['townName']}',
+                                                                                style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                                                              ),
+                                                                            ),
+                                                                            
+                                                                            Padding(
+                                                                              padding: const EdgeInsets.only(left: 20),
+                                                                              child: Container(
+                                                                                width: 24,
+                                                                                height: 24,
+                                                                                child: SvgPicture.asset(
+                                                                                  "assets/icons/check.svg",
+                                                                                  color: resp['res'][index]['isChosen']==true? Color.fromRGBO(40, 169, 83, 1): Colors.transparent,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(height: 5),
+                                                                      Container(
+                                                                        height: 1,
+                                                                        color: Theme.of(navigatorKey.currentContext!).dividerColor,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                );
+                                                              }
+                                                            ),
+                                                            )
+                                                            : 
+                                                            Center(
+                                                              child: Text(
+                                                                'No tiene direcciones disponibles.',
+                                                                style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                                              ),
+                                                            ),
+                                                                                      
+                                                            SizedBox(height: 40),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                              }
+                                            );
+                                          },
+                                          transitionDuration: Duration(milliseconds: 200),
+                                          barrierDismissible: true,
+                                          barrierLabel: '',
+                                          context: context,
+                                          pageBuilder: (context, animation1, animation2) {
+                                            return widget;
+                                          },
+                                        );
   }
 }

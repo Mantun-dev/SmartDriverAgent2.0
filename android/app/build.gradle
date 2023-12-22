@@ -47,8 +47,8 @@ android {
         minSdkVersion 24
         targetSdkVersion 33 // Incrementar la versión a 33 o a la más alta que sea compatible con tus dependencias
         multiDexEnabled true // Habilitar el soporte multidex
-        versionCode 111
-        versionName "2.9.10"
+        versionCode 116
+        versionName "2.9.14"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

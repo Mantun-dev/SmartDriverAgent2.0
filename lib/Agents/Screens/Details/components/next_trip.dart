@@ -86,6 +86,7 @@ class _NextTripScreenState extends State<NextTripScreen>
   String rating66 = "6";
 
   bool viajesProceso=true;
+  int indexWithIsChosenTrue = 0;
 
   late Future<List<dynamic>> item2;
   int totalSolicitudes = 0;
@@ -1621,7 +1622,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                         ),
                         SizedBox(width: 5),
                         Text(
-                          'Hora de encuentro: ',
+                          abc.data?.trips[index].tripType==1? 'Hora de encuentro: ': 'Hora de salida: ',
                           style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14, fontWeight: FontWeight.w500)
                         ),
                         Text(
@@ -1645,12 +1646,16 @@ class _NextTripScreenState extends State<NextTripScreen>
                     if ('${abc.data?.trips[index].condition}' ==
                     'Confirmed') ...{
                   if (abc.data?.trips[index].companyId == 1 ||
-                      abc.data?.trips[index].companyId == 7 ||
-                      abc.data?.trips[index].companyId == 3 ||
-                      abc.data?.trips[index].companyId == 5 ||
-                      abc.data?.trips[index].companyId == 9 ||
-                      abc.data?.trips[index].companyId == 11 ||
-                      abc.data?.trips[index].companyId == 12) ...{
+                    abc.data?.trips[index].companyId == 2 ||
+                    abc.data?.trips[index].companyId == 3 ||
+                    abc.data?.trips[index].companyId == 5 ||
+                    abc.data?.trips[index].companyId == 6 ||
+                    abc.data?.trips[index].companyId == 7 ||
+                    abc.data?.trips[index].companyId == 9 ||
+                    abc.data?.trips[index].companyId == 10 ||
+                    abc.data?.trips[index].companyId == 11 ||
+                    abc.data?.trips[index].companyId == 12 ||
+                    abc.data?.trips[index].companyId == 13) ...{
                     if (abc.data?.trips[index].btnCancelTrip ==
                         true) ...{
                       TextButton(
@@ -1940,7 +1945,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                   ],
                     );
                   }):
-                    ListView.builder(
+                ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   physics: ClampingScrollPhysics(),
@@ -2145,11 +2150,14 @@ class _NextTripScreenState extends State<NextTripScreen>
                             style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
                             children: [
                               TextSpan(
-                                text: 'Vehiculo: ',
+                                text: 'Vehículo: ',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
+                              
                               TextSpan(
-                                text: '${abc.data?.trips[index].tripVehicle != null ? abc.data?.trips[index].tripVehicle : '---'}',
+                                text: 
+                                abc.data?.trips[index].tripVehicle != "" ?'${abc.data?.trips[index].tripVehicle}':
+                                "Sin asignar" ,
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.normal,
@@ -2888,7 +2896,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                               ),
                               SizedBox(width: 5),
                               Text(
-                                'Hora de encuentro: ',
+                                abc.data?.trips[index].tripType==1? 'Hora de encuentro: ': 'Hora de salida: ',
                                 style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14, fontWeight: FontWeight.w500)
                               ),
                               Text(
@@ -2912,12 +2920,16 @@ class _NextTripScreenState extends State<NextTripScreen>
                       if ('${abc.data?.trips[index].condition}' ==
                           'Confirmed') ...{
                         if (abc.data?.trips[index].companyId == 1 ||
-                            abc.data?.trips[index].companyId == 7 ||
+                            abc.data?.trips[index].companyId == 2 ||
                             abc.data?.trips[index].companyId == 3 ||
                             abc.data?.trips[index].companyId == 5 ||
+                            abc.data?.trips[index].companyId == 6 ||
+                            abc.data?.trips[index].companyId == 7 ||
                             abc.data?.trips[index].companyId == 9 ||
+                            abc.data?.trips[index].companyId == 10 ||
                             abc.data?.trips[index].companyId == 11 ||
-                            abc.data?.trips[index].companyId == 12) ...{
+                            abc.data?.trips[index].companyId == 12 ||
+                            abc.data?.trips[index].companyId == 13) ...{
                           if (abc.data?.trips[index].btnCancelTrip ==
                               true) ...{
                             TextButton(
@@ -3281,6 +3293,7 @@ class _NextTripScreenState extends State<NextTripScreen>
   }
 
   Widget buildTripCard(Map<String, dynamic> tripData) {
+    Size size = MediaQuery.of(context).size;
   return Padding(
     padding: const EdgeInsets.only(bottom:10),
     child: Card(
@@ -3428,35 +3441,67 @@ class _NextTripScreenState extends State<NextTripScreen>
                 padding: const EdgeInsets.all(5.0),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 18,
-                        height: 18,
-                        child: SvgPicture.asset(
-                          "assets/icons/Casa.svg",
-                          color: Theme.of(context).primaryIconTheme.color,
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Flexible(
-                        child: RichText(
-                          text: TextSpan( 
-                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
-                            children: [
-                              TextSpan(
-                                text: 'Dirección: ',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              TextSpan(
-                                text: '${tripData["agentAddress"]}',
-                                style: TextStyle(fontWeight: FontWeight.normal),
-                              ),
-                            ],
+                  child: GestureDetector(
+                    onTap: () async{
+                                        LoadingIndicatorDialog().show(context);
+                                        http.Response responses = await http.get(Uri.parse('https://admin.smtdriver.com/multipleAgentLocations/${prefs.usuarioId}'));
+                                        final resp = json.decode(responses.body);
+
+                                        if(resp['ok']==true){
+                                          LoadingIndicatorDialog().dismiss();
+                                          direcciones(size, context, resp);
+                                        }else{
+                                          LoadingIndicatorDialog().dismiss();
+                                          QuickAlert.show(
+                                            context: context,
+                                            title: "Alerta",
+                                            text: '${resp['message']}',
+                                            type: QuickAlertType.error,
+                                            confirmBtnText: "Ok"
+                                          );
+                                        }
+                                        
+                                      },
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 18,
+                          height: 18,
+                          child: SvgPicture.asset(
+                            "assets/icons/Casa.svg",
+                            color: Theme.of(context).primaryIconTheme.color,
                           ),
                         ),
-                      )
-                    ],
+                        SizedBox(width: 5),
+                        Flexible(
+                          child: RichText(
+                            text: TextSpan( 
+                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                              children: [
+                                TextSpan(
+                                  text: 'Dirección: ',
+                                  style: TextStyle(fontWeight: FontWeight.w500),
+                                ),
+                                TextSpan(
+                                  text: '${tripData["agentAddress"]}',
+                                  style: TextStyle(fontWeight: FontWeight.normal),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                  
+                        SizedBox(width: 5),
+                        Container(
+                          width: 18,
+                          height: 18,
+                          child: SvgPicture.asset(
+                             "assets/icons/flechahaciaabajo.svg",
+                             color: Theme.of(context).primaryIconTheme.color,
+                          ),
+                        ), 
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -4700,6 +4745,191 @@ class _NextTripScreenState extends State<NextTripScreen>
                 ),
               ],
             );
+  }
+
+  Future<Object?> direcciones(Size size, BuildContext context, var resp) {
+  
+    if( resp['res'].length>0){
+      for (int i = 0; i < resp['res'].length; i++) {
+        if (resp['res'][i]['isChosen'] == true) {
+          indexWithIsChosenTrue = i;
+          break; // Termina el bucle una vez que se encuentra el elemento deseado
+        }
+      }
+    }
+
+    return showGeneralDialog(
+                                          barrierColor: Colors.black.withOpacity(0.6),
+                                          transitionBuilder: (context, a1, a2, widget) {
+                                            final curvedValue = Curves.easeInOut.transform(a1.value);
+                                            return StatefulBuilder(
+                                              builder: (context, setState){
+                                                return Transform.translate(
+                                              offset: Offset(0.0, (1 - curvedValue) * size.height / 2),
+                                              child: Opacity(
+                                                opacity: a1.value,
+                                                child: Align(
+                                                  alignment: Alignment.bottomCenter,
+                                                  child: Container(
+                                                    width: size.width,
+                                                    decoration: BoxDecoration(
+                                                      color: Theme.of(navigatorKey.currentContext!).cardColor,
+                                                      borderRadius: BorderRadius.only(
+                                                        topLeft: Radius.circular(30.0),
+                                                        topRight: Radius.circular(30.0),
+                                                      ),
+                                                    ),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                                                      child: SingleChildScrollView(
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [
+                                                            Padding(
+                                                              padding: const EdgeInsets.only(
+                                                                  right: 120, left: 120, top: 15, bottom: 20),
+                                                              child: GestureDetector(
+                                                                onTap: () => Navigator.pop(context),
+                                                                child: Container(
+                                                                  decoration: BoxDecoration(
+                                                                      color: Theme.of(navigatorKey.currentContext!).dividerColor,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(80)),
+                                                                  height: 6,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            SizedBox(height: 10),
+                                                            Center(
+                                                              child: Text(
+                                                                'Tus direcciones',
+                                                                style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 20, fontWeight: FontWeight.w500),
+                                                              ),
+                                                            ),
+                                                            SizedBox(height: 30),
+                                                            resp['res'].length>0?
+                                                            Column(
+                                                              children: List.generate(
+                                                              resp['res'].length,
+                                                              (index) {
+                                                                return Padding(
+                                                                  padding: const EdgeInsets.only(bottom: 10),
+                                                                  child: Column(
+                                                                    children: [
+                                                                      GestureDetector(
+                                                                        onTap: () async{
+                                                                
+                                                                          if(index!=indexWithIsChosenTrue){
+                                                                            LoadingIndicatorDialog().show(context);
+                                                                            var data = {
+                                                                              'agentLocationId': resp['res'][index]['agentLocationId'].toString(), 
+                                                                              'userId' : resp['res'][index]['agentId'].toString(), 
+                                                                              'userAgent': 'mobile'
+                                                                            };
+                                                                
+                                                                            http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/chooseLocationAgent'), body: data);
+                                                                
+                                                                            var dataR = json.decode(response.body);
+                                                                            
+                                                                            if(dataR['ok']==true){
+                                                                              LoadingIndicatorDialog().dismiss();
+                                                                              setState(() {
+                                                                                resp['res'][indexWithIsChosenTrue]['isChosen']=false;
+                                                                                resp['res'][index]['isChosen']=true;
+                                                                
+                                                                                indexWithIsChosenTrue = index;                                                                                                                                         
+                                                                              });
+                                                                
+                                                                              QuickAlert.show(
+                                                                                context: navigatorKey.currentContext!,
+                                                                                title: dataR['message'].toString(),
+                                                                                text: dataR['db'][0]['msg'].toString(),
+                                                                                type: QuickAlertType.success,
+                                                                                confirmBtnText: "Ok"
+                                                                              );
+                                                                            }else{
+                                                                              LoadingIndicatorDialog().dismiss();
+                                                                              QuickAlert.show(
+                                                                                context: navigatorKey.currentContext!,
+                                                                                title: dataR['message'].toString(),
+                                                                                text: dataR['db'][0]['msg'].toString(),
+                                                                                type: QuickAlertType.error,
+                                                                                confirmBtnText: "Ok"
+                                                                              );
+                                                                            }
+                                                                          }                                                                    
+                                                                        },
+                                                                        child: Row(
+                                                                          children: [
+                                                                            Container(
+                                                                              width: 24,
+                                                                              height: 24,
+                                                                              child: SvgPicture.asset(
+                                                                                "assets/icons/accesoautorizado.svg",
+                                                                                color: Theme.of(navigatorKey.currentContext!).primaryIconTheme.color,
+                                                                              ),
+                                                                            ),
+                                                                            SizedBox(width: 5),
+                                                                            Flexible(
+                                                                              child: Text(
+                                                                                '${resp['res'][index]['locationReferencePoint']}, ${resp['res'][index]['neighborhoodReferencePoint']}, ${resp['res'][index]['townName']}',
+                                                                                style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                                                              ),
+                                                                            ),
+                                                                            
+                                                                            Padding(
+                                                                              padding: const EdgeInsets.only(left: 20),
+                                                                              child: Container(
+                                                                                width: 24,
+                                                                                height: 24,
+                                                                                child: SvgPicture.asset(
+                                                                                  "assets/icons/check.svg",
+                                                                                  color: resp['res'][index]['isChosen']==true? Color.fromRGBO(40, 169, 83, 1): Colors.transparent,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(height: 5),
+                                                                      Container(
+                                                                        height: 1,
+                                                                        color: Theme.of(navigatorKey.currentContext!).dividerColor,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                );
+                                                              }
+                                                            ),
+                                                            )
+                                                            : 
+                                                            Center(
+                                                              child: Text(
+                                                                'No tiene direcciones disponibles.',
+                                                                style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                                              ),
+                                                            ),
+                                                                                      
+                                                            SizedBox(height: 40),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                              }
+                                            );
+                                          },
+                                          transitionDuration: Duration(milliseconds: 200),
+                                          barrierDismissible: true,
+                                          barrierLabel: '',
+                                          context: context,
+                                          pageBuilder: (context, animation1, animation2) {
+                                            return widget;
+                                          },
+                                        );
   }
 
 }

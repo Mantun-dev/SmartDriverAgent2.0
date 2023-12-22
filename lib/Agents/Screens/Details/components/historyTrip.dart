@@ -206,6 +206,52 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                         Container(
                           height: 1,
                           color: Theme.of(context).dividerColor,
+                        ),
+
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 20,
+                                height: 20,
+                                child: SvgPicture.asset(
+                                  "assets/icons/motorista.svg",
+                                  color: Theme.of(context).primaryIconTheme.color,
+                                ),
+                              ),
+                              SizedBox(width: 5),
+                              Flexible(
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: DefaultTextStyle.of(context).style,
+                                    children: [
+                                      TextSpan(
+                                        text: 'Conductor: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '${abc.data![index].conductor}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        Container(
+                          height: 1,
+                          color: Theme.of(context).dividerColor,
                         ),    
                         SizedBox(height: 20),
                         Padding(
@@ -272,7 +318,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                                     style: DefaultTextStyle.of(context).style,
                                     children: [
                                       TextSpan(
-                                        text: 'Hora de encuentro: ',
+                                        text:abc.data![index].tipo=="Entrada"? 'Hora de encuentro: ': 'Hora de salida: ',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 14,
@@ -384,52 +430,7 @@ class _HistoryTripScreenState extends State<HistoryTripScreen> {
                             ],
                           ),
                         ),
-                        Container(
-                          height: 1,
-                          color: Theme.of(context).dividerColor,
-                        ),
-
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 20,
-                                height: 20,
-                                child: SvgPicture.asset(
-                                  "assets/icons/motorista.svg",
-                                  color: Theme.of(context).primaryIconTheme.color,
-                                ),
-                              ),
-                              SizedBox(width: 5),
-                              Flexible(
-                                child: RichText(
-                                  text: TextSpan(
-                                    style: DefaultTextStyle.of(context).style,
-                                    children: [
-                                      TextSpan(
-                                        text: 'Conductor: ',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: '${abc.data![index].conductor}',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
+                        
                        /* if(true)...{
                           Container(
                             height: 1,

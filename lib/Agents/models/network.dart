@@ -60,7 +60,7 @@ Future<Profile> fetchVersion() async {
 Future<TripsList> fetchTrips() async {
   http.Response response =
       await http.get(Uri.parse('$ip/api/trips/${prefs.nombreUsuario}'));
-
+  //print(response.body);
   if (response.statusCode == 200) {
     final trip = TripsList.fromJson(json.decode(response.body));
     return trip;
