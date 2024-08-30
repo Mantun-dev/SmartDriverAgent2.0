@@ -32,7 +32,7 @@ class NextTripScreen extends StatefulWidget {
   //creación de instancias de clases de Json con sus variables
   final TripsList? item;
   final Plantilla? plantilla;
-  final DataAgent? itemx;
+  final DataAgent? itemx;  
   const NextTripScreen({Key? key, this.item, this.plantilla, this.itemx})
       : super(key: key);
 
@@ -86,8 +86,9 @@ class _NextTripScreenState extends State<NextTripScreen>
   String rating66 = "6";
 
   bool viajesProceso=true;
-  int indexWithIsChosenTrue = 0;
 
+  
+  int indexWithIsChosenTrue = 0;
   late Future<List<dynamic>> item2;
   int totalSolicitudes = 0;
   int totalViajes = 0;
@@ -110,7 +111,10 @@ class _NextTripScreenState extends State<NextTripScreen>
       //   });
       // }
           this._showRatingAlert();
-    });
+    });    
+    // setState(() {              
+    //     viajesProceso = false;      
+    // });
     WidgetsBinding.instance.addObserver(this);
     message = new TextEditingController();
 
@@ -122,6 +126,7 @@ class _NextTripScreenState extends State<NextTripScreen>
     rating5 = 0;
     rating6 = 0;
 
+    //print(prefs.usuarioId.toString());
     //inicializador del botón de android para manejarlo manual
     BackButtonInterceptor.add(myInterceptor);
   }
@@ -142,7 +147,7 @@ class _NextTripScreenState extends State<NextTripScreen>
           totalSolicitudes++;
         }
       }
-      print(totalSolicitudes);
+      //print(dataR["requests"]);
       setState(() {});
       return dataR["requests"]; // Retornar la lista de la propiedad "data"
     } else {
@@ -180,6 +185,7 @@ class _NextTripScreenState extends State<NextTripScreen>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // setState(() {
     // });
+    //print('khe;');
     if (AppLifecycleState.resumed == state) {
       if(mounted){
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) =>DetailScreen(plantilla: plantilla[0])),(Route<dynamic> route) => false);
@@ -215,7 +221,7 @@ class _NextTripScreenState extends State<NextTripScreen>
   
   @override
   void dispose() {
-    //creación del dispose para removerlo después del evento
+    //creación del dispose para removerlo después del evento    
     BackButtonInterceptor.remove(myInterceptor);
     WidgetsBinding.instance.addObserver(this);
     super.dispose();
@@ -298,6 +304,7 @@ class _NextTripScreenState extends State<NextTripScreen>
       'condition': conditionC,
       'comment': message
     };
+    //print(data);
     //api cancel trip
     http.Response response =
         await http.post(Uri.parse('$ip/api/confirmTrip'), body: data);
@@ -361,7 +368,7 @@ class _NextTripScreenState extends State<NextTripScreen>
       'commentPunctualityB': comment5,
       'commentVehicleStatus': comment6,
     };
-    print(data);
+    //print(data);
     //api rating
     http.Response response =
         await http.post(Uri.parse('https://admin.smtdriver.com/registerRating'), body: data);
@@ -1645,301 +1652,300 @@ class _NextTripScreenState extends State<NextTripScreen>
                     },
                     if ('${abc.data?.trips[index].condition}' ==
                     'Confirmed') ...{
-                  if (abc.data?.trips[index].companyId == 1 ||
-                    abc.data?.trips[index].companyId == 2 ||
-                    abc.data?.trips[index].companyId == 3 ||
-                    abc.data?.trips[index].companyId == 5 ||
-                    abc.data?.trips[index].companyId == 6 ||
-                    abc.data?.trips[index].companyId == 7 ||
-                    abc.data?.trips[index].companyId == 9 ||
-                    abc.data?.trips[index].companyId == 10 ||
-                    abc.data?.trips[index].companyId == 11 ||
-                    abc.data?.trips[index].companyId == 12 ||
-                    abc.data?.trips[index].companyId == 13) ...{
-                    if (abc.data?.trips[index].btnCancelTrip ==
-                        true) ...{
-                      TextButton(
-                        style: TextButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.red),
-                        child: Text('Cancelar viaje'),
-                        onPressed: () => {
-                          showGeneralDialog(
-                              barrierColor:
-                                  Colors.black.withOpacity(0.5),
-                              transitionBuilder:
-                                  (context, a1, a2, widget) {
-                                return Transform.scale(
-                                  scale: a1.value,
-                                  child: Opacity(
-                                    opacity: a1.value,
-                                    child: AlertDialog(
-                                              backgroundColor: Colors.transparent,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(16.0),
-                                              ),
-                                              content: StatefulBuilder(
-                                                builder:(context, setState) {
-                                                  return Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Theme.of(navigatorKey.currentContext!).cardColor,
-                                                      borderRadius: BorderRadius.circular(16.0),
-                                                    ),
-                                                    child: Column(
-                                                      mainAxisSize: MainAxisSize.min,
-                                                      children: [
-                                                        Container(
-                                                          decoration: BoxDecoration(
-                                                            color: Theme.of(navigatorKey.currentContext!).primaryColor,
-                                                            borderRadius: BorderRadius.only(
-                                                              topLeft: Radius.circular(16.0),
-                                                              topRight: Radius.circular(16.0),
+                  // if (abc.data?.trips[index].companyId == 1 ||
+                  //   abc.data?.trips[index].companyId == 2 ||
+                  //   abc.data?.trips[index].companyId == 3 ||
+                  //   abc.data?.trips[index].companyId == 5 ||
+                  //   abc.data?.trips[index].companyId == 6 ||
+                  //   abc.data?.trips[index].companyId == 7 ||
+                  //   abc.data?.trips[index].companyId == 9 ||
+                  //   abc.data?.trips[index].companyId == 10 ||
+                  //   abc.data?.trips[index].companyId == 11 ||
+                  //   abc.data?.trips[index].companyId == 12 ||
+                  //   abc.data?.trips[index].companyId == 13) ...{
+                      if (abc.data?.trips[index].btnCancelTrip == true) ...{
+                        TextButton(
+                          style: TextButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.red),
+                          child: Text('Cancelar viaje'),
+                          onPressed: () => {
+                            showGeneralDialog(
+                                barrierColor:
+                                    Colors.black.withOpacity(0.5),
+                                transitionBuilder:
+                                    (context, a1, a2, widget) {
+                                  return Transform.scale(
+                                    scale: a1.value,
+                                    child: Opacity(
+                                      opacity: a1.value,
+                                      child: AlertDialog(
+                                                backgroundColor: Colors.transparent,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(16.0),
+                                                ),
+                                                content: StatefulBuilder(
+                                                  builder:(context, setState) {
+                                                    return Container(
+                                                      decoration: BoxDecoration(
+                                                        color: Theme.of(navigatorKey.currentContext!).cardColor,
+                                                        borderRadius: BorderRadius.circular(16.0),
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        children: [
+                                                          Container(
+                                                            decoration: BoxDecoration(
+                                                              color: Theme.of(navigatorKey.currentContext!).primaryColor,
+                                                              borderRadius: BorderRadius.only(
+                                                                topLeft: Radius.circular(16.0),
+                                                                topRight: Radius.circular(16.0),
+                                                              ),
                                                             ),
-                                                          ),
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.all(20.0),
-                                                            child: Text(
-                                                              'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
-                                                              textAlign: TextAlign.center,
-                                                              style: TextStyle(
-                                                                color: Colors.white,
-                                                                fontWeight: FontWeight.normal,
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(20.0),
+                                                              child: Text(
+                                                                'Nos encantaría conocer tu razón por la cual no harás uso del transporte',
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontWeight: FontWeight.normal,
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
-                                                        ),
-                                                        Padding(
-                                                                padding: const EdgeInsets.all(20.0),
-                                                                child: SingleChildScrollView(
-                                                                  child: Column(
-                                                                    children: [
-                                                                      Row(
-                                                                        children: [
-                                                                          Checkbox(
-                                                                            value: razon1,
-                                                                            onChanged: (value) {
-                                                                              if(razon1==true)
-                                                                                return;
-                                                                
-                                                                              setState(() {
-                                                                                razonCancelar = "Trabajo desde casa";
-                                                                                razon1 = !razon1;
-                                                                                razon2 = false;
-                                                                                razon3 = false;
-                                                                                razon4 = false;
-                                                                              });
-                                                                            },
-                                                                          ),
-                                                                          Text(
-                                                                            " Trabajo desde casa",
-                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
-                                                                          ),
-                                                                        ]
-                                                                      ),
-                                                                
-                                                                      Row(
-                                                                        children: [
-                                                                          Checkbox(
-                                                                            value: razon2,
-                                                                            onChanged: (value) {
-                                                                              if(razon2==true)
-                                                                                return;
-                                                                
-                                                                              setState(() {
-                                                                                razonCancelar = "Incapacidad";
-                                                                                razon1 = false;
-                                                                                razon2 = !razon2;
-                                                                                razon3 = false;
-                                                                                razon4 = false;
-                                                                              });
-                                                                            },
-                                                                          ),
-                                                                          Text(
-                                                                            " Incapacidad",
-                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                
-                                                                      Row(
-                                                                        children: [
-                                                                          Checkbox(
-                                                                            value: razon3,
-                                                                            onChanged: (value) {
-                                                                              if(razon3==true)
-                                                                                return;
-                                                                
-                                                                              setState(() {
-                                                                                razonCancelar = "Vacaciones";
-                                                                                razon1 = false;
-                                                                                razon2 = false;
-                                                                                razon3 = !razon3;
-                                                                                razon4 = false;
-                                                                              });
-                                                                            },
-                                                                          ),
-                                                                          Text(
-                                                                            " Vacaciones",
-                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                
-                                                                      Row(
-                                                                        children: [
-                                                                          Checkbox(
-                                                                            value: razon4,
-                                                                            onChanged: (value) {
-                                                                              if(razon4==true)
-                                                                                return;
-                                                                
-                                                                              setState(() {
-                                                                                razonCancelar = "Motivo personal";
-                                                                                razon1 = false;
-                                                                                razon2 = false;
-                                                                                razon3 = false;
-                                                                                razon4 = !razon4;
-                                                                              });
-                                                                            },
-                                                                          ),
-                                                                          Text(
-                                                                            " Motivo personal",
-                                                                            style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ],
+                                                          Padding(
+                                                                  padding: const EdgeInsets.all(20.0),
+                                                                  child: SingleChildScrollView(
+                                                                    child: Column(
+                                                                      children: [
+                                                                        Row(
+                                                                          children: [
+                                                                            Checkbox(
+                                                                              value: razon1,
+                                                                              onChanged: (value) {
+                                                                                if(razon1==true)
+                                                                                  return;
+                                                                  
+                                                                                setState(() {
+                                                                                  razonCancelar = "Trabajo desde casa";
+                                                                                  razon1 = !razon1;
+                                                                                  razon2 = false;
+                                                                                  razon3 = false;
+                                                                                  razon4 = false;
+                                                                                });
+                                                                              },
+                                                                            ),
+                                                                            Text(
+                                                                              " Trabajo desde casa",
+                                                                              style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                            ),
+                                                                          ]
+                                                                        ),
+                                                                  
+                                                                        Row(
+                                                                          children: [
+                                                                            Checkbox(
+                                                                              value: razon2,
+                                                                              onChanged: (value) {
+                                                                                if(razon2==true)
+                                                                                  return;
+                                                                  
+                                                                                setState(() {
+                                                                                  razonCancelar = "Incapacidad";
+                                                                                  razon1 = false;
+                                                                                  razon2 = !razon2;
+                                                                                  razon3 = false;
+                                                                                  razon4 = false;
+                                                                                });
+                                                                              },
+                                                                            ),
+                                                                            Text(
+                                                                              " Incapacidad",
+                                                                              style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                  
+                                                                        Row(
+                                                                          children: [
+                                                                            Checkbox(
+                                                                              value: razon3,
+                                                                              onChanged: (value) {
+                                                                                if(razon3==true)
+                                                                                  return;
+                                                                  
+                                                                                setState(() {
+                                                                                  razonCancelar = "Vacaciones";
+                                                                                  razon1 = false;
+                                                                                  razon2 = false;
+                                                                                  razon3 = !razon3;
+                                                                                  razon4 = false;
+                                                                                });
+                                                                              },
+                                                                            ),
+                                                                            Text(
+                                                                              " Vacaciones",
+                                                                              style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                  
+                                                                        Row(
+                                                                          children: [
+                                                                            Checkbox(
+                                                                              value: razon4,
+                                                                              onChanged: (value) {
+                                                                                if(razon4==true)
+                                                                                  return;
+                                                                  
+                                                                                setState(() {
+                                                                                  razonCancelar = "Motivo personal";
+                                                                                  razon1 = false;
+                                                                                  razon2 = false;
+                                                                                  razon3 = false;
+                                                                                  razon4 = !razon4;
+                                                                                });
+                                                                              },
+                                                                            ),
+                                                                            Text(
+                                                                              " Motivo personal",
+                                                                              style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  )
+                                                                ),
+                                                          SizedBox(height: 16),
+                                                          Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                            children: [
+                                                              OutlinedButton(
+                                                                style: OutlinedButton.styleFrom(
+                                                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                  foregroundColor: Colors.white,
+                                                                  side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(12.0),
                                                                   ),
-                                                                )
-                                                              ),
-                                                        SizedBox(height: 16),
-                                                        Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                          children: [
-                                                            OutlinedButton(
-                                                              style: OutlinedButton.styleFrom(
-                                                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                foregroundColor: Colors.white,
-                                                                side: BorderSide(color: Theme.of(navigatorKey.currentContext!).primaryColorDark),
-                                                                shape: RoundedRectangleBorder(
-                                                                  borderRadius: BorderRadius.circular(12.0),
+                                                                ),
+                                                                onPressed: () {
+                                                                  Navigator.pop(context);
+                                                                },
+                                                                child: Text(
+                                                                  'Cancelar',
+                                                                  style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                                                 ),
                                                               ),
-                                                              onPressed: () {
-                                                                Navigator.pop(context);
-                                                              },
-                                                              child: Text(
-                                                                'Cancelar',
-                                                                style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
-                                                              ),
-                                                            ),
-                        
-                                                            OutlinedButton(
-                                                              style: OutlinedButton.styleFrom(
-                                                                padding: EdgeInsets.symmetric(horizontal: 20),
-                                                                backgroundColor: Color.fromRGBO(40, 93, 169, 1),
-                                                                shape: RoundedRectangleBorder(
-                                                                  borderRadius: BorderRadius.circular(12.0),
+                          
+                                                              OutlinedButton(
+                                                                style: OutlinedButton.styleFrom(
+                                                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                                                  backgroundColor: Color.fromRGBO(40, 93, 169, 1),
+                                                                  shape: RoundedRectangleBorder(
+                                                                    borderRadius: BorderRadius.circular(12.0),
+                                                                  ),
+                                                                ),
+                                                                onPressed: () {
+                                                                  if(razonCancelar.isEmpty){
+                                                                    QuickAlert.show(
+                                                                      context: context,
+                                                                      title: "Alerta",
+                                                                      text: 'Debe de seleccionar un motivo.',
+                                                                      type: QuickAlertType.error,
+                                                                      confirmBtnText: "Ok"
+                                                                    );
+
+                                                                    return;
+                                                                  }
+
+                                                                  Navigator.pop(context);
+                                                                  
+                                                                  if(mounted){
+                                                                    ChatApis().confirmOrCancel('RECHAZADO');
+                                                                    fetchCancel(
+                                                                      prefs.nombreUsuario,
+                                                                      '${abc.data?.trips[index].tripId}',
+                                                                      conditionC,
+                                                                      razonCancelar,
+                                                                    );
+                                                                  }
+                                                                },
+                                                                child: Text(
+                                                                  'Enviar',
+                                                                  style: TextStyle(color: Colors.white),
                                                                 ),
                                                               ),
-                                                              onPressed: () {
-                                                                if(razonCancelar.isEmpty){
-                                                                  QuickAlert.show(
-                                                                    context: context,
-                                                                    title: "Alerta",
-                                                                    text: 'Debe de seleccionar un motivo.',
-                                                                    type: QuickAlertType.error,
-                                                                    confirmBtnText: "Ok"
-                                                                  );
-
-                                                                  return;
-                                                                }
-
-                                                                Navigator.pop(context);
-                                                                
-                                                                if(mounted){
-                                                                  ChatApis().confirmOrCancel('RECHAZADO');
-                                                                  fetchCancel(
-                                                                    prefs.nombreUsuario,
-                                                                    '${abc.data?.trips[index].tripId}',
-                                                                    conditionC,
-                                                                    razonCancelar,
-                                                                  );
-                                                                }
-                                                              },
-                                                              child: Text(
-                                                                'Enviar',
-                                                                style: TextStyle(color: Colors.white),
-                                                              ),
-                                                            ),
-                                                            
-                                                          ],
-                                                        ),
-                                                        SizedBox(height: 12)
-                                                      ],
-                                                    ),
-                                                  );
-                                                },
-                                              )
-                                            ),
-                                  ),
-                                );
-                              },
-                              transitionDuration:
-                                  Duration(milliseconds: 200),
-                              barrierDismissible: true,
-                              barrierLabel: '',
-                              context: context,
-                              pageBuilder: (context, animation1,
-                                  animation2) {
-                                return widget;
-                              }),
-                        },
-                      ),
-                    } else ...{
-                      Padding(
-                    padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                          width: 18,
-                          height: 18,
-                          child: SvgPicture.asset(
-                            "assets/icons/cronometro.svg",
-                            color: Theme.of(context).primaryIconTheme.color,
-                          ),
+                                                              
+                                                            ],
+                                                          ),
+                                                          SizedBox(height: 12)
+                                                        ],
+                                                      ),
+                                                    );
+                                                  },
+                                                )
+                                              ),
+                                    ),
+                                  );
+                                },
+                                transitionDuration:
+                                    Duration(milliseconds: 200),
+                                barrierDismissible: true,
+                                barrierLabel: '',
+                                context: context,
+                                pageBuilder: (context, animation1,
+                                    animation2) {
+                                  return widget;
+                                }),
+                          },
                         ),
-                        SizedBox(width: 5),
-                        Text(
-                          'Viaje: ',
-                          style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14, fontWeight: FontWeight.w500)
-                        ),
-                          ],
-                        ),
+                      } else ...{
                         Padding(
-                          padding: const EdgeInsets.only(left:16),
-                          child: Row(
+                      padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                      child: Column(
+                        children: [
+                          Row(
                             children: [
-                              Flexible(
-                                child: Text(
-                                  'Su tiempo para cancelar el viaje ha expirado',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                ),
-                              ),
+                              Container(
+                            width: 18,
+                            height: 18,
+                            child: SvgPicture.asset(
+                              "assets/icons/cronometro.svg",
+                              color: Theme.of(context).primaryIconTheme.color,
+                            ),
+                          ),
+                          SizedBox(width: 5),
+                          Text(
+                            'Viaje: ',
+                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14, fontWeight: FontWeight.w500)
+                          ),
                             ],
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.only(left:16),
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    'Su tiempo para cancelar el viaje ha expirado',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                    }
-                  }
+                      }
+                  // }
                     } else
                   ...{},
                   ],
@@ -2919,19 +2925,18 @@ class _NextTripScreenState extends State<NextTripScreen>
                       },
                       if ('${abc.data?.trips[index].condition}' ==
                           'Confirmed') ...{
-                        if (abc.data?.trips[index].companyId == 1 ||
-                            abc.data?.trips[index].companyId == 2 ||
-                            abc.data?.trips[index].companyId == 3 ||
-                            abc.data?.trips[index].companyId == 5 ||
-                            abc.data?.trips[index].companyId == 6 ||
-                            abc.data?.trips[index].companyId == 7 ||
-                            abc.data?.trips[index].companyId == 9 ||
-                            abc.data?.trips[index].companyId == 10 ||
-                            abc.data?.trips[index].companyId == 11 ||
-                            abc.data?.trips[index].companyId == 12 ||
-                            abc.data?.trips[index].companyId == 13) ...{
-                          if (abc.data?.trips[index].btnCancelTrip ==
-                              true) ...{
+                        // if (abc.data?.trips[index].companyId == 1 ||
+                        //     abc.data?.trips[index].companyId == 2 ||
+                        //     abc.data?.trips[index].companyId == 3 ||
+                        //     abc.data?.trips[index].companyId == 5 ||
+                        //     abc.data?.trips[index].companyId == 6 ||
+                        //     abc.data?.trips[index].companyId == 7 ||
+                        //     abc.data?.trips[index].companyId == 9 ||
+                        //     abc.data?.trips[index].companyId == 10 ||
+                        //     abc.data?.trips[index].companyId == 11 ||
+                        //     abc.data?.trips[index].companyId == 12 ||
+                        //     abc.data?.trips[index].companyId == 13) ...{
+                          if (abc.data?.trips[index].btnCancelTrip == true) ...{
                             TextButton(
                               style: TextButton.styleFrom(
                                   foregroundColor: Colors.white,
@@ -3213,7 +3218,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                           ),
                         ),
                           }
-                        }
+                        //}
                       } else
                         ...{},
                         
@@ -3398,37 +3403,76 @@ class _NextTripScreenState extends State<NextTripScreen>
               SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.all(5.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 18,
-                        height: 18,
-                        child: SvgPicture.asset(
-                          "assets/icons/hora.svg",
-                          color: Theme.of(context).primaryIconTheme.color,
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Flexible(
-                        child: RichText(
-                          text: TextSpan( 
-                            style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
-                            children: [
-                              TextSpan(
-                                text: 'Hora: ',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              TextSpan(
-                                text: '${tripData["hour"]}',
-                                style: TextStyle(fontWeight: FontWeight.normal, color: Color.fromRGBO(40, 169, 83, 1)),
-                              ),
-                            ],
+                child: GestureDetector(
+                  onTap: ()async{
+                    //print(tripData["hasToSelectHour"]);
+                    if(tripData["hasToSelectHour"] == 1 && tripData["hour"] == null){
+                      LoadingIndicatorDialog().show(context);
+                      var data = {
+                        'agentForTravelId': tripData["agentForTravelId"].toString()
+                      };
+                      //print(data);                      
+                      http.Response responses = await http.post(Uri.parse('https://smtdriver.com/api/getHourToConfirm'), body: data);
+                      final resp = json.decode(responses.body);
+                      //print(resp);
+                      if(resp['ok']==true){
+                        LoadingIndicatorDialog().dismiss();                          
+                        horas(size, context, resp, tripData["agentForTravelId"].toString());
+                      }else{
+                        LoadingIndicatorDialog().dismiss();
+                        QuickAlert.show(
+                          context: context,
+                          title: "Alerta",
+                          text: '${resp['message']}',
+                          type: QuickAlertType.error,
+                          confirmBtnText: "Ok"
+                        );
+                      }
+                    }
+                  },
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 18,
+                          height: 18,
+                          child: SvgPicture.asset(
+                            "assets/icons/hora.svg",
+                            color: Theme.of(context).primaryIconTheme.color,
                           ),
                         ),
-                      )
-                    ],
+                        SizedBox(width: 5),
+                        Flexible(
+                          child: RichText(
+                            text: TextSpan( 
+                              style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 14),
+                              children: [
+                                TextSpan(
+                                  text: 'Hora: ',
+                                  style: TextStyle(fontWeight: FontWeight.w500),
+                                ),
+                                TextSpan(
+                                  text: tripData["hour"] == null?"Seleccione una hora":'${tripData["hour"]}',
+                                  style: TextStyle(fontWeight: FontWeight.normal, color:tripData["hour"] == null? Colors.red:Color.fromRGBO(40, 169, 83, 1)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        if(tripData["hasToSelectHour"] == 1 && tripData["hour"] == null)...{
+                          SizedBox(width: 15),
+                          Container(
+                            width: 18,
+                            height: 18,
+                            child: SvgPicture.asset(
+                              "assets/icons/flechahaciaabajo.svg",
+                              color: Theme.of(context).primaryIconTheme.color,
+                            ),
+                          ), 
+                        },
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -3443,25 +3487,33 @@ class _NextTripScreenState extends State<NextTripScreen>
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
                     onTap: () async{
-                                        LoadingIndicatorDialog().show(context);
-                                        http.Response responses = await http.get(Uri.parse('https://admin.smtdriver.com/multipleAgentLocations/${prefs.usuarioId}'));
-                                        final resp = json.decode(responses.body);
+                          LoadingIndicatorDialog().show(context);
+                          http.Response responses = await http.get(Uri.parse('https://admin.smtdriver.com/multipleAgentLocations/${prefs.usuarioId}'));
+                          final resp = json.decode(responses.body);
+                          http.Response responses2 = await http.get(Uri.parse('https://smtdriver.com/api/getLocationStartek/${prefs.usuarioId}'));
+                          final resp2 = json.decode(responses2.body);
 
-                                        if(resp['ok']==true){
-                                          LoadingIndicatorDialog().dismiss();
-                                          direcciones(size, context, resp);
-                                        }else{
-                                          LoadingIndicatorDialog().dismiss();
-                                          QuickAlert.show(
-                                            context: context,
-                                            title: "Alerta",
-                                            text: '${resp['message']}',
-                                            type: QuickAlertType.error,
-                                            confirmBtnText: "Ok"
-                                          );
-                                        }
+                          if(resp['ok']==true){
+                            LoadingIndicatorDialog().dismiss();
+                            if (tripData["tripType"]=="Entrada") {                                            
+                              //direcciones(size, context, resp);
+                              tripData["hasToSelectPoint"]==1?direcciones2(size, context, resp2['locations'], tripData["agentForTravelId"], tripData["agentAddress"], "Tus direcciones", 0):direcciones(size, context, resp);
+                            }else{
+                              //print(resp2);
+                              tripData["hasToSelectPoint"]==1?direcciones2(size, context, resp2['locations'], tripData["agentForTravelId"], tripData["agentAddress"], "Tus direcciones", 0):direcciones(size, context, resp);
+                            }
+                          }else{
+                            LoadingIndicatorDialog().dismiss();
+                            QuickAlert.show(
+                              context: context,
+                              title: "Alerta",
+                              text: '${resp['message']}',
+                              type: QuickAlertType.error,
+                              confirmBtnText: "Ok"
+                            );
+                          }
+                        },
                                         
-                                      },
                     child: Row(
                       children: [
                         Container(
@@ -3483,8 +3535,8 @@ class _NextTripScreenState extends State<NextTripScreen>
                                   style: TextStyle(fontWeight: FontWeight.w500),
                                 ),
                                 TextSpan(
-                                  text: '${tripData["agentAddress"]}',
-                                  style: TextStyle(fontWeight: FontWeight.normal),
+                                  text: tripData["agentAddress"]==null?'Seleccione una dirección':'${tripData["agentAddress"]}',
+                                  style: prefs.tema ? TextStyle(fontWeight: FontWeight.normal, color:tripData["agentAddress"]==null? Colors.red:Colors.white):TextStyle(fontWeight: FontWeight.normal, color:tripData["agentAddress"]==null? Colors.red:Colors.black),
                                 ),
                               ],
                             ),
@@ -3783,9 +3835,9 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       "confirmation": "0",
                                                                       "agentComment": razonCancelar
                                                                     };
-                                                                    print(data);
+                                                                   // print(data);
                                                                     http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
-                                                                    print(response.body);
+                                                                    //print(response.body);
                                                     
                                                                     var dataR = json.decode(response.body);
 
@@ -4087,9 +4139,9 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                                       "confirmation": "0",
                                                                       "agentComment": razonCancelar
                                                                     };
-                                                                    print(data);
+                                                                   // print(data);
                                                                     http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
-                                                                    print(response.body);
+                                                                    //print(response.body);
                                                     
                                                                     var dataR = json.decode(response.body);
 
@@ -4170,59 +4222,77 @@ class _NextTripScreenState extends State<NextTripScreen>
                     SizedBox(width: 30),
                     InkWell(
                       onTap: () async{
-                        final ConfirmationLoadingDialog loadingDialog = ConfirmationLoadingDialog();
-                        ConfirmationDialog confirmationDialog = ConfirmationDialog();
-                        confirmationDialog.show(
-                          context,
-                          title: '¿Deseas confirmar la solicitud?',
-                          type: "0",
-                          onConfirm: () async {
-                            loadingDialog.show(context);
+                        if (tripData["hour"] == null) {
+                          QuickAlert.show(
+                                  context: context,
+                                  title: "Advertencia",
+                                  text: 'Seleccione una hora por favor',
+                                  type: QuickAlertType.error,
+                                  confirmBtnText: "Ok"
+                                );
+                        }
 
-                            Map data = {
-                              "agentForTravelId": tripData["agentForTravelId"].toString(),
-                              "confirmation": "1",
-                              "agentComment": "null",
-                            };
+                        if (tripData["agentAddress"] != null) {                          
+                          final ConfirmationLoadingDialog loadingDialog = ConfirmationLoadingDialog();
+                          ConfirmationDialog confirmationDialog = ConfirmationDialog();
+                          confirmationDialog.show(
+                            context,
+                            title: '¿Deseas confirmar la solicitud?',
+                            type: "0",
+                            onConfirm: () async {                              
+                              loadingDialog.show(context);
 
-                            http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
-                            print(response.body);
+                              Map data = {
+                                "agentForTravelId": tripData["agentForTravelId"].toString(),
+                                "confirmation": "1",
+                                "agentComment": "null",
+                              };
 
-                            var dataR = json.decode(response.body);
+                              http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
+                             // print(response.body);
 
-                            if (dataR["ok"] == true) {
-                              setState(() {
-                                item2 = getSolicitudes();
-                              });
-                              loadingDialog.dismiss();
-                              confirmationDialog.dismiss();
-                              QuickAlert.show(
-                                context: context,
-                                title: "Enviado",
-                                text: dataR["message"],
-                                type: QuickAlertType.success,
-                                confirmBtnText: "Ok"
-                              );
-                            } else {
-                              loadingDialog.dismiss();
-                              confirmationDialog.dismiss();
-                              QuickAlert.show(
-                                context: context,
-                                title: "Error",
-                                text: dataR["message"],
-                                type: QuickAlertType.error,
-                                confirmBtnText: "Ok"
-                              );
-                            }
-                            
-                          },
-                          onCancel: () {
+                              var dataR = json.decode(response.body);
 
-                          },
-                        );
+                              if (dataR["ok"] == true) {
+                                setState(() {
+                                  item2 = getSolicitudes();
+                                });
+                                loadingDialog.dismiss();
+                                confirmationDialog.dismiss();
+                                QuickAlert.show(
+                                  context: context,
+                                  title: "Enviado",
+                                  text: dataR["message"],
+                                  type: QuickAlertType.success,
+                                  confirmBtnText: "Ok"
+                                );
+                              } else {
+                                loadingDialog.dismiss();
+                                confirmationDialog.dismiss();
+                                QuickAlert.show(
+                                  context: context,
+                                  title: "Error",
+                                  text: dataR["message"],
+                                  type: QuickAlertType.error,
+                                  confirmBtnText: "Ok"
+                                );
+                              }
+                              
+                            },
+                            onCancel: () {
 
+                            },
+                          );
+                        }else{                          
+                          LoadingIndicatorDialog().show(context);
+                          http.Response responses = await http.get(Uri.parse('https://admin.smtdriver.com/multipleAgentLocations/${prefs.usuarioId}'));
+                          final resp = json.decode(responses.body);
+                          http.Response responses2 = await http.get(Uri.parse('https://smtdriver.com/api/getLocationStartek/${prefs.usuarioId}'));
+                          final resp2 = json.decode(responses2.body);
 
-                      
+                          LoadingIndicatorDialog().dismiss();
+                          tripData["hasToSelectPoint"]==1?direcciones2(size, context, resp2['locations'], tripData["agentForTravelId"], tripData["agentAddress"], "Debes seleccionar una dirección", 1):direcciones(size, context, resp);
+                        }
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -4747,6 +4817,152 @@ class _NextTripScreenState extends State<NextTripScreen>
             );
   }
 
+  Future<Object?> horas(Size size, BuildContext context, var resp, agentForTravelId) {
+
+    return showGeneralDialog(
+        barrierColor: Colors.black.withOpacity(0.6),
+        transitionBuilder: (context, a1, a2, widget) {
+        final curvedValue = Curves.easeInOut.transform(a1.value);
+        return StatefulBuilder(
+          builder: (context, setState){
+            return Transform.translate(
+              offset: Offset(0.0, (1 - curvedValue) * size.height / 2),
+                child: Opacity(
+                  opacity: a1.value,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: size.width,
+                        decoration: BoxDecoration(
+                          color: Theme.of(navigatorKey.currentContext!).cardColor,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30.0),
+                              topRight: Radius.circular(30.0),),),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 30),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                          right: 120, left: 120, top: 15, bottom: 20),
+                                          child: GestureDetector(
+                                          onTap: () => Navigator.pop(context),
+                                          child: Container(
+                                            decoration: BoxDecoration(color: Theme.of(navigatorKey.currentContext!).dividerColor,borderRadius:BorderRadius.circular(80)),height: 6,),
+                                ),),
+                                SizedBox(height: 10),
+                                Center(
+                                  child: Text(
+                                    'Horas autorizadas',
+                                    style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 20, fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                SizedBox(height: 30),
+                                resp['hours'].length>0?
+                                  Column(
+                                    children: List.generate(
+                                      resp['hours'].length,
+                                        (index) {
+                                          return Padding(padding: const EdgeInsets.only(bottom: 10),
+                                            child: Column(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () async{   
+                                                    //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) =>DetailScreen(plantilla: plantilla[0])),(Route<dynamic> route) => false);           
+                                                    
+                                                      LoadingIndicatorDialog().show(context);
+                                                      var data = {
+                                                        'hourToTravelSelected': "${resp['hours'][index]['hourAuthorized']}", 
+                                                        'agentForTravelId' : agentForTravelId.toString(), 
+                                                        'userAgent': 'mobile'
+                                                      };
+                                                      print(data);    
+                                                      
+                                                      http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/postChooseHourToConfirm'), body: data);
+                                                      print(response.body);    
+                                                      var dataR = json.decode(response.body);
+                                                                            
+                                                      if(dataR['ok']==true){
+                                                        LoadingIndicatorDialog().dismiss();
+                                                        Navigator.pop(context);
+                                                        Navigator.push(navigatorKey.currentContext!,MaterialPageRoute(builder: (context) => DetailScreen(plantilla: plantilla[0]),));                                                         
+                                                      }else{
+                                                        LoadingIndicatorDialog().dismiss();
+                                                        QuickAlert.show(
+                                                          context: navigatorKey.currentContext!,
+                                                          title: 'Error al registrar hora',
+                                                          text: 'Error',
+                                                          type: QuickAlertType.error,
+                                                          confirmBtnText: "Ok"
+                                                        );
+                                                      }
+                                                                                                                     
+                                                  },
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      width: 24,
+                                                      height: 24,
+                                                      child: SvgPicture.asset(
+                                                        "assets/icons/hora.svg",
+                                                        color: Theme.of(navigatorKey.currentContext!).primaryIconTheme.color,
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 5),
+                                                    Flexible(
+                                                      child: 
+                                                      
+                                                      Text(
+                                                        '${resp['hours'][index]['hourAuthorized']}',
+                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                                      )
+                                                    ),                                              
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(height: 5),
+                                              Container(
+                                                height: 1,
+                                                color: Theme.of(navigatorKey.currentContext!).dividerColor,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }
+                                    ),
+                                    )
+                                    : 
+                                    Center(
+                                      child: Text(
+                                        'No tiene direcciones disponibles.',
+                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                      ),
+                                    ),
+                                                              
+                                    SizedBox(height: 40),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                    }
+                  );
+                },
+                transitionDuration: Duration(milliseconds: 200),
+                barrierDismissible: true,
+                barrierLabel: '',
+                context: context,
+                pageBuilder: (context, animation1, animation2) {
+                  return widget;
+                },
+              );
+  }
+
   Future<Object?> direcciones(Size size, BuildContext context, var resp) {
   
     if( resp['res'].length>0){
@@ -4759,177 +4975,416 @@ class _NextTripScreenState extends State<NextTripScreen>
     }
 
     return showGeneralDialog(
-                                          barrierColor: Colors.black.withOpacity(0.6),
-                                          transitionBuilder: (context, a1, a2, widget) {
-                                            final curvedValue = Curves.easeInOut.transform(a1.value);
-                                            return StatefulBuilder(
-                                              builder: (context, setState){
-                                                return Transform.translate(
-                                              offset: Offset(0.0, (1 - curvedValue) * size.height / 2),
-                                              child: Opacity(
-                                                opacity: a1.value,
-                                                child: Align(
-                                                  alignment: Alignment.bottomCenter,
-                                                  child: Container(
-                                                    width: size.width,
-                                                    decoration: BoxDecoration(
-                                                      color: Theme.of(navigatorKey.currentContext!).cardColor,
-                                                      borderRadius: BorderRadius.only(
-                                                        topLeft: Radius.circular(30.0),
-                                                        topRight: Radius.circular(30.0),
+        barrierColor: Colors.black.withOpacity(0.6),
+        transitionBuilder: (context, a1, a2, widget) {
+        final curvedValue = Curves.easeInOut.transform(a1.value);
+        return StatefulBuilder(
+          builder: (context, setState){
+            return Transform.translate(
+              offset: Offset(0.0, (1 - curvedValue) * size.height / 2),
+                child: Opacity(
+                  opacity: a1.value,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: size.width,
+                        decoration: BoxDecoration(
+                          color: Theme.of(navigatorKey.currentContext!).cardColor,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30.0),
+                              topRight: Radius.circular(30.0),),),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 30),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                          right: 120, left: 120, top: 15, bottom: 20),
+                                          child: GestureDetector(
+                                          onTap: () => Navigator.pop(context),
+                                          child: Container(
+                                            decoration: BoxDecoration(color: Theme.of(navigatorKey.currentContext!).dividerColor,borderRadius:BorderRadius.circular(80)),height: 6,),
+                                ),),
+                                SizedBox(height: 10),
+                                Center(
+                                  child: Text(
+                                    'Tus direcciones',
+                                    style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 20, fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                SizedBox(height: 30),
+                                resp['res'].length>0?
+                                  Column(
+                                    children: List.generate(
+                                      resp['res'].length,
+                                        (index) {
+                                          return Padding(padding: const EdgeInsets.only(bottom: 10),
+                                            child: Column(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () async{              
+                                                    if(index!=indexWithIsChosenTrue){
+                                                      LoadingIndicatorDialog().show(context);
+                                                      var data = {
+                                                        'agentLocationId': resp['res'][index]['agentLocationId'].toString(), 
+                                                        'userId' : resp['res'][index]['agentId'].toString(), 
+                                                        'userAgent': 'mobile'
+                                                      };
+                                                                
+                                                      http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/chooseLocationAgent'), body: data);
+                                                                
+                                                      var dataR = json.decode(response.body);
+                                                                            
+                                                      if(dataR['ok']==true){
+                                                        LoadingIndicatorDialog().dismiss();
+                                                          setState(() {
+                                                            resp['res'][indexWithIsChosenTrue]['isChosen']=false;
+                                                            resp['res'][index]['isChosen']=true;
+                                            
+                                                            indexWithIsChosenTrue = index;                                                                                                                                         
+                                                          });
+                                                                
+                                                          QuickAlert.show(
+                                                            context: navigatorKey.currentContext!,
+                                                            title: dataR['message'].toString(),
+                                                            text: dataR['db'][0]['msg'].toString(),
+                                                            type: QuickAlertType.success,
+                                                            confirmBtnText: "Ok"
+                                                          );
+                                                      }else{
+                                                        LoadingIndicatorDialog().dismiss();
+                                                        QuickAlert.show(
+                                                          context: navigatorKey.currentContext!,
+                                                          title: dataR['message'].toString(),
+                                                          text: dataR['db'][0]['msg'].toString(),
+                                                          type: QuickAlertType.error,
+                                                          confirmBtnText: "Ok"
+                                                        );
+                                                      }
+                                                    }                                                                    
+                                                  },
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      width: 24,
+                                                      height: 24,
+                                                      child: SvgPicture.asset(
+                                                        "assets/icons/accesoautorizado.svg",
+                                                        color: Theme.of(navigatorKey.currentContext!).primaryIconTheme.color,
                                                       ),
                                                     ),
-                                                    child: Padding(
-                                                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                                                      child: SingleChildScrollView(
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            Padding(
-                                                              padding: const EdgeInsets.only(
-                                                                  right: 120, left: 120, top: 15, bottom: 20),
-                                                              child: GestureDetector(
-                                                                onTap: () => Navigator.pop(context),
-                                                                child: Container(
-                                                                  decoration: BoxDecoration(
-                                                                      color: Theme.of(navigatorKey.currentContext!).dividerColor,
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(80)),
-                                                                  height: 6,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            SizedBox(height: 10),
-                                                            Center(
-                                                              child: Text(
-                                                                'Tus direcciones',
-                                                                style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 20, fontWeight: FontWeight.w500),
-                                                              ),
-                                                            ),
-                                                            SizedBox(height: 30),
-                                                            resp['res'].length>0?
-                                                            Column(
-                                                              children: List.generate(
-                                                              resp['res'].length,
-                                                              (index) {
-                                                                return Padding(
-                                                                  padding: const EdgeInsets.only(bottom: 10),
-                                                                  child: Column(
-                                                                    children: [
-                                                                      GestureDetector(
-                                                                        onTap: () async{
-                                                                
-                                                                          if(index!=indexWithIsChosenTrue){
-                                                                            LoadingIndicatorDialog().show(context);
-                                                                            var data = {
-                                                                              'agentLocationId': resp['res'][index]['agentLocationId'].toString(), 
-                                                                              'userId' : resp['res'][index]['agentId'].toString(), 
-                                                                              'userAgent': 'mobile'
-                                                                            };
-                                                                
-                                                                            http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/chooseLocationAgent'), body: data);
-                                                                
-                                                                            var dataR = json.decode(response.body);
-                                                                            
-                                                                            if(dataR['ok']==true){
-                                                                              LoadingIndicatorDialog().dismiss();
-                                                                              setState(() {
-                                                                                resp['res'][indexWithIsChosenTrue]['isChosen']=false;
-                                                                                resp['res'][index]['isChosen']=true;
-                                                                
-                                                                                indexWithIsChosenTrue = index;                                                                                                                                         
-                                                                              });
-                                                                
-                                                                              QuickAlert.show(
-                                                                                context: navigatorKey.currentContext!,
-                                                                                title: dataR['message'].toString(),
-                                                                                text: dataR['db'][0]['msg'].toString(),
-                                                                                type: QuickAlertType.success,
-                                                                                confirmBtnText: "Ok"
-                                                                              );
-                                                                            }else{
-                                                                              LoadingIndicatorDialog().dismiss();
-                                                                              QuickAlert.show(
-                                                                                context: navigatorKey.currentContext!,
-                                                                                title: dataR['message'].toString(),
-                                                                                text: dataR['db'][0]['msg'].toString(),
-                                                                                type: QuickAlertType.error,
-                                                                                confirmBtnText: "Ok"
-                                                                              );
-                                                                            }
-                                                                          }                                                                    
-                                                                        },
-                                                                        child: Row(
-                                                                          children: [
-                                                                            Container(
-                                                                              width: 24,
-                                                                              height: 24,
-                                                                              child: SvgPicture.asset(
-                                                                                "assets/icons/accesoautorizado.svg",
-                                                                                color: Theme.of(navigatorKey.currentContext!).primaryIconTheme.color,
-                                                                              ),
-                                                                            ),
-                                                                            SizedBox(width: 5),
-                                                                            Flexible(
-                                                                              child: Text(
-                                                                                '${resp['res'][index]['locationReferencePoint']}, ${resp['res'][index]['neighborhoodReferencePoint']}, ${resp['res'][index]['townName']}',
-                                                                                style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 18),
-                                                                              ),
-                                                                            ),
-                                                                            
-                                                                            Padding(
-                                                                              padding: const EdgeInsets.only(left: 20),
-                                                                              child: Container(
-                                                                                width: 24,
-                                                                                height: 24,
-                                                                                child: SvgPicture.asset(
-                                                                                  "assets/icons/check.svg",
-                                                                                  color: resp['res'][index]['isChosen']==true? Color.fromRGBO(40, 169, 83, 1): Colors.transparent,
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                      SizedBox(height: 5),
-                                                                      Container(
-                                                                        height: 1,
-                                                                        color: Theme.of(navigatorKey.currentContext!).dividerColor,
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                );
-                                                              }
-                                                            ),
-                                                            )
-                                                            : 
-                                                            Center(
-                                                              child: Text(
-                                                                'No tiene direcciones disponibles.',
-                                                                style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 18),
-                                                              ),
-                                                            ),
-                                                                                      
-                                                            SizedBox(height: 40),
-                                                          ],
+                                                    SizedBox(width: 5),
+                                                    Flexible(
+                                                      child: 
+                                                      resp['res'][index]['neighborhoodReferencePoint']!=null?
+                                                      Text(
+                                                        '${resp['res'][index]['neighborhoodName']}, ${resp['res'][index]['neighborhoodReferencePoint']}, ${resp['res'][index]['townName']}',
+                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                                      ):Text(
+                                                        '${resp['res'][index]['neighborhoodName']}, ${resp['res'][index]['townName']}',
+                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                                      ),
+                                                    ),
+
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(left: 20),
+                                                      child: Container(
+                                                        width: 24,
+                                                        height: 24,
+                                                        child: SvgPicture.asset(
+                                                          "assets/icons/check.svg",
+                                                          color: resp['res'][index]['isChosen']==true? Color.fromRGBO(40, 169, 83, 1): Colors.transparent,
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
+                                                  ],
                                                 ),
                                               ),
-                                            );
-                                              }
-                                            );
-                                          },
-                                          transitionDuration: Duration(milliseconds: 200),
-                                          barrierDismissible: true,
-                                          barrierLabel: '',
-                                          context: context,
-                                          pageBuilder: (context, animation1, animation2) {
-                                            return widget;
-                                          },
+                                              SizedBox(height: 5),
+                                              Container(
+                                                height: 1,
+                                                color: Theme.of(navigatorKey.currentContext!).dividerColor,
+                                              ),
+                                            ],
+                                          ),
                                         );
+                                      }
+                                    ),
+                                    )
+                                    : 
+                                    Center(
+                                      child: Text(
+                                        'No tiene direcciones disponibles.',
+                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                      ),
+                                    ),
+                                                              
+                                    SizedBox(height: 40),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                    }
+                  );
+                },
+                transitionDuration: Duration(milliseconds: 200),
+                barrierDismissible: true,
+                barrierLabel: '',
+                context: context,
+                pageBuilder: (context, animation1, animation2) {
+                  return widget;
+                },
+              );
   }
 
+  Future<Object?> direcciones2(Size size, BuildContext context, resp2, agentForTravelId, direccionChosen, text, flag) {
+    //print(direccionChosen);
+
+    return showGeneralDialog(
+        barrierColor: Colors.black.withOpacity(0.6),
+        transitionBuilder: (context, a1, a2, widget) {
+        final curvedValue = Curves.easeInOut.transform(a1.value);
+        return StatefulBuilder(
+          builder: (context, setState){
+            return Transform.translate(
+              offset: Offset(0.0, (1 - curvedValue) * size.height / 2),
+                child: Opacity(
+                  opacity: a1.value,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: size.width,
+                        decoration: BoxDecoration(
+                          color: Theme.of(navigatorKey.currentContext!).cardColor,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30.0),
+                              topRight: Radius.circular(30.0),),),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 30),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                          right: 120, left: 120, top: 15, bottom: 20),
+                                          child: GestureDetector(
+                                          onTap: () => Navigator.pop(context),
+                                          child: Container(
+                                            decoration: BoxDecoration(color: Theme.of(navigatorKey.currentContext!).dividerColor,borderRadius:BorderRadius.circular(80)),height: 6,),
+                                ),),
+                                SizedBox(height: 10),
+                                Center(
+                                  child: Text(
+                                    text,
+                                    style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 20, fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                                SizedBox(height: 30),
+                                resp2.length>0?
+                                  Column(
+                                    children: List.generate(
+                                      resp2.length,
+                                        (index) {
+                                          return Padding(padding: const EdgeInsets.only(bottom: 10),
+                                            child: Column(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () async{              
+                                                   
+                                                      if (flag==1) {
+                                                        var data = {
+                                                          'neighborhoodId': resp2[index]['neighborhoodId'].toString(), 
+                                                          'agentForTravelId' : agentForTravelId.toString(), 
+                                                          'userAgent': 'mobile'
+                                                        };
+                                                       // print(data);
+                                                        http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/chooseLocationStartek'), body: data);
+                                                                  
+                                                        var dataR = json.decode(response.body);
+                                                                              
+                                                        if(dataR['ok']==true){ 
+                                                                                                                                                                             
+                                                        }else{
+                                                          //LoadingIndicatorDialog().dismiss();                                                        
+                                                          QuickAlert.show(
+                                                            context: navigatorKey.currentContext!,
+                                                            title: dataR['message'].toString(),
+                                                            text: dataR['db'][0]['msg'].toString(),
+                                                            type: QuickAlertType.error,
+                                                            confirmBtnText: "Ok"
+                                                          );
+                                                        }   
+                                                        final ConfirmationLoadingDialog loadingDialog = ConfirmationLoadingDialog();
+                                                        ConfirmationDialog confirmationDialog = ConfirmationDialog();
+                                                        confirmationDialog.show(
+                                                          context,
+                                                          title: '¿Deseas confirmar la solicitud?',
+                                                          type: "0",
+                                                          onConfirm: () async {                              
+                                                            loadingDialog.show(navigatorKey.currentContext!,);
+
+                                                            Map data = {
+                                                              "agentForTravelId": agentForTravelId.toString(),
+                                                              "confirmation": "1",
+                                                              "agentComment": "null",
+                                                            };
+
+                                                            http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/transportation/confirm'), body: data);
+                                                            //print(response.body);
+
+                                                            var dataR = json.decode(response.body);
+                                                              if (mounted) {                                                                
+                                                                if (dataR["ok"] == true) {                                                              
+                                                                  loadingDialog.dismiss();
+                                                                  confirmationDialog.dismiss();
+                                                                  setState(() {
+                                                                    item2 = getSolicitudes();
+                                                                  });
+                                                                  Navigator.pop(context);                                                            
+                                                                  Future.delayed(const Duration(seconds: 2), () async {                                                                      
+                                                                    QuickAlert.show(
+                                                                      context: navigatorKey.currentContext!,
+                                                                      title: "Enviado",
+                                                                      text: dataR["message"],
+                                                                      type: QuickAlertType.success,
+                                                                      confirmBtnText: "Ok"
+                                                                    );
+                                                                  });
+                                                                } else {
+                                                                  loadingDialog.dismiss();
+                                                                  confirmationDialog.dismiss();
+                                                                  QuickAlert.show(
+                                                                    context: navigatorKey.currentContext!,
+                                                                    title: "Error",
+                                                                    text: dataR["message"],
+                                                                    type: QuickAlertType.error,
+                                                                    confirmBtnText: "Ok"
+                                                                  );
+                                                                }
+                                                              }
+                                                            
+                                                          },
+                                                          onCancel: () {
+
+                                                          },
+                                                        );
+                                                      }else{
+                                                        var data = {
+                                                          'neighborhoodId': resp2[index]['neighborhoodId'].toString(), 
+                                                          'agentForTravelId' : agentForTravelId.toString(), 
+                                                          'userAgent': 'mobile'
+                                                        };
+                                                        //print(data);
+                                                        http.Response response = await http.post(Uri.parse('https://smtdriver.com/api/chooseLocationStartek'), body: data);
+                                                                  
+                                                        var dataR = json.decode(response.body);
+                                                                              
+                                                        if(dataR['ok']==true){
+                                                            //LoadingIndicatorDialog().dismiss();
+                                                            
+                                                                  
+                                                            setState(() {
+                                                              item2 = getSolicitudes();
+                                                            });
+                                                            Navigator.pop(context);
+                                                            QuickAlert.show(
+                                                              context: navigatorKey.currentContext!,
+                                                              title: 'Guardado',
+                                                              text: 'Se guardó correctamente',
+                                                              type: QuickAlertType.success,
+                                                              confirmBtnText: "Ok",                                                                                                                       
+                                                            );                                                                                                 
+                                                            
+                                                        }else{
+                                                          //LoadingIndicatorDialog().dismiss();                                                        
+                                                          QuickAlert.show(
+                                                            context: navigatorKey.currentContext!,
+                                                            title: dataR['message'].toString(),
+                                                            text: dataR['db'][0]['msg'].toString(),
+                                                            type: QuickAlertType.error,
+                                                            confirmBtnText: "Ok"
+                                                          );
+                                                        }                                                                                                                       
+                                                      }
+                                                  },
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      width: 24,
+                                                      height: 24,
+                                                      child: SvgPicture.asset(
+                                                        "assets/icons/accesoautorizado.svg",
+                                                        color: Theme.of(navigatorKey.currentContext!).primaryIconTheme.color,
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 5),
+                                                    Flexible(
+                                                      child:                                 
+                                                      Text(
+                                                        '${resp2[index]['direction']}',
+                                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                                      ),
+                                                    ),
+
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(left: 20),
+                                                      child: Container(
+                                                        width: 24,
+                                                        height: 24,
+                                                        child: SvgPicture.asset(
+                                                          "assets/icons/check.svg",
+                                                          color: direccionChosen == resp2[index]['direction']? Color.fromRGBO(40, 169, 83, 1): Colors.transparent,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(height: 5),
+                                              Container(
+                                                height: 1,
+                                                color: Theme.of(navigatorKey.currentContext!).dividerColor,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }
+                                    ),
+                                    )
+                                    : 
+                                    Center(
+                                      child: Text(
+                                        'No tiene direcciones disponibles.',
+                                        style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                      ),
+                                    ),
+                                                              
+                                    SizedBox(height: 40),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                    }
+                  );
+                },
+                transitionDuration: Duration(milliseconds: 200),
+                barrierDismissible: true,
+                barrierLabel: '',
+                context: context,
+                pageBuilder: (context, animation1, animation2) {
+                  return widget;
+                },
+              );
+}
 }

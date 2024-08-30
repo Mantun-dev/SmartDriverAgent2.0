@@ -1763,8 +1763,13 @@ class _DataTableExample extends State<ProfilePage> {
                                                                             ),
                                                                             SizedBox(width: 5),
                                                                             Flexible(
-                                                                              child: Text(
-                                                                                '${resp['res'][index]['locationReferencePoint']}, ${resp['res'][index]['neighborhoodReferencePoint']}, ${resp['res'][index]['townName']}',
+                                                                              child: 
+                                                                              resp['res'][index]['neighborhoodReferencePoint']!=null?
+                                                                              Text(
+                                                                                '${resp['res'][index]['neighborhoodName']}, ${resp['res'][index]['neighborhoodReferencePoint']}, ${resp['res'][index]['townName']}',
+                                                                                style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 18),
+                                                                              ):Text(
+                                                                                '${resp['res'][index]['neighborhoodName']}, ${resp['res'][index]['townName']}',
                                                                                 style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 18),
                                                                               ),
                                                                             ),

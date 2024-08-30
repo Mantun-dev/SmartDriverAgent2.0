@@ -659,7 +659,7 @@ BuildContext? contextP;
                                 Padding(
                                   padding: const EdgeInsets.all(16),
                                   child: Text(
-                                    'Cargando advertencia...', 
+                                    'Cargando ...', 
                                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18),
                                     ),
                                 )

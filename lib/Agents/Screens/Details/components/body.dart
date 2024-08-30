@@ -7,7 +7,7 @@ class Body extends StatefulWidget {
   final Plantilla plantilla;
   const Body({
     Key? key,
-    required this.plantilla,
+    required this.plantilla,    
   }) : super(key: key);
 
   @override

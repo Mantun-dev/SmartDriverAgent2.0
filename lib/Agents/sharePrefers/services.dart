@@ -43,7 +43,7 @@ class PushNotificationServices {
     FirebaseMessaging.onMessage.listen(_onMessageHandelr);
     FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenApp);
 
-    //print(token);
+    print(token);
   }
 
   static closeStreams() {

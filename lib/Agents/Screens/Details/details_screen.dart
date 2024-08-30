@@ -11,7 +11,6 @@ import '../../../components/backgroundB.dart';
 
 class DetailScreen extends StatefulWidget {
   final Plantilla plantilla;
-
   final DataAgent? item;
   const DetailScreen({Key? key, required this.plantilla, this.item})
       : super(key: key);

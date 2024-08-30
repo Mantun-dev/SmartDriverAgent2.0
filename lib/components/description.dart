@@ -7,10 +7,10 @@ import 'package:flutter_auth/Agents/models/network.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Description extends StatefulWidget {
+class Description extends StatefulWidget { 
   const Description({
     Key? key,
-    required this.plantilla,
+    required this.plantilla,    
   }) : super(key: key);
 
   final Plantilla plantilla;
