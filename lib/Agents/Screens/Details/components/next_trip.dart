@@ -3404,29 +3404,30 @@ class _NextTripScreenState extends State<NextTripScreen>
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: GestureDetector(
-                  onTap: ()async{
-                    //print(tripData["hasToSelectHour"]);
-                    if(tripData["hasToSelectHour"] == 1 && tripData["hour"] == null){
-                      LoadingIndicatorDialog().show(context);
-                      var data = {
-                        'agentForTravelId': tripData["agentForTravelId"].toString()
-                      };
-                      //print(data);                      
-                      http.Response responses = await http.post(Uri.parse('https://smtdriver.com/api/getHourToConfirm'), body: data);
-                      final resp = json.decode(responses.body);
-                      //print(resp);
-                      if(resp['ok']==true){
-                        LoadingIndicatorDialog().dismiss();                          
-                        horas(size, context, resp, tripData["agentForTravelId"].toString());
-                      }else{
-                        LoadingIndicatorDialog().dismiss();
-                        QuickAlert.show(
-                          context: context,
-                          title: "Alerta",
-                          text: '${resp['message']}',
-                          type: QuickAlertType.error,
-                          confirmBtnText: "Ok"
-                        );
+                  onTap: ()async{                    
+                    if(tripData["confirmation"] == null){
+                      if(tripData["hasToSelectHour"] == 1){
+                        LoadingIndicatorDialog().show(context);
+                        var data = {
+                          'agentForTravelId': tripData["agentForTravelId"].toString()
+                        };
+                        //print(data);                      
+                        http.Response responses = await http.post(Uri.parse('https://smtdriver.com/api/getHourToConfirm'), body: data);
+                        final resp = json.decode(responses.body);
+                        //print(resp);
+                        if(resp['ok']==true){
+                          LoadingIndicatorDialog().dismiss();                          
+                          horas(size, context, resp, tripData["agentForTravelId"].toString(), tripData["hour"]);
+                        }else{
+                          LoadingIndicatorDialog().dismiss();
+                          QuickAlert.show(
+                            context: context,
+                            title: "Alerta",
+                            text: '${resp['message']}',
+                            type: QuickAlertType.error,
+                            confirmBtnText: "Ok"
+                          );
+                        }
                       }
                     }
                   },
@@ -3460,16 +3461,18 @@ class _NextTripScreenState extends State<NextTripScreen>
                             ),
                           ),
                         ),
-                        if(tripData["hasToSelectHour"] == 1 && tripData["hour"] == null)...{
-                          SizedBox(width: 15),
-                          Container(
-                            width: 18,
-                            height: 18,
-                            child: SvgPicture.asset(
-                              "assets/icons/flechahaciaabajo.svg",
-                              color: Theme.of(context).primaryIconTheme.color,
-                            ),
-                          ), 
+                        if(tripData["confirmation"] == null)...{
+                          if(tripData["hasToSelectHour"] == 1)...{
+                            SizedBox(width: 15),
+                            Container(
+                              width: 18,
+                              height: 18,
+                              child: SvgPicture.asset(
+                                "assets/icons/flechahaciaabajo.svg",
+                                color: Theme.of(context).primaryIconTheme.color,
+                              ),
+                            ), 
+                          },
                         },
                       ],
                     ),
@@ -3487,6 +3490,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
                     onTap: () async{
+                        if(tripData["confirmation"] == null){
                           LoadingIndicatorDialog().show(context);
                           http.Response responses = await http.get(Uri.parse('https://admin.smtdriver.com/multipleAgentLocations/${prefs.usuarioId}'));
                           final resp = json.decode(responses.body);
@@ -3512,6 +3516,7 @@ class _NextTripScreenState extends State<NextTripScreen>
                               confirmBtnText: "Ok"
                             );
                           }
+                        }
                         },
                                         
                     child: Row(
@@ -3542,16 +3547,17 @@ class _NextTripScreenState extends State<NextTripScreen>
                             ),
                           ),
                         ),
-                  
-                        SizedBox(width: 5),
-                        Container(
-                          width: 18,
-                          height: 18,
-                          child: SvgPicture.asset(
-                             "assets/icons/flechahaciaabajo.svg",
-                             color: Theme.of(context).primaryIconTheme.color,
-                          ),
-                        ), 
+                        if(tripData["confirmation"] == null)...{
+                          SizedBox(width: 5),
+                          Container(
+                            width: 18,
+                            height: 18,
+                            child: SvgPicture.asset(
+                              "assets/icons/flechahaciaabajo.svg",
+                              color: Theme.of(context).primaryIconTheme.color,
+                            ),
+                          ), 
+                        }
                       ],
                     ),
                   ),
@@ -4223,13 +4229,30 @@ class _NextTripScreenState extends State<NextTripScreen>
                     InkWell(
                       onTap: () async{
                         if (tripData["hour"] == null) {
-                          QuickAlert.show(
-                                  context: context,
-                                  title: "Advertencia",
-                                  text: 'Seleccione una hora por favor',
-                                  type: QuickAlertType.error,
-                                  confirmBtnText: "Ok"
-                                );
+                          if(tripData["hasToSelectHour"] == 1){
+                            LoadingIndicatorDialog().show(context);
+                            var data = {
+                              'agentForTravelId': tripData["agentForTravelId"].toString()
+                            };
+                            //print(data);                      
+                            http.Response responses = await http.post(Uri.parse('https://smtdriver.com/api/getHourToConfirm'), body: data);
+                            final resp = json.decode(responses.body);
+                            //print(resp);
+                            if(resp['ok']==true){
+                              LoadingIndicatorDialog().dismiss();                          
+                              horas(size, context, resp, tripData["agentForTravelId"].toString(), tripData["hour"]);
+                            }else{
+                              LoadingIndicatorDialog().dismiss();
+                              QuickAlert.show(
+                                context: context,
+                                title: "Alerta",
+                                text: '${resp['message']}',
+                                type: QuickAlertType.error,
+                                confirmBtnText: "Ok"
+                              );
+                            }
+                          }
+                          return;
                         }
 
                         if (tripData["agentAddress"] != null) {                          
@@ -4817,7 +4840,7 @@ class _NextTripScreenState extends State<NextTripScreen>
             );
   }
 
-  Future<Object?> horas(Size size, BuildContext context, var resp, agentForTravelId) {
+  Future<Object?> horas(Size size, BuildContext context, var resp, agentForTravelId, hour) {
 
     return showGeneralDialog(
         barrierColor: Colors.black.withOpacity(0.6),
@@ -4918,7 +4941,21 @@ class _NextTripScreenState extends State<NextTripScreen>
                                                         '${resp['hours'][index]['hourAuthorized']}',
                                                         style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium!.copyWith(fontSize: 18),
                                                       )
-                                                    ),                                              
+                                                    ),  
+
+                                                    if(hour.toString() == resp['hours'][index]['hourAuthorized'].toString() && hour != null)...{
+                                                      Padding(
+                                                        padding: const EdgeInsets.only(left: 20),
+                                                        child: Container(
+                                                          width: 24,
+                                                          height: 24,
+                                                          child: SvgPicture.asset(
+                                                            "assets/icons/check.svg",
+                                                            color: Color.fromRGBO(40, 169, 83, 1),
+                                                          ),
+                                                        ),
+                                                      ),                                            
+                                                    },
                                                   ],
                                                 ),
                                               ),
