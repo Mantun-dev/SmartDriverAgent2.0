@@ -8,6 +8,7 @@ import 'package:flutter_auth/Agents/Screens/Details/details_screen_history.dart'
 import 'package:flutter_auth/Agents/Screens/HomeAgents/components/item_card.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/components/rateMyDriver.dart';
 import 'package:flutter_auth/Agents/models/dataAgent.dart';
+import 'package:flutter_auth/Agents/models/mask.dart';
 import 'package:flutter_auth/Agents/models/messageCount.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
@@ -87,6 +88,16 @@ BuildContext? contextP;
         });
       }
     });
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {
+          this._showAlertToMessage();
+        });
+      }
+    });
+
+    
     //callback
     _initPackageInfo();
     getMessage();
@@ -1241,6 +1252,64 @@ BuildContext? contextP;
         pageBuilder: (context, animation1, animation2) {
           return widget;
         });
+  }
+
+  //mostra y validaciones de para alert mask
+  _showAlertToMessage() async {
+    http.Response responses = await http.get(Uri.parse('$ip/api/refreshingAgentData/${prefs.nombreUsuario}'));
+    final resp = DataAgent.fromJson(json.decode(responses.body));
+    http.Response response = await http.get(Uri.parse('$ip/api/getMaskReminder/${resp.agentId}'));
+  
+    dynamic parsedJson = json.decode(response.body);
+    var resp1 = (parsedJson as List<dynamic>).map((job) => Mask.fromJson(job)).toList();   
+
+    if (resp1[0].showMsg == 1) {
+      showAlertDialogToMessage(resp1[0].title, resp1[0].msgText, resp1[0].agentId, resp1[0].msgTypeId);
+    }
+  }
+
+  showAlertDialogToMessage(title, msgText, agentId, msgTypeId) async {
+    showDialog(      
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => AlertDialog(            
+              content: Container(
+                width: 400,
+                height: 300,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 15),
+                    Text(
+                      title,
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 15),
+                    Center(
+                      child: Text(
+                        msgText,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Color.fromRGBO(40, 93, 169, 1)),
+                      onPressed: () async => {
+                        await http.get(Uri.parse('$ip/api/markAsViewedMaskReminder/$agentId/$msgTypeId')),
+                        Navigator.pop(context),
+                        
+                      },
+                      child: Text('Entendido'),
+                    ),
+                  ],
+                ),
+              ),
+            ));
   }
 
   void _showAlert() async {

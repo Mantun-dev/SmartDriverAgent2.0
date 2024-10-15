@@ -4,22 +4,46 @@
 
 import 'dart:convert';
 
-Mask maskFromJson(String str) => Mask.fromJson(json.decode(str));
+List<Mask> maskFromJson(String str) => List<Mask>.from(json.decode(str).map((x) => Mask.fromJson(x)));
 
-String maskToJson(Mask data) => json.encode(data.toJson());
+String maskToJson(List<Mask> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Mask {
-  Mask({
-    this.viewed,
-  });
+    int msgTypeId;
+    String title;
+    String msgText;
+    int showMsg;
+    dynamic msgDate;
+    int agentId;
+    int? companyId;
 
-  bool? viewed;
+    Mask({
+        required this.msgTypeId,
+        required this.title,
+        required this.msgText,
+        required this.showMsg,
+        required this.msgDate,
+        required this.agentId,
+        required this.companyId,
+    });
 
-  factory Mask.fromJson(Map<String, dynamic> json) => Mask(
-        viewed: json["viewed"],
-      );
+    factory Mask.fromJson(Map<String, dynamic> json) => Mask(
+        msgTypeId: json["msgTypeId"],
+        title: json["title"],
+        msgText: json["msgText"],
+        showMsg: json["showMsg"],
+        msgDate: json["msgDate"],
+        agentId: json["agentId"],
+        companyId: json["companyId"],
+    );
 
-  Map<String, dynamic> toJson() => {
-        "viewed": viewed,
-      };
+    Map<String, dynamic> toJson() => {
+        "msgTypeId": msgTypeId,
+        "title": title,
+        "msgText": msgText,
+        "showMsg": showMsg,
+        "msgDate": msgDate,
+        "agentId": agentId,
+        "companyId": companyId,
+    };
 }

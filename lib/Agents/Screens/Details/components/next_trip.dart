@@ -4375,18 +4375,18 @@ class _NextTripScreenState extends State<NextTripScreen>
 
 //mostra y validaciones de para alert mask
   _showMaskAlert() async {
-    http.Response responses = await http
-        .get(Uri.parse('$ip/api/refreshingAgentData/${prefs.nombreUsuario}'));
-    final resp = DataAgent.fromJson(json.decode(responses.body));
-    http.Response response =
-        await http.get(Uri.parse('$ip/api/getMaskReminder/${resp.agentId}'));
-    final resp1 = Mask.fromJson(json.decode(response.body));
-    //validacion si fué visto la alerta
-    //print(resp1.viewed);
-    if (resp1.viewed != null) {
-      await http
-          .get(Uri.parse('$ip/api/markAsViewedMaskReminder/${resp.agentId}'));
-    }
+    // http.Response responses = await http
+    //     .get(Uri.parse('$ip/api/refreshingAgentData/${prefs.nombreUsuario}'));
+    // final resp = DataAgent.fromJson(json.decode(responses.body));
+    // http.Response response =
+    //     await http.get(Uri.parse('$ip/api/getMaskReminder/${resp.agentId}'));
+    // final resp1 = Mask.fromJson(json.decode(response.body));
+    // //validacion si fué visto la alerta
+    // //print(resp1.viewed);
+    // if (resp1.viewed != null) {
+    //   await http
+    //       .get(Uri.parse('$ip/api/markAsViewedMaskReminder/${resp.agentId}'));
+    // }
   }
 
 //creación de alerta de mask
