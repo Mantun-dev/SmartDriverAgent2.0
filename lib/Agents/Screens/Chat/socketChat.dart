@@ -13,7 +13,8 @@ class StreamSocket {
     socket = IO.io(
         'https://$host',IO.OptionBuilder()
             .setTransports(['websocket'])
-            //.enableForceNewConnection() // for Flutter or Dart VM
+            .setReconnectionAttempts(5)  // Intentará reconectar hasta 5 veces
+            .setReconnectionDelay(2000)  // Esperará 2 segundos antes de intentar reconectar    
             .setExtraHeaders({'foo': 'bar'}) // optional
             .build());
   }
@@ -21,7 +22,7 @@ class StreamSocket {
   void connectAndListen() {
     socket.on('connect', (_) {
       // ignore: avoid_print
-      print('connected to chat');
+      //print('connected to chat');
       //socket.emit('msg', 'test');
     });
 
@@ -32,36 +33,16 @@ class StreamSocket {
     // ignore: avoid_print
     socket.onError((error) => print(error.toString()));
 
+    
     socket.on('unauthorized',(msg) => {
               // ignore: avoid_print
-              print('no doy'),
+              //print('no doy'),
               // ignore: avoid_print
-              print(msg), // 'jwtoken not provided' || 'access denied'
+             // print(msg), // 'jwtoken not provided' || 'access denied'
             });
-    // socket.on('terminal:location', (data) {
-    //   //print('si doy');
-    //   //print(data);
-    //   if (!_socketResponse.isClosed) _socketResponse.sink.add(data);
-    // });
-    // ignore: avoid_print
+
     socket.onDisconnect((_) => print('disconnect to chat'));
   }
-
-  // void sendTextMessage(String message) {
-  //   socket.emit('msg', message);
-  // }
-
-  // void sendCommands(Map message) {
-  //   socket.emit('terminal:command', message);
-  // }
-
-  // void sendAlarmFind(Map message) {
-  //   socket.emit('terminal:find', message);
-  // }
-
-  // void sendOperateDelay(Map relay) {
-  //   socket.emit('terminal:relay', relay);
-  // }
 
   void connect() {}
 

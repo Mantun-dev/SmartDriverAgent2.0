@@ -48,19 +48,51 @@ class _ChatsListState extends State<ChatsList> {
   }
 
 
-  void getData() async{
-    http.Response response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/salas/agenteId/$id'));
-    var resp = json.decode(response.body);
-
-    listaChats = resp['salas'] as List<dynamic>;
-
-    listaChats2 = listaChats;
-
-    if(mounted){
-      cargarP=true;
-      setState(() { });
+ void getData() async {
+  http.Response response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/salas/agenteId/$id'));
+  var resp = json.decode(response.body);
+  var tripType = [];
+  listaChats = resp['salas'] as List<dynamic>;
+  
+  // Primero obtenemos todos los trips
+  final tripsData = await fetchTrips();
+  
+  // Construimos el array tripType
+  tripsData.trips.forEach((element) {    
+    tripType.add({
+      "tripId": element.tripId,
+      "tripType": element.tripType
+    });
+  });
+  
+  // Hacemos el match y agregamos tripType a listaChats
+  for (var chat in listaChats) {
+    final chatId = chat['id'];
+    
+    // Buscamos el tripType correspondiente
+    final matchingTrip = tripType.firstWhere(
+      (trip) => trip["tripId"] == chatId,
+      orElse: () => null
+    );
+    
+    // Si encontramos un match, agregamos el tripType al objeto de listaChats
+    if (matchingTrip != null) {
+      print(matchingTrip["tripType"]);
+      if (matchingTrip["tripType"] = true) {        
+        chat['tripType'] = "Entrada";
+      }else{
+        chat['tripType'] = "Salida";
+      }
     }
   }
+  
+  listaChats2 = listaChats;
+  print(listaChats2);
+  if(mounted){
+    cargarP = true;
+    setState(() { });
+  }
+}
 
   void refresh() async{
     
@@ -68,8 +100,40 @@ class _ChatsListState extends State<ChatsList> {
     http.Response response = await http.get(Uri.parse('https://apichat.smtdriver.com/api/salas/agenteId/$id'));
     var resp = json.decode(response.body);
 
-    listaChats = resp['salas'] as List<dynamic>;
-
+    var tripType = [];
+  listaChats = resp['salas'] as List<dynamic>;
+  
+  // Primero obtenemos todos los trips
+  final tripsData = await fetchTrips();
+  
+  // Construimos el array tripType
+  tripsData.trips.forEach((element) {    
+    tripType.add({
+      "tripId": element.tripId,
+      "tripType": element.tripType
+    });
+  });
+  
+  // Hacemos el match y agregamos tripType a listaChats
+  for (var chat in listaChats) {
+    final chatId = chat['id'];
+    
+    // Buscamos el tripType correspondiente
+    final matchingTrip = tripType.firstWhere(
+      (trip) => trip["tripId"] == chatId,
+      orElse: () => null
+    );
+    
+    // Si encontramos un match, agregamos el tripType al objeto de listaChats
+    if (matchingTrip != null) {
+      print(matchingTrip["tripType"]);
+      if (matchingTrip["tripType"] = true) {        
+        chat['tripType'] = "Entrada";
+      }else{
+        chat['tripType'] = "Salida";
+      }
+    }
+  }
     listaChats2 = listaChats;
 
     if(mounted){
@@ -277,15 +341,15 @@ class _ChatsListState extends State<ChatsList> {
                       child: Stack(
                         children: [
                           Container(
-                            width: 50,
-                            height: 50,
+                            width: 65,
+                            height: 65,
                             child: Image.asset(
                               "assets/images/perfilmotorista.png",
                             ),
                           ),
                     
                           Positioned(
-                            left: 60,
+                            left: 70,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -297,13 +361,21 @@ class _ChatsListState extends State<ChatsList> {
                                   '# de viaje: ${listaChats[index]['id']}',
                                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 10),
                                 ),
+                                Text(
+                                  'Fecha: ${listaChats[index]['Fecha']}',
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 10),
+                                ),
+                                Text(
+                                  'Tipo: ${listaChats[index]['tripType']}',
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 10),
+                                ),
                               ],
                             ),
                           ),
             
                           Positioned(
-                            left: 60,
-                            bottom: 5,
+                            left: 70,
+                            bottom: -1,
                             child: listaChats[index]['esAgente'] == true ?
                                   Row(
                                     children: [

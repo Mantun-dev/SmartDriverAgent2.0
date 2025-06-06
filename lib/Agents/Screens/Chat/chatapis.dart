@@ -125,10 +125,10 @@ class ChatApis {
 
         var audioFile = File(audioPath);
         if (!audioFile.existsSync()) {
-          print('Archivo de audio no encontrado en la ruta especificada.');
+          //print('Archivo de audio no encontrado en la ruta especificada.');
           return;
         }
-        print( audioFile.path.split('/').last);
+        //print( audioFile.path.split('/').last);
         // Agregar el archivo de audio al campo de archivo en la solicitud
         request.files.add(
           http.MultipartFile(
@@ -141,11 +141,11 @@ class ChatApis {
 
         var response = await request.send();
           String responseBody = await response.stream.bytesToString();
-          print(responseBody);
+          //print(responseBody);
           var resp = json.decode(responseBody);
 
         if (response.statusCode != 200) {
-            print(responseBody);
+            //print(responseBody);
             return;
           }
           var audioName = resp['audioName'];
@@ -199,12 +199,40 @@ class ChatApis {
             {"Content-Type": "application/json"},
           );
       } else {
-        print('Audio no encontrado');
+        //print('Audio no encontrado');
         return;
       }
     } catch (error) {
-      print("Error sending audio: $error");
+      //print("Error sending audio: $error");
     }
+  }
+
+  void registerCallerAndSendNotification(tripId, callerId, callerIdDevice, callerType, receiverId, receiverType, userId, userType, rol, nameSender)async{
+    Map<String, dynamic> registerUser = {
+      "tripId": tripId,
+      "callerId": callerId,
+      "callerIdDevice": callerIdDevice,
+      "callerType": callerType,
+      "receiverId": receiverId,
+      "receiverType": receiverType
+    };
+
+    Map<String, dynamic> sendNotification = {      
+      "callStatus": "answered",
+      "tripId": tripId,
+      "callerId": callerId,
+      "callerType": callerType,
+      "receiverId": receiverId,
+      "receiverType": receiverType,
+      "userId": userId,
+      "userType": userType,
+      "receptorId": receiverId,
+      "rol": rol,
+      "nameSender": nameSender
+    };
+
+    await BaseClient().post('http://192.168.0.10:4000/registerCallerToTrip',registerUser,{"Content-Type": "application/json"},);
+    await BaseClient().post('http://192.168.0.10:4000/sendNotificationToCall',sendNotification,{"Content-Type": "application/json"},);
   }
 
   // void getDataUsuarios(dynamic getData){

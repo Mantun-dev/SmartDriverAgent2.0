@@ -111,12 +111,12 @@ class _AudioContainerState extends State<AudioContainer> {
           cargarAudio = true;
           audioPath = audioFile.path;
         });
-        print('Audio encontrado en el dispositivo: $audioPath');
+        //print('Audio encontrado en el dispositivo: $audioPath');
       } else {
         // El archivo no existe en el dispositivo, intenta descargarlo del servidor
         final response = await http.get(
             Uri.parse('https://apichat.smtdriver.com/api/audios/$audioName'));
-        print('https://apichat.smtdriver.com/api/audios/$audioName');
+        //print('https://apichat.smtdriver.com/api/audios/$audioName');
         if (response.statusCode == 200) {
           // Guardar el archivo descargado en el dispositivo
           await audioFile.writeAsBytes(response.bodyBytes);
@@ -126,15 +126,15 @@ class _AudioContainerState extends State<AudioContainer> {
             audioPath = audioFile.path;
           });
 
-          print(
-              'Audio descargado desde el servidor y encontrado en el dispositivo: $audioPath');
+          // print(
+          //     'Audio descargado desde el servidor y encontrado en el dispositivo: $audioPath');
         } else {
-          print(
-              'El archivo de audio no existe en el servidor ni en el dispositivo');
+          // print(
+          //     'El archivo de audio no existe en el servidor ni en el dispositivo');
         }
       }
     } catch (e) {
-      print('Error al verificar la existencia del audio: $e');
+     // print('Error al verificar la existencia del audio: $e');
     }
   }
 

@@ -10,4 +10,6 @@ class RestApis {
 
   static String apiNotifications = 'https://admin.smtdriver.com/sendMessageNotification';
 
+  static String registerDevice = 'https://smtdriver.com/api/registerSessionAndDeviceAgent';
+
 }

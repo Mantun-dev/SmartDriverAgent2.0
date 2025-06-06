@@ -10,10 +10,18 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
 import 'package:flutter_auth/Agents/Screens/Details/components/warning_dialog.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
+import 'package:flutter_auth/Agents/Screens/calls/WebRTCCallPage.dart';
 import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/helpers/base_client.dart';
+import 'package:flutter_auth/helpers/loggers.dart';
 import 'package:flutter_auth/helpers/res_apis.dart';
+import 'package:flutter_auth/providers/calls.dart';
 import 'package:flutter_auth/providers/chat.dart';
+import 'package:flutter_auth/providers/device_info.dart';
+import 'package:flutter_auth/providers/mqtt_class.dart';
+import 'package:flutter_auth/providers/providerWebRtc.dart';
+import 'package:flutter_auth/providers/provider_mqtt.dart';
+import 'package:flutter_auth/providers/webrtc_service.dart';
 //import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
 import 'package:flutter_svg/svg.dart';
@@ -80,27 +88,10 @@ class _ChatScreenState extends State<ChatScreen> {
    bool? permiso;
 
   _sendMessage(String text) {
-    //print(widget.id);
-    //DateTime now = DateTime.now();
-    // String formattedHour = DateFormat('hh:mm a').format(now);
-    // var formatter = new DateFormat('dd');
-    // String dia = formatter.format(now);
-    // var formatter2 = new DateFormat('MM');
-    // String mes = formatter2.format(now);
-    // var formatter3 = new DateFormat('yy');
-    // String anio = formatter3.format(now);
-    // Provider.of<ChatProvider>(context, listen: false)
-    //     .addNewMessage(Message.fromJson({
-    //   'mensaje': _messageInputController.text.trim(),
-    //   'sala': sala.toString(),
-    //   'user': widget.nombre.toUpperCase(),
-    //   'id': id.toString(),
-    //   'hora': formattedHour,
-    //   'dia': dia,
-    //   'mes': mes,
-    //   'año': anio,
-    //   'leido': false
-    // }));
+    if (streamSocket.socket.disconnected) {
+      //print('Socket desconectado, intentando reconectar...');
+      streamSocket.socket.connect();
+    }
     ChatApis().sendMessage(text, widget.sala, widget.nombre, widget.id,
         widget.driverId, nameDriver!);
     //ChatApis().rendV(modid!, sala!);
@@ -112,7 +103,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ChatApis().sendAudio(audioPath, widget.sala, widget.nombre, widget.id, widget.driverId, nameDriver!);
       // Resto del código
     } else {
-      print('El archivo de audio no existe en la ruta especificada: $audioPath');
+      //print('El archivo de audio no existe en la ruta especificada: $audioPath');
     }
   }
 
@@ -132,12 +123,40 @@ class _ChatScreenState extends State<ChatScreen> {
     //Important: If your server is running on localhost and you are testing your app on Android then replace http://localhost:3000 with http://10.0.2.2:3000
     ChatApis().dataLogin(
         widget.id, widget.rol, widget.nombre, widget.sala, widget.driverId);
+    streamSocket.socket.onDisconnect((_) {
+      //print('Desconectado del chat. Intentando reconectar...');
+    });
 
+    streamSocket.socket.onReconnect((_) {
+      //print('Reconectado al chat.');
+      _reconnectEvents();
+    });
     datas();
     getMessagesDB();
     //inicializador del botón de android para manejarlo manual
     BackButtonInterceptor.add(myInterceptor);
   }
+
+  void _reconnectEvents() {
+    streamSocket.socket.on('cargarM', (listM) {
+      if (mounted) {
+        Provider.of<ChatProvider>(context, listen: false).mensaje2.clear();
+        listM.forEach((value) {
+          Provider.of<ChatProvider>(context, listen: false)
+              .addNewMessage(Message.fromJson(value));
+        });
+      }
+    });
+
+    streamSocket.socket.on('enviar-mensaje2', (data) {
+      if (mounted) {
+        Provider.of<ChatProvider>(context, listen: false)
+            .addNewMessage(Message.fromJson(data));
+        ChatApis().sendRead(widget.sala, widget.driverId, widget.id);
+      }
+    });
+  }
+
 
   void getMessagesDB() async {
 
@@ -213,8 +232,8 @@ class _ChatScreenState extends State<ChatScreen> {
     streamSocket.socket.on(
       'enviar-mensaje2',
       ((data) {
-        //print('******************enviarMensaje');
-        //print(data);
+        // print('******************enviarMensaje');
+        // print(data);
         if (mounted) {
           Provider.of<ChatProvider>(context, listen: false)
               .addNewMessage(Message.fromJson(data));
@@ -378,6 +397,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                     Expanded(
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
 
                           
@@ -389,7 +409,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               "assets/images/perfilmotorista.png",
                             ),
                           ),
-                           SizedBox(width: 5),
+                          SizedBox(width: 5),
                           nameDriver != null ? 
                             Flexible(
                               child: Text(
@@ -398,6 +418,61 @@ class _ChatScreenState extends State<ChatScreen> {
                               ),
                             ) 
                           : Text(''),
+                          SizedBox(width: 5),
+                          InkWell(
+                              onTap: ()async{
+                                // ChatApis().sendMessage(text, widget.sala, widget.nombre, widget.id,
+                                //   widget.driverId, nameDriver!);
+                                String? deviceId = await getDeviceId();
+                                ChatApis().registerCallerAndSendNotification(widget.sala, widget.id ,deviceId , "agent", widget.driverId, "driver", widget.id, "agent", "motorista", widget.nombre);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => WebRTCCallPage(
+                                      selfId: deviceId.toString(),
+                                      targetId: 'TP1A.220624.014',
+                                      isCaller: true,
+                                      roomId: '70',
+                                      tripId: widget.sala.toString(),
+                                    ),
+                                  ),
+                                );
+                                // final mqttManagerProvider = Provider.of<MQTTManagerProvider>(context, listen: false);
+                                // String? deviceId = await getDeviceId();
+
+                                // if (mqttManagerProvider.mqttManager == null) {
+                                //   await mqttManagerProvider.initializeMQTT(deviceId!);
+                                // }
+
+                                // bool isConnected = await mqttManagerProvider.mqttManager!.ensureConnection();
+                                // if (!isConnected) {
+                                //   print("No se pudo conectar al MQTT");
+                                //   return;
+                                // }
+
+                                // // Mantener instancia
+                                // final webrtcProvider = Provider.of<WebRTCProvider>(context, listen: false);
+                                // final webRTCService = webrtcProvider.init(mqttManagerProvider.mqttManager!);
+
+                                // await webRTCService.initialize();
+                                // await webRTCService.createOffer("TP1A.220624.014", deviceId!);
+
+                                // // Navegar y pasar la instancia de webrtcService
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => CallScreen(
+                                //       webrtcService: webRTCService,
+                                //       isOffer: true,
+                                //     ),
+                                //   ),
+                                // );
+
+                              },
+                              child: Icon(Icons.call,
+                                color: Theme.of(context).textTheme.titleMedium!.color,
+                              ),
+                            )
                         ],
                       )
                     ),
@@ -752,14 +827,14 @@ class _ChatScreenState extends State<ChatScreen> {
                                         try {
                                           AppSettings.openLocationSettings();
                                         } catch (error) {
-                                          print(error);
+                                          //print(error);
                                         }
                                       },
                                     ); 
                                     return;
                                   }
                                   Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-                                  print("position: {${position.latitude}, ${position.longitude}}");
+                                  //print("position: {${position.latitude}, ${position.longitude}}");
                                   _sendMessage("position: {${position.latitude}, ${position.longitude}}");
                                 },
                                 icon: Icon(Icons.location_pin, color: Colors.white) ,
@@ -793,7 +868,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                         try{
                                           AppSettings.openAppSettings();
                                         }catch(error){
-                                          print(error);
+                                          //print(error);
                                         }
                                       },
                                     );
@@ -844,7 +919,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     } catch (e) {
       // Handle any error during recording
-      print('Error al iniciar la grabación: $e');
+      //'Error al iniciar la grabación: $e');
     }
   }
 
@@ -858,18 +933,18 @@ class _ChatScreenState extends State<ChatScreen> {
       File audioFile = File(recordedFilePath);
       if (await audioFile.exists()) {
         _sendAudio(recordedFilePath);
-        print(filePathP);
+        //print(filePathP);
         setState(() {
           activateMic = false;
           _audioList.add('audio');
         });
 
       } else {
-        print('El archivo de audio no existe');
+        //print('El archivo de audio no existe');
       }
     } catch (e) {
       // Manejo más detallado de errores
-      print('Error al detener la grabación o enviar el audio: $e');
+      //print('Error al detener la grabación o enviar el audio: $e');
     }
   }
 

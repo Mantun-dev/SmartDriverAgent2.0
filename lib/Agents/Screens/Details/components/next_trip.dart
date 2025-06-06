@@ -4487,8 +4487,7 @@ class _NextTripScreenState extends State<NextTripScreen>
     http.Response responsex = await http.get(Uri.parse('$ip/api/ratingTrip/${resp.agentId}'));
     //http.Response response = await http.post(Uri.parse('https://admin.smtdriver.com/searchRating'),body:  dat);
     if (responsex.body.isNotEmpty) {      
-      var getData = json.decode(responsex.body);
-      //print(getData['tripId']);
+      var getData = json.decode(responsex.body);      
       if (getData['tripId'] != 0 && responsex.body.isNotEmpty) {
         showAlertDialogRatingOld();       
       }  
@@ -4503,7 +4502,7 @@ class _NextTripScreenState extends State<NextTripScreen>
     final resp = DataAgent.fromJson(json.decode(responses.body));
     http.Response response = await http.get(Uri.parse('$ip/api/ratingTrip/${resp.agentId}'));
     final resp1 = Rating.fromJson(json.decode(response.body));
-
+    
     showGeneralDialog(
       barrierColor: Colors.black.withOpacity(0.5),
       transitionBuilder: (context, a1, a2, widget) {
@@ -4527,7 +4526,16 @@ class _NextTripScreenState extends State<NextTripScreen>
                     child: Column(
                       children: [
                         //creación reacciones para conducción
-              
+                        resp1.tripType == 1?
+                        Text(
+                          'Tipo de viaje: Entrada',
+                          textAlign: TextAlign.center, 
+                          style: Theme.of(navigatorKey.currentContext!).textTheme.titleMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                        ):Text(
+                          'Tipo de viaje: Salida',
+                          textAlign: TextAlign.center, 
+                          style: Theme.of(navigatorKey.currentContext!).textTheme.titleMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                        ),
                         SizedBox(height: 10.0),
                         Text('Conducción', style:Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.normal)),
                         SizedBox(height: 5.0),

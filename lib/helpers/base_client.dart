@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'dart:convert';
 import 'package:flutter_auth/helpers/exception_handlers.dart';
+import 'package:flutter_auth/helpers/loggers.dart';
 import 'package:http/http.dart' as http;
 
 class BaseClient {
@@ -12,14 +13,13 @@ class BaseClient {
     var uri = Uri.parse(url);
     try {    
       var response = await http.get(uri, headers: header).timeout(const Duration(seconds: timeOutDuration));
-      internet = true;
-      //print(response.body);
+      internet = true;      
       return _processResponse(response);
     } catch (e) {
       internet = false;
    
       // ignore: avoid_print
-      print(ExceptionHandlers().getExceptionString(e));      
+      logger.e(ExceptionHandlers().getExceptionString(e), error: 'Error');      
     }
   }
 
@@ -35,7 +35,7 @@ class BaseClient {
     } catch (e) {
 
       // ignore: avoid_print
-      print(ExceptionHandlers().getExceptionString(e));      
+     logger.e(ExceptionHandlers().getExceptionString(e), error: 'Error');     
     }
   }
 

@@ -13,6 +13,9 @@ import 'package:flutter_auth/Agents/models/messageCount.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
 import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
 import 'package:flutter_auth/Agents/models/network.dart';
+import 'package:flutter_auth/helpers/loggers.dart';
+import 'package:flutter_auth/helpers/res_apis.dart';
+import 'package:flutter_auth/providers/device_info.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:package_info/package_info.dart';
@@ -21,6 +24,7 @@ import 'dart:convert' show json;
 
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../helpers/base_client.dart';
 import '../../Chat/listchats.dart';
 import '../../Details/details_screen_changes.dart';
 import '../../Details/details_screen_qr.dart';
@@ -72,7 +76,7 @@ BuildContext? contextP;
     _focusNode.addListener(_onFocusChange);
     contextP=context;
     //realización callback para mostrar cuentas en agentes
-
+    saveDeviceId();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         setState(() {
@@ -178,6 +182,14 @@ BuildContext? contextP;
       ];
     }
     ventanas2=ventanas;
+  }
+
+
+  void saveDeviceId()async{
+    String? deviceId = await getDeviceId();
+    Map body = {'agentId': prefs.usuarioId.toString(), 'deviceId': deviceId.toString() , 'deviceOS': 'Android'};
+    logger.d(body);
+    await BaseClient().post(RestApis.registerDevice, body, {"Content-Type": "application/json"});  
   }
 
   void _onFocusChange() {
@@ -1263,9 +1275,9 @@ BuildContext? contextP;
     dynamic parsedJson = json.decode(response.body);
     var resp1 = (parsedJson as List<dynamic>).map((job) => Mask.fromJson(job)).toList();   
 
-    if (resp1[0].showMsg == 1) {
-      showAlertDialogToMessage(resp1[0].title, resp1[0].msgText, resp1[0].agentId, resp1[0].msgTypeId);
-    }
+    // if (resp1[0].showMsg == 1) {
+    //   showAlertDialogToMessage(resp1[0].title, resp1[0].msgText, resp1[0].agentId, resp1[0].msgTypeId);
+    // }
   }
 
   showAlertDialogToMessage(title, msgText, agentId, msgTypeId) async {
