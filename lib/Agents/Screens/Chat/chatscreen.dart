@@ -5,38 +5,41 @@ import 'dart:io';
 import 'package:app_settings/app_settings.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
+// import 'package:flutter/material.dart';
 //import 'package:flutter/material.dart';
 
 import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
 import 'package:flutter_auth/Agents/Screens/Details/components/warning_dialog.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
-import 'package:flutter_auth/Agents/Screens/calls/WebRTCCallPage.dart';
+// import 'package:flutter_auth/Agents/Screens/calls/WebRTCCallPage.dart';
+import 'package:flutter_auth/Agents/models/tripAgent.dart';
 import 'package:flutter_auth/constants.dart';
 import 'package:flutter_auth/helpers/base_client.dart';
-import 'package:flutter_auth/helpers/loggers.dart';
+
 import 'package:flutter_auth/helpers/res_apis.dart';
-import 'package:flutter_auth/providers/calls.dart';
+
 import 'package:flutter_auth/providers/chat.dart';
 import 'package:flutter_auth/providers/device_info.dart';
-import 'package:flutter_auth/providers/mqtt_class.dart';
-import 'package:flutter_auth/providers/providerWebRtc.dart';
-import 'package:flutter_auth/providers/provider_mqtt.dart';
-import 'package:flutter_auth/providers/webrtc_service.dart';
+import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
+import 'package:http/http.dart' as http;
 //import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
 import 'package:flutter_svg/svg.dart';
 
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+// import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:record/record.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
+// import 'package:record/record.dart';
 
 
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:provider/provider.dart';
 
 import '../../../components/warning_dialog.dart';
+import '../../../providers/JitsiCallPage.dart';
 import '../../models/message_chat.dart';
 
 import '../../models/network.dart';
@@ -81,11 +84,15 @@ class _ChatScreenState extends State<ChatScreen> {
   final StreamSocket streamSocket = StreamSocket(host: 'wschat.smtdriver.com');
   bool activateMic = false;
   late AudioPlayer _audioPlayer;
-  late Record _audioRecord;
+  // late Record _audioRecord;
   List<String> _audioList = [];
   String filePathP = '';
+  dynamic allowCallBtn;
+  bool? permiso;
+  String? msg;
+  dynamic allow;
+  bool _isCalling = false;
 
-   bool? permiso;
 
   _sendMessage(String text) {
     if (streamSocket.socket.disconnected) {
@@ -118,8 +125,9 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+    fetchTripsButton();
     _audioPlayer = AudioPlayer();
-    _audioRecord = Record();
+    // _audioRecord = Record();
     //Important: If your server is running on localhost and you are testing your app on Android then replace http://localhost:3000 with http://10.0.2.2:3000
     ChatApis().dataLogin(
         widget.id, widget.rol, widget.nombre, widget.sala, widget.driverId);
@@ -255,12 +263,49 @@ class _ChatScreenState extends State<ChatScreen> {
   void dispose() {
     super.dispose();
     _audioPlayer.dispose();
-    _audioRecord.dispose();
+    // _audioRecord.dispose();
     _messageInputController.dispose();
 
     //creación del dispose para removerlo después del evento
     BackButtonInterceptor.remove(myInterceptor);
   }
+
+  Future<TripsList> fetchTripsButton() async {
+    http.Response response = await http.get(Uri.parse('$ip/api/trips/${prefs.nombreUsuario}'));
+    if (response.statusCode == 200) {
+      final trip = TripsList.fromJson(json.decode(response.body));
+      for (var i = 0; i < trip.trips.length; i++) {
+        setState(() {          
+          trip.trips[i].allowCallBtn = allowCallBtn;          
+        });
+      }
+    } else {
+      print('Failed to load Data');
+    }
+    return fetchTripsButton();
+  }
+
+ Future<Map<String, dynamic>> validateTripCall(receiverId, receiverType) async {
+  try {
+
+    var responseString = await BaseClient().get('https://admin.smtdriver.com/validateCallAvailability/$receiverId/$receiverType',{"Content-Type": "application/json"});
+    final data = jsonDecode(responseString);
+
+    // Asumiendo que la API devuelve [{allow: 1, msg: "..."}]
+    // Tu log muestra `[{allow: 1, msg: Se puede realizar la llamada}]`
+    // Esto sugiere que `data` es una lista.
+    if (data is List && data.isNotEmpty) {
+      return {'allow': data[0]['allow'], 'msg': data[0]['msg']};
+    } else {
+      // Manejar caso donde la respuesta no es la esperada
+      return {'allow': 0, 'msg': 'Respuesta inesperada del servidor.'};
+    }
+  } catch (e) {
+    print("Error en validateTripCall: $e");
+    return {'allow': 0, 'msg': 'Error de red o servidor al validar: $e'};
+  }
+}
+
 
   bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
     //print("BACK BUTTON!"); // Do some stuff.
@@ -420,59 +465,117 @@ class _ChatScreenState extends State<ChatScreen> {
                           : Text(''),
                           SizedBox(width: 5),
                           InkWell(
-                              onTap: ()async{
-                                // ChatApis().sendMessage(text, widget.sala, widget.nombre, widget.id,
-                                //   widget.driverId, nameDriver!);
+                              onTap: _isCalling ? null : () async {
+                              setState(() {
+                                _isCalling = true; // Mostrar indicador de carga
+                              });
+
+                              try {
+                                // AWAIT la llamada a validateTripCall y OBTEN el resultado directamente
                                 String? deviceId = await getDeviceId();
-                                ChatApis().registerCallerAndSendNotification(widget.sala, widget.id ,deviceId , "agent", widget.driverId, "driver", widget.id, "agent", "motorista", widget.nombre);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => WebRTCCallPage(
-                                      selfId: deviceId.toString(),
-                                      targetId: 'TP1A.220624.014',
-                                      isCaller: true,
-                                      roomId: '70',
-                                      tripId: widget.sala.toString(),
-                                    ),
-                                  ),
+                                final results = await Future.wait([
+                                      ChatApis().registerCallerAndSendNotification(widget.sala, widget.id ,deviceId , "agent", widget.driverId, "driver", widget.id, "agent", "motorista", widget.nombre),
+                                      ChatApis().getDeviceTargetId('motorista', widget.driverId),
+                                    ]);
+
+                                    var roomId = results[0];
+                                    // var deviceIdTarget = results[1];
+
+                                    if (roomId == null) {
+                                      throw Exception("Error: No se obtuvo roomId o deviceIdTarget de la API.");
+                                    }
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => JitsiCallPage(roomId: roomId.toString(), name: widget.nombre),
+                                      ),
+                                    );
+
+                                // final validationResult = await validateTripCall(widget.driverId, 'driver');
+                                // final int currentAllow = validationResult['allow'] ?? 0; // Default to 0 if null
+                                // final String currentMsg = validationResult['msg'] ?? 'Mensaje no disponible.';
+                                // // print('kheeeeeeeeeeeeeeeeeeeeee');
+                                // // print(allowCallBtn);
+                                // if (allowCallBtn == null) {
+                                //   print(currentAllow);
+                                //   if (currentAllow == 1) {
+                                //     String? deviceId = await getDeviceId();
+                                //     if (deviceId == null) {
+                                //       throw Exception("No se pudo obtener el ID del dispositivo.");
+                                //     }
+
+                                //     // Ejecutar las llamadas API en paralelo
+                                //     final results = await Future.wait([
+                                //       ChatApis().registerCallerAndSendNotification(widget.sala, widget.id ,deviceId , "agent", widget.driverId, "driver", widget.id, "agent", "motorista", widget.nombre),
+                                //       ChatApis().getDeviceTargetId('motorista', widget.driverId),
+                                //     ]);
+
+                                //     var roomId = results[0];
+                                //     var deviceIdTarget = results[1];
+
+                                //     if (roomId == null || deviceIdTarget == null) {
+                                //       throw Exception("Error: No se obtuvo roomId o deviceIdTarget de la API.");
+                                //     }
+                                //     Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //         builder: (_) => JitsiCallPage(roomId: roomId.toString(), name: widget.nombre),
+                                //       ),
+                                //     );
+                                //     // Navigator.push(
+                                //     //   context,
+                                //     //   MaterialPageRoute(
+                                //     //     builder: (_) => WebRTCCallPage(
+                                //     //       selfId: deviceId,
+                                //     //       targetId: '$deviceIdTarget',
+                                //     //       isCaller: true,
+                                //     //       roomId: '$roomId',
+                                //     //       tripId: sala,
+                                //     //     ),
+                                //     //   ),
+                                //     // );
+                                //   } else {
+                                //     // Si allow no es 1, mostrar alerta con el mensaje obtenido
+                                //     QuickAlert.show(
+                                //       context: context,
+                                //       type: QuickAlertType.warning,
+                                //       text: currentMsg, // Usar el mensaje retornado
+                                //     );
+                                //   }
+                                // }else{
+                                //   QuickAlert.show(
+                                //     context: context,
+                                //     type: QuickAlertType.info,
+                                //     text: 'El botón para llamadas no está habilitado, intente de nuevo en unos minutos.',
+                                //   );
+                                // }
+                              } catch (e) {
+                                print("Error durante el proceso de llamada: $e");
+                                QuickAlert.show(
+                                  context: context,
+                                  type: QuickAlertType.error,
+                                  text: "Error al iniciar la llamada: $e",
                                 );
-                                // final mqttManagerProvider = Provider.of<MQTTManagerProvider>(context, listen: false);
-                                // String? deviceId = await getDeviceId();
-
-                                // if (mqttManagerProvider.mqttManager == null) {
-                                //   await mqttManagerProvider.initializeMQTT(deviceId!);
-                                // }
-
-                                // bool isConnected = await mqttManagerProvider.mqttManager!.ensureConnection();
-                                // if (!isConnected) {
-                                //   print("No se pudo conectar al MQTT");
-                                //   return;
-                                // }
-
-                                // // Mantener instancia
-                                // final webrtcProvider = Provider.of<WebRTCProvider>(context, listen: false);
-                                // final webRTCService = webrtcProvider.init(mqttManagerProvider.mqttManager!);
-
-                                // await webRTCService.initialize();
-                                // await webRTCService.createOffer("TP1A.220624.014", deviceId!);
-
-                                // // Navegar y pasar la instancia de webrtcService
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => CallScreen(
-                                //       webrtcService: webRTCService,
-                                //       isOffer: true,
-                                //     ),
-                                //   ),
-                                // );
-
-                              },
-                              child: Icon(Icons.call,
-                                color: Theme.of(context).textTheme.titleMedium!.color,
-                              ),
-                            )
+                              } finally {
+                                setState(() {
+                                  _isCalling = false; // Ocultar indicador de carga
+                                });
+                              }
+                            },
+                            child: Icon(Icons.call,
+                              color: Theme.of(context).textTheme.titleMedium!.color,
+                            ),
+                          ),
+            
+          // Overlay de carga
+                        if (_isCalling)
+                          Container(
+                            color: Colors.black.withOpacity(0.5),
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                        
                         ],
                       )
                     ),
@@ -825,7 +928,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                       tipo: 1,
                                       onOkay: () async {
                                         try {
-                                          AppSettings.openLocationSettings();
+                                          AppSettings.openAppSettings();
                                         } catch (error) {
                                           //print(error);
                                         }
@@ -904,7 +1007,7 @@ class _ChatScreenState extends State<ChatScreen> {
     try {
       final cacheDir = await getTemporaryDirectory();
       String filePath = '${cacheDir.path}/${this.widget.sala}_recording${_audioList.length + 1}.m4a';
-      await _audioRecord.start(path: filePath, encoder: AudioEncoder.aacLc);
+      // await _audioRecord.start(path: filePath, encoder: AudioEncoder.aacLc);
 
       setState(() {
         filePathP = filePath;
@@ -925,7 +1028,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void stopRecording() async {
     try {
-      await _audioRecord.stop();
+      // await _audioRecord.stop();
 
       String recordedFilePath = filePathP;
 

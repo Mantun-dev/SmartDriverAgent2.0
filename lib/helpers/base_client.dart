@@ -6,7 +6,7 @@ import 'package:flutter_auth/helpers/loggers.dart';
 import 'package:http/http.dart' as http;
 
 class BaseClient {
-  static const int timeOutDuration = 35;
+  static const int timeOutDuration = 8;
   bool internet = true;
   //GET
   Future<dynamic>get(String url, dynamic header)async{

@@ -26,7 +26,8 @@ class Trips {
     required this.btnCancelTrip,
     required this.driverId,
     required this.tripVehicle,
-    required this.tripType // Nuevo campo "tripVehicle"
+    required this.tripType, // Nuevo campo "tripVehicle"
+    required this.allowCallBtn
   });
 
   String? fecha;
@@ -44,6 +45,7 @@ class Trips {
   dynamic driverId;
   String? tripVehicle; // Nuevo campo "tripVehicle"
   dynamic tripType;
+  dynamic allowCallBtn;
 
   factory Trips.fromJson(Map<String, dynamic> json) => Trips(
         fecha: json["Fecha"],
@@ -60,7 +62,8 @@ class Trips {
         btnCancelTrip: json["btnCancelTrip"],
         driverId: json["driverId"],
         tripVehicle: json["tripVehicle"],
-        tripType: json["tripType"] // Nuevo campo "tripVehicle"
+        tripType: json["tripType"], // Nuevo campo "tripVehicle"
+        allowCallBtn: json["allowCallBtn"]
       );
 
   Map<String, dynamic> toJson() => {
@@ -78,7 +81,8 @@ class Trips {
         "btnCancelTrip": btnCancelTrip,
         "driverId": driverId,
         "tripVehicle": tripVehicle,
-        "tripType": tripType // Nuevo campo "tripVehicle"
+        "tripType": tripType, // Nuevo campo "tripVehicle"
+        "allowCallBtn": allowCallBtn
       };
 }
 

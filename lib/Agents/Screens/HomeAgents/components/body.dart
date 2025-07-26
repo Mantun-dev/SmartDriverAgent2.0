@@ -17,8 +17,9 @@ import 'package:flutter_auth/helpers/loggers.dart';
 import 'package:flutter_auth/helpers/res_apis.dart';
 import 'package:flutter_auth/providers/device_info.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:quickalert/quickalert.dart';
-import 'package:package_info/package_info.dart';
+// import 'package:package_info/package_info.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' show json;
 
@@ -186,10 +187,14 @@ BuildContext? contextP;
 
 
   void saveDeviceId()async{
+    String ip = "https://smtdriver.com";
+    http.Response responses = await http.get(Uri.parse('$ip/api/refreshingAgentData/${prefs.nombreUsuario}'));
+    final data = DataAgent.fromJson(json.decode(responses.body));
     String? deviceId = await getDeviceId();
-    Map body = {'agentId': prefs.usuarioId.toString(), 'deviceId': deviceId.toString() , 'deviceOS': 'Android'};
+    Map<String, dynamic> body = {'agentId': data.agentId.toString(), 'deviceId': deviceId.toString() , 'deviceOS': 'Android'};
     logger.d(body);
-    await BaseClient().post(RestApis.registerDevice, body, {"Content-Type": "application/json"});  
+    var res = await BaseClient().post(RestApis.registerDevice, body, {"Content-Type": "application/json"});  
+    print(res);
   }
 
   void _onFocusChange() {

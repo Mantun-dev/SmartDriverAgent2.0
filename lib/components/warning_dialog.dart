@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 
-enum QuickAlertType {
-  warning,
-  // Otros tipos de alerta
-}
 
 class WarningDialog {
   static final WarningDialog _singleton = WarningDialog._internal();

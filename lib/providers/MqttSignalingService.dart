@@ -21,7 +21,8 @@ class MqttSignalingService {
 
   Future<void> connect() async {
     _client = MqttServerClient(broker, clientId);
-    _client.port = 1883;
+    _client.port = 8884;
+    _client.secure = true;
     _client.keepAlivePeriod = 120;
     _client.onDisconnected = _onDisconnected;
     _client.onConnected = _onConnected;
@@ -87,8 +88,8 @@ class MqttSignalingService {
     }
   }
 
-  void sendSignal(String toUserId, Map<String, dynamic> message) {
-    if (!_isConnected) {
+  void sendSignal(String toUserId, Map<String, dynamic> message) async{
+    if (!_isConnected) {      
       print("🚫 No conectado a MQTT, no se puede enviar señal.");
       return;
     }

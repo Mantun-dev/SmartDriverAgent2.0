@@ -3,29 +3,30 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:battery_plus/battery_plus.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+// import 'package:battery_plus/battery_plus.dart';
+// import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 //import 'package:flutter_auth/Agents/Screens/Chat/chatscreen.dart';
 import 'package:flutter_auth/Agents/Screens/HomeAgents/homeScreen_Agents.dart';
 import 'package:flutter_auth/Agents/sharePrefers/services.dart';
 import 'package:flutter_auth/components/splash_screen.dart';
 import 'package:flutter_auth/Agents/Screens/Details/details_screen.dart';
 import 'package:flutter_auth/Agents/models/plantilla.dart';
-import 'package:flutter_auth/helpers/loggers.dart';
-import 'package:flutter_auth/providers/calls.dart';
+// import 'package:flutter_auth/helpers/loggers.dart';
+// import 'package:flutter_auth/providers/calls.dart';
 import 'package:flutter_auth/providers/chat.dart';
 import 'package:flutter_auth/providers/device_info.dart';
-import 'package:flutter_auth/providers/mqtt_class.dart';
-import 'package:flutter_auth/providers/providerWebRtc.dart';
-import 'package:flutter_auth/providers/provider_mqtt.dart';
-import 'package:flutter_auth/providers/webrtc_service.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:mqtt_client/mqtt_client.dart';
+// import 'package:flutter_auth/providers/mqtt_class.dart';
+// import 'package:flutter_auth/providers/providerWebRtc.dart';
+// import 'package:flutter_auth/providers/provider_mqtt.dart';
+// import 'package:flutter_auth/providers/webrtc_service.dart';
+// import 'package:flutter_background_service/flutter_background_service.dart';
+// import 'package:flutter_webrtc/flutter_webrtc.dart';
+// import 'package:mqtt_client/mqtt_client.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:upgrader/upgrader.dart';
@@ -34,6 +35,28 @@ import 'components/Tema.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
+// Función top-level para manejar mensajes en segundo plano
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("Handling a background message: ${message.messageId}");
+  // Aquí puedes manejar la notificación local como ya lo haces
+  final data = message.data;
+  if (data['callType'] == 'Incoming') {
+    await PushNotificationServices.showIncomingCallNotification(
+      callerName: data['userName'],
+      payload: jsonEncode(data),
+    );
+  } else {
+    PushNotificationServices.showNotification(
+      title: message.notification?.title,
+      body: message.notification?.body,
+      payload: jsonEncode(data), // Es mejor siempre enviar el payload como JSON
+    );
+  }
+}
+
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -41,11 +64,22 @@ Future<void> main() async {
   await prefs.initPrefs(); // ✅ Primero, inicializar preferencias
  
   await Firebase.initializeApp(); // ✅ Luego, inicializar Firebase
-  await PushNotificationServices.initializeApp(); // ✅ Notificaciones después de Firebase
 
-String? currentDeviceId = await getDeviceId();
-print('************** device');
-print(currentDeviceId);
+  // Registra el handler de mensajes en segundo plano
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  final GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
+  await PushNotificationServices.initializeApp(globalNavigatorKey); // ✅ Notificaciones después de Firebase
+
+  RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+  if (initialMessage != null) {
+    // Retrasar la navegación para asegurar que el navigatorKey esté listo
+    Future.delayed(Duration(milliseconds: 500), () {
+      PushNotificationServices.handleNotificationNavigation(initialMessage.data);
+    });
+  }
+    // String? currentDeviceId = await getDeviceId();
+    // print('************** device');
+    // print(currentDeviceId);
   // const MethodChannel channel = MethodChannel('webrtc_channel');
   
   // initializeService(); // ✅ Ahora sí, inicializar el servicio
@@ -406,7 +440,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    PushNotificationServices.initializeApp();
+    PushNotificationServices.initializeApp(navigatorKey);
     requestPermissions(); // ✅ Pedir permisos después de Firebase
     requestIgnoreBatteryOptimizations(); // ✅ Pedir optimización de batería
     checkAudioPermission();

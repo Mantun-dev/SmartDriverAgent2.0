@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_auth/Agents/Screens/calls/WebRTCCallPage.dart';
-
+import 'package:flutter_auth/providers/device_info.dart';
+import 'package:flutter_auth/helpers/base_client.dart';
 // ignore: must_be_immutable
 class IncomingCallScreen extends StatefulWidget {
   final String callerName;
@@ -31,33 +32,44 @@ class _IncomingCallScreenState extends State<IncomingCallScreen> {
     _audioPlayer.stop();
   }
 
-  void _onAccept() {
+  void _onAccept() async{
     // _stopRingtone();
     // // lógica para aceptar la llamada
     // Navigator.pop(context);
+    String? deviceId = await getDeviceId();
     final data = widget.array;
     final roomId = data['roomId'];
     final tripId = data['tripId'];
     final callType = data['callType'];
+    final callerDeviceId = data['callerDeviceId'];
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => WebRTCCallPage(
-          selfId: 'QP1A.190711.020',
-          targetId: 'TP1A.220624.014',
-          isCaller: callType=="Incoming"? false: true,
-          roomId: '70',
-          tripId: '$tripId',
-        ),
-      ),
-    );
+    validateTripCall(roomId, 'answered');
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (_) => WebRTCCallPage(
+    //       selfId: '$deviceId',
+    //       targetId: '$callerDeviceId',
+    //       isCaller: callType=="Incoming"? false: true,
+    //       roomId: '$roomId',
+    //       tripId: '$tripId',
+    //     ),
+    //   ),
+    // );
 
   }
 
+  validateTripCall(roomId, callStatus) async {
+    await BaseClient().get('https://admin.smtdriver.com/updateCallerToTrip/$roomId/$callStatus',{"Content-Type": "application/json"});     
+  }
+
+
   void _onReject() {
     _stopRingtone();
+    final data = widget.array;
+    final roomId = data['roomId'];
     // lógica para rechazar la llamada
+    validateTripCall(roomId, 'ended');
     Navigator.pop(context);
   }
 

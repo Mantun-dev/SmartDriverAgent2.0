@@ -207,7 +207,7 @@ class ChatApis {
     }
   }
 
-  void registerCallerAndSendNotification(tripId, callerId, callerIdDevice, callerType, receiverId, receiverType, userId, userType, rol, nameSender)async{
+  Future<dynamic> registerCallerAndSendNotification(tripId, callerId, callerIdDevice, callerType, receiverId, receiverType, userId, userType, rol, nameSender)async{
     Map<String, dynamic> registerUser = {
       "tripId": tripId,
       "callerId": callerId,
@@ -231,8 +231,25 @@ class ChatApis {
       "nameSender": nameSender
     };
 
-    await BaseClient().post('http://192.168.0.10:4000/registerCallerToTrip',registerUser,{"Content-Type": "application/json"},);
-    await BaseClient().post('http://192.168.0.10:4000/sendNotificationToCall',sendNotification,{"Content-Type": "application/json"},);
+    var roomIdResponse = await BaseClient().post('https://admin.smtdriver.com/registerCallerToTrip',registerUser,{"Content-Type": "application/json"},);    
+    await BaseClient().post('https://admin.smtdriver.com/sendNotificationToCall',sendNotification,{"Content-Type": "application/json"},);
+    final data = jsonDecode(roomIdResponse);
+    final roomId = data['message'][0]['roomId'];
+    print(roomId);
+    return roomId;
+  }
+
+  Future<dynamic> getDeviceTargetId(rol, receiverId) async{
+    Map<String, dynamic> data = {
+      "rol": rol,
+      "receptorId": receiverId
+    };
+    print(data);
+    var roomIdResponse = await BaseClient().post('https://admin.smtdriver.com/sendDeviceIdToCall',data,{"Content-Type": "application/json"},);    
+    final dataR = jsonDecode(roomIdResponse);
+    final deviceId = dataR['device']['deviceId'];
+    print(deviceId);
+    return deviceId;
   }
 
   // void getDataUsuarios(dynamic getData){

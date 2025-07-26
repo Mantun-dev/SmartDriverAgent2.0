@@ -24,11 +24,15 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-apply plugin: 'com.google.gms.google-services'
+// apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 34 // Incrementar la versión a 33 o a la más alta que sea compatible con tus dependencias
+    compileSdkVersion 35 // Incrementar la versión a 33 o a la más alta que sea compatible con tus dependencias
 
+    buildFeatures {
+        buildConfig true
+    }
+    
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -44,19 +48,23 @@ android {
 
     defaultConfig {
         applicationId "com.smartdriver.devs"
-        minSdkVersion 24
+        namespace "com.smartdriver.devs"
+        minSdkVersion 26
         targetSdkVersion 34// Incrementar la versión a 33 o a la más alta que sea compatible con tus dependencias
         multiDexEnabled true // Habilitar el soporte multidex
-        versionCode 132
-        versionName "2.9.30"
+        versionCode 141
+        versionName "2.9.39"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled true
     }
-
+    kotlinOptions {
+        jvmTarget = '17' // Ensure Kotlin compiles to JVM 17 bytecode
+    }
     // Define keystoreProperties y carga las propiedades del archivo key.properties
     def keystoreProperties = new Properties()
     def keystorePropertiesFile = rootProject.file('key.properties')
@@ -65,6 +73,12 @@ android {
     }
 
     signingConfigs {
+        debug {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
         release {
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
@@ -74,10 +88,13 @@ android {
     }
 
     buildTypes {
-        release {
+        debug {
             signingConfig signingConfigs.debug
-            minifyEnabled true
-            shrinkResources true
+        }
+        release {
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -92,24 +109,38 @@ flutter {
 }
 
 dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
     implementation "androidx.multidex:multidex:2.0.1"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test:runner:1.4.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    implementation 'com.google.firebase:firebase-analytics:19.0.2'
-    implementation 'com.google.firebase:firebase-messaging:23.0.0'
-    implementation 'com.google.android.gms:play-services-base:17.6.0'
-    implementation 'com.google.android.gms:play-services-tasks:17.0.0'    
-    // Agregar aquí otras dependencias de tu proyecto
-
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version" // Puedes probar 'kotlin-stdlib' sin jdk7 si hay problemas
+    // ACTUALIZADO: Versión de Firebase BOM. Asegúrate de que esta sea la última.
+    // La 28.1.0 es MUY antigua. Debes usar la más reciente, por ejemplo 32.x.x
+    implementation platform('com.google.firebase:firebase-bom:32.8.0') // <--- ACTULIZA ESTO
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 
     implementation 'com.google.android.play:app-update:2.1.0'
-
     implementation 'com.google.android.play:review:2.0.1'
-
     implementation "com.google.android.play:asset-delivery:2.2.2"
     implementation "com.google.android.play:feature-delivery:2.1.0"
+    // coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
+    // implementation platform('com.google.firebase:firebase-bom:32.8.0') // <--- ACTULIZA ESTO
+    // implementation "androidx.multidex:multidex:2.0.1"
+    // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // testImplementation 'junit:junit:4.13.2'
+    // androidTestImplementation 'androidx.test:runner:1.4.0'
+    // androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    // implementation 'com.google.firebase:firebase-analytics:19.0.2'
+    // implementation 'com.google.firebase:firebase-messaging:23.0.0'
+    // implementation 'com.google.android.gms:play-services-base:17.6.0'
+    // implementation 'com.google.android.gms:play-services-tasks:17.0.0'    
+    // // Agregar aquí otras dependencias de tu proyecto
+
+
+    // implementation 'com.google.android.play:app-update:2.1.0'
+
+    // implementation 'com.google.android.play:review:2.0.1'
+
+    // implementation "com.google.android.play:asset-delivery:2.2.2"
+    // implementation "com.google.android.play:feature-delivery:2.1.0"
 }
 configurations {
   configureEach {
