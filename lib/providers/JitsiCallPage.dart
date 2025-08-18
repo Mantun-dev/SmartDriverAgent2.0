@@ -45,8 +45,8 @@ class _JitsiCallPageState extends State<JitsiCallPage> {
         "startWithVideoMuted": false, // False para que el video esté activado al inicio
         "subject": "Llamada de ${widget.name}", // Asunto de la sala
         // Puedes añadir otras configuraciones aquí según necesites, por ejemplo:
-        // "prejoinPageEnabled": false, // Para saltar la pantalla de pre-unión
-        // "enableClosePage": false, // Para evitar que la vista se cierre automáticamente al salir
+        "prejoinPageEnabled": false, // Para saltar la pantalla de pre-unión
+        "enableClosePage": false, // Para evitar que la vista se cierre automáticamente al salir
       },
       featureFlags: {
         // Puedes habilitar o deshabilitar funcionalidades aquí.
@@ -54,7 +54,7 @@ class _JitsiCallPageState extends State<JitsiCallPage> {
         // Asegúrate de que los FeatureFlags que uses sean válidos para tu versión de SDK.
         FeatureFlags.addPeopleEnabled: true,
         FeatureFlags.welcomePageEnabled: true,
-        FeatureFlags.preJoinPageEnabled: true,
+        FeatureFlags.preJoinPageEnabled: false,
         FeatureFlags.unsafeRoomWarningEnabled: true,
         FeatureFlags.resolution: FeatureFlagVideoResolutions.resolution720p,
         FeatureFlags.audioFocusDisabled: false, // False si quieres que la app tome el foco de audio
@@ -105,9 +105,25 @@ class _JitsiCallPageState extends State<JitsiCallPage> {
       ),
     );
 
+    var listeners = JitsiMeetEventListener(
+      conferenceWillJoin: (url) {
+        debugPrint("🔵 onConferenceWillJoin: $url");
+      },
+      conferenceJoined: (url) {
+        debugPrint("🟢 onConferenceJoined: $url");
+      },
+      conferenceTerminated: (url, error) {
+        debugPrint("🔴 onConferenceTerminated: $url, error: $error");
+        // Salir de la pantalla cuando la conferencia termine
+        if (mounted) {
+          Navigator.of(context).pop();
+        }
+      }
+    );
+
     try {
       // No pasamos un listener explícito aquí
-      await _jitsiMeetPlugin.join(options);
+      await _jitsiMeetPlugin.join(options, listeners);
     } catch (error) {
       debugPrint("❌ Error al intentar unirse a la reunión de Jitsi: $error");
       // Maneja el error, por ejemplo, mostrando un SnackBar y saliendo de la pantalla
