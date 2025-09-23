@@ -411,9 +411,9 @@ class _MenuLateralState extends State<MenuLateral> {
                         ),
                         TextButton(
                             onPressed: () =>
-                                launchUrl(Uri.parse('tel://3317-4537')),
+                                launchUrl(Uri.parse('tel://8967-1225')),
                             child: Text(
-                                'Si tiene algún inconveniente con su programación, puede escribir al número: 3317-4537',
+                                'Si tiene algún inconveniente con su programación, puede escribir al número: 8967-1225',
                                 style: TextStyle(color: Colors.grey[700]))),
                       ],
                     ),

@@ -96,9 +96,9 @@ class _DescriptionState extends State<Description> {
                 SizedBox(
                   height: 20.0,
                 ),
-                TextButton(onPressed: () => id=='2'?launchUrl(Uri.parse('tel://3317-4537')):launchUrl(Uri.parse('tel://8871-6819')),child: RichText(textAlign: TextAlign.center,text: TextSpan(children: <TextSpan>[
+                TextButton(onPressed: () => id=='2'?launchUrl(Uri.parse('tel://8967-1225')):launchUrl(Uri.parse('tel://8871-6819')),child: RichText(textAlign: TextAlign.center,text: TextSpan(children: <TextSpan>[
                     TextSpan(text: id=='2'?"Si tiene algún inconveniente con su programación, puede escribir al número: ":"Para consultas o sugerencias de 9:00am a 5:00pm puede escribirnos al número: ",style: TextStyle(color: Colors.black)),
-                    TextSpan(text: id=='2'?"3317-4537":'8871-6819' ,style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold)),]),
+                    TextSpan(text: id=='2'?"8967-1225":'8871-6819' ,style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold)),]),
                     )),
 
                 SizedBox(height: 24.0),

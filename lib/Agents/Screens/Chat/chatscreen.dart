@@ -82,6 +82,7 @@ class _ChatScreenState extends State<ChatScreen> {
   ScrollController _scrollController = new ScrollController();
   final arrayTemp = [];
   final StreamSocket streamSocket = StreamSocket(host: 'wschat.smtdriver.com');
+  // final StreamSocket streamSocket = StreamSocket(host: '192.168.0.9:3000');
   bool activateMic = false;
   late AudioPlayer _audioPlayer;
   // late Record _audioRecord;
@@ -135,12 +136,12 @@ class _ChatScreenState extends State<ChatScreen> {
       //print('Desconectado del chat. Intentando reconectar...');
     });
 
+    datas();
+    getMessagesDB();
     streamSocket.socket.onReconnect((_) {
       //print('Reconectado al chat.');
       _reconnectEvents();
     });
-    datas();
-    getMessagesDB();
     //inicializador del botón de android para manejarlo manual
     BackButtonInterceptor.add(myInterceptor);
   }
@@ -212,6 +213,34 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void datas() {
+    streamSocket.socket.on('enviar-mensaje2', ((data) {
+        print('Nuevo mensaje recibido: $data');
+        print(mounted);
+      if (mounted) {
+        // Verifica si 'data' es una lista de mensajes
+        if (data is List) {
+            // Si es una lista, itera sobre cada elemento
+            data.forEach((element) {
+                Provider.of<ChatProvider>(context, listen: false).addNewMessage(Message.fromJson(element));
+            });
+        } else {
+            // Si es un solo objeto, agrégalo directamente
+            Provider.of<ChatProvider>(context, listen: false).addNewMessage(Message.fromJson(data));
+        }
+        ChatApis().sendRead(widget.sala, widget.driverId, widget.id);
+      }
+    }));
+
+    // Cuando se usa el evento 'cargarM', sí limpias para cargar la lista completa
+    streamSocket.socket.on('cargarM', ((listM) {
+      if (mounted) {
+        Provider.of<ChatProvider>(context, listen: false).mensaje2.clear();
+        listM.forEach((value) {
+          Provider.of<ChatProvider>(context, listen: false)
+              .addNewMessage(Message.fromJson(value));
+        });
+      }
+    }));
     streamSocket.socket.on('detectarE', (data) => print(data));
     streamSocket.socket.on('entrarChat_flutter', (data) {
       // if (mounted) {
@@ -219,36 +248,7 @@ class _ChatScreenState extends State<ChatScreen> {
       //     ChatApis().sendRead(data, widget.sala, widget.driverId, widget.id);
       //   });
       // }
-    });
-
-    streamSocket.socket.on(
-      'cargarM',
-      ((listM) {
-        //print('*************cargarM');
-        //print(listM);
-        if (mounted) {
-          Provider.of<ChatProvider>(context, listen: false).mensaje2.clear();
-          listM.forEach((value) {
-            //print(value);
-            Provider.of<ChatProvider>(context, listen: false)
-                .addNewMessage(Message.fromJson(value));
-          });
-        }
-      }),
-    );
-
-    streamSocket.socket.on(
-      'enviar-mensaje2',
-      ((data) {
-        // print('******************enviarMensaje');
-        // print(data);
-        if (mounted) {
-          Provider.of<ChatProvider>(context, listen: false)
-              .addNewMessage(Message.fromJson(data));
-          ChatApis().sendRead(widget.sala, widget.driverId, widget.id);
-        }
-      }),
-    );
+    });    
 
     controllerLoading(false);
   }
@@ -379,221 +379,234 @@ class _ChatScreenState extends State<ChatScreen> {
         return fechaBs;
     }
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).canvasColor,
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(56),
-                child: AppBar(
-                  backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-                    elevation: 0,
-                    iconTheme: IconThemeData(size: 25),
-                    automaticallyImplyLeading: false, 
-                    actions: <Widget>[
-                    //aquí está el icono de las notificaciones
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        onTap: () {
-                            desconectar();
-                            fetchProfile().then((value) {
-                            Navigator.push(
-                                    context,
-                                    PageRouteBuilder(
-                                      transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
-                                      pageBuilder: (_, __, ___) => ChatsList(
-                                        id: '${value.agentId}',
-                                        rol: 'agente',
-                                        nombre: '${value.agentFullname}',
-                                      ),
-                                      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
-                                        return SlideTransition(
-                                          position: Tween<Offset>(
-                                            begin: Offset(1.0, 0.0),
-                                            end: Offset.zero,
-                                          ).animate(animation),
-                                          child: child,
-                                        );
-                                      },
-                                    ),
-                                  );
-                            });
-                          },
-                        child: Container(
-                          width: 45,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Theme.of(context).primaryIconTheme.color!,
-                              width: 0.5,
-                            ),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: SvgPicture.asset(
-                              "assets/icons/flecha_atras_oscuro.svg",
-                              color: Theme.of(context).primaryIconTheme.color!,
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: Theme.of(context).canvasColor,
+                  appBar: PreferredSize(
+                    preferredSize: Size.fromHeight(56),
+                    child: AppBar(
+                      backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+                        elevation: 0,
+                        iconTheme: IconThemeData(size: 25),
+                        automaticallyImplyLeading: false, 
+                        actions: <Widget>[
+                        //aquí está el icono de las notificaciones
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            onTap: () {
+                                desconectar();
+                                fetchProfile().then((value) {
+                                Navigator.push(
+                                        context,
+                                        PageRouteBuilder(
+                                          transitionDuration: Duration(milliseconds: 200 ), // Adjust the animation duration as needed
+                                          pageBuilder: (_, __, ___) => ChatsList(
+                                            id: '${value.agentId}',
+                                            rol: 'agente',
+                                            nombre: '${value.agentFullname}',
+                                          ),
+                                          transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+                                            return SlideTransition(
+                                              position: Tween<Offset>(
+                                                begin: Offset(1.0, 0.0),
+                                                end: Offset.zero,
+                                              ).animate(animation),
+                                              child: child,
+                                            );
+                                          },
+                                        ),
+                                      );
+                                });
+                              },
+                            child: Container(
+                              width: 45,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Theme.of(context).primaryIconTheme.color!,
+                                  width: 0.5,
+                                ),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: SvgPicture.asset(
+                                  "assets/icons/flecha_atras_oscuro.svg",
+                                  color: Theme.of(context).primaryIconTheme.color!,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
 
-                    SizedBox(width: 10),
+                        SizedBox(width: 10),
 
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
 
-                          
+                              
 
-                          Container(
-                            width: 50,
-                            height: 50,
-                            child: Image.asset(
-                              "assets/images/perfilmotorista.png",
-                            ),
-                          ),
-                          SizedBox(width: 5),
-                          nameDriver != null ? 
-                            Flexible(
-                              child: Text(
-                                nameDriver!,
-                                style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 18),
+                              Container(
+                                width: 50,
+                                height: 50,
+                                child: Image.asset(
+                                  "assets/images/perfilmotorista.png",
+                                ),
                               ),
-                            ) 
-                          : Text(''),
-                          SizedBox(width: 5),
-                          InkWell(
-                              onTap: _isCalling ? null : () async {
-                              setState(() {
-                                _isCalling = true; // Mostrar indicador de carga
-                              });
+                              SizedBox(width: 5),
+                              nameDriver != null ? 
+                                Flexible(
+                                  child: Text(
+                                    nameDriver!,
+                                    style: Theme.of(context).textTheme.titleMedium!.copyWith(fontSize: 18),
+                                  ),
+                                ) 
+                              : Text(''),
+                              SizedBox(width: 5),
+                              InkWell(
+                                  onTap: _isCalling ? null : () async {
+                                  setState(() {
+                                    _isCalling = true; // Mostrar indicador de carga
+                                  });
 
-                              try {
-                                // AWAIT la llamada a validateTripCall y OBTEN el resultado directamente
-                                String? deviceId = await getDeviceId();
-                                final results = await Future.wait([
-                                      ChatApis().registerCallerAndSendNotification(widget.sala, widget.id ,deviceId , "agent", widget.driverId, "driver", widget.id, "agent", "motorista", widget.nombre),
-                                      ChatApis().getDeviceTargetId('motorista', widget.driverId),
-                                    ]);
+                                  try {
+                                    // AWAIT la llamada a validateTripCall y OBTEN el resultado directamente
+                                    String? deviceId = await getDeviceId();
+                                    final results = await Future.wait([
+                                          ChatApis().registerCallerAndSendNotification(widget.sala, widget.id ,deviceId , "agent", widget.driverId, "driver", widget.id, "agent", "motorista", widget.nombre),
+                                          ChatApis().getDeviceTargetId('motorista', widget.driverId),
+                                        ]);
 
-                                    var roomId = results[0];
-                                    // var deviceIdTarget = results[1];
+                                        var roomId = results[0];
+                                        // var deviceIdTarget = results[1];
 
-                                    if (roomId == null) {
-                                      throw Exception("Error: No se obtuvo roomId o deviceIdTarget de la API.");
-                                    }
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => JitsiCallPage(roomId: roomId.toString(), name: widget.nombre),
-                                      ),
+                                        if (roomId == null) {
+                                          throw Exception("Error: No se obtuvo roomId o deviceIdTarget de la API.");
+                                        }
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) => JitsiCallPage(roomId: roomId.toString(), name: widget.nombre),
+                                          ),
+                                        );
+
+                                    // final validationResult = await validateTripCall(widget.driverId, 'driver');
+                                    // final int currentAllow = validationResult['allow'] ?? 0; // Default to 0 if null
+                                    // final String currentMsg = validationResult['msg'] ?? 'Mensaje no disponible.';
+                                    // // print('kheeeeeeeeeeeeeeeeeeeeee');
+                                    // // print(allowCallBtn);
+                                    // if (allowCallBtn == null) {
+                                    //   print(currentAllow);
+                                    //   if (currentAllow == 1) {
+                                    //     String? deviceId = await getDeviceId();
+                                    //     if (deviceId == null) {
+                                    //       throw Exception("No se pudo obtener el ID del dispositivo.");
+                                    //     }
+
+                                    //     // Ejecutar las llamadas API en paralelo
+                                    //     final results = await Future.wait([
+                                    //       ChatApis().registerCallerAndSendNotification(widget.sala, widget.id ,deviceId , "agent", widget.driverId, "driver", widget.id, "agent", "motorista", widget.nombre),
+                                    //       ChatApis().getDeviceTargetId('motorista', widget.driverId),
+                                    //     ]);
+
+                                    //     var roomId = results[0];
+                                    //     var deviceIdTarget = results[1];
+
+                                    //     if (roomId == null || deviceIdTarget == null) {
+                                    //       throw Exception("Error: No se obtuvo roomId o deviceIdTarget de la API.");
+                                    //     }
+                                    //     Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //         builder: (_) => JitsiCallPage(roomId: roomId.toString(), name: widget.nombre),
+                                    //       ),
+                                    //     );
+                                    //     // Navigator.push(
+                                    //     //   context,
+                                    //     //   MaterialPageRoute(
+                                    //     //     builder: (_) => WebRTCCallPage(
+                                    //     //       selfId: deviceId,
+                                    //     //       targetId: '$deviceIdTarget',
+                                    //     //       isCaller: true,
+                                    //     //       roomId: '$roomId',
+                                    //     //       tripId: sala,
+                                    //     //     ),
+                                    //     //   ),
+                                    //     // );
+                                    //   } else {
+                                    //     // Si allow no es 1, mostrar alerta con el mensaje obtenido
+                                    //     QuickAlert.show(
+                                    //       context: context,
+                                    //       type: QuickAlertType.warning,
+                                    //       text: currentMsg, // Usar el mensaje retornado
+                                    //     );
+                                    //   }
+                                    // }else{
+                                    //   QuickAlert.show(
+                                    //     context: context,
+                                    //     type: QuickAlertType.info,
+                                    //     text: 'El botón para llamadas no está habilitado, intente de nuevo en unos minutos.',
+                                    //   );
+                                    // }
+                                  } catch (e) {
+                                    print("Error durante el proceso de llamada: $e");
+                                    QuickAlert.show(
+                                      context: context,
+                                      type: QuickAlertType.error,
+                                      text: "Error al iniciar la llamada: $e",
                                     );
+                                  } finally {
+                                    setState(() {
+                                      _isCalling = false; // Ocultar indicador de carga
+                                    });
+                                  }
+                                },
+                                child: Icon(Icons.call,
+                                  color: Theme.of(context).textTheme.titleMedium!.color,
+                                ),
+                              ),
+                
+              // Overlay de carga
+                            if (_isCalling)
+                              Container(
+                                color: Colors.black.withOpacity(0.5),
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              ),
+                            
+                            ],
+                          )
+                        ),
 
-                                // final validationResult = await validateTripCall(widget.driverId, 'driver');
-                                // final int currentAllow = validationResult['allow'] ?? 0; // Default to 0 if null
-                                // final String currentMsg = validationResult['msg'] ?? 'Mensaje no disponible.';
-                                // // print('kheeeeeeeeeeeeeeeeeeeeee');
-                                // // print(allowCallBtn);
-                                // if (allowCallBtn == null) {
-                                //   print(currentAllow);
-                                //   if (currentAllow == 1) {
-                                //     String? deviceId = await getDeviceId();
-                                //     if (deviceId == null) {
-                                //       throw Exception("No se pudo obtener el ID del dispositivo.");
-                                //     }
-
-                                //     // Ejecutar las llamadas API en paralelo
-                                //     final results = await Future.wait([
-                                //       ChatApis().registerCallerAndSendNotification(widget.sala, widget.id ,deviceId , "agent", widget.driverId, "driver", widget.id, "agent", "motorista", widget.nombre),
-                                //       ChatApis().getDeviceTargetId('motorista', widget.driverId),
-                                //     ]);
-
-                                //     var roomId = results[0];
-                                //     var deviceIdTarget = results[1];
-
-                                //     if (roomId == null || deviceIdTarget == null) {
-                                //       throw Exception("Error: No se obtuvo roomId o deviceIdTarget de la API.");
-                                //     }
-                                //     Navigator.push(
-                                //       context,
-                                //       MaterialPageRoute(
-                                //         builder: (_) => JitsiCallPage(roomId: roomId.toString(), name: widget.nombre),
-                                //       ),
-                                //     );
-                                //     // Navigator.push(
-                                //     //   context,
-                                //     //   MaterialPageRoute(
-                                //     //     builder: (_) => WebRTCCallPage(
-                                //     //       selfId: deviceId,
-                                //     //       targetId: '$deviceIdTarget',
-                                //     //       isCaller: true,
-                                //     //       roomId: '$roomId',
-                                //     //       tripId: sala,
-                                //     //     ),
-                                //     //   ),
-                                //     // );
-                                //   } else {
-                                //     // Si allow no es 1, mostrar alerta con el mensaje obtenido
-                                //     QuickAlert.show(
-                                //       context: context,
-                                //       type: QuickAlertType.warning,
-                                //       text: currentMsg, // Usar el mensaje retornado
-                                //     );
-                                //   }
-                                // }else{
-                                //   QuickAlert.show(
-                                //     context: context,
-                                //     type: QuickAlertType.info,
-                                //     text: 'El botón para llamadas no está habilitado, intente de nuevo en unos minutos.',
-                                //   );
-                                // }
-                              } catch (e) {
-                                print("Error durante el proceso de llamada: $e");
-                                QuickAlert.show(
-                                  context: context,
-                                  type: QuickAlertType.error,
-                                  text: "Error al iniciar la llamada: $e",
-                                );
-                              } finally {
-                                setState(() {
-                                  _isCalling = false; // Ocultar indicador de carga
-                                });
-                              }
-                            },
-                            child: Icon(Icons.call,
-                              color: Theme.of(context).textTheme.titleMedium!.color,
-                            ),
-                          ),
-            
-          // Overlay de carga
-                        if (_isCalling)
-                          Container(
-                            color: Colors.black.withOpacity(0.5),
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          ),
-                        
-                        ],
-                      )
-                    ),
-
-                  ],
-                ),
-              ),
-              body: Column(
-                children: [
-                  Expanded(
-                    child: isLoading == true
-                      ? body(fecha, hoy_ayer, context)
-                      : Center(child: CircularProgressIndicator()
+                      ],
                     ),
                   ),
-                ],
+                  body: Column(
+                    children: [
+                      Expanded(
+                        child: isLoading == true
+                          ? body(fecha, hoy_ayer, context)
+                          : Center(child: CircularProgressIndicator()
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+        if (_isCalling)
+          Container(
+            color: Colors.black.withOpacity(0.5),
+            child: Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white), // Color del indicador
               ),
-            );
+            ),
+          ),
+      ],
+    );
   }
 
   Column body(bool fecha(dynamic fechaBs), String hoyayer(dynamic fechaBs), BuildContext context) {

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jitsi_meet_flutter_sdk/jitsi_meet_flutter_sdk.dart'; // Importación correcta
+import 'package:flutter_auth/Agents/sharePrefers/preferencias_usuario.dart';
+import 'package:jitsi_meet_flutter_sdk/jitsi_meet_flutter_sdk.dart';
+
+import '../Agents/Screens/HomeAgents/homeScreen_Agents.dart'; // Importación correcta
 
 class JitsiCallPage extends StatefulWidget {
   final String roomId;
@@ -27,11 +30,13 @@ class _JitsiCallPageState extends State<JitsiCallPage> {
   }
 
   Future<void> _joinMeeting() async {
+    final prefs = new PreferenciasUsuario();
     if (widget.roomId.isEmpty) {
       debugPrint('ERROR: Room ID is empty');
       // Maneja este caso, quizás mostrando un error al usuario y cerrando la página
       if (mounted) {
         Navigator.of(context).pop();
+        //regresar a pangina principal
       }
       return;
     }
@@ -42,8 +47,8 @@ class _JitsiCallPageState extends State<JitsiCallPage> {
       configOverrides: {
         // Configuraciones para iniciar el audio y video mutados
         "startWithAudioMuted": false, // False para que el audio esté activado al inicio
-        "startWithVideoMuted": false, // False para que el video esté activado al inicio
-        "subject": "Llamada de ${widget.name}", // Asunto de la sala
+        "startWithVideoMuted": true, // False para que el video esté activado al inicio
+        "subject": "Llamada de ${prefs.nombreUsuario}", // Asunto de la sala
         // Puedes añadir otras configuraciones aquí según necesites, por ejemplo:
         "prejoinPageEnabled": false, // Para saltar la pantalla de pre-unión
         "enableClosePage": false, // Para evitar que la vista se cierre automáticamente al salir
@@ -98,7 +103,7 @@ class _JitsiCallPageState extends State<JitsiCallPage> {
         FeatureFlags.toolboxAlwaysVisible: true,
       },
       userInfo: JitsiMeetUserInfo(
-        displayName: widget.name,
+        displayName: prefs.nombreUsuarioFull,
         // Puedes añadir email y avatar si los tienes en tu modelo de usuario
         // email: "user@example.com",
         // avatar: "https://example.com/avatar.png",
@@ -116,7 +121,11 @@ class _JitsiCallPageState extends State<JitsiCallPage> {
         debugPrint("🔴 onConferenceTerminated: $url, error: $error");
         // Salir de la pantalla cuando la conferencia termine
         if (mounted) {
-          Navigator.of(context).pop();
+          // Navigator.of(context).pop();
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (BuildContext context) => HomeScreen()),
+            (Route<dynamic> route) => false);
         }
       }
     );

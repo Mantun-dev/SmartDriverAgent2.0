@@ -15,20 +15,19 @@ class ChatApis {
   //dynamic getDataUsuariosVar;
   final header = {"Content-Type": "application/json"};
 
-  Future dataLogin(
-      String id, String rol, String nombre, String sala, String motId) async {
+  Future dataLogin(String id, String rol, String nombre, String sala, String motId) async {
     streamSocket.socket.connect();
     print(streamSocket.socket.connected);
-    var dataU = await BaseClient().get(
-        RestApis.usuerWithId + '/$id', {"Content-Type": "application/json"});
-    var dataU2 = await BaseClient()
-        .get(RestApis.userwithOutId, {"Content-Type": "application/json"});
+    // var dataU = await BaseClient().get(
+    //     RestApis.usuerWithId + '/$id', {"Content-Type": "application/json"});
+    // var dataU2 = await BaseClient()
+    //     .get(RestApis.userwithOutId, {"Content-Type": "application/json"});
     var dataS = await BaseClient().get(RestApis.rooms + '/Tripid' + '/$sala',
         {"Content-Type": "application/json"});
     var dataM = await BaseClient().get(
         RestApis.messages + '/$sala' + "/$id" + "/$motId",
         {"Content-Type": "application/json"});
-    if (dataU == null || dataU2 == null || dataS == null || dataM == null)
+    if (dataS == null || dataM == null)
       return null;
     // final sendDataU = jsonDecode(dataU);
     // final sendDataU2 = jsonDecode(dataU2);
@@ -75,8 +74,7 @@ class ChatApis {
     };
 
     //print(sendMessage);
-    var ok = await BaseClient().post(
-        RestApis.messages, sendMessage, {"Content-Type": "application/json"});
+    await BaseClient().post(RestApis.messages, sendMessage, {"Content-Type": "application/json"});
     streamSocket.socket.emit('enviar-mensaje2', {
       'mensaje': message,
       'sala': sala,
@@ -103,8 +101,6 @@ class ChatApis {
         {"Content-Type": "application/json"});
     //print('adsadasdsaaasddsad');
     //print(se);
-
-    if (ok == null) return null;
   }
 
   Future<void> sendAudio(
