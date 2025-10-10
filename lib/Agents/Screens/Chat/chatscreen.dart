@@ -217,17 +217,25 @@ class _ChatScreenState extends State<ChatScreen> {
         print('Nuevo mensaje recibido: $data');
         print(mounted);
       if (mounted) {
-        // Verifica si 'data' es una lista de mensajes
-        if (data is List) {
-            // Si es una lista, itera sobre cada elemento
-            data.forEach((element) {
-                Provider.of<ChatProvider>(context, listen: false).addNewMessage(Message.fromJson(element));
-            });
-        } else {
-            // Si es un solo objeto, agrégalo directamente
-            Provider.of<ChatProvider>(context, listen: false).addNewMessage(Message.fromJson(data));
+        final incomingMessage = Message.fromJson(data is List ? data[0] : data);
+
+        // 2. APLICAR EL FILTRO DE SALA CRÍTICO
+        // Solo añade el mensaje si su ID de sala coincide con el ID de sala de la pantalla actual.
+        if (incomingMessage.sala == widget.sala) {
+          // Verifica si 'data' es una lista de mensajes
+          if (data is List) {
+              // Si es una lista, itera sobre cada elemento
+              data.forEach((element) {
+                  Provider.of<ChatProvider>(context, listen: false).addNewMessage(Message.fromJson(element));
+              });
+          } else {
+              // Si es un solo objeto, agrégalo directamente
+              Provider.of<ChatProvider>(context, listen: false).addNewMessage(Message.fromJson(data));
+          }
+          ChatApis().sendRead(widget.sala, widget.driverId, widget.id);
+        }else{
+          print('Mensaje recibido para otra sala: ${incomingMessage.sala}, actual es: ${widget.sala}');
         }
-        ChatApis().sendRead(widget.sala, widget.driverId, widget.id);
       }
     }));
 

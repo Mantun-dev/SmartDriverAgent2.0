@@ -121,11 +121,11 @@ class _JitsiCallPageState extends State<JitsiCallPage> {
         debugPrint("🔴 onConferenceTerminated: $url, error: $error");
         // Salir de la pantalla cuando la conferencia termine
         if (mounted) {
-          // Navigator.of(context).pop();
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (BuildContext context) => HomeScreen()),
-            (Route<dynamic> route) => false);
+          Navigator.of(context).pop();
+          // Navigator.of(context).pushAndRemoveUntil(
+          //   MaterialPageRoute(
+          //       builder: (BuildContext context) => HomeScreen()),
+          //   (Route<dynamic> route) => false);
         }
       }
     );
