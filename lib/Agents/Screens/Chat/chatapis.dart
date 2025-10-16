@@ -80,6 +80,7 @@ class ChatApis {
       'sala': sala,
       'user': nombre,
       'id': id,
+      "idReceptor": motId,
       'hora': formattedHour,
       'dia': dia,
       'mes': mes,

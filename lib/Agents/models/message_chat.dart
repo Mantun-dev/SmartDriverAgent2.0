@@ -21,7 +21,8 @@ class Message {
         this.tipo,
         this.leido,
         this.id2,
-        this.mostrarF,
+        this.idReceptor,
+        this.mostrarF
     });
 
     String? user;
@@ -31,6 +32,7 @@ class Message {
     dynamic hora;
     dynamic dia;
     dynamic mes;
+    dynamic idReceptor;
     dynamic ao;
     String? tipo;
     bool? leido;
@@ -42,6 +44,7 @@ class Message {
         sala: json["sala"],
         user: json["user"],
         id: json["id"],
+        idReceptor: json["idReceptor"],
         hora: json["hora"],
         dia: json["dia"],
         mes: json["mes"],
@@ -57,6 +60,7 @@ class Message {
         "sala": sala,
         "user": user,
         "id": id,
+        "idReceptor": idReceptor,
         "hora": hora,
         "dia": dia,
         "mes": mes,
