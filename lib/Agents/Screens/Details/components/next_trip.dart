@@ -4496,145 +4496,175 @@ class _NextTripScreenState extends State<NextTripScreen>
   }
 
   //creación de alerta
-  showAlertDialogRatingOld()async{
-    //llamado de apis directamente
-    http.Response responses = await http.get(Uri.parse('$ip/api/refreshingAgentData/${prefs.nombreUsuario}'));
-    final resp = DataAgent.fromJson(json.decode(responses.body));
-    http.Response response = await http.get(Uri.parse('$ip/api/ratingTrip/${resp.agentId}'));
-    final resp1 = Rating.fromJson(json.decode(response.body));
-    
-    showGeneralDialog(
-      barrierColor: Colors.black.withOpacity(0.5),
-      transitionBuilder: (context, a1, a2, widget) {
+ showAlertDialogRatingOld() async {
+  // Asegúrate de que estas variables (prefs, ip, DataAgent, Rating, onChanged1, onChanged2, onChanged3, message, fetchSkipRating2) 
+  // estén definidas en el ámbito correcto de tu clase o archivo.
+
+  // llamado de apis directamente
+  http.Response responses = await http.get(Uri.parse('$ip/api/refreshingAgentData/${prefs.nombreUsuario}'));
+  final resp = DataAgent.fromJson(json.decode(responses.body));
+  http.Response response = await http.get(Uri.parse('$ip/api/ratingTrip/${resp.agentId}'));
+  final resp1 = Rating.fromJson(json.decode(response.body));
+
+  showGeneralDialog(
+    barrierColor: Colors.black.withOpacity(0.5),
+    transitionBuilder: (context, a1, a2, widget) {
       final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
-      
-      return Transform(transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
-        child: Opacity(opacity: a1.value,
-          child: AlertDialog(shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+
+      return Transform(
+        transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
+        child: Opacity(
+          opacity: a1.value,
+          child: AlertDialog(
+            shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
             backgroundColor: Theme.of(navigatorKey.currentContext!).cardColor,
             title: Text(
               '¿Cómo calificarías tu último viaje con\n${resp1.driverFullname}?',
-              textAlign: TextAlign.center, 
+              textAlign: TextAlign.center,
               style: Theme.of(navigatorKey.currentContext!).textTheme.titleMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
-            ), 
+            ),
             content: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState){
-              return SingleChildScrollView(
-                child: Container(height: 300,width: 500,
-                color: Colors.transparent,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        //creación reacciones para conducción
-                        resp1.tripType == 1?
-                        Text(
-                          'Tipo de viaje: Entrada',
-                          textAlign: TextAlign.center, 
-                          style: Theme.of(navigatorKey.currentContext!).textTheme.titleMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
-                        ):Text(
-                          'Tipo de viaje: Salida',
-                          textAlign: TextAlign.center, 
-                          style: Theme.of(navigatorKey.currentContext!).textTheme.titleMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
-                        ),
-                        SizedBox(height: 10.0),
-                        Text('Conducción', style:Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.normal)),
-                        SizedBox(height: 5.0),
-                        RatingBar.builder(
-                          initialRating: 0,
-                          itemCount: 5,
-                          itemBuilder: (context, index) {
-                            switch (index) {
+              builder: (BuildContext context, StateSetter setState) {
+                return SingleChildScrollView(
+                  child: Container(
+                    height: 300,
+                    width: 500,
+                    color: Colors.transparent,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          //creación reacciones para conducción
+                          resp1.tripType == 1
+                              ? Text(
+                                  'Tipo de viaje: Entrada',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(navigatorKey.currentContext!).textTheme.titleMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                )
+                              : Text(
+                                  'Tipo de viaje: Salida',
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(navigatorKey.currentContext!).textTheme.titleMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                ),
+                          SizedBox(height: 10.0),
+                          Text('Conducción', style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.normal)),
+                          SizedBox(height: 5.0),
+                          // --- RATING BAR 1 CON SOLUCIÓN ---
+                          RatingBar.builder(
+                            initialRating: 0,
+                            itemCount: 5,
+                            // *** SOLUCIÓN APLICADA: Color de íconos no seleccionados ***
+                            unratedColor: Colors.grey.shade400, 
+                            itemBuilder: (context, index) {
+                              switch (index) {
                                 case 0:
-                                  return Icon(Icons.sentiment_very_dissatisfied,color: Colors.red);
+                                  return Icon(Icons.sentiment_very_dissatisfied, color: Colors.red);
                                 case 1:
-                                  return Icon(Icons.sentiment_dissatisfied,color: Colors.redAccent);
+                                  return Icon(Icons.sentiment_dissatisfied, color: Colors.redAccent);
                                 case 2:
-                                  return Icon(Icons.sentiment_neutral,color: Colors.amber);
+                                  return Icon(Icons.sentiment_neutral, color: Colors.amber);
                                 case 3:
-                                  return Icon(Icons.sentiment_satisfied,color: Colors.lightGreen);
+                                  return Icon(Icons.sentiment_satisfied, color: Colors.lightGreen);
                                 case 4:
-                                  return Icon(Icons.sentiment_very_satisfied,color: Colors.green);
-                            }
-                            return SizedBox();
-                          },
-                          onRatingUpdate: (rating1) {
-                            onChanged1(rating1);                          
-                          },
-                        ),
-               
-                        SizedBox(height: 40.0),
-                        //creación reacciones para amabilidad
-                        Text('Amabilidad del motorista', style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.normal)),
-                        SizedBox(height: 5.0),
-                        RatingBar.builder(initialRating: 0,itemCount: 5,
-                          itemBuilder: (context, index) {
-                            switch (index) {
+                                  return Icon(Icons.sentiment_very_satisfied, color: Colors.green);
+                              }
+                              return SizedBox();
+                            },
+                            onRatingUpdate: (rating1) {
+                              onChanged1(rating1);
+                            },
+                          ),
+                          // --------------------------------
+
+                          SizedBox(height: 40.0),
+                          //creación reacciones para amabilidad
+                          Text('Amabilidad del motorista', style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.normal)),
+                          SizedBox(height: 5.0),
+                          // --- RATING BAR 2 CON SOLUCIÓN ---
+                          RatingBar.builder(
+                            initialRating: 0,
+                            itemCount: 5,
+                             // *** SOLUCIÓN APLICADA: Color de íconos no seleccionados ***
+                            unratedColor: Colors.grey.shade400, 
+                            itemBuilder: (context, index) {
+                              switch (index) {
                                 case 0:
-                                  return Icon(Icons.sentiment_very_dissatisfied,color: Colors.red);
+                                  return Icon(Icons.sentiment_very_dissatisfied, color: Colors.red);
                                 case 1:
-                                  return Icon(Icons.sentiment_dissatisfied,color: Colors.redAccent);
+                                  return Icon(Icons.sentiment_dissatisfied, color: Colors.redAccent);
                                 case 2:
-                                  return Icon(Icons.sentiment_neutral,color: Colors.amber);
+                                  return Icon(Icons.sentiment_neutral, color: Colors.amber);
                                 case 3:
-                                  return Icon(Icons.sentiment_satisfied,color: Colors.lightGreen,);
+                                  return Icon(Icons.sentiment_satisfied, color: Colors.lightGreen);
                                 case 4:
-                                  return Icon(Icons.sentiment_very_satisfied,color: Colors.green);
-                            }
-                            return SizedBox();
-                          },
-                          onRatingUpdate: (rating2) {
-                            onChanged2(rating2);                          
-                          },
-                        ),
-                 
-                        SizedBox(height: 40.0),
-                        //creación reacciones para condiciones
-                        Text('Condiciones del vehículo', style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.normal)),
-                        SizedBox(height: 5.0),
-                        RatingBar.builder(initialRating: 0,itemCount: 5,
-                          itemBuilder: (context, index) {
-                            switch (index) {
+                                  return Icon(Icons.sentiment_very_satisfied, color: Colors.green);
+                              }
+                              return SizedBox();
+                            },
+                            onRatingUpdate: (rating2) {
+                              onChanged2(rating2);
+                            },
+                          ),
+                          // --------------------------------
+
+                          SizedBox(height: 40.0),
+                          //creación reacciones para condiciones
+                          Text('Condiciones del vehículo', style: Theme.of(navigatorKey.currentContext!).textTheme.labelMedium!.copyWith(fontSize: 16, fontWeight: FontWeight.normal)),
+                          SizedBox(height: 5.0),
+                          // --- RATING BAR 3 CON SOLUCIÓN ---
+                          RatingBar.builder(
+                            initialRating: 0,
+                            itemCount: 5,
+                            // *** SOLUCIÓN APLICADA: Color de íconos no seleccionados ***
+                            unratedColor: Colors.grey.shade400, 
+                            itemBuilder: (context, index) {
+                              switch (index) {
                                 case 0:
-                                  return Icon(Icons.sentiment_very_dissatisfied,color: Colors.red);
+                                  return Icon(Icons.sentiment_very_dissatisfied, color: Colors.red);
                                 case 1:
-                                  return Icon(Icons.sentiment_dissatisfied,color: Colors.redAccent);
+                                  return Icon(Icons.sentiment_dissatisfied, color: Colors.redAccent);
                                 case 2:
-                                  return Icon(Icons.sentiment_neutral,color: Colors.amber);
+                                  return Icon(Icons.sentiment_neutral, color: Colors.amber);
                                 case 3:
-                                  return Icon(Icons.sentiment_satisfied,color: Colors.lightGreen);
+                                  return Icon(Icons.sentiment_satisfied, color: Colors.lightGreen);
                                 case 4:
-                                  return Icon(Icons.sentiment_very_satisfied,color: Colors.green);
-                            }
-                            return SizedBox();
-                          },                              
-                          onRatingUpdate: (rating3) {
-                            onChanged3(rating3);                          
-                          },
-                        ),
-                      ]
-                            ),
-                  ),
-                ),
-              );
-            }
-            ),                  
-            actions:<Widget> [    
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  //SizedBox(width: 15.0), 
-                  ButtonTheme(
-                    minWidth: 60.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0), // Ajusta el radio según tus preferencias
+                                  return Icon(Icons.sentiment_very_satisfied, color: Colors.green);
+                              }
+                              return SizedBox();
+                            },
+                            onRatingUpdate: (rating3) {
+                              onChanged3(rating3);
+                            },
+                          ),
+                           // --------------------------------
+                        ],
+                      ),
                     ),
-                    child: ElevatedButton(
+                  ),
+                );
+              },
+            ),
+            actions: <Widget>[
+              // Aplicamos un padding consistente a los lados y abajo del diálogo.
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10.0, 0, 10.0, 15.0),
+                child: Row(
+                  // Usamos MainAxisAlignment.spaceAround para espaciar los tres botones
+                  // y eliminamos el Expanded para que tomen su tamaño natural.
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    // Botón Omitir
+                    ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor : Colors.orange,
-                        foregroundColor : Colors.white,
+                        backgroundColor: Colors.orange,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                        // Añadimos un padding horizontal para hacer el botón más compacto si es necesario
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8), 
                       ),
                       onPressed: () {
-                        // Acción al presionar el botón
+                        // ... (tu lógica original)
                         Navigator.pop(context);
                         fetchSkipRating2(
                           resp.agentId.toString(),
@@ -4644,121 +4674,110 @@ class _NextTripScreenState extends State<NextTripScreen>
                           rating3.toInt(),
                           message.text,
                         );
-                        
                       },
-                      child: Text(
-                        'Omitir',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                      // Eliminamos TextAlign.center
+                      child: const Text('Omitir', style: TextStyle(fontWeight: FontWeight.bold)), 
                     ),
-                  ),
- 
-                  //SizedBox(width: 5.0),                                   
-                  ButtonTheme(
-                    minWidth: 60.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0), // Ajusta el radio según tus preferencias
-                    ),
-                    child: ElevatedButton(
+
+                    // Botón Ahora no
+                    ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor : Colors.grey,
-                        foregroundColor : Colors.white,
+                        backgroundColor: Colors.grey,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                       ),
                       onPressed: () {
-                        // Acción al presionar el botón
-                         Navigator.pop(context);
+                        // ... (tu lógica original)
+                        Navigator.pop(context);
                       },
-                      child: Text(
-                        'Ahora no',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                      child: const Text('Ahora no', style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
-                  ),
 
-                  //SizedBox(width: 5.0),                                   
-                  ButtonTheme(
-                    minWidth: 60.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0), // Ajusta el radio según tus preferencias
-                    ),
-                    child: ElevatedButton(
+                    // Botón Enviar (que abre otro diálogo)
+                    ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor : Color.fromRGBO(40, 93, 169, 1),
-                        foregroundColor : Colors.white,
+                        backgroundColor: const Color.fromRGBO(40, 93, 169, 1),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                       ),
                       onPressed: () => {
+                        // ... (tu lógica original del segundo diálogo)
                         Navigator.pop(context),
                         showGeneralDialog(
+                          // ... (el código del segundo showGeneralDialog)
                           barrierColor: Colors.black.withOpacity(0.5),
                           transitionBuilder: (context, a1, a2, widget) {
-                            return Transform.scale(scale: a1.value,
-                              child: Opacity(opacity: a1.value,
+                            return Transform.scale(
+                              scale: a1.value,
+                              child: Opacity(
+                                opacity: a1.value,
                                 child: AlertDialog(
                                   backgroundColor: Theme.of(navigatorKey.currentContext!).cardColor,
                                   shape: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
                                   title: Center(
-                                    child: Text('Estamos evaluando a nuestros \nmotoristas, para esto es \nmuy importante tu comentario.',textAlign: TextAlign.center, style:Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium)),
+                                    child: Text('Estamos evaluando a nuestros \nmotoristas, para esto es \nmuy importante tu comentario.',
+                                        textAlign: TextAlign.center, style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium),
+                                  ),
                                   content: TextField(
                                     style: Theme.of(navigatorKey.currentContext!).textTheme.bodyMedium,
                                     controller: message,
-                                    decoration: InputDecoration(   
-                                      hintText: 'Comentario', 
+                                    decoration: InputDecoration(
+                                      hintText: 'Comentario',
                                       hintStyle: Theme.of(navigatorKey.currentContext!).textTheme.bodySmall!.copyWith(fontSize: 15),
-                                    )
+                                    ),
                                   ),
                                   actions: [
-                                    //SizedBox(width: 60.0),
                                     Center(
-                                      child: TextButton(style: TextButton.styleFrom(
+                                      child: TextButton(
+                                        style: TextButton.styleFrom(
                                             foregroundColor: Colors.white,
-                                            backgroundColor: Color.fromRGBO(40, 93, 169, 1)),
+                                            backgroundColor: const Color.fromRGBO(40, 93, 169, 1)),
                                         onPressed: () => {
-                                          //fetch skip rating
                                           Navigator.pop(context),
                                           fetchSkipRating2(resp.agentId.toString(), resp1.tripId.toString(), rating1.toInt(), rating2.toInt(), rating3.toInt(), message.text),
-                                          
                                         },
-                                        child: Text('Enviar', style: TextStyle(fontWeight: FontWeight.bold)),                                                    
+                                        child: const Text('Enviar', style: TextStyle(fontWeight: FontWeight.bold)),
                                       ),
                                     ),
-                                    //SizedBox(width: 70.0),
                                   ],
                                 ),
                               ),
                             );
                           },
-                          transitionDuration: Duration(milliseconds: 200),
+                          transitionDuration: const Duration(milliseconds: 200),
                           barrierDismissible: false,
                           barrierLabel: '',
                           context: context,
                           pageBuilder: (context, animation1, animation2) {
-                          return Text('');}
+                            return const Text('');
+                          },
                         ),
                       },
-                      child: Text(
-                        'Enviar',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                      child: const Text('Enviar', style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
-                  ),
-                    
-                ],
-              ),                                                
-                          
-              SizedBox(width: 15.0),  
+                  ],
+                ),
+              ),
             ],
           ),
         ),
       );
     },
-      transitionDuration: Duration(milliseconds: 200),
-      barrierDismissible: true,
-      barrierLabel: '',
-      context: context,
-      pageBuilder: (context, animation1, animation2) {
-      return Text('');});      
-  }
-
+    transitionDuration: Duration(milliseconds: 200),
+    barrierDismissible: true,
+    barrierLabel: '',
+    context: navigatorKey.currentContext!, // Usamos el contexto del navigatorKey para el showGeneralDialog principal
+    pageBuilder: (context, animation1, animation2) {
+      return Text('');
+    },
+  );
+}
   Row botones(DataAgent resp, BuildContext context, Widget widget, String tripId) {
     return Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
