@@ -28,7 +28,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     compileSdkVersion 35 // Incrementar la versión a 33 o a la más alta que sea compatible con tus dependencias
-
+    ndkVersion = "28.0.12916984"
     buildFeatures {
         buildConfig true
     }
@@ -52,13 +52,22 @@ android {
         minSdkVersion 26
         targetSdkVersion 35// Incrementar la versión a 33 o a la más alta que sea compatible con tus dependencias
         multiDexEnabled true // Habilitar el soporte multidex
-        versionCode 151
-        versionName "2.9.49"
+        versionCode 157
+        versionName "2.9.52"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
         // ndk {
         //     abiFilters "armeabi-v7a", "arm64-v8a", "x86_64"
         // }
+    }
+
+    packagingOptions {
+        // Add these lines to handle 16KB page size issue
+        jniLibs {
+            useLegacyPackaging = true
+        }
+        // Exclude problematic libraries if needed
+        // exclude 'lib/x86_64/libandroidlame.so'
+        // exclude 'lib/x86_64/libucrop.so'
     }
 
     compileOptions {
@@ -101,10 +110,6 @@ android {
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
-
-    dexOptions {
-        javaMaxHeapSize "4g" // Aumentar el tamaño de la memoria de Java (Heap) a 4 GB
     }
 }
 

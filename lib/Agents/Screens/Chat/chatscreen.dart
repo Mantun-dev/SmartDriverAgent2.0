@@ -28,10 +28,12 @@ import 'package:flutter_svg/svg.dart';
 
 // import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:record/record.dart';
 // import 'package:record/record.dart';
 
 
@@ -46,6 +48,7 @@ import '../../models/network.dart';
 import 'component/audio.dart';
 import 'listchats.dart';
 import 'socketChat.dart';
+import 'package:uuid/uuid.dart';
 
 class ChatScreen extends StatefulWidget {
   final String nombre;
@@ -85,7 +88,7 @@ class _ChatScreenState extends State<ChatScreen> {
   // final StreamSocket streamSocket = StreamSocket(host: '192.168.0.9:3000');
   bool activateMic = false;
   late AudioPlayer _audioPlayer;
-  // late Record _audioRecord;
+  late AudioRecorder _audioRecord;
   List<String> _audioList = [];
   String filePathP = '';
   dynamic allowCallBtn;
@@ -94,17 +97,58 @@ class _ChatScreenState extends State<ChatScreen> {
   dynamic allow;
   bool _isCalling = false;
 
+  Uuid uuid = Uuid();
 
-  _sendMessage(String text) {
+  Map<String, dynamic> _getDateTimeParts() {
+    final now = DateTime.now();
+    return {
+      'hora': '${now.hour}:${now.minute}', // Ajusta el formato según tu backend
+      'dia': now.day,
+      'mes': now.month,
+      'ao': now.year,
+    };
+  }
+
+
+   _sendMessage(String text) {
     if (streamSocket.socket.disconnected) {
       //print('Socket desconectado, intentando reconectar...');
       streamSocket.socket.connect();
     }
-    ChatApis().sendMessage(text, widget.sala, widget.nombre, widget.id,
-        widget.driverId, nameDriver!);
-    //ChatApis().rendV(modid!, sala!);
+
+    final messageText = _messageInputController.text.trim();
+    if (messageText.isEmpty) return; 
+
+    // 1. Generar ID temporal único para rastreo
+    final tempId = DateTime.now().millisecondsSinceEpoch.toString(); 
+    final now = DateTime.now();
+    final formattedHour = DateFormat('hh:mm a').format(now);
+
+    final pendingMessage = Message(
+        id: widget.id, // <--- CLAVE: ID REAL del emisor (Tú) para la alineación
+        idReceptor: widget.driverId,
+        user: widget.nombre,
+        mensaje: messageText,
+        // ... (otros campos de fecha/tipo)
+        dia: DateFormat('dd').format(now), // -> Ejemplo: "10"
+        mes: DateFormat('MM').format(now), // -> Ejemplo: "12"
+        ao: DateFormat('yy').format(now),  // -> Ejemplo: "25"
+        hora: formattedHour,
+        leido: false, 
+        status: MessageStatus.sending, // PENDIENTE (RELOJ)
+        tempId: tempId, // <--- ID TEMPORAL para actualización
+    );
+
+    Provider.of<ChatProvider>(context, listen: false).addNewMessage(pendingMessage);
+  
     _messageInputController.clear();
+
+    ChatApis().sendMessage(messageText, widget.sala.toString(), widget.nombre, widget.id,
+        widget.driverId, nameDriver!, tempId); // <--- PASAR tempId AQUÍ
+
   }
+
+
 
   void _sendAudio(String audioPath) async {
     if (await File(audioPath).exists()) {
@@ -114,6 +158,8 @@ class _ChatScreenState extends State<ChatScreen> {
       //print('El archivo de audio no existe en la ruta especificada: $audioPath');
     }
   }
+
+
 
   desconectar(){
     streamSocket.socket.emit('salir');
@@ -128,7 +174,7 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     fetchTripsButton();
     _audioPlayer = AudioPlayer();
-    // _audioRecord = Record();
+    _audioRecord = AudioRecorder();
     //Important: If your server is running on localhost and you are testing your app on Android then replace http://localhost:3000 with http://10.0.2.2:3000
     ChatApis().dataLogin(
         widget.id, widget.rol, widget.nombre, widget.sala, widget.driverId);
@@ -147,6 +193,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _reconnectEvents() {
+    
+
     streamSocket.socket.on('cargarM', (listM) {
       if (mounted) {
         Provider.of<ChatProvider>(context, listen: false).mensaje2.clear();
@@ -157,13 +205,50 @@ class _ChatScreenState extends State<ChatScreen> {
       }
     });
 
-    streamSocket.socket.on('enviar-mensaje2', (data) {
+    streamSocket.socket.on('enviar-mensaje2', ((data) {
+        print('Nuevo mensaje recibido: $data');
+        print(mounted);
       if (mounted) {
-        Provider.of<ChatProvider>(context, listen: false)
-            .addNewMessage(Message.fromJson(data));
-        ChatApis().sendRead(widget.sala, widget.driverId, widget.id);
+        final incomingMessage = Message.fromJson(data is List ? data[0] : data);
+            final currentAgentId = widget.id;       // ESTE eres TÚ (el Agente)
+            final currentDriverId = widget.driverId;   // ESTA es la OTRA PERSONA (el Motorista)
+            final senderId = incomingMessage.id;
+            final receiverId = incomingMessage.idReceptor;
+            final isFromCurrentDriverToAgent  = (senderId == widget.driverId&& receiverId == widget.id);
+            final isFromCurrentAgentToDriver  = (senderId ==  widget.id && receiverId == widget.driverId);
+
+            // CLAVE: El servidor nos devuelve el ID temporal que enviamos
+           final receivedTempId = incomingMessage.tempId; 
+
+            if (isFromCurrentDriverToAgent || isFromCurrentAgentToDriver) {
+              if (isFromCurrentAgentToDriver && receivedTempId != null) {
+                  // Ya está en la lista (lo agregaste en _sendMessage).
+                  // ¡Simplemente actualizamos su estado!
+                  
+                  // Actualizar a MessageStatus.delivered/read (Doble check)
+                  Provider.of<ChatProvider>(context, listen: false).updateMessageStatus(
+                      receivedTempId, 
+                      MessageStatus.delivered // Ya fue emitido y retransmitido
+                  );
+                  print('🟢 Mensaje propio actualizado (Echo). ID: $receivedTempId');
+
+              } else if(isFromCurrentDriverToAgent){
+                if (data is List) {
+                    // Si es una lista, itera sobre cada elemento
+                    data.forEach((element) {
+                        Provider.of<ChatProvider>(context, listen: false).addNewMessage(Message.fromJson(element));
+                    });
+                } else {
+                    // Si es un solo objeto, agrégalo directamente
+                    Provider.of<ChatProvider>(context, listen: false).addNewMessage(Message.fromJson(data));
+                }
+                ChatApis().sendRead(widget.sala, widget.driverId, widget.id);
+              }
+            }else{
+              print('Mensaje recibido para otra sala: ${incomingMessage.sala}, actual es: ${widget.sala}');
+            }
       }
-    });
+    }));
   }
 
 
@@ -222,26 +307,41 @@ class _ChatScreenState extends State<ChatScreen> {
             final currentDriverId = widget.driverId;   // ESTA es la OTRA PERSONA (el Motorista)
             final senderId = incomingMessage.id;
             final receiverId = incomingMessage.idReceptor;
-            final isFromCurrentDriverToAgent  = (senderId == currentDriverId&& receiverId == currentAgentId);
-            final isFromCurrentAgentToDriver  = (senderId ==  currentAgentId && receiverId == currentDriverId);
+            final isFromCurrentDriverToAgent  = (senderId == widget.driverId&& receiverId == widget.id);
+            final isFromCurrentAgentToDriver  = (senderId ==  widget.id && receiverId == widget.driverId);
+
+            // CLAVE: El servidor nos devuelve el ID temporal que enviamos
+           final receivedTempId = incomingMessage.tempId; 
 
             if (isFromCurrentDriverToAgent || isFromCurrentAgentToDriver) {
-              if (data is List) {
-                  // Si es una lista, itera sobre cada elemento
-                  data.forEach((element) {
-                      Provider.of<ChatProvider>(context, listen: false).addNewMessage(Message.fromJson(element));
-                  });
-              } else {
-                  // Si es un solo objeto, agrégalo directamente
-                  Provider.of<ChatProvider>(context, listen: false).addNewMessage(Message.fromJson(data));
+              if (isFromCurrentAgentToDriver && receivedTempId != null) {
+                  // Ya está en la lista (lo agregaste en _sendMessage).
+                  // ¡Simplemente actualizamos su estado!
+                  
+                  // Actualizar a MessageStatus.delivered/read (Doble check)
+                  Provider.of<ChatProvider>(context, listen: false).updateMessageStatus(
+                      receivedTempId, 
+                      MessageStatus.delivered // Ya fue emitido y retransmitido
+                  );
+                  print('🟢 Mensaje propio actualizado (Echo). ID: $receivedTempId');
+
+              } else if(isFromCurrentDriverToAgent){
+                if (data is List) {
+                    // Si es una lista, itera sobre cada elemento
+                    data.forEach((element) {
+                        Provider.of<ChatProvider>(context, listen: false).addNewMessage(Message.fromJson(element));
+                    });
+                } else {
+                    // Si es un solo objeto, agrégalo directamente
+                    Provider.of<ChatProvider>(context, listen: false).addNewMessage(Message.fromJson(data));
+                }
+                ChatApis().sendRead(widget.sala, widget.driverId, widget.id);
               }
-              ChatApis().sendRead(widget.sala, widget.driverId, widget.id);
             }else{
               print('Mensaje recibido para otra sala: ${incomingMessage.sala}, actual es: ${widget.sala}');
             }
       }
     }));
-
     // Cuando se usa el evento 'cargarM', sí limpias para cargar la lista completa
     streamSocket.socket.on('cargarM', ((listM) {
       if (mounted) {
@@ -254,11 +354,7 @@ class _ChatScreenState extends State<ChatScreen> {
     }));
     streamSocket.socket.on('detectarE', (data) => print(data));
     streamSocket.socket.on('entrarChat_flutter', (data) {
-      // if (mounted) {
-      //   setState(() {
-      //     ChatApis().sendRead(data, widget.sala, widget.driverId, widget.id);
-      //   });
-      // }
+
     });    
 
     controllerLoading(false);
@@ -274,7 +370,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void dispose() {
     super.dispose();
     _audioPlayer.dispose();
-    // _audioRecord.dispose();
+    _audioRecord.dispose();
     _messageInputController.dispose();
 
     //creación del dispose para removerlo después del evento
@@ -503,65 +599,6 @@ class _ChatScreenState extends State<ChatScreen> {
                                             builder: (_) => JitsiCallPage(roomId: roomId.toString(), name: widget.nombre),
                                           ),
                                         );
-
-                                    // final validationResult = await validateTripCall(widget.driverId, 'driver');
-                                    // final int currentAllow = validationResult['allow'] ?? 0; // Default to 0 if null
-                                    // final String currentMsg = validationResult['msg'] ?? 'Mensaje no disponible.';
-                                    // // print('kheeeeeeeeeeeeeeeeeeeeee');
-                                    // // print(allowCallBtn);
-                                    // if (allowCallBtn == null) {
-                                    //   print(currentAllow);
-                                    //   if (currentAllow == 1) {
-                                    //     String? deviceId = await getDeviceId();
-                                    //     if (deviceId == null) {
-                                    //       throw Exception("No se pudo obtener el ID del dispositivo.");
-                                    //     }
-
-                                    //     // Ejecutar las llamadas API en paralelo
-                                    //     final results = await Future.wait([
-                                    //       ChatApis().registerCallerAndSendNotification(widget.sala, widget.id ,deviceId , "agent", widget.driverId, "driver", widget.id, "agent", "motorista", widget.nombre),
-                                    //       ChatApis().getDeviceTargetId('motorista', widget.driverId),
-                                    //     ]);
-
-                                    //     var roomId = results[0];
-                                    //     var deviceIdTarget = results[1];
-
-                                    //     if (roomId == null || deviceIdTarget == null) {
-                                    //       throw Exception("Error: No se obtuvo roomId o deviceIdTarget de la API.");
-                                    //     }
-                                    //     Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //         builder: (_) => JitsiCallPage(roomId: roomId.toString(), name: widget.nombre),
-                                    //       ),
-                                    //     );
-                                    //     // Navigator.push(
-                                    //     //   context,
-                                    //     //   MaterialPageRoute(
-                                    //     //     builder: (_) => WebRTCCallPage(
-                                    //     //       selfId: deviceId,
-                                    //     //       targetId: '$deviceIdTarget',
-                                    //     //       isCaller: true,
-                                    //     //       roomId: '$roomId',
-                                    //     //       tripId: sala,
-                                    //     //     ),
-                                    //     //   ),
-                                    //     // );
-                                    //   } else {
-                                    //     // Si allow no es 1, mostrar alerta con el mensaje obtenido
-                                    //     QuickAlert.show(
-                                    //       context: context,
-                                    //       type: QuickAlertType.warning,
-                                    //       text: currentMsg, // Usar el mensaje retornado
-                                    //     );
-                                    //   }
-                                    // }else{
-                                    //   QuickAlert.show(
-                                    //     context: context,
-                                    //     type: QuickAlertType.info,
-                                    //     text: 'El botón para llamadas no está habilitado, intente de nuevo en unos minutos.',
-                                    //   );
-                                    // }
                                   } catch (e) {
                                     print("Error durante el proceso de llamada: $e");
                                     QuickAlert.show(
@@ -619,6 +656,8 @@ class _ChatScreenState extends State<ChatScreen> {
       ],
     );
   }
+
+  // Coloca esta función dentro de la clase Stateful (donde está tu 'body' y '_sendMessage')
 
   Column body(bool fecha(dynamic fechaBs), String hoyayer(dynamic fechaBs), BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -722,36 +761,60 @@ class _ChatScreenState extends State<ChatScreen> {
                                             Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                Expanded(child: SizedBox()),
-                                                if (message.id == widget.id)
-                                                  Text(
-                                                    message.hora,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 10),
-                                                  ),
-                                                if (message.id != widget.id)
-                                                  Text(
-                                                    message.hora,
-                                                    style: TextStyle(
-                                                        color: Theme.of(context).primaryColorDark,
-                                                        fontSize: 10),
-                                                  ),
-                                                SizedBox(
-                                                  width: 5,
+                                                const Expanded(child: SizedBox()),
+                                                // Mostrar hora (blanca si es mío, oscura si es del receptor)
+                                                Text(
+                                                  message.hora,
+                                                  style: TextStyle(
+                                                      color: message.id == widget.id
+                                                          ? Colors.white
+                                                          : Theme.of(context).primaryColorDark,
+                                                      fontSize: 10),
                                                 ),
-                                                if (message.id ==widget.id)
-                                                  Icon(
-                                                    message.leido == true
-                                                        ? Icons.done_all
-                                                        : Icons.done,
-                                                    size: 16,
-                                                    color: message.leido == true
-                                                        ? Color.fromRGBO(0, 255, 255, 1)
-                                                        : Colors.grey,
-                                                  )
+                                                const SizedBox(width: 5),
+                                                // SISTEMA UNIFICADO DE ESTADOS (Solo para mis mensajes)
+                                                if (message.id == widget.id)
+                                                  Builder(
+                                                    builder: (context) {
+                                                      switch (message.status) {
+                                                        case MessageStatus.sending:
+                                                          return const Icon(
+                                                            Icons.access_time, // RELOJ
+                                                            size: 16,
+                                                            color: Colors.grey,
+                                                          );
+                                                        case MessageStatus.sent:
+                                                          return const Icon(
+                                                            Icons.done, // CHECK SIMPLE
+                                                            size: 16,
+                                                            color: Colors.grey,
+                                                          );
+                                                        case MessageStatus.delivered:
+                                                          return const Icon(
+                                                            Icons.done_all, // DOBLE CHECK GRIS (Entregado)
+                                                            size: 16,
+                                                            color: Colors.grey,
+                                                          );
+                                                        case MessageStatus.read:
+                                                          return const Icon(
+                                                            Icons.done_all, // DOBLE CHECK AZUL (Leído)
+                                                            size: 16,
+                                                            color: Color.fromRGBO(0, 255, 255, 1),
+                                                          );
+                                                        default:
+                                                          // RESPALDO: Por si el mensaje no tiene status, usa la lógica antigua
+                                                          return Icon(
+                                                            message.leido == true ? Icons.done_all : Icons.done,
+                                                            size: 16,
+                                                            color: message.leido == true
+                                                                ? const Color.fromRGBO(0, 255, 255, 1)
+                                                                : Colors.grey,
+                                                          );
+                                                      }
+                                                    },
+                                                  ),
                                               ],
-                                            ),
+                                            )
                                           },
                                         ],
                                       ),
@@ -1031,7 +1094,7 @@ class _ChatScreenState extends State<ChatScreen> {
     try {
       final cacheDir = await getTemporaryDirectory();
       String filePath = '${cacheDir.path}/${this.widget.sala}_recording${_audioList.length + 1}.m4a';
-      // await _audioRecord.start(path: filePath, encoder: AudioEncoder.aacLc);
+      await _audioRecord.start(const RecordConfig(), path: filePath);
 
       setState(() {
         filePathP = filePath;
@@ -1050,30 +1113,42 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  void stopRecording() async {
-    try {
-      // await _audioRecord.stop();
+void stopRecording() async {
+  try {
+    // 1. DETENER la grabación. Esto garantiza que el archivo se guarde 
+    // y devuelve la ruta confirmada del archivo finalizado.
+    String? recordedFilePath = await _audioRecord.stop();
 
-      String recordedFilePath = filePathP;
-
-      // Verificar si el archivo existe
+    if (recordedFilePath != null) {
+      // 2. PAUSA OBLIGATORIA: Esperar un momento para que el sistema operativo 
+      // y el plugin cierren el archivo completamente. Esto soluciona el 
+      // error de Content-Length.
+      await Future.delayed(const Duration(milliseconds: 500)); 
+      
+      // 3. Verificar que el archivo existe y no está vacío
       File audioFile = File(recordedFilePath);
-      if (await audioFile.exists()) {
+      if (await audioFile.exists() && await audioFile.length() > 0) {
+        
+        // 4. Enviar el archivo
         _sendAudio(recordedFilePath);
-        //print(filePathP);
+        print('Grabación enviada desde: $recordedFilePath');
+        
         setState(() {
+          // Ya no necesitas 'filePathP' aquí, pero actualizas el estado
           activateMic = false;
           _audioList.add('audio');
         });
-
       } else {
-        //print('El archivo de audio no existe');
+        // Manejo del error si se detuvo pero el archivo está dañado o vacío
+        print('El archivo se detuvo, pero no se encontró o estaba vacío.');
       }
-    } catch (e) {
-      // Manejo más detallado de errores
-      //print('Error al detener la grabación o enviar el audio: $e');
+    } else {
+       print('La grabación no pudo ser detenida o no devolvió una ruta válida.');
     }
+  } catch (e) {
+    print('Error al detener la grabación: $e');
   }
+}
 
 }
 

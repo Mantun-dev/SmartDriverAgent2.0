@@ -4,8 +4,13 @@ import 'dart:io';
 import 'package:flutter_auth/Agents/Screens/Chat/socketChat.dart';
 import 'package:flutter_auth/helpers/base_client.dart';
 import 'package:flutter_auth/helpers/res_apis.dart';
+import 'package:flutter_auth/providers/chat.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../../../main.dart';
+import '../../models/message_chat.dart';
 
 //import 'dart:convert' show json;
 
@@ -49,8 +54,8 @@ class ChatApis {
     streamSocket.socket.emit('login_F2', str);
   }
 
-  void sendMessage(String message, String sala, String nombre, String id,
-      String motId, String nameDriver) async {
+void sendMessage(String message, String sala, String nombre, String id,
+      String motId, String nameDriver,String tempMessageId) async {
     DateTime now = DateTime.now();
     String formattedHour = DateFormat('hh:mm a').format(now);
     var formatter = new DateFormat('dd');
@@ -75,6 +80,10 @@ class ChatApis {
 
     //print(sendMessage);
     await BaseClient().post(RestApis.messages, sendMessage, {"Content-Type": "application/json"});
+    Provider.of<ChatProvider>(navigatorKey.currentState!.context, listen: false).updateMessageStatus(
+            tempMessageId, // Usamos el ID TEMPORAL
+            MessageStatus.sent 
+        );
     streamSocket.socket.emit('enviar-mensaje2', {
       'mensaje': message,
       'sala': sala,
@@ -85,7 +94,8 @@ class ChatApis {
       'dia': dia,
       'mes': mes,
       'año': anio,
-      'leido': false
+      'leido': false,
+      'tempId': tempMessageId
     });
     Map sendNotification = {
       "receiverId": motId,
