@@ -21,26 +21,48 @@ class Description extends StatefulWidget {
 
 class _DescriptionState extends State<Description> {
   bool radioShowAndHide = true;
+  String? contactNumber;
+  String? contactDesc;
+
+  @override
+  void initState() {
+    print("🚀 Entrando al initState de esta pantalla...");
+    super.initState();
+    fetchTestContactByAgent().then((response) {
+      print("📞 Respuesta de contacto: ${response.ok}, Tipo: ${response.type}, Mensaje: ${response.message?.length ?? 0} contactos"); // Esto te ayudará a ver qué está devolviendo la API
+      // 1. Validamos que la petición fue exitosa y que la lista no esté vacía
+      if (response.ok == true && response.message != null && response.message!.isNotEmpty) {
+        setState(() {
+          // 2. Accedemos al primer elemento de la lista [0] y sacamos sus propiedades
+          contactNumber = response.message![0].phoneNumber;
+          contactDesc = response.message![0].contactDesc; 
+        });
+      }
+    }).catchError((error) {
+      // Es buena práctica manejar el error por si la API falla o el token expira
+      print("Error obteniendo el contacto: $error");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return _processCards(context);
   }
 
+  bool get hasValidContactData {
+    return contactDesc != null && contactDesc!.trim().isNotEmpty &&
+           contactNumber != null && contactNumber!.trim().isNotEmpty;
+  }
+
   Widget _processCards(BuildContext context) {
+    debugPrint("🚀 Entrando al initState de esta pantalla...");
     return Column(
       children: [
         if (widget.plantilla.id == 1) ...[
-          //showAndHide("2"),
-          if (prefs.companyId == "2") ...{
-            if (radioShowAndHide == true) ...{
-              showAndHide("2"),
-            },
-          },
-          if (prefs.companyId == "3") ...{
-            if (radioShowAndHide == true) ...{
-              showAndHide("3"),
-            },
-          },
+          // 2. Evaluamos si hay datos válidos. Si no los hay, el widget ni siquiera se dibuja en el árbol.
+          if (hasValidContactData) ...[
+            showAndHide()
+          ],
           _mostrarPrimerventana(),
         ] else if (widget.plantilla.id == 2) ...[
           _mostrarSegundaVentana(),
@@ -53,22 +75,23 @@ class _DescriptionState extends State<Description> {
     );
   }
 
-  Widget showAndHide(String id) {
+  Widget showAndHide() {
     return Container(
       child: Column(
         children: [
           Visibility(
-              maintainSize: true,
-              maintainAnimation: true,
-              maintainState: true,
-              visible: radioShowAndHide,
-              child: message(id)),
+            maintainSize: true,
+            maintainAnimation: true,
+            maintainState: true,
+            visible: radioShowAndHide,
+            child: message(), // Quitamos el parámetro aquí también
+          ),
         ],
       ),
     );
   }
 
-  Widget message(String id) {
+  Widget message() {
     return Container(
       margin: EdgeInsets.only(left: 0.0, right: 0.0),
       child: Stack(
@@ -96,11 +119,29 @@ class _DescriptionState extends State<Description> {
                 SizedBox(
                   height: 20.0,
                 ),
-                TextButton(onPressed: () => id=='2'?launchUrl(Uri.parse('tel://8967-1225')):launchUrl(Uri.parse('tel://8871-6819')),child: RichText(textAlign: TextAlign.center,text: TextSpan(children: <TextSpan>[
-                    TextSpan(text: id=='2'?"Si tiene algún inconveniente con su programación, puede escribir al número: ":"Para consultas o sugerencias de 9:00am a 5:00pm puede escribirnos al número: ",style: TextStyle(color: Colors.black)),
-                    TextSpan(text: id=='2'?"8967-1225":'8871-6819' ,style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold)),]),
-                    )),
-
+                TextButton(
+                  // Usamos la variable contactNumber para armar la URL del teléfono
+                  onPressed: () => launchUrl(Uri.parse('tel://$contactNumber')),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          // Asignamos la descripción dinámica (le agregué un espacio al final para que no quede pegado al número)
+                          text: "$contactDesc ",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        TextSpan(
+                          // Asignamos el número dinámico
+                          text: contactNumber ?? "",
+                          style: TextStyle(
+                              color: Colors.blueAccent,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 SizedBox(height: 24.0),
               ],
             ),
@@ -109,15 +150,10 @@ class _DescriptionState extends State<Description> {
             right: 0.0,
             child: GestureDetector(
               onTap: () {
-                if (radioShowAndHide) {
-                  setState(() {
-                    radioShowAndHide = false;
-                  });
-                } else {
-                  setState(() {
-                    radioShowAndHide = true;
-                  });
-                }
+                // Simplifiqué un poco el toggle de la variable booleana
+                setState(() {
+                  radioShowAndHide = !radioShowAndHide;
+                });
               },
               child: Align(
                 alignment: Alignment.topRight,

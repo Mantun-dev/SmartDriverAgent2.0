@@ -5,8 +5,7 @@ import 'dart:io';
 import 'package:app_settings/app_settings.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
-// import 'package:flutter/material.dart';
-//import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import 'package:flutter_auth/Agents/Screens/Chat/chatapis.dart';
 import 'package:flutter_auth/Agents/Screens/Details/components/warning_dialog.dart';
@@ -20,7 +19,7 @@ import 'package:flutter_auth/helpers/res_apis.dart';
 
 import 'package:flutter_auth/providers/chat.dart';
 import 'package:flutter_auth/providers/device_info.dart';
-import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
+// import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 import 'package:http/http.dart' as http;
 //import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
@@ -88,7 +87,7 @@ class _ChatScreenState extends State<ChatScreen> {
   // final StreamSocket streamSocket = StreamSocket(host: '192.168.0.9:3000');
   bool activateMic = false;
   late AudioPlayer _audioPlayer;
-  late AudioRecorder _audioRecord;
+  late Record _audioRecord;
   List<String> _audioList = [];
   String filePathP = '';
   dynamic allowCallBtn;
@@ -116,7 +115,7 @@ class _ChatScreenState extends State<ChatScreen> {
       streamSocket.socket.connect();
     }
 
-    final messageText = _messageInputController.text.trim();
+    final messageText = text.trim();
     if (messageText.isEmpty) return; 
 
     // 1. Generar ID temporal único para rastreo
@@ -174,7 +173,7 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     fetchTripsButton();
     _audioPlayer = AudioPlayer();
-    _audioRecord = AudioRecorder();
+    _audioRecord = Record();
     //Important: If your server is running on localhost and you are testing your app on Android then replace http://localhost:3000 with http://10.0.2.2:3000
     ChatApis().dataLogin(
         widget.id, widget.rol, widget.nombre, widget.sala, widget.driverId);
@@ -432,11 +431,20 @@ class _ChatScreenState extends State<ChatScreen> {
 
 
    Future<bool> checkLocationPermission() async {
-    var status = await Permission.location.status;
-
-    if (status.isGranted) {
-      return true;
-    } else {
+    try {
+      LocationPermission permission = await Geolocator.checkPermission();
+      
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+      
+      if (permission == LocationPermission.whileInUse || permission == LocationPermission.always) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print("Error checking permission: $e");
       return false;
     }
   }
@@ -744,7 +752,11 @@ class _ChatScreenState extends State<ChatScreen> {
                                                   // Puedes abrir un mapa, por ejemplo
                                                   // o ejecutar alguna acción relacionada con la posición.
                                                 },
-                                                child: Text('Posición enviada'),
+                                                child: Text('Posición enviada',style: TextStyle(
+                                                      color: message.id == widget.id
+                                                          ? Colors.white
+                                                          : Theme.of(context).primaryColorDark,
+                                                      fontSize: 16)),
                                               )
                                               }else...{
                                                 Text(
@@ -840,110 +852,95 @@ class _ChatScreenState extends State<ChatScreen> {
                       child: Row(
                         children: [
                           SizedBox(width: 5),
-                          NeumorphicButton(
-                            margin: EdgeInsets.only(top: 0),
+                          ElevatedButton(
                             onPressed: () {
                               _messageInputController.text = "¿Viene en camino?";
                               if (_messageInputController.text.trim().isNotEmpty) {
                                 _sendMessage(_messageInputController.text);
                               }
                             },
-                            style: NeumorphicStyle(
-                              color: Color.fromRGBO(40, 93, 169, 1),
-                              shape: NeumorphicShape.flat,
-                              boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
-                              depth: 0, // Quita la sombra estableciendo la profundidad en 0
-                              border: NeumorphicBorder( // Agrega un borde
-                                color: Theme.of(context).disabledColor, // Color del borde
-                                width: 1.0, // Ancho del borde
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromRGBO(40, 93, 169, 1),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: BorderSide(color: Theme.of(context).disabledColor, width: 1.0),
                               ),
+                              padding: const EdgeInsets.all(12.0),
                             ),
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text(
+                            child: const Text(
                               "¿Viene en camino?",
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
 
                           SizedBox(width: 5),
-                          NeumorphicButton(
-                              margin: EdgeInsets.only(top: 0),
-                              onPressed: () {
-                                _messageInputController.text = "Estoy aquí";
-                                if (_messageInputController.text
-                                    .trim()
-                                    .isNotEmpty) {
-                                  _sendMessage(_messageInputController.text);
-                                }
-                              },
-                              style: NeumorphicStyle(
-                              color: Color.fromRGBO(40, 93, 169, 1),
-                              shape: NeumorphicShape.flat,
-                              boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
-                              depth: 0, // Quita la sombra estableciendo la profundidad en 0
-                              border: NeumorphicBorder( // Agrega un borde
-                                color: Theme.of(context).disabledColor, // Color del borde
-                                width: 1.0, // Ancho del borde
+                          ElevatedButton(
+                            onPressed: () {
+                              _messageInputController.text = "Estoy aquí";
+                              if (_messageInputController.text.trim().isNotEmpty) {
+                                _sendMessage(_messageInputController.text);
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromRGBO(40, 93, 169, 1),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: BorderSide(color: Theme.of(context).disabledColor, width: 1.0),
                               ),
-                            ),
                               padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                "Estoy aquí",
-                                style: TextStyle(color: Colors.white),
-                              )),
+                            ),
+                            child: const Text(
+                              "Estoy aquí",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
                           SizedBox(width: 5),
-                          NeumorphicButton(
-                              margin: EdgeInsets.only(top: 0),
-                              onPressed: () {
-                                _messageInputController.text =
-                                    "Estoy buscándolo";
-                                if (_messageInputController.text
-                                    .trim()
-                                    .isNotEmpty) {
-                                  _sendMessage(_messageInputController.text);
-                                }
-                              },
-                              style: NeumorphicStyle(
-                              color: Color.fromRGBO(40, 93, 169, 1),
-                              shape: NeumorphicShape.flat,
-                              boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
-                              depth: 0, // Quita la sombra estableciendo la profundidad en 0
-                              border: NeumorphicBorder( // Agrega un borde
-                                color: Theme.of(context).disabledColor, // Color del borde
-                                width: 1.0, // Ancho del borde
+                          ElevatedButton(
+                            onPressed: () {
+                              _messageInputController.text = "Estoy buscándolo";
+                              if (_messageInputController.text.trim().isNotEmpty) {
+                                _sendMessage(_messageInputController.text);
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromRGBO(40, 93, 169, 1),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: BorderSide(color: Theme.of(context).disabledColor, width: 1.0),
                               ),
-                            ),
                               padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                "Estoy buscándolo",
-                                style: TextStyle(color: Colors.white),
-                              )),
+                            ),
+                            child: const Text(
+                              "Estoy buscándolo",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
 
                               SizedBox(width: 5),
-                          NeumorphicButton(
-                              margin: EdgeInsets.only(top: 0),
-                              onPressed: () {
-                                _messageInputController.text =
-                                    "Lo estoy viendo";
-                                if (_messageInputController.text.trim().isNotEmpty) {
-                                  _sendMessage(_messageInputController.text);
-                                }
-                              },
-                              style: NeumorphicStyle(
-                              color: Color.fromRGBO(40, 93, 169, 1),
-                              shape: NeumorphicShape.flat,
-                              boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
-                              depth: 0, // Quita la sombra estableciendo la profundidad en 0
-                              border: NeumorphicBorder( // Agrega un borde
-                                color: Theme.of(context).disabledColor, // Color del borde
-                                width: 1.0, // Ancho del borde
+                          ElevatedButton(
+                            onPressed: () {
+                              _messageInputController.text = "Lo estoy viendo";
+                              if (_messageInputController.text.trim().isNotEmpty) {
+                                _sendMessage(_messageInputController.text);
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromRGBO(40, 93, 169, 1),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: BorderSide(color: Theme.of(context).disabledColor, width: 1.0),
                               ),
-                            ),
                               padding: const EdgeInsets.all(12.0),
-                              child: Text(
-                                "Lo estoy viendo",
-                                style: TextStyle(color: Colors.white),
-                              )),
+                            ),
+                            child: const Text(
+                              "Lo estoy viendo",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -1007,6 +1004,9 @@ class _ChatScreenState extends State<ChatScreen> {
                               ),
                               child: IconButton(
                                 onPressed: () async {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text('Obteniendo ubicación, por favor espere...'), duration: Duration(seconds: 2)),
+                                  );
                                   permiso = await checkLocationPermission();
                                   if (!permiso!) {
                                     WarningSuccessDialog().show(
@@ -1023,9 +1023,23 @@ class _ChatScreenState extends State<ChatScreen> {
                                     ); 
                                     return;
                                   }
-                                  Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-                                  //print("position: {${position.latitude}, ${position.longitude}}");
-                                  _sendMessage("position: {${position.latitude}, ${position.longitude}}");
+                                  try {
+                                    // Intentar primero con la última posición conocida para que sea instantáneo
+                                    Position? position = await Geolocator.getLastKnownPosition();
+                                    // Si no hay última posición, pedir la actual con un límite de tiempo
+                                    if (position == null) {
+                                      position = await Geolocator.getCurrentPosition(
+                                        desiredAccuracy: LocationAccuracy.medium,
+                                        timeLimit: const Duration(seconds: 7)
+                                      );
+                                    }
+                                    print("Ubicación obtenida: ${position.latitude}, ${position.longitude}");
+                                    _sendMessage("position: {${position.latitude}, ${position.longitude}}");
+                                  } catch (e) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text('Error obteniendo ubicación: $e')),
+                                    );
+                                  }
                                 },
                                 icon: Icon(Icons.location_pin, color: Colors.white) ,
                               ),
@@ -1094,7 +1108,7 @@ class _ChatScreenState extends State<ChatScreen> {
     try {
       final cacheDir = await getTemporaryDirectory();
       String filePath = '${cacheDir.path}/${this.widget.sala}_recording${_audioList.length + 1}.m4a';
-      await _audioRecord.start(const RecordConfig(), path: filePath);
+      await _audioRecord.start(path: filePath);
 
       setState(() {
         filePathP = filePath;

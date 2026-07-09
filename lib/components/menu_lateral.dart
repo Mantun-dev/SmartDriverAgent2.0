@@ -40,9 +40,12 @@ class _MenuLateralState extends State<MenuLateral> {
   String? tripIdTologin;
   String? driverId;
   TextEditingController nameUser = new TextEditingController();
+  String? contactNumber;
+  String? contactDesc;
 
   @override
   void initState() {
+    print("🚀 Entrando al initState de esta pantalla...");
     super.initState();
     item = fetchProfile();
     itemx = fetchRefres();
@@ -57,10 +60,31 @@ class _MenuLateralState extends State<MenuLateral> {
         }
       }
     });
+
+    fetchTestContactByAgent().then((response) {
+      // 1. Validamos que la petición fue exitosa y que la lista no esté vacía
+      print("📞 Respuesta de contacto: ${response.ok}, Tipo: ${response.type}, Mensaje: ${response.message?.length ?? 0} contactos"); 
+      if (response.ok == true && response.message != null && response.message!.isNotEmpty) {
+        setState(() {
+          // 2. Accedemos al primer elemento de la lista [0] y sacamos sus propiedades
+          contactNumber = response.message![0].phoneNumber;
+          contactDesc = response.message![0].contactDesc; 
+        });
+      }
+    }).catchError((error) {
+      // Es buena práctica manejar el error por si la API falla o el token expira
+      print("Error obteniendo el contacto: $error");
+    });
+  }
+
+  bool get hasValidContactData {
+    return contactDesc != null && contactDesc!.trim().isNotEmpty &&
+           contactNumber != null && contactNumber!.trim().isNotEmpty;
   }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("🚀 Entrando al initState de esta pantalla...");
     return Drawer(
       backgroundColor: backgroundColor,
       child: ListView(
@@ -268,14 +292,8 @@ class _MenuLateralState extends State<MenuLateral> {
             },
           ),
           Divider(),
-          FutureBuilder<DataAgent>(
-              future: itemx,
-              builder: (context, abc) {
-                if (abc.connectionState == ConnectionState.done) {
-                  if (abc.data!.companyId == 2) {
-                    return Column(
-                      children: [
-                        Divider(),
+          if (hasValidContactData) ...[
+            Divider(),
                         ListTile(
                           title: Text('información',
                               style:
@@ -285,14 +303,32 @@ class _MenuLateralState extends State<MenuLateral> {
                             _showBottomModal(context);
                           },
                         )
-                      ],
-                    );
-                  }
-                } else {
-                  return Text("");
-                }
-                return Text("");
-              }),
+                          ],
+          // FutureBuilder<DataAgent>(
+          //     future: itemx,
+          //     builder: (context, abc) {
+          //       if (abc.connectionState == ConnectionState.done) {
+          //         if (abc.data!.companyId == 2) {
+          //           return Column(
+          //             children: [
+          //               Divider(),
+          //               ListTile(
+          //                 title: Text('información',
+          //                     style:
+          //                         TextStyle(color: Colors.white, fontSize: 18)),
+          //                 leading: Icon(Icons.inbox),
+          //                 onTap: () {
+          //                   _showBottomModal(context);
+          //                 },
+          //               )
+          //             ],
+          //           );
+          //         }
+          //       } else {
+          //         return Text("");
+          //       }
+          //       return Text("");
+          //     }),
         ],
       ),
     );
@@ -408,13 +444,13 @@ class _MenuLateralState extends State<MenuLateral> {
                                   )),
                             ],
                           ),
-                        ),
-                        TextButton(
-                            onPressed: () =>
-                                launchUrl(Uri.parse('tel://8967-1225')),
-                            child: Text(
-                                'Si tiene algún inconveniente con su programación, puede escribir al número: 8967-1225',
-                                style: TextStyle(color: Colors.grey[700]))),
+                        ),                        
+                          TextButton(
+                              onPressed: () =>
+                                  launchUrl(Uri.parse('tel://$contactNumber')),
+                              child: Text(
+                                  '$contactDesc: $contactNumber',
+                                style: TextStyle(color: Colors.grey[700]))),                            
                       ],
                     ),
                   )

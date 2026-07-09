@@ -75,7 +75,7 @@ class _QrScannScreenState extends State<QrScannScreen> {
               color: Theme.of(context).highlightColor,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: QrImage(data: prefs.nombreUsuario),
+                child: QrImageView(data: prefs.nombreUsuario),
               )
             ),
           ),

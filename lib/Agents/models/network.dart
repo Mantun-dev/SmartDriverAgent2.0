@@ -2,6 +2,7 @@
 
 //import 'package:flutter/material.dart';
 //import 'package:flutter_auth/Agents/models/account.dart';
+import 'package:flutter_auth/Agents/models/contactNumber.dart';
 import 'package:flutter_auth/Agents/models/dataAgentMessage.dart';
 import 'package:flutter_auth/Agents/models/historyTrips.dart';
 import 'package:flutter_auth/Agents/models/profileAgent.dart';
@@ -120,5 +121,46 @@ Future<DataAgents> fetchDeleteSession() async {
     return DataAgents.fromJson(json.decode(response.body));
   } else {
     throw Exception('Failed to load Data');
+  }
+}
+
+
+Future<TestContactResponse> fetchTestContactByAgent() async {
+  try {
+    print("⏳ 1. Iniciando fetchTestContactByAgent...");
+    
+    // 1. Ejecutamos tu función existente
+    print("⏳ 2. Llamando a fetchRefres()...");
+    DataAgent currentAgent = await fetchRefres();
+    print("✅ 3. fetchRefres() terminó. Agent ID obtenido: ${currentAgent.agentId}");
+
+    if (currentAgent.agentId == null) {
+      throw Exception('El ID del agente es nulo o no se pudo obtener.');
+    }
+
+    Map data = {"agentId": currentAgent.agentId.toString()};
+
+    // 4. Hacemos el POST
+    print("⏳ 4. Haciendo POST a la nueva API /getTestContactByAgent con data: $data ...");
+    http.Response response = await http.post(
+      Uri.parse('$ip/api/getTestContactByAgent'), 
+      body: data
+      , headers: {
+        "Content-Type": "application/json"
+      }
+    ).timeout(const Duration(seconds: 10)); // Le ponemos un límite de 10 segundos para que no se cuelgue infinito
+    
+    print("✅ 5. Petición POST finalizada con StatusCode: ${response.statusCode}");
+    print("📦 6. Body de la respuesta: ${response.body}");
+
+    if (response.statusCode == 200) {
+      return TestContactResponse.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Test Contacts. Status: ${response.statusCode}');
+    }
+    
+  } catch (e) {
+    print("❌ ERROR ATRAPADO DENTRO DE LA FUNCIÓN: $e");
+    throw Exception('Error en el proceso: $e');
   }
 }

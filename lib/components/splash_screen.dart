@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/constants.dart';
-import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
 import 'package:video_player/video_player.dart';
 import '../Agents/Screens/Welcome/welcome_screen.dart';
 // import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
@@ -82,23 +81,27 @@ class _SplashViewState extends State<SplashView> {
                         width: 200,
                         height: 200,
                         child: Center(
-                          child: LiquidCircularProgressIndicator(
-                            value: 0.5, // Defaults to 0.5.
-                            valueColor: AlwaysStoppedAnimation(
-                                thirdColor), // Defaults to the current Theme's accentColor.
-                            backgroundColor:
-                                backgroundColor, // Defaults to the current Theme's backgroundColor.
-                            borderColor: thirdColor,
-                            borderWidth: 5.0,
-                            direction: Axis.vertical,
-                            center: Text(
-                              'Cargando...',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(thirdColor),
                           ),
+                          
+                          // LiquidCircularProgressIndicator(
+                          //   value: 0.5, // Defaults to 0.5.
+                          //   valueColor: AlwaysStoppedAnimation(
+                          //       thirdColor), // Defaults to the current Theme's accentColor.
+                          //   backgroundColor:
+                          //       backgroundColor, // Defaults to the current Theme's backgroundColor.
+                          //   borderColor: thirdColor,
+                          //   borderWidth: 5.0,
+                          //   direction: Axis.vertical,
+                          //   center: Text(
+                          //     'Cargando...',
+                          //     style: TextStyle(
+                          //         fontSize: 20,
+                          //         fontWeight: FontWeight.bold,
+                          //         color: Colors.white),
+                          //   ),
+                          // ),
                         ),
                       ))));
   }
