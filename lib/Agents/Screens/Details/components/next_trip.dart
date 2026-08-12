@@ -686,6 +686,46 @@ class _NextTripScreenState extends State<NextTripScreen>
                   itemBuilder: (context, index) {
                     return Column(
                   children: [
+                    if (abc.data?.trips[index].boardingPin != null && abc.data!.trips[index].boardingPin!.isNotEmpty)
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 18,
+                                  height: 18,
+                                  child: Icon(Icons.vpn_key_rounded, size: 18, color: Color.fromRGBO(40, 93, 169, 1)),
+                                ),
+                                SizedBox(width: 5),
+                                Flexible(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                      children: [
+                                        TextSpan(
+                                          text: 'PIN de abordaje: ',
+                                          style: TextStyle(fontWeight: FontWeight.w500),
+                                        ),
+                                        TextSpan(
+                                          text: '${abc.data?.trips[index].boardingPin}',
+                                          style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromRGBO(40, 93, 169, 1), fontSize: 18),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 1,
+                            color: Theme.of(context).dividerColor,
+                          ),
+                          SizedBox(height: 20),
+                        ],
+                      ),
                     Padding(
                   padding: const EdgeInsets.only(right: 5, left: 10, bottom: 4),
                   child: Row(
@@ -3319,6 +3359,48 @@ class _NextTripScreenState extends State<NextTripScreen>
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
+              if (tripData["boardingPin"] != null && tripData["boardingPin"].toString().isNotEmpty)
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 18,
+                              height: 18,
+                              child: Icon(Icons.vpn_key_rounded, size: 18, color: Color.fromRGBO(40, 93, 169, 1)),
+                            ),
+                            SizedBox(width: 5),
+                            Flexible(
+                              child: RichText(
+                                text: TextSpan( 
+                                  style: Theme.of(context).textTheme.titleSmall!.copyWith(fontSize: 16),
+                                  children: [
+                                    TextSpan(
+                                      text: 'PIN de abordaje: ',
+                                      style: TextStyle(fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text: '${tripData["boardingPin"]}',
+                                      style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromRGBO(40, 93, 169, 1), fontSize: 18),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 1,
+                      color: Theme.of(context).dividerColor,
+                    ),
+                  ],
+                ),
               Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Align(
